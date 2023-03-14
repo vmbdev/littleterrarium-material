@@ -1,0 +1,18 @@
+<ng-container *ngIf="auth.checked$ | async">
+  <ng-container *ngIf="auth.signedIn$ | async; else notSignedIn">
+    <div class="section-header">
+      <h1>Locations</h1>
+      <p>Each location represents a place where your plants are living (i.e. <i>a window, the balcony...</i>). They will be your <strong>collections</strong> of plants.</p>
+      <p>Note that you don't need to have them all in the same place as you have physically. You can, for example, have <i>Balcony (succulents)</i> and <i>Balcony (herbs)</i>.</p>
+    </div>
+    <location-list></location-list>
+  </ng-container>
+
+  <ng-template #notSignedIn>
+    <div class="home">
+      <div class="home__signin">
+        <signin></signin>
+      </div>
+    </div>
+  </ng-template>
+</ng-container>

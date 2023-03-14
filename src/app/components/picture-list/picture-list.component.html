@@ -1,0 +1,3 @@
+<picture-box *ngFor="let item of list" [image]="item.image" [title]="item.name">
+    <div *ngFor="let text of item.description">{{ text }}</div>
+</picture-box>

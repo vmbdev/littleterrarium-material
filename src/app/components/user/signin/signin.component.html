@@ -1,0 +1,21 @@
+<form [formGroup]="signinForm" (ngSubmit)="submit()">
+  <div class="signin">
+    <h1>Welcome to Little Terrarium</h1>
+    <p>We are really happy to have you here. Join and start taking care of your plants!</p>
+    <mat-form-field>
+      <mat-label>Username or e-mail</mat-label>
+      <input type="text" matInput formControlName="username">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Password</mat-label>
+      <input [type]="hidePassword ? 'password' : 'text'" matInput formControlName="password">
+      <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
+        <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+      </button>
+    </mat-form-field>
+
+    <button type="submit" mat-raised-button color="primary">Sign in</button>
+    <button mat-raised-button color="link" [routerLink]="['/register']">Register</button>
+  </div>
+</form>
