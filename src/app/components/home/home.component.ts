@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { LocationListComponent } from '@components/location/location-list/location-list.component';
 import { SigninComponent } from '@components/user/signin/signin.component';
 import { AuthService } from '@services/auth.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'home',
@@ -10,7 +11,8 @@ import { AuthService } from '@services/auth.service';
   imports: [
     CommonModule,
     LocationListComponent,
-    SigninComponent
+    SigninComponent,
+    TranslateModule
   ],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']

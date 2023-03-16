@@ -1,21 +1,21 @@
 <form [formGroup]="signinForm" (ngSubmit)="submit()">
   <div class="signin">
-    <h1>Welcome to Little Terrarium</h1>
-    <p>We are really happy to have you here. Join and start taking care of your plants!</p>
+    <h1>{{ 'signin.homepageTitle' | translate }}</h1>
+    <p [innerHTML]="'signin.homepageMsg' | translate"></p>
     <mat-form-field>
-      <mat-label>Username or e-mail</mat-label>
+      <mat-label>{{ 'signin.identification' | translate }}</mat-label>
       <input type="text" matInput formControlName="username">
     </mat-form-field>
 
     <mat-form-field>
-      <mat-label>Password</mat-label>
+      <mat-label>{{ 'general.password' | translate }}</mat-label>
       <input [type]="hidePassword ? 'password' : 'text'" matInput formControlName="password">
       <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
         <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
       </button>
     </mat-form-field>
 
-    <button type="submit" mat-raised-button color="primary">Sign in</button>
-    <button mat-raised-button color="link" [routerLink]="['/register']">Register</button>
+    <button type="submit" mat-raised-button color="primary">{{ 'general.signin' | translate }}</button>
+    <button mat-raised-button color="link" [routerLink]="['/register']" [innerHTML]="'signin.createAccount' | translate"></button>
   </div>
 </form>

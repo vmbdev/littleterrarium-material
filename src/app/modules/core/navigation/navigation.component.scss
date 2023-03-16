@@ -1,0 +1,28 @@
+.sidenav-container {
+  height: 100%;
+}
+
+.sidenav {
+  width: 200px;
+}
+
+.sidenav .mat-toolbar {
+  background: inherit;
+}
+
+.toolbar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+
+  position: fixed;
+  bottom: 0;
+  z-index: 1;
+  width: 100%;
+}
+
+.main-content {
+  height: calc(100vh - 56px);
+  margin: 0 20px;
+  overflow-y: scroll;
+}

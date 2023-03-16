@@ -92,7 +92,6 @@ export class ApiService {
 
   // retrieve location list for current user
   getLocationList(options?: any): Observable<Location[]> {
-    console.log('te');
     let url = 'location';
 
     if (options) {

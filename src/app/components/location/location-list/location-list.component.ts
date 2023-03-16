@@ -1,13 +1,17 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatIconModule } from '@angular/material/icon';
-import { MatListModule } from '@angular/material/list';
+import { Router, RouterModule } from '@angular/router';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+import { MatRippleModule } from '@angular/material/core';
+import { Observable } from 'rxjs';
 
 import { ApiService } from '@services/api.service';
 import { ImagePathService } from '@services/image-path.service';
 import { Location } from '@models/location.model';
-import { Observable } from 'rxjs';
-import { Router, RouterModule } from '@angular/router';
+import { ImagePath } from '@models/image-path.model';
+import { FabComponent } from '@components/fab/fab.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 
 @Component({
@@ -16,8 +20,11 @@ import { Router, RouterModule } from '@angular/router';
   imports: [
     CommonModule,
     RouterModule,
-    MatListModule,
-    MatIconModule,
+    MatCardModule,
+    MatButtonModule,
+    MatRippleModule,
+    TranslateModule,
+    FabComponent
   ],
   templateUrl: './location-list.component.html',
   styleUrls: ['./location-list.component.scss']
@@ -46,7 +53,7 @@ export class LocationListComponent {
     this.router.navigate(['location', id]);
   }
 
-  createLocation(): void {
-
+  getHeaderPic(images: ImagePath): string | null {
+    return this.imagePath.get(images, 'thumb');
   }
 }

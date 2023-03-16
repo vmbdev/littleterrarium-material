@@ -1,0 +1,4 @@
+<input type="file" #fileInput hidden>
+<div>{{ fileInput.files?.item(0)?.name }}</div>
+  
+<button mat-raised-button color="primary" (click)="fileInput.click()">Upload</button>

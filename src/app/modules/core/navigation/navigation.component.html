@@ -1,0 +1,41 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #drawer class="sidenav" fixedInViewport
+      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+      [mode]="(isHandset$ | async) ? 'over' : 'side'"
+      [opened]="(isHandset$ | async) === false">
+    <mat-toolbar>Little Terrarium</mat-toolbar>
+    <mat-nav-list>
+      <a mat-list-item href="#">Locations</a>
+      <a mat-list-item href="#">Plants</a>
+      <a mat-list-item href="#">Tasks</a>
+      <a mat-list-item href="#">User</a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <div class="main-content">
+      <router-outlet></router-outlet>
+    </div>
+    <mat-toolbar color="primary" class="toolbar">
+      <button
+        type="button"
+        aria-label="Toggle sidenav"
+        mat-icon-button
+        (click)="drawer.toggle()"
+        *ngIf="isHandset$ | async">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+      <button type="button" routerLink="/" mat-icon-button>
+        <mat-icon aria-label="Side nav toggle icon">roofing</mat-icon>
+      </button>
+      <button type="button" mat-icon-button>
+        <mat-icon aria-label="Side nav toggle icon">forest</mat-icon>
+      </button>
+      <button type="button" mat-icon-button>
+        <mat-icon aria-label="Side nav toggle icon">task</mat-icon>
+      </button>
+      <button type="button" mat-icon-button>
+        <mat-icon aria-label="Side nav toggle icon">account_circle</mat-icon>
+      </button>
+    </mat-toolbar>
+  </mat-sidenav-content>
+</mat-sidenav-container>

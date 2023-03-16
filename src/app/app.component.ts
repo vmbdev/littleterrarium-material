@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 import { CoreModule } from './modules/core/core.module';
 
 @Component({
@@ -15,5 +16,9 @@ import { CoreModule } from './modules/core/core.module';
     ]
 })
 export class AppComponent {
-  title = 'littleterrarium-material';
+
+  constructor(translate: TranslateService) {
+    translate.setDefaultLang('en');
+    translate.use('es');
+  }
 }

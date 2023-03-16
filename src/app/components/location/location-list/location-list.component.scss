@@ -1,0 +1,19 @@
+.location-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin: 20px 0;
+
+  &__item {
+    max-width: 400px;
+  }
+  
+  &__header {
+    background-size: cover;
+  }
+
+  &__buttonrow {
+    display: flex;
+    gap: 10px;
+  }
+}
