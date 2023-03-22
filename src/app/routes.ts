@@ -10,10 +10,10 @@ export const routes: Routes = [
     path: 'signin',
     loadComponent: () => import('./components/user/signin/signin.component').then(m => m.SigninComponent)
   },
-  // {
-  //   path: 'logout',
-  //   loadComponent: () => import('./components/user/user-logout/user-logout.component').then(m => m.UserLogoutComponent)
-  // },
+  {
+    path: 'logout',
+    loadComponent: () => import('./components/user/logout/logout.component').then(m => m.LogoutComponent)
+  },
   {
     path: 'register',
     loadComponent: () => import('./components/user/register/register.component').then(m => m.RegisterComponent)
@@ -26,10 +26,10 @@ export const routes: Routes = [
     path: 'location',
     loadChildren: () => import('./components/location/routes').then(m => m.LOCATION_ROUTES)
   },
-  // {
-  //   path: 'plant',
-  //   loadChildren: () => import('./components/plant/routes').then(m => m.PLANT_ROUTES)
-  // },
+  {
+    path: 'plant',
+    loadChildren: () => import('./components/plant/routes').then(m => m.PLANT_ROUTES)
+  },
   // {
   //   path: 'photo',
   //   loadChildren: () => import('./components/photo/routes').then(m => m.PHOTO_ROUTES)

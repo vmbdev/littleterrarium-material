@@ -1,0 +1,10 @@
+.bottom-toolbar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+
+  position: fixed;
+  bottom: 0;
+  z-index: 1;
+  width: 100%;
+}

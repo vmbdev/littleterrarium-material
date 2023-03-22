@@ -1,7 +1,6 @@
 <ng-container *ngIf="auth.checked$ | async">
   <ng-container *ngIf="auth.signedIn$ | async; else notSignedIn">
     <div class="section-header">
-      <h1>{{ 'general.locations' | translate }}</h1>
       <p [innerHTML]="'home.locations' | translate"></p>
       <p [innerHTML]="'home.locationsNote' | translate"></p>
     </div>

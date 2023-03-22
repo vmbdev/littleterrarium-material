@@ -1,0 +1,34 @@
+.plant-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.plant-card {
+  &__header {
+    justify-content: center;
+  }
+
+  &__footer {
+    padding: 10px 0;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    justify-content: center;
+  }
+
+}
+
+.button {
+  &__water {
+    background-color: #1b78c2;
+  }
+
+  &__fert {
+    background-color: #4E9F3D;
+  }
+
+  &__edit {
+    background-color: #ffffff;
+  }
+}

@@ -160,6 +160,7 @@
   "signin.homepageTitle": "Welcome to Little Terrarium!",
   "signin.identification": "Username or email",
   "signin.invalidCredentials": "Sorry, the credentials are not valid.",
+  "signin.progress": "Signing in...",
   "signin.welcomeBack": "Welcome back!",
   "specieFinder.inputPlaceholder": "Try with something like 'basil'",
   "tasks.fertilizerRequired": "{$INTERPOLATION} requires fertilizing",

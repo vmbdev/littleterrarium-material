@@ -1,0 +1,24 @@
+<div class="plant-list">
+  <mat-card *ngFor="let plant of list" matRipple>
+    <mat-card-header class="plant-card__header" [routerLink]="['/plant', plant.id]">
+      <mat-card-title>
+        {{ getName(plant) }}
+      </mat-card-title>
+    </mat-card-header>
+    <img mat-card-image [src]="getImgUrl(plant)" [routerLink]="['/plant', plant.id]">
+    <mat-card-footer class="plant-card__footer">
+        <button mat-mini-fab class="button__water">
+          <mat-icon>water_drop</mat-icon>
+        </button>
+        <button mat-mini-fab class="button__fert">
+          <mat-icon>local_pizza</mat-icon>
+        </button>
+        <button mat-mini-fab class="button__edit">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-mini-fab color="warn">
+          <mat-icon>delete_forever</mat-icon>
+        </button>
+    </mat-card-footer>
+  </mat-card>
+</div>

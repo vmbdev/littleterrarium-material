@@ -1,1 +1,22 @@
-<p>location works!</p>
+<div *ngIf="location$ | async as location" class="location">
+  <info-box>
+    <property [icon]="getLightAsset(location.light)">
+      <span>{{ getLightName(location.light) }}</span>
+    </property>
+    <property [icon]="location.public ? 'visibility' : 'visibility_off'">
+      <span>{{ location.public ? 'Public' : 'Private' }}</span>
+    </property>
+    <property icon="forest">
+      <ng-container *ngIf="location.plants && location.plants.length; else noPlants">
+        <span>
+          {{ location.plants.length }} plants
+        </span>
+      </ng-container>
+      <ng-template #noPlants>
+        <span>No plants yet!</span>
+      </ng-template>
+    </property>
+  </info-box>
+
+  <plant-list [list]="location.plants"></plant-list>
+</div>

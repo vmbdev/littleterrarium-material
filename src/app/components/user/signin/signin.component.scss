@@ -6,4 +6,9 @@
   button:not(:last-of-type) {
     margin-bottom: 10px;
   }
+
+  &__error {
+    color: red;
+    text-align: center;
+  }
 }

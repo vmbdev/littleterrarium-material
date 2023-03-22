@@ -88,6 +88,7 @@ export class PlantService {
 
     if (plant.customName) name = plant.customName;
     else if (plant.specie?.name) name = plant.specie.name.slice(0,1).toUpperCase() + plant.specie.name.slice(1);
+    // FIXME: update for ngx-translate
     else name = 'Unnamed plant ${plant.id}';
 
     return name;
@@ -148,7 +149,7 @@ export class PlantService {
     return EMPTY;
   }
 
-  coverPhoto(plant?: Plant): string | null {
+  coverPhoto(plant?: Plant): string {
     let workingPlant;
 
     if (!plant) workingPlant = this.plant$.getValue();
@@ -161,10 +162,10 @@ export class PlantService {
       else if (workingPlant.photos && workingPlant.photos[0] && workingPlant.photos[0].images) {
         image = this.imagePath.get(workingPlant.photos[0].images, 'thumb');
       }
-      else image = null;
+      else image = 'assets/nopic.png';
 
       return image;
     }
-    else return null;
+    else return 'assets/nopic.png';
   }
 }

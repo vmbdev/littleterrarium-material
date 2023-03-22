@@ -9,6 +9,7 @@ import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import { AuthInterceptor } from "@interceptors/auth.interceptor";
 import { AppComponent } from "./app/app.component";
 import { routes } from "./app/routes";
+import { ToastrModule } from "ngx-toastr";
 
 export function httpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient, './assets/i18n/', '.json');
@@ -27,7 +28,8 @@ bootstrapApplication(AppComponent, {
         useFactory: httpLoaderFactory,
         deps: [HttpClient]
       }
-    }))
+    })),
+    importProvidersFrom(ToastrModule.forRoot())
 
   ]
 }).catch(err => console.error(err));

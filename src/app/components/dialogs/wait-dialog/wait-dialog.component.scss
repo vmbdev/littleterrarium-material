@@ -1,0 +1,35 @@
+.wait-dialog {
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: rgba(255,255,255,0.2);
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+
+  &__container {
+    border: 1px solid black;
+    width: 70vw;
+    display: flex;
+    padding: 20px;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    background-color: lighten(black, 25%);
+    border-radius: 5px;
+
+  }
+
+  &__message {
+    text-align: center;
+  }
+
+  &__spinner {
+    width: 50px !important;
+    height: 50px !important;
+  }
+}
