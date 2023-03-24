@@ -1,10 +1,10 @@
 .location-list {
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  margin: 20px 0;
+  margin: 10px 0;
 
   &__item {
+    margin: 10px 0;
     max-width: 400px;
   }
   
@@ -14,6 +14,9 @@
 
   &__buttonrow {
     display: flex;
-    gap: 10px;
+
+    button:not(:last-of-type) {
+      margin-right: 10px;
+    }
   }
 }

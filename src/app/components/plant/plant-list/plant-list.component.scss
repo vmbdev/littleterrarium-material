@@ -1,20 +1,29 @@
 .plant-list {
   display: flex;
   flex-direction: column;
-  gap: 20px;
 }
 
 .plant-card {
+  margin: 10px 0;
+
   &__header {
     justify-content: center;
+  }
+
+  &__image {
+    width: 100%;
+    height: auto;
   }
 
   &__footer {
     padding: 10px 0;
     display: flex;
     flex-direction: row;
-    gap: 10px;
     justify-content: center;
+    
+    button {
+      margin: 0 5px;
+    }
   }
 
 }

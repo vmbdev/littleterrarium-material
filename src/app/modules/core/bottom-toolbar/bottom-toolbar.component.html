@@ -4,13 +4,13 @@
     aria-label="Toggle sidenav"
     mat-icon-button
     (click)="emitToggleSidenav()"
-    *ngIf="isHandset$ | async">
+  >
     <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
   </button>
   <button type="button" routerLink="/" mat-icon-button>
     <mat-icon aria-label="Side nav toggle icon">roofing</mat-icon>
   </button>
-  <button type="button" mat-icon-button>
+  <button type="button" routerLink="/plant/all" mat-icon-button>
     <mat-icon aria-label="Side nav toggle icon">forest</mat-icon>
   </button>
   <button type="button" mat-icon-button>

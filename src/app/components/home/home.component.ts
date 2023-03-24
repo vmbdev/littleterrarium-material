@@ -27,11 +27,16 @@ export class HomeComponent {
   ) {}
 
   ngOnInit(): void {
-    this.translate.get('general.locations').subscribe((res: string) => {
-      this.mt.setName(res);
-    });
-
-    this.mt.setButtons([]);
+    this.auth.signedIn$.subscribe((val: boolean) => {
+      if (val) {
+        this.translate.get('general.locations').subscribe((res: string) => {
+          this.mt.setName(res);
+        });
+    
+        this.mt.setMenu([]);
+      }
+      else this.mt.hide();
+    })
   }
 
 }

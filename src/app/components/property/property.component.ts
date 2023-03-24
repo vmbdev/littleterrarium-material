@@ -14,5 +14,6 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class PropertyComponent {
   @Input() icon: string = 'info';
+  @Input() iconColor?: string;
   @ViewChild('propertyTemplate') propertyTemplate!: TemplateRef<any>;
 }

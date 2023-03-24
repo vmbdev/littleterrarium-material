@@ -1,0 +1,19 @@
+$boxSize: calc(100vw / 3);
+
+.photo-list {
+  position: absolute;
+  left: 0;
+  width: 100vw;
+
+  display: grid;
+  grid-template-columns: repeat(auto-fit, $boxSize);
+
+
+  &__box {
+    height: $boxSize;
+    img {
+      width: $boxSize;
+      height: $boxSize;
+    }
+  }
+}

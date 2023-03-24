@@ -3,6 +3,7 @@ import { BehaviorSubject } from 'rxjs';
 
 interface MainToolbarButton {
   icon: string,
+  tooltip: string,
   route?: any,
   click?: any
 }
@@ -13,14 +14,31 @@ interface MainToolbarButton {
 export class MainToolbarService {
   name$ = new BehaviorSubject<string>('');
   buttons$ = new BehaviorSubject<MainToolbarButton[]>([]);
+  menu$ = new BehaviorSubject<MainToolbarButton[]>([]);
+  hidden$ = new BehaviorSubject<boolean>(true);
 
   constructor() { }
 
   setName(name: string) {
+    this.hidden$.next(false);
     this.name$.next(name);
   }
 
   setButtons(buttons: MainToolbarButton[]) {
+    this.hidden$.next(false);
     this.buttons$.next(buttons);
+  }
+
+  setMenu(menu: MainToolbarButton[]) {
+    this.hidden$.next(false);
+    this.menu$.next(menu);
+  }
+
+  hide() {
+    this.hidden$.next(true);
+  }
+
+  show() {
+    this.hidden$.next(false);
   }
 }

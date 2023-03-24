@@ -1,1 +1,18 @@
-<p>plant works!</p>
+<!-- TODO: send it to the core module, and access it through service -->
+<wait-dialog *ngIf="loading" [message]="'general.loading' | translate"></wait-dialog>
+
+<fab *ngIf="plantService.owned" link="/plant/create"></fab>
+<ng-container *ngIf="plantService.plant$ | async as plant">
+  <info-box>
+    <property *ngIf="plant.condition" icon="circle" [iconColor]="getConditionColor(plant.condition)">
+      {{ plantCondition[plant.condition] }}
+    </property>
+    <property [icon]="plant.public ? 'visibility' : 'visibility_off'">
+      {{ plant.public ? ('general.public' | translate) : ('general.private' | translate) }}
+    </property>
+  </info-box>
+
+  <h1>{{ 'plant.photoList' | translate:{ plantName: plant.visibleName } }}</h1>
+
+  <photo-list [owned]="this.plantService.owned" [plantId]="plant.id" [list]="plant.photos"></photo-list>
+</ng-container>

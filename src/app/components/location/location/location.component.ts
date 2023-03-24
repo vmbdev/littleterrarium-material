@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, EMPTY, map, Observable } from 'rxjs';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Light, Location } from '@models/location.model';
 import { ApiService } from '@services/api.service';
 import { AuthService } from '@services/auth.service';
@@ -12,6 +12,7 @@ import { PlantListComponent } from '@components/plant/plant-list/plant-list.comp
 import { ErrorHandlerService } from '@services/error-handler.service';
 import { PropertyComponent } from '@components/property/property.component';
 import { InfoBoxComponent } from "@components/info-box/info-box.component";
+import { FabComponent } from '@components/fab/fab.component';
 
 @Component({
     selector: 'location',
@@ -22,7 +23,9 @@ import { InfoBoxComponent } from "@components/info-box/info-box.component";
       CommonModule,
       PlantListComponent,
       PropertyComponent,
-      InfoBoxComponent
+      InfoBoxComponent,
+      FabComponent,
+      TranslateModule
     ]
 })
 export class LocationComponent {
@@ -51,16 +54,17 @@ export class LocationComponent {
           this.owned = (this.auth.user$.getValue()?.id === location.ownerId) ? true : false;
           
           this.mt.setName(location.name);
-          this.mt.setButtons([
-            { icon: 'search' },
-            { icon: 'sort' },
-            { icon: 'view_list' },
+          this.mt.setMenu([
+            { icon: 'search', tooltip: 'general.search' },
+            { icon: 'sort', tooltip: 'general.sort' },
+            { icon: 'view_list', tooltip: 'general.viewList' },
           ]);
 
           return location;
         }),
         catchError((err: HttpErrorResponse) => {
           let msg: string;
+
           if (err.error?.msg === 'LOCATION_NOT_FOUND') msg = 'location.invalid';
           else msg = 'errors.server';
 

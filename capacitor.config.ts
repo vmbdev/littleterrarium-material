@@ -4,7 +4,15 @@ const config: CapacitorConfig = {
   appId: 'xyz.littleterrarium.app',
   appName: 'littleterrarium',
   webDir: 'dist/littleterrarium-material',
-  bundledWebRuntime: false
+  bundledWebRuntime: false,
+  android: {
+    minWebViewVersion: 55
+  },
+  plugins: {
+    CapacitorCookies: {
+      enabled: true
+    }
+  }
 };
 
 export default config;

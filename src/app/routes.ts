@@ -30,10 +30,10 @@ export const routes: Routes = [
     path: 'plant',
     loadChildren: () => import('./components/plant/routes').then(m => m.PLANT_ROUTES)
   },
-  // {
-  //   path: 'photo',
-  //   loadChildren: () => import('./components/photo/routes').then(m => m.PHOTO_ROUTES)
-  // },
+  {
+    path: 'photo',
+    loadChildren: () => import('./components/photo/routes').then(m => m.PHOTO_ROUTES)
+  },
   // {
   //   path: 'terrarium/:username',
   //   loadComponent: () => import('./components/terrarium/terrarium.component').then(m => m.TerrariumComponent)
