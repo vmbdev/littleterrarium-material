@@ -1,24 +1,20 @@
 <ng-container *ngIf="photoService.photo$ | async as photo">
 
+  
+  <toggle-option [defaultChecked]="plantCoverId === photo.id" (change)="updateCoverPhoto($event)">
+    {{ 'photo.cover' | translate }}
+  </toggle-option>
+  
+  <div class="photo">
+    <img [src]="imagePath.get(photo.images, 'full')">
+  </div>
+  
   <info-box>
     <property icon="event">
-      {{ photo.takenAt | date }}
+      {{ 'general.daysAgo' | translate: { days: (photo.takenAt | daysAgo) } }}
     </property>
     <property [icon]="photo.public ? 'visibility' : 'visibility_off'">
       {{ photo.public ? ('general.public' | translate) : ('general.private' | translate) }}
     </property>
-
-    <property *ngIf="photoService.owned" [icon]="plantCoverId === photo.id ? 'radio_button_checked' : 'radio_button_unchecked' ">
-      {{ 'photo.cover' | translate }}
-      <!-- <div class="form__checkbox">
-        <input type="checkbox" class="photo__cover" id="cover-checkbox" [checked]="plantCoverId === photo.id">
-        <label for="cover-checkbox" (click)="updateCoverPhoto()" i18n="@@photo.cover">Cover photo</label>
-      </div> -->
-    </property>
   </info-box>
-
-  <div class="photo">
-    <img #photo [src]="imagePath.get(photo.images, 'full')">
-  </div>
-
 </ng-container>

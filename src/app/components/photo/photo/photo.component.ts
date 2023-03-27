@@ -4,6 +4,9 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { ActivatedRoute, Params, Router, RouterModule } from '@angular/router';
 import { catchError, EMPTY } from 'rxjs';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { DateTime } from 'luxon';
+
+
 // import { HammerModule } from "@angular/platform-browser";
 // import * as Hammer from 'hammerjs';
 
@@ -14,19 +17,25 @@ import { ImagePathService } from '@services/image-path.service';
 import { InfoBoxComponent } from "@components/info-box/info-box.component";
 import { PropertyComponent } from "@components/property/property.component";
 import { MainToolbarService } from '@services/main-toolbar.service';
+import { ToggleOptionComponent } from '@components/toggle-option/toggle-option.component';
+import { Plant } from '@models/plant.model';
+import { DaysAgoPipe } from "@pipes/days-ago/days-ago.pipe";
 
 @Component({
-    selector: 'app-photo',
+    selector: 'photo',
     standalone: true,
     templateUrl: './photo.component.html',
     styleUrls: ['./photo.component.scss'],
     imports: [
-      CommonModule,
-      RouterModule,
-      InfoBoxComponent,
-      PropertyComponent,
-      TranslateModule,
-      // HammerModule
+        CommonModule,
+        RouterModule,
+        InfoBoxComponent,
+        PropertyComponent,
+        TranslateModule,
+        ToggleOptionComponent
+        // HammerModule
+        ,
+        DaysAgoPipe
     ]
 })
 export class PhotoComponent {
@@ -36,6 +45,7 @@ export class PhotoComponent {
   enablePhotoEditing: boolean = false;
   navigation: any;
   plantCoverId?: number;
+  coverChecked: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -79,24 +89,34 @@ export class PhotoComponent {
           return EMPTY;
         })
       ).subscribe((res) => {
-        // dayjs.extend(LocalizedFormat);
-
         if (res.data.navigation) this.navigation = res.data.navigation;
         if (res.data.plantCoverId) this.plantCoverId = res.data.plantCoverId;
 
-        // FIXME: format data properly
-        this.mt.setName(res.data.photo.takenAt);
-        this.mt.setMenu([
-          
-        ]);
+        const dateDiff = DateTime.fromISO(res.data.photo.takenAt).diffNow('days').days;
+        const numberOfDays = Math.abs(Math.ceil(dateDiff)).toString();
 
-        // this.breadcrumb.setNavigation(
-        //   [{
-        //     selector: 'photo',
-        //     name: dayjs(this.photoService.photo$?.getValue()?.takenAt).format('LL'),
-        //     link: ['/photo', this.id]
-        //   }], { attachTo: 'plant' })
+        this.mt.setName(this.translate.instant('general.daysAgo', { days: numberOfDays }));
+        this.mt.setMenu([]);
       });
+    }
+  }
+
+  updateCoverPhoto(setCover: boolean): void {
+    const photo = this.photoService.photo$.getValue();
+    
+    if (photo) {
+      if (!setCover && (photo.id === this.plantCoverId)) {
+        let plant: Plant = { id: photo.plantId } as Plant;
+        this.plantService.update(plant, { removeCover: true }).subscribe(() => {
+          this.plantCoverId = undefined;
+        });
+      }
+      else if (setCover) {
+        let plant: Plant = { id: photo.plantId, coverId: photo.id } as Plant;
+        this.plantService.update(plant).subscribe(() => {
+          this.plantCoverId = photo.id;
+        });
+      }
     }
   }
 

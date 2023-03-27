@@ -1,0 +1,14 @@
+.toggle-option {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  &__label {
+    flex: 1;
+  }
+}
+
+.toggle-option-card {
+  margin-bottom: 6px;
+
+}

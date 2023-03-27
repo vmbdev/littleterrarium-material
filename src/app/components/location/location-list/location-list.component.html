@@ -1,20 +1,30 @@
+<wait-dialog *ngIf="loading" [message]="'general.loading' | translate"></wait-dialog>
 <fab link="/location/create"></fab>
 <div *ngIf="locations$ | async as locations" class="location-list">
   <mat-card *ngFor="let item of locations" class="location-list__item" matRipple>
     <mat-card-header (click)="selectLocation(item.id)">
-      <div
-        mat-card-avatar
-        class="location-list__header"
-        [ngStyle]="{ 'background-image': 'url(' + (item.pictures ? getHeaderPic(item.pictures) : '') + ')'}"
-      ></div>
-      <mat-card-title>{{ item.name }}</mat-card-title>
-      <mat-card-subtitle>
-        {{ 'location-list.amount' | translate:{ plantCount: item._count.plants } }}
-      </mat-card-subtitle>
+      <mat-card-title-group>
+        <img mat-card-sm-image [src]="(item.pictures ? getHeaderPic(item.pictures) : 'assets/nopic.png')">
+        <mat-card-title>{{ item.name }}</mat-card-title>
+        <mat-card-subtitle *ngIf="item._count.plants > 0; else noPlants">
+          {{ 'location-list.amount' | translate:{ plantCount: item._count.plants } }}
+        </mat-card-subtitle>
+        <ng-template #noPlants>
+          <mat-card-subtitle>
+            {{ 'location.noPlants' | translate }}
+          </mat-card-subtitle>
+        </ng-template>
+      </mat-card-title-group>
     </mat-card-header>
     <mat-card-actions class="location-list__buttonrow">
-      <button mat-raised-button color="basic">{{ 'general.edit' | translate }}</button>
-      <button mat-raised-button color="warn">{{ 'general.delete' | translate }}</button>
+      <button mat-raised-button color="primary">{{ 'general.edit' | translate }}</button>
+      <button
+        mat-raised-button
+        color="warn"
+        (click)="openDialog(item.name, item.id)"
+      >
+        {{ 'general.delete' | translate }}
+      </button>
     </mat-card-actions>
   </mat-card>
 </div>

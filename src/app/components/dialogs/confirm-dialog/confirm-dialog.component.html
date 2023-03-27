@@ -1,0 +1,8 @@
+<h1 mat-dialog-title>{{ data.title }}</h1>
+<div mat-dialog-content>
+  {{ data.question }}
+</div>
+<div mat-dialog-actions align="center">
+  <button mat-raised-button mat-dialog-close cdkFocusInitial>{{ 'general.cancel' | translate }}</button>
+  <button mat-raised-button mat-dialog-close color="primary" (click)="data.accept()">{{ 'general.accept' | translate }}</button>
+</div>
