@@ -1,7 +1,38 @@
-@use '@angular/material/prebuilt-themes/purple-green.css';
+// @use '@angular/material/prebuilt-themes/purple-green.css';
+@use 'themes/light.scss';
 @use 'ngx-toastr/toastr';
 
 /* You can add global styles to this file, and also import other style files */
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+mat-card {
+  border-width: 1px !important;
+  border-color: rgba(0,0,0,.2) !important;
+  margin: 6px 0;
+}
+
+.icon-button-toggle {
+  width: 100%;
+
+  &__option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 0 5px 0;
+  }
+
+  &__selection {
+    text-align: center;
+  }
+
+  mat-button-toggle {
+    width: 100%;
+  }
+}
+
+// mat-stepper, .mat-horizontal-stepper-wrapper, .mat-horizontal-content-container, .mat-horizontal-stepper-content {
+//   height: 100% !important;
+// }
+

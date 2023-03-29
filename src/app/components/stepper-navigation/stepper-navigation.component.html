@@ -1,0 +1,25 @@
+<div class="stepper-navigation">
+  <button
+    *ngIf="backButton === true || backButton === 'true'"
+    type="button"
+    mat-raised-button
+    matStepperPrevious
+  >
+    Back
+  </button>
+  <button
+    *ngIf="submitButton === true || submitButton === 'true'"
+    type="button"
+    mat-raised-button
+    matStepperNext
+  >
+    Next
+  </button>
+  <button
+    *ngIf="!submitButton || submitButton === 'false'"
+    type="submit"
+    mat-raised-button
+  >
+    Submit
+  </button>
+</div>

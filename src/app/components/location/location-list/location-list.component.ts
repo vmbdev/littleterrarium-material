@@ -1,11 +1,12 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
+import { BehaviorSubject, finalize, Observable } from 'rxjs';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatRippleModule } from '@angular/material/core';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { finalize, Observable } from 'rxjs';
+import { MatBottomSheet, MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 import { ApiService } from '@services/api.service';
@@ -17,6 +18,7 @@ import { LocationService } from '@services/location.service';
 import { ErrorHandlerService } from '@services/error-handler.service';
 import { ConfirmDialogComponent } from '@components/dialogs/confirm-dialog/confirm-dialog.component';
 import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog.component';
+import { LocationAddEditComponent } from '@components/location/location-add-edit/location-add-edit.component';
 
 
 @Component({
@@ -29,6 +31,7 @@ import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog
     MatButtonModule,
     MatRippleModule,
     MatDialogModule,
+    MatBottomSheetModule,
     TranslateModule,
     FabComponent,
     WaitDialogComponent
@@ -39,7 +42,7 @@ import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog
 export class LocationListComponent {
   @Input() userId?: number;
   @Input() owned: boolean = true;
-  locations$?: Observable<Location[]>;
+  locations$ = new BehaviorSubject<Location[]>([]);
   loading: boolean = false;
 
   constructor(
@@ -50,6 +53,7 @@ export class LocationListComponent {
     private errorHandler: ErrorHandlerService,
     private translate: TranslateService,
     private dialog: MatDialog,
+    private bottomSheet: MatBottomSheet
   ) { }
 
   ngOnInit(): void {
@@ -64,9 +68,27 @@ export class LocationListComponent {
       userId: this.userId ? this.userId : null
     }
 
-    this.locations$ = this.apiService.getLocationList(options).pipe(
+    const obs = this.apiService.getLocationList(options).pipe(
       finalize(() => { this.loading = false })
     );
+
+    obs.subscribe((res) => { this.locations$.next(res) })
+  }
+
+  openBottomSheet(id: number): void {
+    const bsRef = this.bottomSheet.open(LocationAddEditComponent, {
+      data: { id }
+    });
+
+    bsRef.afterDismissed().subscribe((updatedLocation: Location) => {
+      if (updatedLocation) {
+        const list = this.locations$.getValue();
+        const index = list.findIndex((loc) => loc.id === updatedLocation.id);
+        updatedLocation._count = { plants: list[index]._count.plants };
+        list[index] = updatedLocation;
+        this.locations$.next(list);
+      }
+    });
   }
 
   selectLocation(id: number) {

@@ -202,5 +202,6 @@
   "user-register.usernameTaken": "Sorry, your username already exists. Please choose another.",
   "userbox.profile": "Edit profile",
   "userbox.terrarium": "Your Terrarium",
-  "userbox.username": "Hi <b>{$INTERPOLATION}</b>"
+  "userbox.username": "Hi <b>{$INTERPOLATION}</b>",
+  "general.required": "Required"
 }

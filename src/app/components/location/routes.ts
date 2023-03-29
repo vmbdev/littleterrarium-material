@@ -8,7 +8,7 @@ export const LOCATION_ROUTES: Route[] = [
   },
   {
     path: 'create',
-    loadComponent: () => import('./location-add/location-add.component').then(m => m.LocationAddComponent), canActivate: [AuthGuard]
+    loadComponent: () => import('./location-add-edit/location-add-edit.component').then(m => m.LocationAddEditComponent), canActivate: [AuthGuard]
   },
   // {
   //   path: 'edit/:locationId',

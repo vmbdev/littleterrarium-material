@@ -1,0 +1,23 @@
+<div class="file-uploader"
+  (dragenter)="dragEnter($event)"
+  (dragover)="dragEnter($event)"
+  (dragleave)="dragLeave($event)"
+  (dragend)="dragLeave($event)"
+  (drop)="dropFile($event)"
+  (dragstart)="$event.preventDefault()"
+  [ngClass]="{ 'file-uploader__over': dragOver }"
+>
+  <div *ngIf="files.length === 0">
+    <b>{{ 'fileUploader.select' | translate }}</b>
+  </div>
+  <div *ngIf="files.length > 0">
+    <div *ngFor="let file of files; let i = index" class="file-uploader__file">
+      <span class="file-uploader__removelink" (click)="removeFile(i)">&#10006;</span>
+      <span class="file-uploader__filename">{{ file.name | shortFilename:15 }} </span>
+    </div>
+  </div>
+
+  <input type="file" #fileInput (change)="fileInputChange($event)" [disabled]="availableSlots() === 0" [multiple]="amount > 1" hidden>
+
+  <button type="button" mat-raised-button color="primary" (click)="fileInput.click()">{{ 'fileUploader.upload' | translate }}</button>
+</div>

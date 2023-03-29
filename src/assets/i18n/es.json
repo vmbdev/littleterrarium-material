@@ -199,5 +199,6 @@
   "user-register.usernameReq": "Debe tener entre {$INTERPOLATION} y {$INTERPOLATION_1} caracteres, y contener solo letras, números, puntos (.), guiones (-) y barras bajas (_).",
   "user-register.usernameTaken": "Lo sentimos, este usuario ya está en uso. Por favor, elige otro.",
   "userbox.editProfile": "Editar perfil",
-  "userbox.username": "Hola <b>{$INTERPOLATION}</b>"
+  "userbox.username": "Hola <b>{$INTERPOLATION}</b>",
+  "general.required": "Obligatorio"
 }

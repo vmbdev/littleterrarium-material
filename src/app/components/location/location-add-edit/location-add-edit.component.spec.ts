@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LocationAddComponent } from './location-add.component';
+import { LocationAddComponent } from './location-add-edit.component';
 
 describe('LocationAddComponent', () => {
   let component: LocationAddComponent;

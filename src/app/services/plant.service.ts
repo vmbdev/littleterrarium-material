@@ -114,8 +114,8 @@ export class PlantService {
     );
   }
 
-  delete(): Observable<any> {
-    const id = this.plant$.getValue()?.id;
+  delete(id?: number): Observable<any> {
+    if (!id) id = this.plant$.getValue()?.id;
 
     if (id) return this.api.deletePlant(id);
     else return EMPTY;

@@ -1,0 +1,31 @@
+.file-uploader {
+  background-color: #f5f5f5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  margin: 10px 0;
+  min-height: 15em;
+
+  input[type=file] {
+    display: none;
+
+    &:disabled+label {
+      background-color: lightgrey;
+    }
+  }
+
+  &__over {
+    background-color: #6BCB77;
+  }
+
+  &__removelink {
+    font-weight: 600;
+    color: #FF6B6B;
+    cursor: pointer;
+  }
+
+  &__filename {
+    word-wrap: break-word;
+  }
+}
