@@ -7,19 +7,21 @@
   >
     Back
   </button>
+
   <button
-    *ngIf="submitButton === true || submitButton === 'true'"
+    *ngIf="!finishButton || finishButton === 'false'"
     type="button"
     mat-raised-button
     matStepperNext
   >
     Next
   </button>
+
   <button
-    *ngIf="!submitButton || submitButton === 'false'"
-    type="submit"
+    *ngIf="finishButton && finishButton === 'true'"
     mat-raised-button
+    (click)="emitFinish()"
   >
-    Submit
+    Finish
   </button>
 </div>

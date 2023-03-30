@@ -1,0 +1,12 @@
+<form [formGroup]="form">
+  <p [innerHTML]="'location-add-edit.name' | translate"></p>
+  <p [innerHTML]="'location-add-edit.nameTip' | translate"></p>
+  <mat-form-field>
+    <input
+      formControlName="name"
+      matInput
+      [placeholder]="'location-add-edit.namePlaceholder' | translate"
+      [value]="location ? location.name : null"
+    >
+  </mat-form-field>
+</form>

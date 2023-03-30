@@ -16,6 +16,7 @@ import { PropertyComponent } from '@components/property/property.component';
 import { InfoBoxComponent } from "@components/info-box/info-box.component";
 import { FabComponent } from '@components/fab/fab.component';
 import { LocationAddEditComponent } from '../location-add-edit/location-add-edit.component';
+import { LocationEditComponent } from '../location-edit/location-edit.component';
 
 // TODO: Use LocationService
 @Component({
@@ -98,7 +99,7 @@ export class LocationComponent {
 
   openBottomSheet(): void {
     if (this.id) {
-      const bsRef = this.bottomSheet.open(LocationAddEditComponent, {
+      const bsRef = this.bottomSheet.open(LocationEditComponent, {
         data: { id: this.id }
       });
 

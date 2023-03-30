@@ -1,0 +1,19 @@
+<mat-tab-group mat-stretch-tabs="false" mat-align-tabs="center">
+  <mat-tab [label]="'general.name' | translate">
+    <location-form-name [location]="location"></location-form-name>
+  </mat-tab>
+
+  <mat-tab [label]="'general.picture' | translate">
+    <p [innerHTML]="'location-add-edit.choose' | translate"></p>
+    <p [innerHTML]="'location-add-edit.ornot' | translate"></p>
+    <file-uploader [amount]="1" (fileChange)="fileChange($event)"></file-uploader>
+  </mat-tab>
+
+  <mat-tab [label]="'general.light' | translate">
+    <location-form-light [location]="location"></location-form-light>
+  </mat-tab>
+
+  <mat-tab [label]="'general.privacy' | translate">
+    <location-form-privacy [location]="location"></location-form-privacy>
+  </mat-tab>
+</mat-tab-group>

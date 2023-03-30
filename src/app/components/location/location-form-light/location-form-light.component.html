@@ -1,0 +1,22 @@
+<form [formGroup]="form">
+  <p [innerHTML]="'location-add-edit.lightInfo' | translate"></p>
+  <p>{{ 'location-add-edit.lightAmount' | translate }}</p>
+
+  <mat-button-toggle-group formControlName="light" class="icon-button-toggle">
+    <mat-button-toggle
+      *ngFor="let option of lightOptions | keyvalue"
+      [value]="option.key"
+      [checked]="location && (option.key === location.light)"
+    >
+      <div class="icon-button-toggle__option">
+        <mat-icon>{{ locationService.getLightAsset(option.key) }}</mat-icon>
+        <div>{{ option.value.desc }}</div>
+      </div>
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+  <div class="icon-button-toggle__selection">
+  <!-- FIXME: hell no, remove those ! -->
+    {{ locationService.getLightVerbose(form.get('light')!.value!) }}
+  </div>
+
+</form>

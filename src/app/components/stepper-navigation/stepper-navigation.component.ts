@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatStepperModule } from '@angular/material/stepper';
@@ -16,5 +16,10 @@ import { MatStepperModule } from '@angular/material/stepper';
 })
 export class StepperNavigationComponent {
   @Input() backButton: boolean | 'true' | 'false' = true;
-  @Input() submitButton: boolean | 'true' | 'false' = true;
+  @Input() finishButton: boolean | 'true' | 'false' = false;
+  @Output() finish = new EventEmitter();
+
+  emitFinish() {
+    this.finish.emit();
+  }
 }

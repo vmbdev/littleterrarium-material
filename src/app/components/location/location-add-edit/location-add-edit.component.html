@@ -1,20 +1,7 @@
-
 <mat-stepper labelPosition="bottom" editable="true" animationDuration="300">
-  <mat-step [stepControl]="formName" [errorMessage]="'general.required' | translate" [label]="'general.name' | translate">
-    <form [formGroup]="formName">
-      <p [innerHTML]="'location-add-edit.name' | translate"></p>
-      <p [innerHTML]="'location-add-edit.nameTip' | translate"></p>
-      <mat-form-field>
-        <input
-          formControlName="name"
-          matInput
-          [placeholder]="'location-add-edit.namePlaceholder' | translate"
-          [value]="(!createNew && location) ? location.name : null"
-        >
-      </mat-form-field>
-
-      <stepper-navigation backButton="false"></stepper-navigation>
-    </form>
+  <mat-step [stepControl]="formName.form" [errorMessage]="'general.required' | translate" [label]="'general.name' | translate">
+    <location-form-name #formName></location-form-name>
+    <stepper-navigation backButton="false"></stepper-navigation>
   </mat-step>
 
   <mat-step optional="true" [label]="'general.picture' | translate">
@@ -26,42 +13,13 @@
       <stepper-navigation></stepper-navigation>
   </mat-step>
 
-  <mat-step [stepControl]="formLight" [label]="'general.light' | translate">
-    <form [formGroup]="formLight">
-      <p [innerHTML]="'location-add-edit.lightInfo' | translate"></p>
-      <p>{{ 'location-add-edit.lightAmount' | translate }}</p>
-
-      <mat-button-toggle-group formControlName="light" class="icon-button-toggle">
-        <mat-button-toggle
-          *ngFor="let option of lightOptions | keyvalue"
-          [value]="option.key"
-          [checked]="location && (option.key === location.light)"
-        >
-          <div class="icon-button-toggle__option">
-            <mat-icon>{{ locationService.getLightAsset(option.key) }}</mat-icon>
-            <div>{{ option.value.desc }}</div>
-          </div>
-        </mat-button-toggle>
-      </mat-button-toggle-group>
-      <div class="icon-button-toggle__selection">
-      <!-- FIXME: hell no, remove those ! -->
-        {{ locationService.getLightVerbose(formLight.get('light')!.value!) }}
-      </div>
-
-      <stepper-navigation></stepper-navigation>
-    </form>
+  <mat-step [stepControl]="formLight.form" [label]="'general.light' | translate">
+    <location-form-light #formLight></location-form-light>
+    <stepper-navigation></stepper-navigation>
   </mat-step>
 
-  <mat-step [stepControl]="formPublic" [label]="'general.privacy' | translate">
-    <form [formGroup]="formPublic" (ngSubmit)="submit()">
-      <p [innerHtml]="'location-add-edit.visibility' | translate"></p>
-      <p [innerHtml]="'location-add-edit.visibilityNote' | translate"></p>
-
-      <mat-checkbox formControlName="public" [checked]="location && (location.public)">
-        {{ 'general.visibilityPublic' | translate }}
-      </mat-checkbox>
-
-      <stepper-navigation submitButton="false"></stepper-navigation>
-    </form>
+  <mat-step [stepControl]="formPrivacy.form" [label]="'general.privacy' | translate">
+    <location-form-privacy #formPrivacy></location-form-privacy>
+    <stepper-navigation finishButton="true" (finish)="submit()"></stepper-navigation>
   </mat-step>
 </mat-stepper>

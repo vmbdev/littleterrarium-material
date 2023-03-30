@@ -14,7 +14,7 @@ mat-card {
 }
 
 .icon-button-toggle {
-  width: 100%;
+  width: 98%;
 
   &__option {
     display: flex;
@@ -30,6 +30,10 @@ mat-card {
   mat-button-toggle {
     width: 100%;
   }
+}
+
+mat-bottom-sheet-container {
+  min-height: 80vh;
 }
 
 // mat-stepper, .mat-horizontal-stepper-wrapper, .mat-horizontal-content-container, .mat-horizontal-stepper-content {

@@ -1,0 +1,9 @@
+<form [formGroup]="form">
+  <p [innerHtml]="'location-add-edit.visibility' | translate"></p>
+  <p [innerHtml]="'location-add-edit.visibilityNote' | translate"></p>
+
+  <mat-checkbox formControlName="public" [checked]="location && (location.public)">
+    {{ 'general.visibilityPublic' | translate }}
+  </mat-checkbox>
+
+</form>
