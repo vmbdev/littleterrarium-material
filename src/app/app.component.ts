@@ -1,7 +1,8 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CoreModule } from './modules/core/core.module';
+import { App } from '@capacitor/app';
 
 @Component({
     selector: 'app-root',
@@ -16,5 +17,12 @@ import { CoreModule } from './modules/core/core.module';
 })
 export class AppComponent {
 
-  constructor() { }
+  constructor(private location: Location) { }
+
+  ngOnInit() {
+    App.addListener('backButton', ({ canGoBack }) => {
+      if (canGoBack) this.location.back();
+      else App.exitApp();
+    })
+  }
 }

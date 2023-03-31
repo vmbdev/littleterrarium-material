@@ -1,5 +1,3 @@
-<wait-dialog *ngIf="processingSignUp" [message]="'signin.progress' | translate"></wait-dialog>
-
 <form [formGroup]="signinForm" (ngSubmit)="submit()">
   <div class="signin">
     <h1>{{ 'signin.homepageTitle' | translate }}</h1>

@@ -53,6 +53,7 @@
   "general.unknown": "Unknown",
   "general.unnamedPlant": "Unnamed plant {$plantId}",
   "general.update": "Update",
+  "general.afterUpload": "After uploading, we must process your photos. Please, wait until this dialog closes.",
   "general.uploadFinished": "Upload finished. Processing your photos, please wait.",
   "general.username": "Username",
   "general.viewList": "List view",
@@ -203,5 +204,6 @@
   "userbox.profile": "Edit profile",
   "userbox.terrarium": "Your Terrarium",
   "userbox.username": "Hi <b>{$INTERPOLATION}</b>",
-  "general.required": "Required"
+  "general.required": "Required",
+  "general.formErrors": "There are errors in the form. Please, check before submitting."
 }

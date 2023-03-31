@@ -11,9 +11,9 @@ import { MainToolbarService } from '@services/main-toolbar.service';
   standalone: true,
   imports: [
     CommonModule,
+    TranslateModule,
     LocationListComponent,
     SigninComponent,
-    TranslateModule,
   ],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']

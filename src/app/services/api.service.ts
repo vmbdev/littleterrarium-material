@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 
@@ -13,14 +13,13 @@ import { endpoint } from '@config';
   providedIn: 'root'
 })
 export class ApiService {
-  httpOptions: any = {};
-
-  constructor(private http: HttpClient) {
-    this.httpOptions.withCredentials = true;
-  }
+  constructor(
+    private http: HttpClient,
+    @Inject('BACKEND_URL') public backendUrl: string
+  ) { }
 
   endpoint = (path: string) => {
-    return `${endpoint}/${path}`;
+    return `${this.backendUrl}${endpoint}/${path}`;
   }
 
   getLocales(): Observable<any> {

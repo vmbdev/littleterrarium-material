@@ -14,6 +14,7 @@ import { ErrorHandlerService } from '@services/error-handler.service';
 import { LocationService } from '@services/location.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Observable, catchError, EMPTY, finalize } from 'rxjs';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'location-edit',
@@ -22,6 +23,7 @@ import { Observable, catchError, EMPTY, finalize } from 'rxjs';
     CommonModule,
     TranslateModule,
     MatTabsModule,
+    MatButtonModule,
     FileUploaderComponent,
 
     LocationFormNameComponent,
@@ -65,7 +67,22 @@ export class LocationEditComponent {
     }
   }
 
+  checkFormValidity(): boolean {
+    const forms = [
+      this.nameComponent.form,
+      this.lightComponent.form,
+      this.privacyComponent.form,
+    ];
+
+    return forms.every((form) => form.valid);
+  }
+
   submit(): void {
+    if (!this.checkFormValidity()) {
+      this.errorHandler.push(this.translate.instant('general.formErrors'));
+      return;
+    }
+
     const data: Location = {
       ...this.nameComponent.form.value,
       ...this.lightComponent.form.value,

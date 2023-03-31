@@ -14,6 +14,7 @@ import { InfoBoxComponent } from "@components/info-box/info-box.component";
 import { PropertyComponent } from "@components/property/property.component";
 import { PhotoListComponent } from '@components/photo/photo-list/photo-list.component';
 import { FabComponent } from '@components/fab/fab.component';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
 @Component({
     selector: 'plant',
@@ -27,13 +28,13 @@ import { FabComponent } from '@components/fab/fab.component';
       InfoBoxComponent,
       PropertyComponent,
       PhotoListComponent,
-      FabComponent
+      FabComponent,
+      MatDialogModule
     ]
 })
 export class PlantComponent {
   id?: number;
   plantVisibility?: boolean;
-  loading: boolean = true;
   plantCondition = Condition;
 
   constructor(
@@ -43,6 +44,7 @@ export class PlantComponent {
     private mt: MainToolbarService,
     public plantService: PlantService,
     private translate: TranslateService,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -52,11 +54,23 @@ export class PlantComponent {
     if (this.id) this.fetchPlantData();
   }
 
+  openWaitDialog() {
+    return this.dialog.open(WaitDialogComponent, {
+      disableClose: true,
+      data: {
+        message: this.translate.instant('general.loading'),
+        progressBar: false,
+      },
+    });
+  }
+
   fetchPlantData(): void {
     if (!this.id) return;
 
+    const wd = this.openWaitDialog();
+
     this.plantService.get(this.id, { photos: true }).pipe(
-      finalize(() => { this.loading = false; }),
+      finalize(() => { wd.close() }),
       catchError((err: HttpErrorResponse) => {
         let msg;
 

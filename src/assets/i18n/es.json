@@ -200,5 +200,7 @@
   "user-register.usernameTaken": "Lo sentimos, este usuario ya está en uso. Por favor, elige otro.",
   "userbox.editProfile": "Editar perfil",
   "userbox.username": "Hola <b>{$INTERPOLATION}</b>",
-  "general.required": "Obligatorio"
+  "general.required": "Obligatorio",
+  "general.afterUpload": "Tras enviar los archivos tenemos que procesar las fotos. Por favor, espera hasta que esta ventana se cierre.",
+  "general.formErrors": "Hay errores en el formulario. Por favor, revisa los datos."
 }

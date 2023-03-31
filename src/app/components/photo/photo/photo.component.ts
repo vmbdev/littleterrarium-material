@@ -2,7 +2,7 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ActivatedRoute, Params, Router, RouterModule } from '@angular/router';
-import { catchError, EMPTY } from 'rxjs';
+import { catchError, EMPTY, finalize } from 'rxjs';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { DateTime } from 'luxon';
 
@@ -20,6 +20,8 @@ import { MainToolbarService } from '@services/main-toolbar.service';
 import { ToggleOptionComponent } from '@components/toggle-option/toggle-option.component';
 import { Plant } from '@models/plant.model';
 import { DaysAgoPipe } from "@pipes/days-ago/days-ago.pipe";
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog.component';
 
 @Component({
     selector: 'photo',
@@ -32,9 +34,9 @@ import { DaysAgoPipe } from "@pipes/days-ago/days-ago.pipe";
         InfoBoxComponent,
         PropertyComponent,
         TranslateModule,
-        ToggleOptionComponent
+        ToggleOptionComponent,
+        MatDialogModule,
         // HammerModule
-        ,
         DaysAgoPipe
     ]
 })
@@ -55,7 +57,8 @@ export class PhotoComponent {
     private errorHandler: ErrorHandlerService,
     public imagePath: ImagePathService,
     private translate: TranslateService,
-    private mt: MainToolbarService
+    private mt: MainToolbarService,
+    private dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
@@ -66,6 +69,16 @@ export class PhotoComponent {
     })
   }
 
+  openWaitDialog() {
+    return this.dialog.open(WaitDialogComponent, {
+      disableClose: true,
+      data: {
+        message: this.translate.instant('general.loading'),
+        progressBar: false,
+      },
+    });
+  }
+
   // ngAfterViewInit(): void {
   //   const hammer = new Hammer(this.photoElement.nativeElement);
   //   hammer.get('pinch').set({ enable: true });
@@ -73,7 +86,10 @@ export class PhotoComponent {
 
   loadPhoto(): void {
     if (this.id) {
+      const wd = this.openWaitDialog();
+
       this.photoService.get(this.id, { navigation: true, cover: true }).pipe(
+        finalize(() => { wd.close() }),
         catchError((err: HttpErrorResponse) => {
           let msg: string;
 

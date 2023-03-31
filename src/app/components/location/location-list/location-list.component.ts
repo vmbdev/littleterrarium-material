@@ -18,7 +18,7 @@ import { LocationService } from '@services/location.service';
 import { ErrorHandlerService } from '@services/error-handler.service';
 import { ConfirmDialogComponent } from '@components/dialogs/confirm-dialog/confirm-dialog.component';
 import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog.component';
-import { LocationAddEditComponent } from '@components/location/location-add-edit/location-add-edit.component';
+import { LocationEditComponent } from '@components/location/location-edit/location-edit.component';
 
 
 @Component({
@@ -43,7 +43,6 @@ export class LocationListComponent {
   @Input() userId?: number;
   @Input() owned: boolean = true;
   locations$ = new BehaviorSubject<Location[]>([]);
-  loading: boolean = false;
 
   constructor(
     private apiService: ApiService,
@@ -61,7 +60,7 @@ export class LocationListComponent {
   }
 
   getLocationList() {
-    this.loading = true;
+    const wd = this.openWaitDialog();
 
     const options = {
       plantCount: true,
@@ -69,14 +68,14 @@ export class LocationListComponent {
     }
 
     const obs = this.apiService.getLocationList(options).pipe(
-      finalize(() => { this.loading = false })
+      finalize(() => { wd.close(); })
     );
 
     obs.subscribe((res) => { this.locations$.next(res) })
   }
 
   openBottomSheet(id: number): void {
-    const bsRef = this.bottomSheet.open(LocationAddEditComponent, {
+    const bsRef = this.bottomSheet.open(LocationEditComponent, {
       data: { id }
     });
 
@@ -99,7 +98,7 @@ export class LocationListComponent {
     return this.imagePath.get(images, 'thumb');
   }
 
-  openDialog(name: string, id: number) {
+  openRemoveDialog(name: string, id: number) {
     this.dialog.open(ConfirmDialogComponent, {
       data: {
         title: name,
@@ -108,6 +107,17 @@ export class LocationListComponent {
       },
     });
   }
+
+  openWaitDialog() {
+    return this.dialog.open(WaitDialogComponent, {
+      disableClose: true,
+      data: {
+        message: this.translate.instant('general.loading'),
+        progressBar: false,
+      },
+    });
+  }
+
 
   delete(id: number) {
     this.locationService.delete(id).subscribe({

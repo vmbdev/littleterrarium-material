@@ -1,4 +1,3 @@
-<wait-dialog *ngIf="loading" [message]="'general.loading' | translate"></wait-dialog>
 <fab link="/location/create"></fab>
 <div *ngIf="locations$ | async as locations" class="location-list">
   <mat-card *ngFor="let item of locations" class="location-list__item" matRipple>
@@ -23,7 +22,7 @@
       <button
         mat-raised-button
         color="warn"
-        (click)="openDialog(item.name, item.id)"
+        (click)="openRemoveDialog(item.name, item.id)"
       >
         {{ 'general.delete' | translate }}
       </button>

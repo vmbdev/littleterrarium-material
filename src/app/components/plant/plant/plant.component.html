@@ -1,5 +1,3 @@
-<wait-dialog *ngIf="loading" [message]="'general.loading' | translate"></wait-dialog>
-
 <fab *ngIf="plantService.owned" link="/plant/create"></fab>
 <ng-container *ngIf="plantService.plant$ | async as plant">
   <info-box>

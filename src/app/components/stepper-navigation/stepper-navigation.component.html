@@ -2,26 +2,29 @@
   <button
     *ngIf="backButton === true || backButton === 'true'"
     type="button"
+    color="primary"
     mat-raised-button
     matStepperPrevious
   >
-    Back
+  {{ 'general.previous' | translate }}
   </button>
 
   <button
     *ngIf="!finishButton || finishButton === 'false'"
     type="button"
+    color="primary"
     mat-raised-button
     matStepperNext
   >
-    Next
+  {{ 'general.next' | translate }}
   </button>
 
   <button
     *ngIf="finishButton && finishButton === 'true'"
+    color="primary"
     mat-raised-button
     (click)="emitFinish()"
   >
-    Finish
+    {{ 'general.finish' | translate }}
   </button>
 </div>

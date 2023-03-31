@@ -1,6 +1,4 @@
 <ng-container *ngIf="photoService.photo$ | async as photo">
-
-  
   <toggle-option [defaultChecked]="plantCoverId === photo.id" (change)="updateCoverPhoto($event)">
     {{ 'photo.cover' | translate }}
   </toggle-option>

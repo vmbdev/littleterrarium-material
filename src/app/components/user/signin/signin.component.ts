@@ -7,9 +7,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { AuthService } from '@services/auth.service';
 import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog.component';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
 @Component({
   selector: 'signin',
@@ -22,8 +23,9 @@ import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog
     MatInputModule,
     MatIconModule,
     MatButtonModule,
+    MatDialogModule,
     TranslateModule,
-    WaitDialogComponent
+    WaitDialogComponent,
   ],
   templateUrl: './signin.component.html',
   styleUrls: ['./signin.component.scss']
@@ -35,12 +37,13 @@ export class SigninComponent {
   });
   hidePassword: boolean = true;
   authInvalid: boolean = false;
-  processingSignUp: boolean = false;
 
   constructor(
     private fb: FormBuilder,
     private auth: AuthService,
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog,
+    private translate: TranslateService
   ) {}
 
   ngOnInit(): void {
@@ -49,17 +52,26 @@ export class SigninComponent {
     })
   }
 
+  openWaitDialog() {
+    return this.dialog.open(WaitDialogComponent, {
+      disableClose: true,
+      data: {
+        message: this.translate.instant('signin.progress'),
+        progressBar: false,
+      },
+    });
+  }
+
   submit() {
     if (!this.signinForm.valid) return;
 
     const { username, password } = this.signinForm.value;
-    this.processingSignUp = true;
+    const wd = this.openWaitDialog();
     this.authInvalid = false;
 
+
     this.auth.signIn(username, password).pipe(
-      finalize(() => {
-        this.processingSignUp = false;
-      })
+      finalize(() => { wd.close() })
     ).subscribe({
       next: () => {
         this.router.navigateByUrl('/');

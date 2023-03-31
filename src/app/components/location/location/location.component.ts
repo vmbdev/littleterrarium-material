@@ -15,8 +15,7 @@ import { PlantListComponent } from '@components/plant/plant-list/plant-list.comp
 import { PropertyComponent } from '@components/property/property.component';
 import { InfoBoxComponent } from "@components/info-box/info-box.component";
 import { FabComponent } from '@components/fab/fab.component';
-import { LocationAddEditComponent } from '../location-add-edit/location-add-edit.component';
-import { LocationEditComponent } from '../location-edit/location-edit.component';
+import { LocationEditComponent } from '@components/location/location-edit/location-edit.component';
 
 // TODO: Use LocationService
 @Component({
