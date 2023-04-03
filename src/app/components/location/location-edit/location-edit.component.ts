@@ -1,7 +1,7 @@
-import { Component, Inject, Optional, ViewChild } from '@angular/core';
+import { Component, Inject, Injector, Optional } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FileUploaderComponent } from '@components/file-uploader/file-uploader.component';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { MatTabsModule } from '@angular/material/tabs';
 
 import { Location } from '@models/location.model';
@@ -9,12 +9,10 @@ import { LocationFormLightComponent } from '@components/location/location-form-l
 import { LocationFormNameComponent } from '@components/location/location-form-name/location-form-name.component';
 import { LocationFormPrivacyComponent } from '@components/location/location-form-privacy/location-form-privacy.component';
 import { MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
-import { ApiService } from '@services/api.service';
-import { ErrorHandlerService } from '@services/error-handler.service';
-import { LocationService } from '@services/location.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Observable, catchError, EMPTY, finalize } from 'rxjs';
+import { catchError, EMPTY, finalize } from 'rxjs';
 import { MatButtonModule } from '@angular/material/button';
+import { LocationUpsertBaseComponent } from '../location-upsert-base/location-upsert-base.component';
 
 @Component({
   selector: 'location-edit',
@@ -33,48 +31,30 @@ import { MatButtonModule } from '@angular/material/button';
   templateUrl: './location-edit.component.html',
   styleUrls: ['./location-edit.component.scss']
 })
-export class LocationEditComponent {
-  @ViewChild(LocationFormNameComponent) nameComponent!: LocationFormNameComponent;
-  @ViewChild(LocationFormLightComponent) lightComponent!: LocationFormLightComponent;
-  @ViewChild(LocationFormPrivacyComponent) privacyComponent!: LocationFormPrivacyComponent;
-
-  picture?: File;
+export class LocationEditComponent extends LocationUpsertBaseComponent {
   removePicture: boolean = false;
 
   location?: Location;
   returnedLocation?: Location;
 
   constructor(
-    private translate: TranslateService,
-    private api: ApiService,
-    public locationService: LocationService,
-    private errorHandler: ErrorHandlerService,
+    private injector: Injector,
     @Optional() private bottomSheetRef: MatBottomSheetRef,
     @Optional() @Inject(MAT_BOTTOM_SHEET_DATA) public editLocation: { id: number }
-  ) { }
+  ) {
+    super(injector);
+  }
 
-  ngOnInit(): void {
+  ngAfterViewInit(): void {
     if (this.editLocation && this.editLocation.id) {
       this.api.getLocation(this.editLocation.id).subscribe((location: Location) => {
         this.location = location;
+
+        this.nameComponent.form.patchValue({ name: location.name });
+        this.lightComponent.form.patchValue({ light: location.light });
+        this.privacyComponent.form.patchValue({ public: location.public });
       });
     }
-  }
-
-  fileChange(files: File[]) {
-    if (files.length > 0) {
-      this.picture = files[0]
-    }
-  }
-
-  checkFormValidity(): boolean {
-    const forms = [
-      this.nameComponent.form,
-      this.lightComponent.form,
-      this.privacyComponent.form,
-    ];
-
-    return forms.every((form) => form.valid);
   }
 
   submit(): void {
@@ -83,17 +63,11 @@ export class LocationEditComponent {
       return;
     }
 
-    const data: Location = {
-      ...this.nameComponent.form.value,
-      ...this.lightComponent.form.value,
-      ...this.privacyComponent.form.value,
-      pictureFile: this.picture
-    } as Location;
+    const data: Location = this.getLocationFromForm();
+    const ud = this.openUploadDialog();
 
     if (this.editLocation.id) {
       data.id = this.editLocation.id;
-
-    // this.disableNavigation = true;
 
       this.api.updateLocation(data, this.removePicture).pipe(
         catchError((error: HttpErrorResponse) => {
@@ -102,7 +76,8 @@ export class LocationEditComponent {
           return EMPTY;
         }),
         finalize(() => {
-          // this.disableNavigation = false;
+          ud.close();
+
           if (this.editLocation && this.bottomSheetRef) this.bottomSheetRef.dismiss(this.returnedLocation);
         })
       ).subscribe((res: any) => {

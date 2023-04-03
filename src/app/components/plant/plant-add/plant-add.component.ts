@@ -16,7 +16,6 @@ import { ErrorHandlerService } from '@services/error-handler.service';
 import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog.component';
 import { finalize } from 'rxjs';
 import { Plant } from '@models/plant.model';
-import { Location } from '@models/location.model';
 import { HttpEventType } from '@angular/common/http';
 import { LocationService } from '@services/location.service';
 
@@ -51,16 +50,15 @@ export class PlantAddComponent {
 
   locationId?: number;
   pictures: File[] = [];
-  uploadProgress: number = 0;
 
   constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private translate: TranslateService,
-    private plantService: PlantService,
     private locationService: LocationService,
+    private dialog: MatDialog,
+    private route: ActivatedRoute,
+    private translate: TranslateService,
+    private router: Router,
+    private plantService: PlantService,
     private errorHandler: ErrorHandlerService,
-    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -80,7 +78,16 @@ export class PlantAddComponent {
     this.pictures = files;
   }
 
-  // TODO: uploading files progress bar
+  checkFormValidity(): boolean {
+    const forms = [
+      this.nameComponent.form,
+      this.specieComponent.form,
+      this.privacyComponent.form,
+    ];
+
+    return forms.every((form) => form.valid);
+  }
+
   openUploadDialog(): MatDialogRef<WaitDialogComponent, any>  {
     return this.dialog.open(WaitDialogComponent, {
       disableClose: true,
@@ -92,16 +99,14 @@ export class PlantAddComponent {
       },
     });
   }
-
-  // TODO: refactor?
-  checkFormValidity(): boolean {
-    const forms = [
-      this.nameComponent.form,
-      this.specieComponent.form,
-      this.privacyComponent.form,
-    ];
-
-    return forms.every((form) => form.valid);
+  
+  getPlantFromForm(): Plant {
+    return {
+      ...this.nameComponent.form.value,
+      ...this.specieComponent.form.value,
+      ...this.privacyComponent.form.value,
+      locationId: this.locationId
+    } as Plant;
   }
 
   submit(): void {
@@ -110,13 +115,7 @@ export class PlantAddComponent {
       return;
     }
     
-    const plant: Plant = {
-      ...this.nameComponent.form.value,
-      ...this.specieComponent.form.value,
-      ...this.privacyComponent.form.value,
-      locationId: this.locationId
-    } as Plant;
-    
+    const plant: Plant = this.getPlantFromForm();    
     const ud = this.openUploadDialog();
 
     this.plantService.create(plant, this.pictures).pipe(
@@ -135,7 +134,7 @@ export class PlantAddComponent {
             }
             case HttpEventType.Response: {
               if (event.body.msg === 'PHOTOS_CREATED') {
-                this.uploadProgress = 0;
+                // this.uploadProgress = 0;
               }
 
               this.router.navigate(['/plant', event.body.data.plantId], { replaceUrl: true });

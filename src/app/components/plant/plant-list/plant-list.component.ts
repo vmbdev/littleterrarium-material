@@ -12,6 +12,8 @@ import { PlantService } from '@services/plant.service';
 import { ConfirmDialogComponent } from '@components/dialogs/confirm-dialog/confirm-dialog.component';
 import { TranslateService } from '@ngx-translate/core';
 import { FabComponent } from '@components/fab/fab.component';
+import { PlantEditComponent } from '../plant-edit/plant-edit.component';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
 
 @Component({
   selector: 'plant-list',
@@ -39,7 +41,8 @@ export class PlantListComponent {
   constructor(
     private plantService: PlantService,
     private dialog: MatDialog,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private bottomSheet: MatBottomSheet
   ) {}
 
   ngOnInit(): void {
@@ -65,13 +68,32 @@ export class PlantListComponent {
     return this.plantService.coverPhoto(plant);
   }
 
-  openDialog(name: string, id: number) {
+  openRemoveDialog(name: string, id: number) {
     this.dialog.open(ConfirmDialogComponent, {
       data: {
         title: name,
         question: this.translate.instant('plant.remove'),
         accept: () => this.delete(id)
       },
+    });
+  }
+
+  openEdit(id: number): void {
+    const bsRef = this.bottomSheet.open(PlantEditComponent, {
+      data: {
+        id,
+        config: { cover: true }
+      }
+    });
+
+    bsRef.afterDismissed().subscribe((updatedPlant: Plant) => {
+      if (updatedPlant) {
+        const list = this.list$.getValue();
+        const index = list.findIndex((plant) => plant.id === updatedPlant.id);
+        list[index] = updatedPlant;
+        this.list$.next(list);
+      }
+
     });
   }
 

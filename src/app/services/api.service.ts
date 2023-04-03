@@ -9,6 +9,13 @@ import { Specie } from '@models/specie.model';
 import { User } from '@models/user.model';
 import { endpoint } from '@config';
 
+export interface PlantGetConfig {
+  userId?: number,
+  locationId?: number,
+  photos?: boolean,
+  cover?: boolean
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -22,9 +29,9 @@ export class ApiService {
     return `${this.backendUrl}${endpoint}/${path}`;
   }
 
-  getLocales(): Observable<any> {
-    return this.http.get<any>(this.endpoint('angular/locales'));
-  }
+  // getLocales(): Observable<any> {
+  //   return this.http.get<any>(this.endpoint('angular/locales'));
+  // }
 
   /**
    * Auth and user API functions
@@ -150,18 +157,12 @@ export class ApiService {
    * Plant related calls
    */
 
-  getPlants(options?: any): Observable<Plant[]> {
+  getPlants(options?: PlantGetConfig): Observable<Plant[]> {
     let url = 'plant';
 
     if (options) {
-      if (options.userId && +options.userId) {
-        url += `/user/${+options.userId}`;
-      }
-
-      if (options.locationId && +options.locationId) {
-        url += `/location/${+options.locationId}`;
-      }
-
+      if (options.userId) url += `/user/${options.userId}`;
+      if (options.locationId) url += `/location/${options.locationId}`;
       if (options.photos || options.cover) {
         url += `?photos=${options.photos ? true : false}&cover=${options.cover ? true : false}`;
       }

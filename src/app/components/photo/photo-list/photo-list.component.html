@@ -1,5 +1,5 @@
 <div class="photo-list">
-  <div *ngFor="let photo of list" class="photo-list__box">
+  <div *ngFor="let photo of list$ | async" class="photo-list__box">
     <a [routerLink]="['/photo', photo.id]">
       <img [src]="getThumb(photo.images)">
     </a>

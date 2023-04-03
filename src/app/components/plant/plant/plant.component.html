@@ -11,5 +11,5 @@
 
   <h1>{{ 'plant.photoList' | translate:{ plantName: plant.visibleName } }}</h1>
 
-  <photo-list [owned]="this.plantService.owned" [plantId]="plant.id" [list]="plant.photos"></photo-list>
+  <photo-list [owned]="this.plantService.owned" [plantId]="plant.id" [list]="plant.photos ? plant.photos : []"></photo-list>
 </ng-container>

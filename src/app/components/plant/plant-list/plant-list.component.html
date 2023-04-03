@@ -32,10 +32,10 @@
       <button mat-mini-fab class="button__fert">
         <mat-icon>local_pizza</mat-icon>
       </button>
-      <button mat-mini-fab class="button__edit">
+      <button mat-mini-fab class="button__edit" (click)="openEdit(plant.id)">
         <mat-icon>edit</mat-icon>
       </button>
-      <button mat-mini-fab color="warn" (click)="openDialog(getName(plant), plant.id)">
+      <button mat-mini-fab color="warn" (click)="openRemoveDialog(getName(plant), plant.id)">
         <mat-icon>delete_forever</mat-icon>
       </button>
     </ng-template>

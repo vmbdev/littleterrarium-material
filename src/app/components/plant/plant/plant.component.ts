@@ -15,6 +15,8 @@ import { PropertyComponent } from "@components/property/property.component";
 import { PhotoListComponent } from '@components/photo/photo-list/photo-list.component';
 import { FabComponent } from '@components/fab/fab.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatBottomSheet, MatBottomSheetModule } from '@angular/material/bottom-sheet';
+import { PlantEditComponent } from '../plant-edit/plant-edit.component';
 
 @Component({
     selector: 'plant',
@@ -24,12 +26,13 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
     imports: [
       CommonModule,
       TranslateModule,
+      MatDialogModule,
+      MatBottomSheetModule,
+      PhotoListComponent,
       WaitDialogComponent,
       InfoBoxComponent,
       PropertyComponent,
-      PhotoListComponent,
       FabComponent,
-      MatDialogModule
     ]
 })
 export class PlantComponent {
@@ -44,7 +47,8 @@ export class PlantComponent {
     private mt: MainToolbarService,
     public plantService: PlantService,
     private translate: TranslateService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private bottomSheet: MatBottomSheet
   ) {}
 
   ngOnInit(): void {
@@ -86,16 +90,21 @@ export class PlantComponent {
         return EMPTY;
       })
     ).subscribe((plant: Plant) => {
-      this.plantVisibility = plant.public;
-
-      this.mt.setName(plant.visibleName ? plant.visibleName : '');
-      this.mt.setMenu([
-        { icon: 'search', tooltip: 'general.search' },
-        { icon: 'sort', tooltip: 'general.sort' },
-        { icon: 'view_list', tooltip: 'general.viewList' },
-      ]);
+      this.processPlant(plant);
     });
 
+  }
+
+  processPlant(plant: Plant) {
+    this.plantVisibility = plant.public;
+
+    this.mt.setName(plant.visibleName ? plant.visibleName : this.plantService.getVisibleName(plant));
+    this.mt.setMenu([
+      { icon: 'edit', tooltip: 'general.edit', click: () => { this.openEdit() } },
+      { icon: 'search', tooltip: 'general.search' },
+      { icon: 'sort', tooltip: 'general.sort' },
+      { icon: 'view_list', tooltip: 'general.viewList' },
+    ]);
   }
 
   getConditionColor(condition: Condition): string {
@@ -126,5 +135,16 @@ export class PlantComponent {
     }
 
     return color;
+  }
+
+  openEdit(): void {
+    if (this.id) {
+      this.bottomSheet.open(PlantEditComponent, {
+        data: {
+          id: this.id,
+          config: { photos: true }
+        }
+      });
+    }
   }
 }

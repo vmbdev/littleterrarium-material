@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, catchError, EMPTY, map, Observable, of, switchMap, throwError } from 'rxjs';
 import { AuthService } from '@services/auth.service';
-import { ApiService } from '@services/api.service';
+import { ApiService, PlantGetConfig } from '@services/api.service';
 import { PhotoService } from '@services/photo.service';
 import { Photo } from '@models/photo.model';
 import { Plant } from '@models/plant.model';
@@ -53,7 +53,7 @@ export class PlantService {
     );
   }
 
-  get(id: number, options?: any): Observable<Plant> {
+  get(id: number, options?: PlantGetConfig): Observable<Plant> {
     return this.api.getPlant(id, options).pipe(
       map((plant: Plant) => {
         this.owned = (this.auth.user$.getValue()?.id === plant.ownerId);
@@ -98,6 +98,7 @@ export class PlantService {
     return this.api.updatePlant(plant, options).pipe(
       map((plant: Plant) => {
         const current = this.plant$.getValue();
+        plant.visibleName = this.getVisibleName(plant);
 
         if (current) {
           plant.photos = current.photos;

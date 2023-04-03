@@ -74,7 +74,7 @@ export class LocationListComponent {
     obs.subscribe((res) => { this.locations$.next(res) })
   }
 
-  openBottomSheet(id: number): void {
+  openEdit(id: number): void {
     const bsRef = this.bottomSheet.open(LocationEditComponent, {
       data: { id }
     });
