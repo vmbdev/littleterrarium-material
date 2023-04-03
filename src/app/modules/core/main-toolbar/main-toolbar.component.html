@@ -1,33 +1,35 @@
 <mat-toolbar *ngIf="(mt.hidden$ | async) == false" color="primary">
-  <button mat-icon-button (click)="goBack()">
-    <mat-icon>arrow_back_ios_new</mat-icon>
-  </button>
-  <span>{{ mt.name$ | async }}</span>
-  <span class="spacer"></span>
-  <button *ngFor="let b of mt.buttons$ | async"
-    mat-icon-button
-    (click)="b.click ? b.click() : null"
-    [routerLink]="b.route ? b.route : null"
-  >
-    <mat-icon>{{ b.icon }}</mat-icon>
-  </button>
-  <button mat-icon-button>
-    <mat-icon>share</mat-icon>
-  </button>
-
-  <ng-container *ngIf="mt.menu$ | async as menuList">
-    <button *ngIf="menuList.length > 0" mat-icon-button [matMenuTriggerFor]="menu">
-      <mat-icon>more_vert</mat-icon>
+  <mat-toolbar-row>
+    <button mat-icon-button (click)="goBack()">
+      <mat-icon>arrow_back_ios_new</mat-icon>
     </button>
-    <mat-menu #menu="matMenu">
-      <button *ngFor="let b of menuList"
-        mat-menu-item
-        (click)="b.click ? b.click() : null"
-        [routerLink]="b.route ? b.route : null"
-      >
-        <mat-icon>{{ b.icon }}</mat-icon>
-        <span>{{ b.tooltip | translate }}</span>
+    <span>{{ mt.name$ | async }}</span>
+    <span class="spacer"></span>
+    <button *ngFor="let b of mt.buttons$ | async"
+      mat-icon-button
+      (click)="b.click ? b.click() : null"
+      [routerLink]="b.route ? b.route : null"
+    >
+      <mat-icon>{{ b.icon }}</mat-icon>
+    </button>
+    <button mat-icon-button>
+      <mat-icon>share</mat-icon>
+    </button>
+
+    <ng-container *ngIf="mt.menu$ | async as menuList">
+      <button *ngIf="menuList.length > 0" mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon>more_vert</mat-icon>
       </button>
-    </mat-menu>
-  </ng-container>
+      <mat-menu #menu="matMenu">
+        <button *ngFor="let b of menuList"
+          mat-menu-item
+          (click)="b.click ? b.click() : null"
+          [routerLink]="b.route ? b.route : null"
+        >
+          <mat-icon>{{ b.icon }}</mat-icon>
+          <span>{{ b.tooltip | translate }}</span>
+        </button>
+      </mat-menu>
+    </ng-container>
+  </mat-toolbar-row>
 </mat-toolbar>

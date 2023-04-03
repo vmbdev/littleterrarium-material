@@ -1,6 +1,5 @@
-<fab *ngIf="owned" link="/location/create"></fab>
-
 <div *ngIf="location$ | async as location" class="location">
+  <fab *ngIf="owned" [link]="['/plant/create', location.id]"></fab>
   <info-box>
     <property [icon]="getLightAsset(location.light)">
       {{ getLightName(location.light) }}
@@ -18,5 +17,5 @@
     </property>
   </info-box>
 
-  <plant-list [list]="location.plants"></plant-list>
+  <plant-list [list]="location.plants" [small]="smallView"></plant-list>
 </div>

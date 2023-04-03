@@ -17,7 +17,7 @@ import { ErrorHandlerService } from '@services/error-handler.service';
 import { LocationFormNameComponent } from '@components/location/location-form-name/location-form-name.component';
 import { LocationFormLightComponent } from '@components/location/location-form-light/location-form-light.component';
 import { LocationFormPrivacyComponent } from '@components/location/location-form-privacy/location-form-privacy.component';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog.component';
 ;
 
@@ -52,7 +52,6 @@ export class LocationAddComponent {
 
   picture?: File;
   removePicture: boolean = false;
-  uploadDialogRef?: any;
 
   constructor(
     private router: Router,
@@ -70,8 +69,8 @@ export class LocationAddComponent {
   }
 
   // TODO: uploading files progress bar
-  openUploadDialog() {
-    this.uploadDialogRef = this.dialog.open(WaitDialogComponent, {
+  openUploadDialog(): MatDialogRef<WaitDialogComponent, any> {
+    return this.dialog.open(WaitDialogComponent, {
       data: {
         message: this.translate.instant('progress-bar.uploading'),
         progressBar: true,
@@ -98,26 +97,24 @@ export class LocationAddComponent {
       return;
     }
 
-    const data: Location = {
+    const location: Location = {
       ...this.nameComponent.form.value,
       ...this.lightComponent.form.value,
       ...this.privacyComponent.form.value,
       pictureFile: this.picture
     } as Location;
 
-    this.openUploadDialog();
+    const ud = this.openUploadDialog();
 
-    this.api.createLocation(data).pipe(
+    this.api.createLocation(location).pipe(
       catchError((error: HttpErrorResponse) => {
         if (error.error?.msg === 'IMG_NOT_VALID') this.errorHandler.push(this.translate.instant('errors.invalidImg'));
 
         return EMPTY;
       }),
-      finalize(() => {
-        if (this.uploadDialogRef) this.uploadDialogRef.close();
-      })
+      finalize(() => { ud.close() })
     ).subscribe((res: any) => {
-      if (res.msg === 'LOCATION_CREATED') this.router.navigate([`location/${res.data.location.id}`], { replaceUrl: true });
+      if (res.msg === 'LOCATION_CREATED') this.router.navigate([`location/${res.location.location.id}`], { replaceUrl: true });
     });
   }
 }

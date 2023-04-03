@@ -125,7 +125,7 @@
   "plant-add.namePlaceholder": "Big Fluffy Smelly Geranium",
   "plant-add.privacy": "When your plant is <b>publicly visible</b>, other users will be able to see it when visiting your user profile (given that it's <b>public</b>).",
   "plant-add.privacyTip": "<strong>Note</strong> that your locations has its own privacy settings, and it supersedes the plant's privacy setting, so if the location is private users won't be able to see the location plant list, but you can share a direct link to this plant. ",
-  "plant-add.specieDesc": "Have you identified its specie? Search and select it from the list. You can use {$START_LINK}Pl@ntNet{$CLOSE_LINK} to identify it.",
+  "plant-add.specieDesc": "Have you identified its specie? Search and select it from the list. You can use <a href=\"https://identify.plantnet.org/\">Pl@ntNet</a> to identify it.",
   "plant-edit-fertilizer.header": "You need to eat and drink, and so do your plants! Again, <b>know</b> your plants, and give them the proper fertiliser they require.",
   "plant-edit-fertilizer.lastTime": "Do you remember <b>when was the last time</b> you fertilised it?",
   "plant-edit-fertilizer.nextTime": "<b>How many days</b> should you wait to feed your plant again?",
@@ -205,5 +205,6 @@
   "userbox.terrarium": "Your Terrarium",
   "userbox.username": "Hi <b>{$INTERPOLATION}</b>",
   "general.required": "Required",
-  "general.formErrors": "There are errors in the form. Please, check before submitting."
+  "general.formErrors": "There are errors in the form. Please, check before submitting.",
+  "general.viewCards": "Icon view"
 }

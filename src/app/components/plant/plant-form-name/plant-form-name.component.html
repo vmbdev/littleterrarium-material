@@ -1,0 +1,11 @@
+<form [formGroup]="form">
+  <p [innerHTML]="'plant-add.nameDesc' | translate"></p>
+  <mat-form-field class="full-width">
+    <input
+      formControlName="customName"
+      matInput
+      [placeholder]="'plant-add.namePlaceholder' | translate"
+      [value]="plant ? plant.visibleName : null"
+    >
+  </mat-form-field>
+</form>

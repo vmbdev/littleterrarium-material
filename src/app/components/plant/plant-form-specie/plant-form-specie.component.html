@@ -1,0 +1,29 @@
+<p [innerHTML]="'plant-add.specieDesc' | translate"></p>
+
+<form [formGroup]="form">
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>{{ 'general.search' | translate }}</mat-label>
+    <input
+      #specieInput
+      type="text"
+      matInput
+      [matAutocomplete]="auto"
+      [placeholder]="'specieFinder.inputPlaceholder' | translate"
+      (keyup)="keyPress(specieInput.value)"
+    >
+
+    <mat-autocomplete
+      autoActiveFirstOption
+      #auto="matAutocomplete"
+      (optionSelected)="selectSpecie($event.option.value.id)"
+      [displayWith]="getSpecieName"
+    >
+      <mat-option *ngFor="let specie of results$ | async" [value]="specie">
+        {{ specie.name }}
+      </mat-option>
+    </mat-autocomplete>
+    <button *ngIf="specieInput.value" matSuffix mat-icon-button (click)="clear(specieInput)">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+</form>

@@ -15,6 +15,6 @@ import { RouterModule } from '@angular/router';
   styleUrls: ['./fab.component.scss']
 })
 export class FabComponent {
-  @Input() link?: string;
+  @Input() link?: string | any[];
   @Input() text: string = '+';
 }

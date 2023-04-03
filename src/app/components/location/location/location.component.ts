@@ -37,6 +37,7 @@ export class LocationComponent {
   private id?: number;
   location$ = new BehaviorSubject<Location | null>(null);
   owned: boolean = false;
+  smallView: boolean;
 
   constructor(
     private api: ApiService,
@@ -47,13 +48,20 @@ export class LocationComponent {
     private errorHandler: ErrorHandlerService,
     private translate: TranslateService,
     private bottomSheet: MatBottomSheet
-  ) {}
+  ) {
+    this.smallView = (localStorage.getItem('LT_plantListView') === 'true');
+  }
 
   ngOnInit(): void {
     const paramId = this.route.snapshot.paramMap.get('locationId');
     this.id = paramId ? +paramId : NaN;
     
     if (this.id) this.getLocation()
+  }
+
+  setSmallView(val: boolean) {
+    this.smallView = val;
+    localStorage.setItem('LT_plantListView', val.toString());
   }
 
   getLocation(): void {
@@ -88,11 +96,14 @@ export class LocationComponent {
     this.owned = (this.auth.user$.getValue()?.id === location.ownerId) ? true : false;
         
     this.mt.setName(location.name);
+    this.mt.setButtons([
+      { icon: 'search', tooltip: 'general.search' },
+    ]);
     this.mt.setMenu([
       { icon: 'edit', tooltip: 'general.edit', click: () => { this.openBottomSheet() } },
-      { icon: 'search', tooltip: 'general.search' },
       { icon: 'sort', tooltip: 'general.sort' },
-      { icon: 'view_list', tooltip: 'general.viewList' },
+      { icon: 'view_list', tooltip: 'general.viewList', click: () => { this.setSmallView(true) } },
+      { icon: 'preview', tooltip: 'general.viewCards', click: () => { this.setSmallView(false) } },
     ]);
   }
 

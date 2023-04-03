@@ -6,10 +6,10 @@ export const PLANT_ROUTES: Route[] = [
     path: 'all',
     loadComponent: () => import('./plant-all/plant-all.component').then(m => m.PlantAllComponent), canActivate: [AuthGuard]
   },
-  // {
-  //   path: 'create/:locationId',
-  //   loadComponent: () => import('./plant-add/plant-add.component').then(m => m.PlantAddComponent), canActivate: [AuthGuard]
-  // },
+  {
+    path: 'create/:locationId',
+    loadComponent: () => import('./plant-add/plant-add.component').then(m => m.PlantAddComponent), canActivate: [AuthGuard]
+  },
   // {
   //   path: 'edit/:plantId',
   //   loadComponent: () => import('./plant-edit/plant-edit.component').then(m => m.PlantEditComponent), canActivate: [AuthGuard]

@@ -1,0 +1,26 @@
+<mat-stepper *ngIf="locationId" labelPosition="bottom" linear="false" animationDuration="300">
+  <mat-step [stepControl]="formName.form" optional="true" [label]="'general.name' | translate">
+    <plant-form-name #formName></plant-form-name>
+    <stepper-navigation backButton="false"></stepper-navigation>
+  </mat-step>
+
+  <mat-step [stepControl]="formSpecie.form" optional="true" [label]="'general.specie' | translate">
+    <plant-form-specie #formSpecie></plant-form-specie>
+    <stepper-navigation></stepper-navigation>
+  </mat-step>
+
+  <mat-step optional="true" [label]="'general.picture' | translate">
+    <p [innerHTML]="'photo-add.addMsg' | translate"></p>
+    <p [innerHTML]="'photo-add.addMsgLimit' | translate"></p>
+
+    <file-uploader [amount]="10" (fileChange)="fileChange($event)"></file-uploader>
+
+    <stepper-navigation></stepper-navigation>
+  </mat-step>
+
+
+  <mat-step [stepControl]="formPrivacy.form" [label]="'general.privacy' | translate">
+    <plant-form-privacy #formPrivacy></plant-form-privacy>
+    <stepper-navigation finishButton="true" (finish)="submit()"></stepper-navigation>
+  </mat-step>
+</mat-stepper>

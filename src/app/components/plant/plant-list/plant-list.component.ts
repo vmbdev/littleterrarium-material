@@ -11,6 +11,7 @@ import { Plant } from '@models/plant.model';
 import { PlantService } from '@services/plant.service';
 import { ConfirmDialogComponent } from '@components/dialogs/confirm-dialog/confirm-dialog.component';
 import { TranslateService } from '@ngx-translate/core';
+import { FabComponent } from '@components/fab/fab.component';
 
 @Component({
   selector: 'plant-list',
@@ -22,6 +23,7 @@ import { TranslateService } from '@ngx-translate/core';
     MatButtonModule,
     MatIconModule,
     MatDialogModule,
+    FabComponent
   ],
   templateUrl: './plant-list.component.html',
   styleUrls: ['./plant-list.component.scss']
@@ -31,6 +33,7 @@ export class PlantListComponent {
   @Input() locationId?: number;
   @Input() userId?: number;
   @Input() owned: boolean = true;
+  @Input() small: boolean = false;
   list$ = new BehaviorSubject<Plant[]>([]);
 
   constructor(

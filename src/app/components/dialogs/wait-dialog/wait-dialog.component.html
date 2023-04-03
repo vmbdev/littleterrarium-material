@@ -4,7 +4,7 @@
   <ng-template #progressBar>
     <mat-progress-bar mode="determinate" [value]="data.progressValue"></mat-progress-bar>
   </ng-template>
-  <div *ngIf="data.finalMessage">
+  <div *ngIf="data.finalMessage && (data.progressValue === 100)">
     {{ data.finalMessage }}
   </div>
 </div>

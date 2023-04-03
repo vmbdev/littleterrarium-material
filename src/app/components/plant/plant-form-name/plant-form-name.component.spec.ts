@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PictureListComponent } from './picture-list.component';
+import { PlantFormNameComponent } from './plant-form-name.component';
 
-describe('PictureListComponent', () => {
-  let component: PictureListComponent;
-  let fixture: ComponentFixture<PictureListComponent>;
+describe('PlantFormNameComponent', () => {
+  let component: PlantFormNameComponent;
+  let fixture: ComponentFixture<PlantFormNameComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ PictureListComponent ]
+      imports: [ PlantFormNameComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(PictureListComponent);
+    fixture = TestBed.createComponent(PlantFormNameComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
