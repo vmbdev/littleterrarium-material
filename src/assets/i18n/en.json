@@ -51,7 +51,7 @@
   "general.sort": "Sort",
   "general.specie": "Specie",
   "general.unknown": "Unknown",
-  "general.unnamedPlant": "Unnamed plant {$plantId}",
+  "general.unnamedPlant": "Unnamed plant {{plantId}}",
   "general.update": "Update",
   "general.afterUpload": "After uploading, we must process your photos. Please, wait until this dialog closes.",
   "general.uploadFinished": "Upload finished. Processing your photos, please wait.",

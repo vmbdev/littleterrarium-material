@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { ApiService } from '@services/api.service';
@@ -29,15 +29,24 @@ import { MatButtonModule } from '@angular/material/button';
   styleUrls: ['./plant-form-specie.component.scss']
 })
 export class PlantFormSpecieComponent {
-  form = this.fb.group({
-    specieId: new FormControl<number | null>(null)
-  });
+  @Input() currentSpecie?: number | null;
+  form = this.fb.group({ specieId: new FormControl<number | null>(null) });
   results$ = new BehaviorSubject<Specie[]>([]);
+  currentSpecieName?: string;
 
   constructor(
     private api: ApiService,
     private fb: FormBuilder
   ) {}
+
+  ngOnInit(): void {
+    if (this.currentSpecie) {
+      this.api.getSpecie(this.currentSpecie).subscribe((specie: Specie) => {
+        this.form.patchValue({ specieId: this.currentSpecie });
+        this.currentSpecieName = specie.name;
+      });
+    }
+  }
 
   keyPress(value: string): void {
     if (value.length >= 3) {
@@ -46,6 +55,7 @@ export class PlantFormSpecieComponent {
       })
     }
     else if (value.length === 0) {
+      this.form.patchValue({ specieId: null });
       this.results$.next([]);
     }
   }
@@ -62,8 +72,6 @@ export class PlantFormSpecieComponent {
 
   clear(input: HTMLInputElement): void {
     input.value = '';
-    this.form.patchValue({
-      specieId: null
-    });
+    this.form.patchValue({ specieId: null });
   }
 }

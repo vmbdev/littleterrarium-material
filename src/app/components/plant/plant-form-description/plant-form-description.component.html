@@ -1,0 +1,9 @@
+<p [innerHtml]="'plant-edit.description' | translate"></p>
+
+<form [formGroup]="form">
+  <mat-form-field class="full-width">
+    <mat-label>{{ 'general.description' | translate }}</mat-label>
+    <textarea #desc formControlName="description" matInput maxlength="300" rows="6">{{ currentDescription }}</textarea>
+    <mat-hint align="end">{{ desc.value.length }} / 300</mat-hint>
+  </mat-form-field>
+</form>

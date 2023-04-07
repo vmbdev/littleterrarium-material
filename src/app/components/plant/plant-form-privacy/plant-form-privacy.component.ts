@@ -1,6 +1,5 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Plant } from '@models/plant.model';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { TranslateModule } from '@ngx-translate/core';
@@ -18,8 +17,12 @@ import { TranslateModule } from '@ngx-translate/core';
   styleUrls: ['./plant-form-privacy.component.scss']
 })
 export class PlantFormPrivacyComponent {
-  @Input() plant?: Plant;
+  @Input() currentPrivacy: boolean = true;
   form = this.fb.group({ public: [true] });
 
   constructor(private fb: FormBuilder) {}
+
+  ngOnInit(): void {
+    this.form.patchValue({ public: this.currentPrivacy })
+  }
 }

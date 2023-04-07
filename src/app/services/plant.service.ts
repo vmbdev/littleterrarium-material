@@ -3,11 +3,12 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, catchError, EMPTY, map, Observable, of, switchMap, throwError } from 'rxjs';
 import { AuthService } from '@services/auth.service';
-import { ApiService, PlantGetConfig } from '@services/api.service';
+import { ApiService, PlantGetConfig, PlantUpdateConfig } from '@services/api.service';
 import { PhotoService } from '@services/photo.service';
 import { Photo } from '@models/photo.model';
-import { Plant } from '@models/plant.model';
+import { Condition, Plant } from '@models/plant.model';
 import { ImagePathService } from './image-path.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,8 @@ export class PlantService {
     private api: ApiService,
     private auth: AuthService,
     private photoService: PhotoService,
-    private imagePath: ImagePathService
+    private imagePath: ImagePathService,
+    private translate: TranslateService
   ) { }
 
   create(plant: Plant, photoFiles: File[]): Observable<any> {
@@ -88,13 +90,15 @@ export class PlantService {
 
     if (plant.customName) name = plant.customName;
     else if (plant.specie?.name) name = plant.specie.name.slice(0,1).toUpperCase() + plant.specie.name.slice(1);
-    // FIXME: update for ngx-translate
-    else name = 'Unnamed plant ${plant.id}';
+    else name = this.translate.instant('general.unnamedPlant', { plantId: plant.id });
 
     return name;
   }
 
-  update(plant: Plant, options?: any): Observable<any> {
+  update(plant: Plant, options?: PlantUpdateConfig): Observable<any> {
+    if (!options) options = {};
+    if (plant.specieId === null) options.removeSpecie = true;
+    
     return this.api.updatePlant(plant, options).pipe(
       map((plant: Plant) => {
         const current = this.plant$.getValue();
@@ -168,5 +172,35 @@ export class PlantService {
       return image;
     }
     else return 'assets/nopic.png';
+  }
+
+  getConditionColor(condition: Condition): string {
+    let color: string;
+
+    switch(condition) {
+      case 'BAD': {
+        color = 'red';
+        break;
+      }
+      case 'POOR': {
+        color = 'yellow';
+        break;
+      }
+      case 'GOOD': {
+        color = 'grey';
+        break;
+      }
+      case 'GREAT': {
+        color = 'greenyellow';
+        break;
+      }
+      case 'EXCELLENT':
+      default: {
+        color = 'green';
+        break;
+      }
+    }
+
+    return color;
   }
 }

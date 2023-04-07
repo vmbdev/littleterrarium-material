@@ -1,14 +1,11 @@
+import { HammerModule, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ActivatedRoute, Params, Router, RouterModule } from '@angular/router';
-import { catchError, EMPTY, finalize } from 'rxjs';
+import { catchError, EMPTY, finalize, fromEvent, Observable, takeWhile } from 'rxjs';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { DateTime } from 'luxon';
-
-
-// import { HammerModule } from "@angular/platform-browser";
-// import * as Hammer from 'hammerjs';
 
 import { PhotoService } from '@services/photo.service';
 import { PlantService } from '@services/plant.service';
@@ -22,6 +19,7 @@ import { Plant } from '@models/plant.model';
 import { DaysAgoPipe } from "@pipes/days-ago/days-ago.pipe";
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog.component';
+import { LTHammerConfig } from 'src/config.hammerjs';
 
 @Component({
     selector: 'photo',
@@ -29,15 +27,15 @@ import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog
     templateUrl: './photo.component.html',
     styleUrls: ['./photo.component.scss'],
     imports: [
-        CommonModule,
-        RouterModule,
-        InfoBoxComponent,
-        PropertyComponent,
-        TranslateModule,
-        ToggleOptionComponent,
-        MatDialogModule,
-        // HammerModule
-        DaysAgoPipe
+      CommonModule,
+      RouterModule,
+      InfoBoxComponent,
+      PropertyComponent,
+      TranslateModule,
+      ToggleOptionComponent,
+      MatDialogModule,
+      DaysAgoPipe,
+      HammerModule,
     ]
 })
 export class PhotoComponent {
@@ -48,6 +46,12 @@ export class PhotoComponent {
   navigation: any;
   plantCoverId?: number;
   coverChecked: boolean = false;
+
+  touchEvents: any;
+
+  onSwipe() {
+    console.log('swipe');
+  }
 
   constructor(
     private route: ActivatedRoute,
@@ -62,12 +66,26 @@ export class PhotoComponent {
   ) { }
 
   ngOnInit(): void {
-    // Angular doesn't update a component when the route only changes its parameters, so...
+    // const hammerConfig = new LTHammerConfig();
+    // const hammer = hammerConfig.buildHammer(document.documentElement);
+    
+    // this.touchEvents = 
+    // // .pipe(takeWhile(()=> true))
+    // this.touchEvents.subscribe((res: any) => {
+    //   console.log('x', res);
+    // });
+
+    // Angular doesn't update a component when the route only changes its parameters,
+    // so we need to do it when navigating the previous/next photo
     this.route.params.subscribe((param: Params) => {
       this.id = param['photoId'];
       this.loadPhoto();
     })
   }
+
+  // ngOnDestroy(): void {
+  //   this.touchEvents.unsubscribe();
+  // }
 
   openWaitDialog() {
     return this.dialog.open(WaitDialogComponent, {

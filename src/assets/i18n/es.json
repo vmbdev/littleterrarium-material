@@ -51,7 +51,7 @@
   "general.sort": "Ordenar",
   "general.specie": "Especie",
   "general.unknown": "Desconocido",
-  "general.unnamedPlant": "Planta sin nombre {$plantId}",
+  "general.unnamedPlant": "Planta sin nombre {{plantId}}",
   "general.update": "Actualizar",
   "general.uploadFinished": "Se han subido las fotos. Las estamos procesando, por favor, espera.",
   "general.username": "Usuario",

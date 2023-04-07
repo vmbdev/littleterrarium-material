@@ -4,41 +4,35 @@
     <ng-container *ngIf="!small; else smallCard">
       <img mat-card-image class="plant-card__image" [src]="getImgUrl(plant)" [routerLink]="['/plant', plant.id]">
       <mat-card-header class="plant-card__header" [routerLink]="['/plant', plant.id]">
-        <mat-card-title>
+        <mat-card-title class="plant-card__title">
           {{ getName(plant) }}
         </mat-card-title>
       </mat-card-header>
-      <mat-card-footer class="plant-card__footer">
-        <ng-container [ngTemplateOutlet]="optionButtons"></ng-container>
+      <mat-card-footer>
+        <ng-container [ngTemplateOutlet]="plantToolbar"></ng-container>
       </mat-card-footer>
     </ng-container>
 
     <ng-template #smallCard>
-      <mat-card-header>
+      <mat-card-header [routerLink]="['/plant', plant.id]">
         <mat-card-title-group>
-          <mat-card-title>{{ getName(plant) }}</mat-card-title>
+          <mat-card-title class="plant-card__title">{{ getName(plant) }}</mat-card-title>
           <img mat-card-sm-image [src]="getImgUrl(plant)">
         </mat-card-title-group>
       </mat-card-header>
-      <mat-card-footer class="plant-card__footer">
-        <ng-container [ngTemplateOutlet]="optionButtons"></ng-container>
+      <mat-card-footer>
+        <ng-container [ngTemplateOutlet]="plantToolbar"></ng-container>
       </mat-card-footer>
     </ng-template>
 
-    <ng-template #optionButtons>
-      <button mat-mini-fab class="button__water">
-        <mat-icon>water_drop</mat-icon>
-      </button>
-      <button mat-mini-fab class="button__fert">
-        <mat-icon>local_pizza</mat-icon>
-      </button>
-      <button mat-mini-fab class="button__edit" (click)="openEdit(plant.id)">
-        <mat-icon>edit</mat-icon>
-      </button>
-      <button mat-mini-fab color="warn" (click)="openRemoveDialog(getName(plant), plant.id)">
-        <mat-icon>delete_forever</mat-icon>
-      </button>
+    
+    <ng-template #plantToolbar>
+      <plant-toolbar
+        (remove)="openRemoveDialog(getName(plant), plant.id)"
+        (edit)="openEdit(plant.id)"
+      ></plant-toolbar>
     </ng-template>
   </mat-card>
   
+
 </div>

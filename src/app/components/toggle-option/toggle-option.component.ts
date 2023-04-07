@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatRippleModule } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -21,16 +21,22 @@ import { MatDividerModule } from '@angular/material/divider';
   styleUrls: ['./toggle-option.component.scss']
 })
 export class ToggleOptionComponent {
-  @Input() defaultChecked: boolean = false;
+  @Input() checked: boolean = false;
   @Output() change = new EventEmitter<boolean>();
-  sliderChecked: boolean = false;
+  currentlyChecked: boolean = false;
 
   ngOnInit(): void {
-    this.sliderChecked = this.defaultChecked;
+    this.currentlyChecked = this.checked;
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['checked'].currentValue !== changes['checked'].previousValue) {
+      this.currentlyChecked = changes['checked'].currentValue;
+    }
   }
 
   toggleOption(): void {
-    this.sliderChecked = !this.sliderChecked;
-    this.change.emit(this.sliderChecked);
+    this.currentlyChecked = !this.currentlyChecked;
+    this.change.emit(this.currentlyChecked);
   }
 }

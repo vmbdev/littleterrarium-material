@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FileUploaderComponent } from '@components/file-uploader/file-uploader.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTabsModule } from '@angular/material/tabs';
+import { FormGroup } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 import { PlantFormNameComponent } from '../plant-form-name/plant-form-name.component';
@@ -17,6 +18,9 @@ import { ErrorHandlerService } from '@services/error-handler.service';
 import { PlantService } from '@services/plant.service';
 import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog.component';
 import { PlantGetConfig } from '@services/api.service';
+import { PlantFormDescriptionComponent } from '@components/plant/plant-form-description/plant-form-description.component';
+import { PlantFormConditionComponent } from '@components/plant/plant-form-condition/plant-form-condition.component';
+import { PlantFormLocationComponent } from '@components/plant/plant-form-location/plant-form-location.component';
 
 interface PlantEditConfig {
   id: number,
@@ -35,20 +39,27 @@ interface PlantEditConfig {
 
     PlantFormNameComponent,
     PlantFormPrivacyComponent,
-    PlantFormSpecieComponent
+    PlantFormSpecieComponent,
+    PlantFormDescriptionComponent,
+    PlantFormConditionComponent,
+    PlantFormLocationComponent
   ],
   templateUrl: './plant-edit.component.html',
   styleUrls: ['./plant-edit.component.scss']
 })
 export class PlantEditComponent {
-  @ViewChild(PlantFormNameComponent) nameComponent!: PlantFormNameComponent;
-  @ViewChild(PlantFormSpecieComponent) specieComponent!: PlantFormSpecieComponent;
-  @ViewChild(PlantFormPrivacyComponent) privacyComponent!: PlantFormPrivacyComponent;
+  @ViewChild(PlantFormNameComponent, { static: false }) nameComponent!: PlantFormNameComponent;
+  @ViewChild(PlantFormSpecieComponent, { static: false }) specieComponent!: PlantFormSpecieComponent;
+  @ViewChild(PlantFormPrivacyComponent, { static: false }) privacyComponent!: PlantFormPrivacyComponent;
+  @ViewChild(PlantFormDescriptionComponent, { static: false }) descriptionComponent!: PlantFormDescriptionComponent;
+  @ViewChild(PlantFormConditionComponent, { static: false }) conditionComponent!: PlantFormConditionComponent;
+  @ViewChild(PlantFormLocationComponent, { static: false }) locationComponent!: PlantFormLocationComponent;
 
   id?: number;
   locations: Location[] = [];
-  removeSpecie: boolean = false;
   returnedPlant?: Plant;
+
+  forms: FormGroup[] = [];
 
   constructor(
     private dialog: MatDialog,
@@ -59,32 +70,12 @@ export class PlantEditComponent {
     @Optional() @Inject(MAT_BOTTOM_SHEET_DATA) public editPlant: PlantEditConfig
   ) { }
 
-  // FIXME: race condition ?
   ngAfterViewInit(): void {
     this.plantService.get(this.editPlant.id, this.editPlant.config).subscribe((plant: Plant) => {
       this.id = plant.id;
-
-      this.nameComponent.form.patchValue({ customName: plant.customName });
-      this.specieComponent.form.patchValue({ specieId: plant.specieId });
-      // this.descriptionComponent.form.patchValue({ description: plant.description });
-      // this.conditionComponent.form.patchValue({ condition: plant.condition });
-      // this.locationComponent.form.patchValue({ locationId: plant.locationId });
-      this.privacyComponent.form.patchValue({ public: plant.public });
-    })
+    });
   }
-
-  getPlantFromForm(): Plant {
-    return {
-      ...this.nameComponent.form.value,
-      ...this.specieComponent.form.value,
-      ...this.privacyComponent.form.value,
-      // ...this.descriptionComponent.form.value,
-      // ...this.conditionComponent.form.value,
-      // ...this.locationComponent.form.value,
-      id: this.id
-    } as Plant;
-  }
-
+  
   openWaitDialog() {
     return this.dialog.open(WaitDialogComponent, {
       disableClose: true,
@@ -95,14 +86,34 @@ export class PlantEditComponent {
     });
   }
 
-  checkFormValidity(): boolean {
-    const forms = [
+  createFormList(): void {
+    this.forms = [
       this.nameComponent.form,
       this.specieComponent.form,
       this.privacyComponent.form,
+      this.descriptionComponent.form,
+      this.conditionComponent.form,
+      this.locationComponent.form
     ];
+  }
 
-    return forms.every((form) => form.valid);
+  getPlantFromForm(): Plant {
+    // calling here to avoid a race condition in OnInit
+    // where plant$ isn't ready before ngViewAfterInit
+    if (this.forms.length === 0) this.createFormList();
+
+    return {
+      ...Object.assign({}, ...(this.forms.map(i => i.value))),
+      id: this.id
+    } as Plant;
+  }
+
+  checkFormValidity(): boolean {
+    // calling here to avoid a race condition in OnInit
+    // where plant$ isn't ready before ngViewAfterInit
+    if (this.forms.length === 0) this.createFormList();
+
+    return this.forms.every((form) => form.valid);
   }
 
   submit(): void {
@@ -111,10 +122,10 @@ export class PlantEditComponent {
       return;
     }
     
-    const plant: Plant = this.getPlantFromForm();    
+    const plant: Plant = this.getPlantFromForm();
     const wd = this.openWaitDialog();
 
-    this.plantService.update(plant, { removeSpecie: this.removeSpecie }).pipe(
+    this.plantService.update(plant).pipe(
       finalize(() => {
         wd.close();
 

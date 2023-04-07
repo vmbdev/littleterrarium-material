@@ -15,6 +15,10 @@ export class LocationService {
     return this.api.getLocation(id, plants, limit);
   }
 
+  getMany(options?: any): Observable<Location[]> {
+    return this.api.getLocationList(options);
+  }
+
   delete(id: number): Observable<any> {
     return this.api.deleteLocation(id);
   }

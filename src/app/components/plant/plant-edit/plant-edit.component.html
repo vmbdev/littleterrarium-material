@@ -1,14 +1,26 @@
 <mat-tab-group *ngIf="plantService.plant$ | async as plant" mat-stretch-tabs="false" mat-align-tabs="center">
   <mat-tab [label]="'general.name' | translate">
-    <plant-form-name [plant]="plant"></plant-form-name>
+    <plant-form-name [currentCustomName]="plant.customName"></plant-form-name>
+  </mat-tab>
+
+  <mat-tab [label]="'general.description' | translate">
+    <plant-form-description [currentDescription]="plant.description"></plant-form-description>
   </mat-tab>
 
   <mat-tab [label]="'general.specie' | translate">
-    <plant-form-specie #formSpecie></plant-form-specie>
+    <plant-form-specie [currentSpecie]="plant.specieId"></plant-form-specie>
+  </mat-tab>
+
+  <mat-tab [label]="'plant-edit.condition' | translate">
+    <plant-form-condition [currentCondition]="plant.condition"></plant-form-condition>
+  </mat-tab>
+
+  <mat-tab [label]="'general.location' | translate">
+    <plant-form-location [currentLocation]="plant.locationId"></plant-form-location>
   </mat-tab>
 
   <mat-tab [label]="'general.privacy' | translate">
-    <plant-form-privacy [plant]="plant"></plant-form-privacy>
+    <plant-form-privacy [currentPrivacy]="plant.public"></plant-form-privacy>
   </mat-tab>
 </mat-tab-group>
 

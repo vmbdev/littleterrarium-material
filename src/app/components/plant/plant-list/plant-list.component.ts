@@ -13,7 +13,9 @@ import { ConfirmDialogComponent } from '@components/dialogs/confirm-dialog/confi
 import { TranslateService } from '@ngx-translate/core';
 import { FabComponent } from '@components/fab/fab.component';
 import { PlantEditComponent } from '../plant-edit/plant-edit.component';
-import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { MatBottomSheet, MatBottomSheetModule } from '@angular/material/bottom-sheet';
+import { PlantToolbarComponent } from '../plant-toolbar/plant-toolbar.component';
+import { MatRippleModule } from '@angular/material/core';
 
 @Component({
   selector: 'plant-list',
@@ -25,7 +27,10 @@ import { MatBottomSheet } from '@angular/material/bottom-sheet';
     MatButtonModule,
     MatIconModule,
     MatDialogModule,
-    FabComponent
+    MatRippleModule,
+    MatBottomSheetModule,
+    FabComponent,
+    PlantToolbarComponent
   ],
   templateUrl: './plant-list.component.html',
   styleUrls: ['./plant-list.component.scss']
@@ -88,9 +93,15 @@ export class PlantListComponent {
 
     bsRef.afterDismissed().subscribe((updatedPlant: Plant) => {
       if (updatedPlant) {
-        const list = this.list$.getValue();
+        let list = this.list$.getValue();
         const index = list.findIndex((plant) => plant.id === updatedPlant.id);
-        list[index] = updatedPlant;
+
+        // we moved the plant, hence we remove it from the list
+        if (updatedPlant.locationId !== this.locationId) {
+          list.splice(index, 1);
+        }
+        else list[index] = updatedPlant;
+
         this.list$.next(list);
       }
 

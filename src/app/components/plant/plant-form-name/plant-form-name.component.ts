@@ -4,7 +4,6 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { TranslateModule } from '@ngx-translate/core';
-import { Plant } from '@models/plant.model';
 
 @Component({
   selector: 'plant-form-name',
@@ -20,8 +19,12 @@ import { Plant } from '@models/plant.model';
   styleUrls: ['./plant-form-name.component.scss']
 })
 export class PlantFormNameComponent {
-  @Input() plant?: Plant;
+  @Input() currentCustomName: string | null = '';
   public form = this.fb.group({ customName: [''] });
 
   constructor (private fb: FormBuilder) {}
+
+  ngOnInit(): void {
+    this.form.patchValue({ customName: this.currentCustomName })
+  }
 }

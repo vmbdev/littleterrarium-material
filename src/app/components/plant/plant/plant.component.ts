@@ -17,6 +17,8 @@ import { FabComponent } from '@components/fab/fab.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatBottomSheet, MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { PlantEditComponent } from '../plant-edit/plant-edit.component';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
     selector: 'plant',
@@ -28,6 +30,8 @@ import { PlantEditComponent } from '../plant-edit/plant-edit.component';
       TranslateModule,
       MatDialogModule,
       MatBottomSheetModule,
+      MatCardModule,
+      MatIconModule,
       PhotoListComponent,
       WaitDialogComponent,
       InfoBoxComponent,
@@ -37,7 +41,6 @@ import { PlantEditComponent } from '../plant-edit/plant-edit.component';
 })
 export class PlantComponent {
   id?: number;
-  plantVisibility?: boolean;
   plantCondition = Condition;
 
   constructor(
@@ -96,8 +99,6 @@ export class PlantComponent {
   }
 
   processPlant(plant: Plant) {
-    this.plantVisibility = plant.public;
-
     this.mt.setName(plant.visibleName ? plant.visibleName : this.plantService.getVisibleName(plant));
     this.mt.setMenu([
       { icon: 'edit', tooltip: 'general.edit', click: () => { this.openEdit() } },
@@ -107,44 +108,18 @@ export class PlantComponent {
     ]);
   }
 
-  getConditionColor(condition: Condition): string {
-    let color: string;
-
-    switch(condition) {
-      case 'bad': {
-        color = 'red';
-        break;
-      }
-      case 'poor': {
-        color = 'yellow';
-        break;
-      }
-      case 'good': {
-        color = 'grey';
-        break;
-      }
-      case 'great': {
-        color = 'greenyellow';
-        break;
-      }
-      case 'excellent':
-      default: {
-        color = 'green';
-        break;
-      }
-    }
-
-    return color;
-  }
-
   openEdit(): void {
     if (this.id) {
-      this.bottomSheet.open(PlantEditComponent, {
+      const ref = this.bottomSheet.open(PlantEditComponent, {
         data: {
           id: this.id,
           config: { photos: true }
         }
       });
+
+      ref.afterDismissed().subscribe((plant: Plant) => {
+        if (plant) this.mt.setName(plant.visibleName ? plant.visibleName : this.plantService.getVisibleName(plant));
+      })
     }
   }
 }

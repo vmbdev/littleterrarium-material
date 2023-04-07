@@ -1,0 +1,19 @@
+.plant-toolbar {
+  &__row {
+    justify-content: center;
+  }
+}
+
+.button {
+  &__water {
+    color: #2698f6;
+  }
+
+  &__fert {
+    color: #5dba4a;
+  }
+
+  &__edit {
+    color: #5c5c5c;
+  }
+}

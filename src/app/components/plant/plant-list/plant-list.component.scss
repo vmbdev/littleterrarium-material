@@ -4,8 +4,6 @@
 }
 
 .plant-card {
-  // margin: 10px 0;
-
   &__header {
     justify-content: center;
   }
@@ -13,31 +11,5 @@
   &__image {
     width: 100%;
     height: auto;
-  }
-
-  &__footer {
-    padding: 10px 0;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    
-    button {
-      margin: 0 5px;
-    }
-  }
-
-}
-
-.button {
-  &__water {
-    background-color: #2698f6;
-  }
-
-  &__fert {
-    background-color: #5dba4a;
-  }
-
-  &__edit {
-    background-color: #ffffff;
   }
 }

@@ -1,10 +1,10 @@
 <ng-container *ngIf="photoService.photo$ | async as photo">
-  <toggle-option [defaultChecked]="plantCoverId === photo.id" (change)="updateCoverPhoto($event)">
+  <toggle-option [checked]="plantCoverId === photo.id" (change)="updateCoverPhoto($event)">
     {{ 'photo.cover' | translate }}
   </toggle-option>
   
-  <div class="photo">
-    <img [src]="imagePath.get(photo.images, 'full')">
+  <div class="photo" (swipeleft)="onSwipe()">
+    <img draggable="false" [src]="imagePath.get(photo.images, 'full')">
   </div>
   
   <info-box>

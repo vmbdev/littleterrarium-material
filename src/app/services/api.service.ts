@@ -8,6 +8,7 @@ import { Plant } from '@models/plant.model';
 import { Specie } from '@models/specie.model';
 import { User } from '@models/user.model';
 import { endpoint } from '@config';
+import { BACKEND_URL } from 'src/tokens';
 
 export interface PlantGetConfig {
   userId?: number,
@@ -16,13 +17,18 @@ export interface PlantGetConfig {
   cover?: boolean
 }
 
+export interface PlantUpdateConfig {
+  removeSpecie?: boolean,
+  removeCover?: boolean
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
   constructor(
     private http: HttpClient,
-    @Inject('BACKEND_URL') public backendUrl: string
+    @Inject(BACKEND_URL) public backendUrl: string
   ) { }
 
   endpoint = (path: string) => {
@@ -185,7 +191,7 @@ export class ApiService {
     return this.http.post<Plant>(this.endpoint('plant'), plant);
   }
 
-  updatePlant(plant: Plant, options?: any): Observable<Plant> {
+  updatePlant(plant: Plant, options?: PlantUpdateConfig): Observable<Plant> {
     const data = plant as any;
 
     if (options) {
