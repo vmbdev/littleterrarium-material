@@ -121,8 +121,8 @@ export class LocationListComponent {
 
   delete(id: number) {
     this.locationService.delete(id).subscribe({
-      next: (res) => {
-        if (res.msg === 'LOCATION_REMOVED') this.getLocationList();
+      next: () => {
+        this.getLocationList();
       },
       error: (err) => {
         if (err.msg === 'LOCATION_NOT_VALID') {

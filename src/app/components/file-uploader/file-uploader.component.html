@@ -17,7 +17,15 @@
     </div>
   </div>
 
-  <input type="file" #fileInput (change)="fileInputChange($event)" [disabled]="availableSlots() === 0" [multiple]="amount > 1" hidden>
+  <input
+    #fileInput
+    type="file"
+    (change)="fileInputChange($event)"
+    [disabled]="availableSlots() === 0" [multiple]="amount > 1"
+    accept="image/*"
+    capture
+    hidden
+  >
 
   <button type="button" mat-raised-button color="primary" (click)="fileInput.click()">{{ 'fileUploader.upload' | translate }}</button>
 </div>

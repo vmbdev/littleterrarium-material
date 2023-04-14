@@ -1,4 +1,4 @@
-<mat-tab-group *ngIf="plantService.plant$ | async as plant" mat-stretch-tabs="false" mat-align-tabs="center">
+<mat-tab-group *ngIf="plant$ | async as plant" mat-stretch-tabs="false" mat-align-tabs="center">
   <mat-tab [label]="'general.name' | translate">
     <plant-form-name [currentCustomName]="plant.customName"></plant-form-name>
   </mat-tab>

@@ -1,10 +1,11 @@
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpEvent } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, catchError, EMPTY, map, Observable, of, throwError } from 'rxjs';
 import { AuthService } from '@services/auth.service';
 import { ErrorHandlerService } from '@services/error-handler.service';
-import { ApiService } from '@services/api.service';
+import { ApiService, PhotoGetConfig } from '@services/api.service';
 import { Photo } from '@models/photo.model';
+import { BackendResponse } from '@models/backend-response.model';
 
 @Injectable({
   providedIn: 'root'
@@ -19,13 +20,13 @@ export class PhotoService {
     private errorHandler: ErrorHandlerService
   ) { }
 
-  get(id: number, options?: any): Observable<any> {
+  get(id: number, options?: PhotoGetConfig): Observable<Photo> {
     return this.api.getPhoto(id, options).pipe(
-      map((res: any) => {
-        this.owned = (this.auth.user$.getValue()?.id === res.data.photo.ownerId);
-        this.photo$.next(res.data.photo);
+      map((photo: Photo) => {
+        this.owned = (this.auth.user$.getValue()?.id === photo.ownerId);
+        this.photo$.next(photo);
 
-        return res;
+        return photo;
       }),
       catchError((error: HttpErrorResponse) => {
         this.photo$.next(null);
@@ -35,7 +36,11 @@ export class PhotoService {
     );
   }
 
-  create(photo: Photo, propagateError: boolean = false): Observable<any> {
+  getNavigation(id: number): Observable<any> {
+    return this.api.getPhotoNavigation(id);
+  }
+
+  create(photo: Photo, propagateError: boolean = false): Observable<HttpEvent<BackendResponse>> {
     return this.api.createPhoto(photo).pipe(
       catchError((error: HttpErrorResponse) => {
         if (error.error?.msg === 'IMG_NOT_VALID') this.errorHandler.push('Invalid image.');
@@ -46,10 +51,12 @@ export class PhotoService {
     );
   }
 
-  update(photo: Photo): Observable<any> {
+  update(photo: Photo): Observable<Photo> {
     return this.api.updatePhoto(photo).pipe(
       map((updatedPhoto: Photo) => {
         this.photo$.next(updatedPhoto);
+
+        return photo;
       }),
       catchError((HttpError: HttpErrorResponse) => {
         this.photo$.next(null);
@@ -65,12 +72,7 @@ export class PhotoService {
     if (photo) {
       const id = photo.id;
 
-      return this.api.deletePhoto(id).pipe(
-        map((data: any) => {
-          this.photo$.next(null);
-          return data;
-        })
-      );
+      return this.api.deletePhoto(id);
     }
     else return of(null);
   }

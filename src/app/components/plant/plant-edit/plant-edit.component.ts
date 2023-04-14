@@ -12,7 +12,7 @@ import { PlantFormSpecieComponent } from '../plant-form-specie/plant-form-specie
 import { Plant } from '@models/plant.model';
 import { Location } from '@models/location.model';
 import { MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
-import { finalize } from 'rxjs';
+import { finalize, Observable } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { ErrorHandlerService } from '@services/error-handler.service';
 import { PlantService } from '@services/plant.service';
@@ -48,16 +48,16 @@ interface PlantEditConfig {
   styleUrls: ['./plant-edit.component.scss']
 })
 export class PlantEditComponent {
-  @ViewChild(PlantFormNameComponent, { static: false }) nameComponent!: PlantFormNameComponent;
-  @ViewChild(PlantFormSpecieComponent, { static: false }) specieComponent!: PlantFormSpecieComponent;
-  @ViewChild(PlantFormPrivacyComponent, { static: false }) privacyComponent!: PlantFormPrivacyComponent;
-  @ViewChild(PlantFormDescriptionComponent, { static: false }) descriptionComponent!: PlantFormDescriptionComponent;
-  @ViewChild(PlantFormConditionComponent, { static: false }) conditionComponent!: PlantFormConditionComponent;
-  @ViewChild(PlantFormLocationComponent, { static: false }) locationComponent!: PlantFormLocationComponent;
+  @ViewChild(PlantFormNameComponent) nameComponent!: PlantFormNameComponent;
+  @ViewChild(PlantFormSpecieComponent) specieComponent!: PlantFormSpecieComponent;
+  @ViewChild(PlantFormPrivacyComponent) privacyComponent!: PlantFormPrivacyComponent;
+  @ViewChild(PlantFormDescriptionComponent) descriptionComponent!: PlantFormDescriptionComponent;
+  @ViewChild(PlantFormConditionComponent) conditionComponent!: PlantFormConditionComponent;
+  @ViewChild(PlantFormLocationComponent) locationComponent!: PlantFormLocationComponent;
 
-  id?: number;
   locations: Location[] = [];
   returnedPlant?: Plant;
+  plant$?: Observable<Plant>;
 
   forms: FormGroup[] = [];
 
@@ -70,10 +70,8 @@ export class PlantEditComponent {
     @Optional() @Inject(MAT_BOTTOM_SHEET_DATA) public editPlant: PlantEditConfig
   ) { }
 
-  ngAfterViewInit(): void {
-    this.plantService.get(this.editPlant.id, this.editPlant.config).subscribe((plant: Plant) => {
-      this.id = plant.id;
-    });
+  ngOnInit(): void {
+    this.plant$ = this.plantService.get(this.editPlant.id, this.editPlant.config);
   }
   
   openWaitDialog() {
@@ -104,7 +102,7 @@ export class PlantEditComponent {
 
     return {
       ...Object.assign({}, ...(this.forms.map(i => i.value))),
-      id: this.id
+      id: this.editPlant.id
     } as Plant;
   }
 

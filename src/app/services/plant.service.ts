@@ -26,33 +26,8 @@ export class PlantService {
     private translate: TranslateService
   ) { }
 
-  create(plant: Plant, photoFiles: File[]): Observable<any> {
-    let newPlantId: number;
-
-    return this.api.createPlant(plant).pipe(
-      switchMap((res: any) => {
-        const plant: Plant = res.data.plant;
-        newPlantId = plant.id;
-
-        if (photoFiles.length === 0) return of(res);
-        else {
-          const photos = {
-            plantId: plant.id,
-            public: plant.public,
-            pictureFiles: photoFiles
-          } as Photo;
-
-          return this.photoService.create(photos, true).pipe(
-            catchError(() => {
-              // Plant is created even though photo upload may have failed - we redirect to Plant
-              // FIXME: move it to the component?
-              this.router.navigate(['/plant', newPlantId]);
-      
-              return EMPTY;
-            }))
-        }
-      })
-    );
+  create(plant: Plant): Observable<Plant> {
+    return this.api.createPlant(plant);
   }
 
   get(id: number, options?: PlantGetConfig): Observable<Plant> {
@@ -85,6 +60,10 @@ export class PlantService {
     );
   }
 
+  getCover(id: number): Observable<any> {
+    return this.api.getPlantCover(id);
+  }
+
   getVisibleName(plant: Plant): string {
     let name;
 
@@ -95,8 +74,7 @@ export class PlantService {
     return name;
   }
 
-  update(plant: Plant, options?: PlantUpdateConfig): Observable<any> {
-    if (!options) options = {};
+  update(plant: Plant, options: PlantUpdateConfig = {}): Observable<Plant> {
     if (plant.specieId === null) options.removeSpecie = true;
     
     return this.api.updatePlant(plant, options).pipe(

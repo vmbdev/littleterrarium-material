@@ -80,9 +80,9 @@ export class LocationEditComponent extends LocationUpsertBaseComponent {
 
           if (this.editLocation && this.bottomSheetRef) this.bottomSheetRef.dismiss(this.returnedLocation);
         })
-      ).subscribe((res: any) => {
-        if ((res.msg === 'LOCATION_UPDATED') && this.editLocation && this.bottomSheetRef) {
-            this.returnedLocation = res.data.location;
+      ).subscribe((location: Location) => {
+        if (this.editLocation && this.bottomSheetRef) {
+          this.returnedLocation = location;
         }
       });
     }

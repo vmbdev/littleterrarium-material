@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpEvent } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 
 import { Location } from '@models/location.model';
@@ -7,6 +7,7 @@ import { Photo } from '@models/photo.model';
 import { Plant } from '@models/plant.model';
 import { Specie } from '@models/specie.model';
 import { User } from '@models/user.model';
+import { BackendResponse } from '@models/backend-response.model';
 import { endpoint } from '@config';
 import { BACKEND_URL } from 'src/tokens';
 
@@ -22,6 +23,11 @@ export interface PlantUpdateConfig {
   removeCover?: boolean
 }
 
+export interface PhotoGetConfig {
+  navigation?: boolean,
+  cover?: boolean
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -35,47 +41,47 @@ export class ApiService {
     return `${this.backendUrl}${endpoint}/${path}`;
   }
 
-  // getLocales(): Observable<any> {
-  //   return this.http.get<any>(this.endpoint('angular/locales'));
-  // }
+  getLocales(): Observable<any> {
+    return this.http.get<any>(this.endpoint('angular/locales'));
+  }
 
   /**
    * Auth and user API functions
    */
 
   getCurrentUser(): Observable<User> {
-    return this.http.get<User>(this.endpoint('user'))
+    return this.http.get<User>(this.endpoint('users'))
   }
 
   getUserByName(username: string): Observable<User> {
-    return this.http.get<User>(this.endpoint(`user/${username}`));
+    return this.http.get<User>(this.endpoint(`users/${username}`));
   }
 
-  signIn(username: string, password: string): Observable<any> {
-    return this.http.post<any>(this.endpoint('user/signin'), { username, password });
+  signIn(username: string, password: string): Observable<User> {
+    return this.http.post<User>(this.endpoint('users/signin'), { username, password });
   }
 
   logOut(): Observable<any> {
-    return this.http.get<any>(this.endpoint('user/logout'));
+    return this.http.get<any>(this.endpoint('users/logout'));
   }
 
-  getPasswordRequirements(): Observable<any> {
-    return this.http.get<any>(this.endpoint('user/password/requirements'));
+  getPasswordRequirements(): Observable<BackendResponse> {
+    return this.http.get<BackendResponse>(this.endpoint('users/password/requirements'));
   }
 
-  getUsernameRequirements(): Observable<any> {
-    return this.http.get<any>(this.endpoint('user/username/requirements'));
+  getUsernameRequirements(): Observable<BackendResponse> {
+    return this.http.get<BackendResponse>(this.endpoint('users/username/requirements'));
   }
 
-  checkPassword(password: string): Observable<any> {
-    return this.http.post<any>(this.endpoint('user/password/check'), { password });
+  checkPassword(password: string): Observable<BackendResponse> {
+    return this.http.post<BackendResponse>(this.endpoint('users/password/check'), { password });
   }
 
-  createUser(user: User): Observable<any> {
-    return this.http.post<User>(this.endpoint('user'), user);
+  createUser(user: User): Observable<User> {
+    return this.http.post<User>(this.endpoint('users'), user);
   }
 
-  editUser(user: User, removeAvatar?: boolean): Observable<any> {
+  editUser(user: User, removeAvatar?: boolean): Observable<User> {
     const form = new FormData();
 
     form.append('username', user.username);
@@ -89,7 +95,7 @@ export class ApiService {
     if (removeAvatar) form.append('removeAvatar', 'true');
     else if (user.avatarFile) form.append('avatar', user.avatarFile);
 
-    return this.http.put<User>(this.endpoint('user'), form);
+    return this.http.put<User>(this.endpoint('users'), form);
   }
 
   /**
@@ -97,14 +103,14 @@ export class ApiService {
    */
 
   getLocation(id: number, plants?: boolean, limit?: number): Observable<Location> {
-    const url = `location/${id}?plants=${plants ? 'true' : 'false'}&limit=${limit ? limit : 0}`;
+    const url = `locations/${id}?plants=${plants ? 'true' : 'false'}&limit=${limit ? limit : 0}`;
 
     return this.http.get<Location>(this.endpoint(url));
   }
 
   // retrieve location list for current user
   getLocationList(options?: any): Observable<Location[]> {
-    let url = 'location';
+    let url = 'locations';
 
     if (options) {
       if (options.userId && +options.userId) url += `/user/${+options.userId}`;
@@ -122,7 +128,8 @@ export class ApiService {
    * @param update Whether we're creating (false/null) or updating (true) an existing one.
    * @returns An observable with the server response.
    */
-  upsertLocation(location: Location, update?: boolean, removePicture?: boolean): Observable<any> {
+  // FIXME: removePicture -> LocationUpsertConfig
+  upsertLocation(location: Location, update?: boolean, removePicture?: boolean): Observable<Location> {
     let observable;
     const form = new FormData();
 
@@ -135,28 +142,22 @@ export class ApiService {
 
     if (location.id && update) form.append('id', location.id.toString());
 
-    if (update) observable = this.http.put<Location>(this.endpoint('location'), form);
-    else observable = this.http.post<Location>(this.endpoint('location'), form);
+    if (update) observable = this.http.put<Location>(this.endpoint('locations'), form);
+    else observable = this.http.post<Location>(this.endpoint('locations'), form);
 
-    return observable.pipe(
-      map((data: any) => {
-        if ((data.msg === 'LOCATION_CREATED') || (data.msg === 'LOCATION_UPDATED')) {
-          return data;
-        }
-      })
-    )
+    return observable;
   }
 
   createLocation(location: Location): Observable<Location> {
     return this.upsertLocation(location);
   }
 
-  updateLocation(location: Location, removePicture = false): Observable<any> {
+  updateLocation(location: Location, removePicture = false): Observable<Location> {
     return this.upsertLocation(location, true, removePicture);
   }
 
   deleteLocation(id: number): Observable<any> {
-    return this.http.delete<number>(this.endpoint(`location/${id}`));
+    return this.http.delete<any>(this.endpoint(`locations/${id}`));
   }
 
   /**
@@ -164,7 +165,7 @@ export class ApiService {
    */
 
   getPlants(options?: PlantGetConfig): Observable<Plant[]> {
-    let url = 'plant';
+    let url = 'plants';
 
     if (options) {
       if (options.userId) url += `/user/${options.userId}`;
@@ -178,7 +179,7 @@ export class ApiService {
   }
 
   getPlant(id: number, options?: any): Observable<Plant> {
-    let url = `plant/${id}`;
+    let url = `plants/${id}`;
 
     if (options && (options.photos || options.cover)) {
       url += `?photos=${options.photos ? true : false}&cover=${options.cover ? true : false}`;
@@ -187,8 +188,12 @@ export class ApiService {
     return this.http.get<Plant>(this.endpoint(url));
   }
 
-  createPlant(plant: Plant): Observable<any> {
-    return this.http.post<Plant>(this.endpoint('plant'), plant);
+  getPlantCover(id: number): Observable<any> {
+    return this.http.get<any>(this.endpoint(`plants/${id}/cover`));
+  }
+
+  createPlant(plant: Plant): Observable<Plant> {
+    return this.http.post<Plant>(this.endpoint('plants'), plant);
   }
 
   updatePlant(plant: Plant, options?: PlantUpdateConfig): Observable<Plant> {
@@ -199,23 +204,19 @@ export class ApiService {
       if (options.removeCover) data.removeCover = true;
     }
 
-    return this.http.put<any>(this.endpoint('plant'), data).pipe(
-      map((res: any) => {
-        if (res.msg === 'PLANT_UPDATED') return res.data.plant;
-      })
-    )
+    return this.http.put<Plant>(this.endpoint('plants'), data);
   }
 
   deletePlant(id: number): Observable<any> {
-    return this.http.delete<number>(this.endpoint(`plant/${id}`));
+    return this.http.delete<any>(this.endpoint(`plants/${id}`));
   }
 
   /**
    * Photo related calls
    */
 
-  getPhoto(id: number, options?: any): Observable<Photo> {
-    let url = `photo/${id}`;
+  getPhoto(id: number, options?: PhotoGetConfig): Observable<Photo> {
+    let url = `photos/${id}`;
 
     // TODO: create proper API to do this
     if (options) {
@@ -227,7 +228,11 @@ export class ApiService {
     return this.http.get<Photo>(this.endpoint(url));
   }
 
-  createPhoto(photo: Photo): Observable<any> {
+  getPhotoNavigation(id: number): Observable<any> {
+    return this.http.get<any>(this.endpoint(`photos/${id}/navigation`));
+  }
+
+  createPhoto(photo: Photo): Observable<HttpEvent<BackendResponse>> {
     const form = new FormData();
 
     form.append('plantId', photo.plantId.toString());
@@ -236,19 +241,15 @@ export class ApiService {
       form.append('photo', photo);
     });
 
-    return this.http.post<Photo>(this.endpoint('photo'), form, { reportProgress: true, observe: 'events' });
+    return this.http.post<BackendResponse>(this.endpoint('photos'), form, { reportProgress: true, observe: 'events' });
   }
 
-  updatePhoto(photo: Photo): Observable<any> {
-    return this.http.put<Photo>(this.endpoint('photo'), photo).pipe(
-      map((res: any) => {
-        if (res.msg === 'PHOTO_UPDATED') return res.data.photo;
-      })
-    )
+  updatePhoto(photo: Photo): Observable<Photo> {
+    return this.http.put<Photo>(this.endpoint('photos'), photo);
   }
 
   deletePhoto(id: number): Observable<any> {
-    return this.http.delete(this.endpoint(`photo/${id}`));
+    return this.http.delete(this.endpoint(`photos/${id}`));
   }
 
   /**
@@ -256,11 +257,11 @@ export class ApiService {
    */
 
   getSpecie(id: number): Observable<Specie> {
-    return this.http.get<Specie>(this.endpoint(`specie/${id}`));
+    return this.http.get<Specie>(this.endpoint(`species/${id}`));
   }
 
   findSpecie(name: string): Observable<Specie[]> {
-    return this.http.get<Specie[]>(this.endpoint(`specie/name/${name}`));
+    return this.http.get<Specie[]>(this.endpoint(`species/name/${name}`));
   }
 
   /**

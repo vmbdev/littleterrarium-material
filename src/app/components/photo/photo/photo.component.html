@@ -3,10 +3,19 @@
     {{ 'photo.cover' | translate }}
   </toggle-option>
   
-  <div class="photo" (swipeleft)="onSwipe()">
-    <img draggable="false" [src]="imagePath.get(photo.images, 'full')">
+  <div class="photo">
+    <img #photo draggable="false" [src]="imagePath.get(photo.images, 'full')">
   </div>
   
+  <mat-card *ngIf="photo.description">
+    <mat-card-header>
+      <mat-icon>book</mat-icon>
+    </mat-card-header>
+    <mat-card-content matRipple>
+      {{ photo.description }}
+    </mat-card-content>
+  </mat-card>
+
   <info-box>
     <property icon="event">
       {{ 'general.daysAgo' | translate: { days: (photo.takenAt | daysAgo) } }}

@@ -68,8 +68,8 @@ export class LocationAddComponent extends LocationUpsertBaseComponent {
         return EMPTY;
       }),
       finalize(() => { ud.close() })
-    ).subscribe((res: any) => {
-      if (res.msg === 'LOCATION_CREATED') this.router.navigate([`location/${res.data.location.id}`], { replaceUrl: true });
+    ).subscribe((location: Location) => {
+      this.router.navigate([`location/${location.id}`], { replaceUrl: true });
     });
   }
 }

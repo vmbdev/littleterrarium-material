@@ -1,1 +1,16 @@
-<p>photo-add works!</p>
+<mat-stepper labelPosition="bottom" linear="false" animationDuration="300">
+  <mat-step [label]="'general.picture' | translate">
+    <p [innerHTML]="'photo-add.addMsg' | translate"></p>
+    <p [innerHTML]="'photo-add.addMsgLimit' | translate"></p>
+
+    <file-uploader [amount]="10" (fileChange)="fileChange($event)"></file-uploader>
+
+    <stepper-navigation></stepper-navigation>
+  </mat-step>
+  
+  
+  <mat-step [stepControl]="formPrivacy.form" [label]="'general.privacy' | translate">
+    <photo-form-privacy #formPrivacy></photo-form-privacy>
+    <stepper-navigation finishButton="true" (finish)="submit()"></stepper-navigation>
+  </mat-step>
+</mat-stepper>

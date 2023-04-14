@@ -1,0 +1,16 @@
+<p>{{ 'photo-edit.takenAt' | translate }}></p>
+
+<form [formGroup]="form">
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>{{ 'general.date' | translate }}</mat-label>
+    <input
+      formControlName="takenAt"
+      [max]="today"
+      matInput
+      [matDatepicker]="picker"
+      [value]="currentTakenAt"
+    >
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+</form>

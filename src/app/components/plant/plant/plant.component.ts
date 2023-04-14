@@ -118,7 +118,14 @@ export class PlantComponent {
       });
 
       ref.afterDismissed().subscribe((plant: Plant) => {
-        if (plant) this.mt.setName(plant.visibleName ? plant.visibleName : this.plantService.getVisibleName(plant));
+        if (plant) {
+          const newName =
+            plant.visibleName
+            ? plant.visibleName
+            : this.plantService.getVisibleName(plant);
+
+          this.mt.setName(newName);
+        }
       })
     }
   }

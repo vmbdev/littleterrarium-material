@@ -70,7 +70,8 @@ export class SigninComponent {
     this.authInvalid = false;
 
 
-    this.auth.signIn(username, password).pipe(
+    this.auth.signIn(username, password)
+    .pipe(
       finalize(() => { wd.close() })
     ).subscribe({
       next: () => {

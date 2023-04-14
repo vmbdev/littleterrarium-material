@@ -1,0 +1,19 @@
+<mat-tab-group *ngIf="photoService.photo$ | async as photo" mat-stretch-tabs="false" mat-align-tabs="center">
+  <mat-tab [label]="'general.description' | translate">
+    <photo-form-description [currentDescription]="photo.description"></photo-form-description>
+  </mat-tab>
+  
+  <mat-tab [label]="'general.date' | translate">
+    <photo-form-date [currentTakenAt]="photo.takenAt"></photo-form-date>
+  </mat-tab>
+
+  <mat-tab [label]="'general.privacy' | translate">
+    <photo-form-privacy [currentPrivacy]="photo.public"></photo-form-privacy>
+  </mat-tab>
+</mat-tab-group>
+
+<div class="tab-navigation">
+  <button type="submit" mat-raised-button color="primary" (click)="submit()">
+    {{ 'general.finish' | translate }}
+  </button>
+</div>

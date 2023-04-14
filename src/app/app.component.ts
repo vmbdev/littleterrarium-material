@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CoreModule } from './modules/core/core.module';
 import { App } from '@capacitor/app';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @Component({
     selector: 'app-root',
@@ -12,7 +13,8 @@ import { App } from '@capacitor/app';
     imports: [
       CommonModule,
       RouterModule,
-      CoreModule
+      CoreModule,
+      MatNativeDateModule
     ]
 })
 export class AppComponent {
