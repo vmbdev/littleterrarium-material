@@ -1,0 +1,15 @@
+<mat-card class="info-box">
+  <mat-card-content class="info-box__properties">
+    <ng-template *ngFor="let property of properties" [ngTemplateOutlet]="property.propertyTemplate">
+    </ng-template>
+  </mat-card-content>
+  <ng-container *ngIf="description">
+    <mat-divider class="info-box__divider"></mat-divider>
+    <mat-card-content>
+      <mat-icon class="info-box__descicon">book</mat-icon>
+      <div class="info-box__description">
+        {{ description }}
+      </div>
+    </mat-card-content>
+  </ng-container>
+</mat-card>

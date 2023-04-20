@@ -6,7 +6,7 @@ import { TranslateModule } from '@ngx-translate/core';
 
 interface ConfirmDataConfig {
   title: string,
-  question: string,
+  question: string[],
   accept: any
 }
 

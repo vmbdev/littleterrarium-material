@@ -1,12 +1,12 @@
 import { Component, Injector, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LocationFormLightComponent } from '../location-form-light/location-form-light.component';
-import { LocationFormNameComponent } from '../location-form-name/location-form-name.component';
-import { LocationFormPrivacyComponent } from '../location-form-privacy/location-form-privacy.component';
-import { Location } from '@models/location.model';
-import { TranslateService } from '@ngx-translate/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { TranslateService } from '@ngx-translate/core';
+import { LocationFormLightComponent } from '@components/location/forms/location-form-light/location-form-light.component';
+import { LocationFormNameComponent } from '@components/location/forms/location-form-name/location-form-name.component';
+import { LocationFormPrivacyComponent } from '@components/location/forms/location-form-privacy/location-form-privacy.component';
 import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog.component';
+import { Location } from '@models/location.model';
 import { ApiService } from '@services/api.service';
 import { LocationService } from '@services/location.service';
 import { ErrorHandlerService } from '@services/error-handler.service';

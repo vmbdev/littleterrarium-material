@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -16,6 +16,7 @@ import { PlantEditComponent } from '../plant-edit/plant-edit.component';
 import { MatBottomSheet, MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { PlantToolbarComponent } from '../plant-toolbar/plant-toolbar.component';
 import { MatRippleModule } from '@angular/material/core';
+import { LocationService } from '@services/location.service';
 
 @Component({
   selector: 'plant-list',
@@ -45,6 +46,7 @@ export class PlantListComponent {
 
   constructor(
     private plantService: PlantService,
+    private locationService: LocationService,
     private dialog: MatDialog,
     private translate: TranslateService,
     private bottomSheet: MatBottomSheet
@@ -52,16 +54,25 @@ export class PlantListComponent {
 
   ngOnInit(): void {
     if (this.list) this.list$.next(this.list);
-    else {
-      const options = {
-        locationId: this.locationId,
-        userId: this.userId,
-        cover: true
-      };
 
-      this.plantService.getMany(options).subscribe((plants: Plant[]) => {
+    else {
+      let obs: Observable<Plant[]>;
+
+      if (this.locationId) {
+        obs = this.locationService.getPlants(this.locationId);
+      }
+      else {
+        const options = {
+          userId: this.userId,
+          cover: true
+        };
+
+        obs = this.plantService.getMany(options);
+      }
+
+      obs.subscribe((plants: Plant[]) => {
         this.list$.next(plants);
-      })
+      });
     }
   }
 
@@ -77,7 +88,7 @@ export class PlantListComponent {
     this.dialog.open(ConfirmDialogComponent, {
       data: {
         title: name,
-        question: this.translate.instant('plant.remove'),
+        question: [this.translate.instant('plant.remove')],
         accept: () => this.delete(id)
       },
     });

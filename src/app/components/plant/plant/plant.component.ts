@@ -4,21 +4,23 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, EMPTY, finalize } from 'rxjs';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatBottomSheet, MatBottomSheetModule } from '@angular/material/bottom-sheet';
 
 import { Condition, Plant } from '@models/plant.model';
 import { MainToolbarService } from '@services/main-toolbar.service';
 import { PlantService } from '@services/plant.service';
 import { ErrorHandlerService } from '@services/error-handler.service';
 import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog.component';
-import { InfoBoxComponent } from "@components/info-box/info-box.component";
-import { PropertyComponent } from "@components/property/property.component";
+import { InfoBoxComponent } from '@components/info-box/info-box/info-box.component';
+import { PropertyComponent } from '@components/info-box/property/property.component';
 import { PhotoListComponent } from '@components/photo/photo-list/photo-list.component';
 import { FabComponent } from '@components/fab/fab.component';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { MatBottomSheet, MatBottomSheetModule } from '@angular/material/bottom-sheet';
-import { PlantEditComponent } from '../plant-edit/plant-edit.component';
-import { MatCardModule } from '@angular/material/card';
-import { MatIconModule } from '@angular/material/icon';
+import { PlantEditComponent } from '@components/plant/plant-edit/plant-edit.component';
+import { CapitalizePipe } from '@pipes/capitalize/capitalize.pipe';
+import { PlantExpansionInfoComponent } from '@components/plant/plant-expansion-info/plant-expansion-info.component';
 
 @Component({
     selector: 'plant',
@@ -26,17 +28,19 @@ import { MatIconModule } from '@angular/material/icon';
     templateUrl: './plant.component.html',
     styleUrls: ['./plant.component.scss'],
     imports: [
-      CommonModule,
-      TranslateModule,
-      MatDialogModule,
-      MatBottomSheetModule,
-      MatCardModule,
-      MatIconModule,
-      PhotoListComponent,
-      WaitDialogComponent,
-      InfoBoxComponent,
-      PropertyComponent,
-      FabComponent,
+        CommonModule,
+        TranslateModule,
+        MatDialogModule,
+        MatBottomSheetModule,
+        MatCardModule,
+        MatIconModule,
+        PhotoListComponent,
+        WaitDialogComponent,
+        InfoBoxComponent,
+        PropertyComponent,
+        FabComponent,
+        CapitalizePipe,
+        PlantExpansionInfoComponent
     ]
 })
 export class PlantComponent {

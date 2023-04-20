@@ -1,12 +1,22 @@
 @use 'themes/light.scss';
 @use 'ngx-toastr/toastr';
 
+@mixin border-style {
+  border-width: 1px !important;
+  border-color: rgba(0,0,0,.2) !important;
+  border-style: solid;
+}
+
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
+.mat-expansion-panel {
+  @include border-style();
+}
+
 mat-card {
-  border-width: 1px !important;
-  border-color: rgba(0,0,0,.2) !important;
+  @include border-style();
+
   margin: 6px 0;
 }
 
@@ -48,7 +58,16 @@ mat-bottom-sheet-container {
   }
 }
 
+.centered {
+  text-align: center;
+}
+
+.expansion-panel-icon-right {
+  flex: 0 !important;
+  justify-content: space-between;
+  align-items: center;
+}
+
 // mat-stepper, .mat-horizontal-stepper-wrapper, .mat-horizontal-content-container, .mat-horizontal-stepper-content {
 //   height: 100% !important;
 // }
-

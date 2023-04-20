@@ -11,3 +11,12 @@ export interface Photo {
   updatedAt: Date
   pictureFiles: File[]
 }
+
+export interface NavigationData {
+  prev?: {
+    id: number
+  },
+  next?: {
+    id: number
+  }
+}

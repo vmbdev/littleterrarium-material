@@ -5,7 +5,7 @@
       {{ getLightName(location.light) }}
     </property>
     <property [icon]="location.public ? 'visibility' : 'visibility_off'">
-      {{ location.public ? ('general.public' | translate) : ('general.private' | translate) }}
+      {{ (location.public ? 'general.public' : 'general.private') | translate }}
     </property>
     <property icon="forest">
       <ng-container *ngIf="location.plants && location.plants.length; else noPlants">
@@ -17,5 +17,6 @@
     </property>
   </info-box>
 
-  <plant-list [list]="location.plants" [locationId]="location.id" [small]="smallView"></plant-list>
+  <h1 class="centered">{{ 'general.plants' | translate }}</h1>
+  <plant-list [locationId]="location.id" [small]="smallView"></plant-list>
 </div>

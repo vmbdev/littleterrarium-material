@@ -3,7 +3,7 @@ import { Component, ElementRef, QueryList, ViewChildren } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ActivatedRoute, Params, Router, RouterModule } from '@angular/router';
-import { catchError, EMPTY, finalize, fromEvent, startWith, switchMap } from 'rxjs';
+import { catchError, EMPTY, finalize, fromEvent, Observable, startWith, Subscription, switchMap } from 'rxjs';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { DateTime } from 'luxon';
 
@@ -11,8 +11,8 @@ import { PhotoService } from '@services/photo.service';
 import { PlantService } from '@services/plant.service';
 import { ErrorHandlerService } from '@services/error-handler.service';
 import { ImagePathService } from '@services/image-path.service';
-import { InfoBoxComponent } from "@components/info-box/info-box.component";
-import { PropertyComponent } from "@components/property/property.component";
+import { InfoBoxComponent } from "@components/info-box/info-box/info-box.component";
+import { PropertyComponent } from "@components/info-box/property/property.component";
 import { MainToolbarService } from '@services/main-toolbar.service';
 import { ToggleOptionComponent } from '@components/toggle-option/toggle-option.component';
 import { Plant } from '@models/plant.model';
@@ -22,8 +22,7 @@ import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog
 import { LTHammerConfig } from 'src/config.hammerjs';
 import { MatBottomSheet, MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { PhotoEditComponent } from '../photo-edit/photo-edit.component';
-import { Photo } from '@models/photo.model';
-import { BackendResponse } from '@models/backend-response.model';
+import { NavigationData, Photo } from '@models/photo.model';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 
@@ -52,11 +51,13 @@ export class PhotoComponent {
   id?: number;
   confirmDelete: boolean = false;
   enablePhotoEditing: boolean = false;
-  navigation: any;
+  navigation: NavigationData = {};
   plantCoverId?: number;
   coverChecked: boolean = false;
   touchEvents: any;
-  queryListObs: any;
+
+  queryList$: any;
+  routeDetect$?: Subscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -74,7 +75,8 @@ export class PhotoComponent {
   ngOnInit(): void {
     // Angular doesn't update a component when the route only changes its parameters,
     // so we need to do it when navigating the previous/next photo
-    this.route.params.subscribe((param: Params) => {
+
+    this.routeDetect$ = this.route.params.subscribe((param: Params) => {
       this.id = param['photoId'];
       this.loadPhoto();
     })
@@ -82,12 +84,11 @@ export class PhotoComponent {
 
   ngAfterViewInit(): void {
     if (this.photoElement.first) {
-      this.queryListObs = this.photoElement.changes.pipe(startWith(this.photoElement));
+      this.queryList$ = this.photoElement.changes.pipe(startWith(this.photoElement));
     }
+    else this.queryList$ = this.photoElement.changes;
 
-    else this.queryListObs = this.photoElement.changes;
-
-    this.queryListObs.pipe(
+    this.queryList$.pipe(
       switchMap((res: QueryList<ElementRef>) => {
         const hammerConfig = new LTHammerConfig();
         const hammer = hammerConfig.buildHammer(res.first.nativeElement);
@@ -95,18 +96,11 @@ export class PhotoComponent {
         return fromEvent(hammer, 'swipe');
       })
     ).subscribe((res: any) => {
-      let navigateTo: number | undefined;
-
       if (res.deltaX < 0) {
-        if (this.navigation.prev?.id) navigateTo = this.navigation.prev.id;
+        if (this.navigation.prev) this.router.navigate(['/photo', this.navigation.prev.id], { replaceUrl: true });
       }
       else {
-        if (this.navigation.next?.id) navigateTo = this.navigation.next.id;
-      }
-      
-      if (this.id !== navigateTo) {
-        this.id = navigateTo;
-        this.loadPhoto();
+        if (this.navigation.next) this.router.navigate(['/photo', this.navigation.next.id], { replaceUrl: true });
       }
     })
   }
@@ -118,7 +112,6 @@ export class PhotoComponent {
       this.photoService.get(this.id, { navigation: true, cover: true }).pipe(
         finalize(() => { wd.close() }),
         catchError((err: HttpErrorResponse) => {
-          console.log(err);
           let msg: string;
 
           if (err.error?.msg === 'PHOTO_NOT_FOUND') msg = 'photo.invalid';
@@ -140,7 +133,7 @@ export class PhotoComponent {
 
           return this.photoService.getNavigation(photo.id);
         }),
-        switchMap((navigation: any) => {
+        switchMap((navigation: NavigationData) => {
           this.navigation = navigation;
           const photo = this.photoService.photo$.getValue();
 
@@ -154,7 +147,8 @@ export class PhotoComponent {
   }
 
   ngOnDestroy(): void {
-    if (this.queryListObs) this.queryListObs.unsubscribe();
+    if (this.queryList$) this.queryList$.unsubscribe();
+    if (this.routeDetect$) this.routeDetect$.unsubscribe();
   }
 
   getDateTitle(date: string | Date): string {

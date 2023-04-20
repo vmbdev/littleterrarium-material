@@ -1,0 +1,35 @@
+<mat-expansion-panel *ngIf="plantService.plant$ | async as plant">
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      {{ 'general.watering' | translate }}
+    </mat-panel-title>
+    <mat-panel-description class="expansion-panel-icon-right">
+      <mat-icon>water_drop</mat-icon>
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+
+  <ng-container *ngIf="plant.waterFreq || plant.waterLast; else noWaterData">
+    <p *ngIf="plant.waterLast"><b>{{ 'general.lastTime' | translate }}</b> {{ plant.waterLast | date }}</p>
+    <p *ngIf="plant.waterFreq" [innerHTML]="'plant-widget-water.freq' | translate:{ days: plant.waterFreq }"></p>
+    <p *ngIf="plant.waterNext">
+      <ng-container *ngIf="plant.waterNext | daysAgo:false as days">
+        <b>{{ 'general.nextTime' | translate }}</b>
+        
+        <span *ngIf="days < 0; else inFuture" [ngStyle]="{ 'color': 'red' }">
+          {{ 'general.daysAgo' | translate:{ days: (plant.waterNext | daysAgo) } }}
+        </span>
+        <ng-template #inFuture>
+          {{ 'general.daysCount' | translate:{ days: (plant.waterNext | daysAgo) } }}
+        </ng-template>
+      </ng-container>
+    </p>
+  </ng-container>
+  <ng-template #noWaterData>
+    <p>{{ 'plant-widget-water.noData' | translate }}</p>
+  </ng-template>
+
+  <mat-action-row *ngIf="this.plantService.owned">
+    <button mat-button color="primary" (click)="openWaterDialog()">{{ 'plant-widget-water.now' | translate }}</button>
+    <button mat-button color="primary" (click)="openEdit()">{{ 'general.edit' | translate }}</button>
+  </mat-action-row>
+</mat-expansion-panel>

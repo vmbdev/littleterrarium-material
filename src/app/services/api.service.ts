@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 import { HttpClient, HttpEvent } from '@angular/common/http';
-import { map, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 
 import { Location } from '@models/location.model';
 import { Photo } from '@models/photo.model';
@@ -122,6 +122,18 @@ export class ApiService {
     return this.http.get<Location[]>(this.endpoint(url));
   }
 
+  getLocationPlants(id: number, options?: any): Observable<Plant[]> {
+    let url = `locations/${id}/plants`;
+
+    if (options) {
+      url += '?';
+
+      if (options.limit) url += `limit=${options.limit ? options.limit : 0}`;
+    }
+
+    return this.http.get<Plant[]>(this.endpoint(url));
+  }
+
   /**
    * Creates a new Location or updates an existing one.
    * @param location The location to be upserted
@@ -190,6 +202,10 @@ export class ApiService {
 
   getPlantCover(id: number): Observable<any> {
     return this.http.get<any>(this.endpoint(`plants/${id}/cover`));
+  }
+
+  getPlantPhotos(id: number): Observable<Photo[]> {
+    return this.http.get<Photo[]>(this.endpoint(`plants/${id}/photos`));
   }
 
   createPlant(plant: Plant): Observable<Plant> {

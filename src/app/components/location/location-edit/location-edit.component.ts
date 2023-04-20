@@ -5,9 +5,9 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MatTabsModule } from '@angular/material/tabs';
 
 import { Location } from '@models/location.model';
-import { LocationFormLightComponent } from '@components/location/location-form-light/location-form-light.component';
-import { LocationFormNameComponent } from '@components/location/location-form-name/location-form-name.component';
-import { LocationFormPrivacyComponent } from '@components/location/location-form-privacy/location-form-privacy.component';
+import { LocationFormLightComponent } from '@components/location/forms/location-form-light/location-form-light.component';
+import { LocationFormNameComponent } from '@components/location/forms/location-form-name/location-form-name.component';
+import { LocationFormPrivacyComponent } from '@components/location/forms/location-form-privacy/location-form-privacy.component';
 import { MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
 import { HttpErrorResponse } from '@angular/common/http';
 import { catchError, EMPTY, finalize } from 'rxjs';

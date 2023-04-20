@@ -1,24 +1,27 @@
 <ng-container *ngIf="plantService.plant$ | async as plant">
   <fab *ngIf="plantService.owned" [link]="['/photo/create', plant.id]"></fab>
-  <info-box>
-    <property *ngIf="plant.condition" icon="circle" [iconColor]="plantService.getConditionColor(plant.condition)">
+
+  <info-box [description]="plant.description">
+    <property *ngIf="plant.specie && plant.specie.name" icon="grass">
+      {{ plant.specie.name | capitalize }}
+    </property>
+
+    <property
+      *ngIf="plant.condition"
+      icon="circle"
+      [iconColor]="plantService.getConditionColor(plant.condition)"
+    >
       {{ plantCondition[plant.condition] }}
     </property>
+
     <property [icon]="plant.public ? 'visibility' : 'visibility_off'">
-      {{ plant.public ? ('general.public' | translate) : ('general.private' | translate) }}
+      {{ (plant.public ? 'general.public' : 'general.private') | translate }}
     </property>
   </info-box>
 
-  <mat-card *ngIf="plant.description">
-    <mat-card-header>
-      <mat-icon>book</mat-icon>
-    </mat-card-header>
-    <mat-card-content matRipple>
-      {{ plant.description }}
-    </mat-card-content>
-  </mat-card>
+  <plant-expansion-info></plant-expansion-info>
 
-  <h1>{{ 'plant.photoList' | translate:{ plantName: plant.visibleName } }}</h1>
+  <h1 class="centered">{{ 'general.pictures' | translate }}</h1>
 
-  <photo-list [owned]="this.plantService.owned" [plantId]="plant.id" [list]="plant.photos ? plant.photos : []"></photo-list>
+  <photo-list [owned]="this.plantService.owned" [plantId]="this.id"></photo-list>
 </ng-container>

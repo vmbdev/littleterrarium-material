@@ -8,9 +8,9 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 import { FileUploaderComponent } from '@components/file-uploader/file-uploader.component';
 import { StepperNavigationComponent } from '@components/stepper-navigation/stepper-navigation.component';
-import { PlantFormNameComponent } from '@components/plant/plant-form-name/plant-form-name.component';
-import { PlantFormSpecieComponent } from '@components/plant/plant-form-specie/plant-form-specie.component';
-import { PlantFormPrivacyComponent } from '@components/plant/plant-form-privacy/plant-form-privacy.component';
+import { PlantFormNameComponent } from '@components/plant/forms/plant-form-name/plant-form-name.component';
+import { PlantFormSpecieComponent } from '@components/plant/forms/plant-form-specie/plant-form-specie.component';
+import { PlantFormPrivacyComponent } from '@components/plant/forms/plant-form-privacy/plant-form-privacy.component';
 import { PlantService } from '@services/plant.service';
 import { ErrorHandlerService } from '@services/error-handler.service';
 import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog.component';

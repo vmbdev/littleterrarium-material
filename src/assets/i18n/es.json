@@ -38,6 +38,7 @@
   "general.name": "Nombre",
   "general.next": "Siguiente",
   "general.nextTime": "Próxima vez:",
+  "general.daysCount": "{{ days }} días",
   "general.password": "Contraseña",
   "general.picture": "Foto",
   "general.pictures": "Fotos",
@@ -158,7 +159,8 @@
   "plant-widget-soil.pot": "Tu maceta está hecha de <b>{$INTERPOLATION}</b>, <span>con un tamaño de <b>{$INTERPOLATION_1}</b></span>.",
   "plant-widget-soil.title": "Maceta y sustrato",
   "plant-widget-water.confirm": "Vas a actualizar <b>la última vez que regaste</b> a hoy.",
-  "plant-widget-water.freq": "Regar cada <b>{$INTERPOLATION} días</b>",
+  "plant-widget-water.freq": "Regar cada <b>{{days}} días</b>",
+  "plant-widget-water.now": "Regar",
   "plant-widget-water.warning": "Si aún no la has regado, por favor, revisa el sustrato. Nunca riegues tus plantas basándote en una frecuencia fija.",
   "plant.condition": "Condición:",
   "plant.invalid": "Planta no encontrada.",
@@ -204,5 +206,6 @@
   "user-register.usernameReq": "Debe tener entre {$INTERPOLATION} y {$INTERPOLATION_1} caracteres, y contener solo letras, números, puntos (.), guiones (-) y barras bajas (_).",
   "user-register.usernameTaken": "Lo sentimos, este usuario ya está en uso. Por favor, elige otro.",
   "userbox.editProfile": "Editar perfil",
-  "userbox.username": "Hola <b>{$INTERPOLATION}</b>"
+  "userbox.username": "Hola <b>{$INTERPOLATION}</b>",
+  "plant-widget-water.noData": "Edita los datos de regadío para ver cuándo hace falta regar."
 }

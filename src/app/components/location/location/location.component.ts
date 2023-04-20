@@ -12,8 +12,8 @@ import { AuthService } from '@services/auth.service';
 import { MainToolbarService } from '@services/main-toolbar.service';
 import { ErrorHandlerService } from '@services/error-handler.service';
 import { PlantListComponent } from '@components/plant/plant-list/plant-list.component';
-import { PropertyComponent } from '@components/property/property.component';
-import { InfoBoxComponent } from "@components/info-box/info-box.component";
+import { PropertyComponent } from '@components/info-box/property/property.component';
+import { InfoBoxComponent } from "@components/info-box/info-box/info-box.component";
 import { FabComponent } from '@components/fab/fab.component';
 import { LocationEditComponent } from '@components/location/location-edit/location-edit.component';
 

@@ -102,7 +102,7 @@ export class LocationListComponent {
     this.dialog.open(ConfirmDialogComponent, {
       data: {
         title: name,
-        question: this.translate.instant('location.remove'),
+        question: [this.translate.instant('location.remove')],
         accept: () => this.delete(id)
       },
     });

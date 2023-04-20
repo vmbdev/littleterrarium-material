@@ -6,9 +6,6 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { FormGroup } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
-import { PlantFormNameComponent } from '../plant-form-name/plant-form-name.component';
-import { PlantFormPrivacyComponent } from '../plant-form-privacy/plant-form-privacy.component';
-import { PlantFormSpecieComponent } from '../plant-form-specie/plant-form-specie.component';
 import { Plant } from '@models/plant.model';
 import { Location } from '@models/location.model';
 import { MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
@@ -18,9 +15,12 @@ import { ErrorHandlerService } from '@services/error-handler.service';
 import { PlantService } from '@services/plant.service';
 import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog.component';
 import { PlantGetConfig } from '@services/api.service';
-import { PlantFormDescriptionComponent } from '@components/plant/plant-form-description/plant-form-description.component';
-import { PlantFormConditionComponent } from '@components/plant/plant-form-condition/plant-form-condition.component';
-import { PlantFormLocationComponent } from '@components/plant/plant-form-location/plant-form-location.component';
+import { PlantFormNameComponent } from '@components/plant/forms/plant-form-name/plant-form-name.component';
+import { PlantFormPrivacyComponent } from '@components/plant/forms/plant-form-privacy/plant-form-privacy.component';
+import { PlantFormSpecieComponent } from '@components/plant/forms/plant-form-specie/plant-form-specie.component';
+import { PlantFormDescriptionComponent } from '@components/plant/forms/plant-form-description/plant-form-description.component';
+import { PlantFormConditionComponent } from '@components/plant/forms/plant-form-condition/plant-form-condition.component';
+import { PlantFormLocationComponent } from '@components/plant/forms/plant-form-location/plant-form-location.component';
 
 interface PlantEditConfig {
   id: number,

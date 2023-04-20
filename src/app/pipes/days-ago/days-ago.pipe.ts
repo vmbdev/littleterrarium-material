@@ -7,14 +7,16 @@ import { DateTime } from 'luxon';
 })
 export class DaysAgoPipe implements PipeTransform {
 
-  transform(value: string | Date): number {
+  transform(value: string | Date, abs: boolean = true): number {
     let parsedValue;
 
     if (value instanceof Date) parsedValue = value.toString();
     else parsedValue = value;
 
     const dateDiff = DateTime.fromISO(parsedValue).diffNow('days').days;
-    const numberOfDays = Math.abs(Math.ceil(dateDiff));
+    let numberOfDays = Math.ceil(dateDiff);
+
+    if (abs) numberOfDays = Math.abs(numberOfDays);
 
     return Math.ceil(numberOfDays);
   }

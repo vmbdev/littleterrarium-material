@@ -6,34 +6,35 @@ import { ImagePathService } from '@services/image-path.service';
 import { ImagePath } from '@models/image-path.model';
 import { RouterModule } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
+import { PlantService } from '@services/plant.service';
+import { SortPipe } from "@pipes/sort/sort.pipe";
 
 @Component({
-  selector: 'photo-list',
-  standalone: true,
-  imports: [
-    CommonModule,
-    RouterModule
-  ],
-  templateUrl: './photo-list.component.html',
-  styleUrls: ['./photo-list.component.scss']
+    selector: 'photo-list',
+    standalone: true,
+    templateUrl: './photo-list.component.html',
+    styleUrls: ['./photo-list.component.scss'],
+    imports: [
+      CommonModule,
+      RouterModule,
+      SortPipe
+    ]
 })
 export class PhotoListComponent {
   @Input() plantId?: number;
   @Input() owned: boolean = true;
-  @Input() list: Photo[] = [];
   list$ = new BehaviorSubject<Photo[]>([]);
 
   constructor(
-    private imagePath: ImagePathService
+    private imagePath: ImagePathService,
+    private plantService: PlantService
   ) {}
 
   ngOnInit(): void {
-    this.list$.next(this.list);
-   }
-
-  ngOnChanges(changes: SimpleChanges) {
-    if(changes['list'].currentValue !== changes['list'].previousValue) {
-      this.list$.next(changes['list'].currentValue);
+    if (this.plantId) {
+      this.plantService.getPhotos(this.plantId).subscribe((photos: Photo[]) => {
+        this.list$.next(photos);
+      });
     }
   }
 

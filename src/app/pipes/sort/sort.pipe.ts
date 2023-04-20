@@ -7,7 +7,9 @@ import { SortOptions } from '@models/sort-options.model';
 })
 export class SortPipe implements PipeTransform {
 
-  transform(value: any[], param: string, order: SortOptions, caseSensitive: boolean = false): any[] {
+  transform(value: any[] | null, param: string, order: SortOptions, caseSensitive: boolean = false): any[] {
+    if (!value) return [];
+
     return value.sort((a, b) => {
       let aParam, bParam;
 

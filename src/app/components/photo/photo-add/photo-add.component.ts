@@ -1,22 +1,23 @@
 import { Component, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatStepperModule } from '@angular/material/stepper';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { HttpEventType } from '@angular/common/http';
+import { finalize } from 'rxjs';
+import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+
 import { StepperNavigationComponent } from '@components/stepper-navigation/stepper-navigation.component';
 import { FileUploaderComponent } from '@components/file-uploader/file-uploader.component';
-import { PhotoFormPrivacyComponent } from '@components/photo/photo-form-privacy/photo-form-privacy.component';
+import { PhotoFormPrivacyComponent } from '@components/photo/forms/photo-form-privacy/photo-form-privacy.component';
+import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog.component';
 import { PlantService } from '@services/plant.service';
 import { PhotoService } from '@services/photo.service';
-import { ActivatedRoute, Router } from '@angular/router';
 import { ErrorHandlerService } from '@services/error-handler.service';
-import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
-import { finalize } from 'rxjs';
-import { HttpEventType } from '@angular/common/http';
 import { Photo } from '@models/photo.model';
-import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog.component';
 
 @Component({
   selector: 'photo-add',
@@ -125,9 +126,7 @@ export class PhotoAddComponent {
           break;
         }
         case HttpEventType.Response: {
-          if (event.body?.msg === 'PHOTOS_CREATED') {
-            this.router.navigate(['plant', this.plantId])
-          }
+          this.router.navigate(['plant', this.plantId])
           break;
         }
 

@@ -1,6 +1,6 @@
 <h1 mat-dialog-title>{{ data.title }}</h1>
 <div mat-dialog-content>
-  {{ data.question }}
+  <p *ngFor="let q of data.question" [innerHTML]="q"></p>
 </div>
 <div mat-dialog-actions align="center">
   <button mat-raised-button mat-dialog-close cdkFocusInitial>{{ 'general.cancel' | translate }}</button>

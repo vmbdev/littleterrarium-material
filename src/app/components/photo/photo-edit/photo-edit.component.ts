@@ -2,19 +2,20 @@ import { Component, Inject, Optional, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTabsModule } from '@angular/material/tabs';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { PhotoFormDescriptionComponent } from '../photo-form-description/photo-form-description.component';
-import { PhotoFormPrivacyComponent } from '../photo-form-privacy/photo-form-privacy.component';
-import { PhotoFormDateComponent } from '../photo-form-date/photo-form-date.component';
 import { MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
 import { MatDialog } from '@angular/material/dialog';
+import { FormGroup } from '@angular/forms';
+import { BehaviorSubject, finalize } from 'rxjs';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+
+import { PhotoFormDescriptionComponent } from '@components/photo/forms/photo-form-description/photo-form-description.component';
+import { PhotoFormPrivacyComponent } from '@components/photo/forms/photo-form-privacy/photo-form-privacy.component';
+import { PhotoFormDateComponent } from '@components/photo/forms/photo-form-date/photo-form-date.component';
+import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog.component';
 import { ErrorHandlerService } from '@services/error-handler.service';
 import { PlantService } from '@services/plant.service';
 import { PhotoService } from '@services/photo.service';
-import { BehaviorSubject, finalize, Observable } from 'rxjs';
 import { Photo } from '@models/photo.model';
-import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog.component';
-import { FormGroup } from '@angular/forms';
 
 interface PhotoEditConfig {
   id: number

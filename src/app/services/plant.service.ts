@@ -64,6 +64,10 @@ export class PlantService {
     return this.api.getPlantCover(id);
   }
 
+  getPhotos(id: number): Observable<Photo[]> {
+    return this.api.getPlantPhotos(id);
+  }
+
   getVisibleName(plant: Plant): string {
     let name;
 
