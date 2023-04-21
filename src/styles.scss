@@ -68,6 +68,10 @@ mat-bottom-sheet-container {
   align-items: center;
 }
 
+.mat-expansion-panel-content {
+  font: inherit !important;
+}
+
 // mat-stepper, .mat-horizontal-stepper-wrapper, .mat-horizontal-content-container, .mat-horizontal-stepper-content {
 //   height: 100% !important;
 // }

@@ -1,0 +1,7 @@
+<form [formGroup]="form">
+  <p [innerHTML]="'user-edit.emailDesc' | translate"></p>
+  <mat-form-field class="full-width">
+    <mat-label>{{ 'general.email' | translate }}</mat-label>
+    <input matInput type="email" formControlName="email">
+  </mat-form-field>
+</form>

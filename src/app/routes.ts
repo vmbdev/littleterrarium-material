@@ -18,10 +18,10 @@ export const routes: Routes = [
     path: 'register',
     loadComponent: () => import('./components/user/register/register.component').then(m => m.RegisterComponent)
   },
-  // {
-  //   path: 'user',
-  //   loadChildren: () => import('./components/user/routes').then(m => m.USER_ROUTES)
-  // },
+  {
+    path: 'user',
+    loadChildren: () => import('./components/user/routes').then(m => m.USER_ROUTES)
+  },
   {
     path: 'location',
     loadChildren: () => import('./components/location/routes').then(m => m.LOCATION_ROUTES)

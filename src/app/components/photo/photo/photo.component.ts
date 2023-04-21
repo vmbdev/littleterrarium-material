@@ -109,6 +109,8 @@ export class PhotoComponent {
     if (this.id) {
       const wd = this.openWaitDialog();
 
+      this.navigation = {};
+
       this.photoService.get(this.id, { navigation: true, cover: true }).pipe(
         finalize(() => { wd.close() }),
         catchError((err: HttpErrorResponse) => {

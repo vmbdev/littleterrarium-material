@@ -9,6 +9,8 @@ import { MatInputModule } from '@angular/material/input';
 import { TranslateModule } from '@ngx-translate/core';
 import { PlantService } from '@services/plant.service';
 import { Plant } from '@models/plant.model';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'plant-edit-water',
@@ -21,6 +23,8 @@ import { Plant } from '@models/plant.model';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
+    MatDividerModule,
+    MatCardModule,
     TranslateModule
   ],
   templateUrl: './plant-edit-water.component.html',
@@ -46,7 +50,6 @@ export class PlantEditWaterComponent {
 
     if (plant) {
       this.id = plant.id;
-      console.log(plant.waterFreq, plant.waterLast);
       this.waterForm.patchValue({
         waterFreq: plant.waterFreq,
         waterLast: plant.waterLast

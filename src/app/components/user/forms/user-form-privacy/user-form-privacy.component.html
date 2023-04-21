@@ -1,0 +1,9 @@
+<p [innerHtml]="'user-edit.publicProfile' | translate"></p>
+<p [innerHtml]="'user-edit.privateProfile' | translate"></p>
+
+<form [formGroup]="form">
+  <mat-checkbox formControlName="public" [checked]="currentPrivacy">
+    {{ 'general.visibilityPublic' | translate }}
+  </mat-checkbox>
+
+</form>

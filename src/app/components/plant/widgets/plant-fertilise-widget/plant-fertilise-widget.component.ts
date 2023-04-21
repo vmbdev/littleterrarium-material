@@ -2,7 +2,14 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
-import { TranslateModule } from '@ngx-translate/core';
+import { MatBottomSheetModule, MatBottomSheet } from '@angular/material/bottom-sheet';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialogModule, MatDialog } from '@angular/material/dialog';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { ConfirmDialogComponent } from '@components/dialogs/confirm-dialog/confirm-dialog.component';
+import { PlantEditFertilizerComponent } from '@components/plant/plant-edit-fertilizer/plant-edit-fertilizer.component';
+import { DaysAgoPipe } from '@pipes/days-ago/days-ago.pipe';
+import { PlantService } from '@services/plant.service';
 
 @Component({
   selector: 'plant-fertilise-widget',
@@ -11,11 +18,40 @@ import { TranslateModule } from '@ngx-translate/core';
     CommonModule,
     MatExpansionModule,
     MatIconModule,
-    TranslateModule
+    MatButtonModule,
+    MatBottomSheetModule,
+    MatDialogModule,
+    TranslateModule,
+    DaysAgoPipe,
   ],
   templateUrl: './plant-fertilise-widget.component.html',
   styleUrls: ['./plant-fertilise-widget.component.scss']
 })
 export class PlantFertiliseWidgetComponent {
+  constructor(
+    public plantService: PlantService,
+    private bottomSheet: MatBottomSheet,
+    private dialog: MatDialog,
+    private translate: TranslateService
+  ) {}
 
+  addFert(): void {
+    this.plantService.fertilize().subscribe();
+  }
+
+  openEdit(): void {
+    this.bottomSheet.open(PlantEditFertilizerComponent);
+  }
+
+  openFertDialog() {
+    this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        title: this.translate.instant('general.fertilizer'),
+        question: [
+          this.translate.instant('plant-widget-fertilizer.confirm')
+        ],
+        accept: () => this.addFert()
+      },
+    });
+  }
 }

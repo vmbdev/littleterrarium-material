@@ -38,8 +38,12 @@ export const Condition: { [key: string]: string } = {
 }
 export type Condition = (typeof Condition)[keyof typeof Condition];
 
+export type Pot = {
+  name: string,
+  image: string
+}
 // client-side only
-export const potChoices: { [key: string]: any } = {
+export const potChoices: { [key: string]: Pot } = {
   LT_POT_TERRACOTTA: { name: 'Terracotta', image: 'assets/pot-terracotta.jpg' },
   LT_POT_PLASTIC: { name: 'Plastic', image: 'assets/pot-plastic.jpg' },
   LT_POT_CERAMIC: { name: 'Ceramic', image: 'assets/pot-ceramic.jpg' },

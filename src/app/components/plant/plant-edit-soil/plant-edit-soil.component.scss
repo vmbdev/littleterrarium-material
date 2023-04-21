@@ -1,0 +1,21 @@
+.pot-selector {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  width: 100%;
+  text-align: center;
+  gap: 10px;
+
+  &__material {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+
+    img {
+      max-width: 100%;
+    }
+
+    &-selected {
+      background-color: #2196f3;
+    }
+  }
+}

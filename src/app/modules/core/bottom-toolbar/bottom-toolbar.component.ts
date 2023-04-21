@@ -1,6 +1,6 @@
-import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Observable, map, shareReplay } from 'rxjs';
+import { Component, EventEmitter, Output } from '@angular/core';
+import { AuthService } from '@services/auth.service';
+import { ImagePathService } from '@services/image-path.service';
 
 @Component({
   selector: 'bottom-toolbar',
@@ -9,15 +9,11 @@ import { Observable, map, shareReplay } from 'rxjs';
 })
 export class BottomToolbarComponent {
   @Output() toggleSidenav = new EventEmitter();
-  isHandset$: Observable<boolean>;
 
-  constructor(private breakpointObserver: BreakpointObserver) {
-    this.isHandset$ = this.breakpointObserver.observe(Breakpoints.Handset)
-    .pipe(
-      map(result => result.matches),
-      shareReplay()
-    );
-  }
+  constructor(
+    public auth: AuthService,
+    public imagePath: ImagePathService
+  ) { }
 
   emitToggleSidenav() {
     this.toggleSidenav.emit();

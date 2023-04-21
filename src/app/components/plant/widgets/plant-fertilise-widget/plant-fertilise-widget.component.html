@@ -1,4 +1,4 @@
-<mat-expansion-panel>
+<mat-expansion-panel *ngIf="plantService.plant$ | async as plant">
   <mat-expansion-panel-header>
     <mat-panel-title>
       {{ 'general.fertilizer' | translate }}
@@ -7,5 +7,30 @@
       <mat-icon>local_pizza</mat-icon>
     </mat-panel-description>
   </mat-expansion-panel-header>
-  
+
+  <ng-container *ngIf="plant.fertFreq || plant.fertLast; else noFertData">
+    <p *ngIf="plant.fertLast"><b>{{ 'general.lastTime' | translate }}</b> {{ plant.fertLast | date }}</p>
+    <p *ngIf="plant.fertType"><b>{{ 'plant-widget-fertilizer.type' | translate }}:</b> {{ plant.fertType }}</p>
+    <p *ngIf="plant.fertFreq" [innerHTML]="'plant-widget-fertilizer.freq' | translate:{ days: plant.fertFreq }"></p>
+    <p *ngIf="plant.fertNext">
+      <ng-container *ngIf="plant.fertNext | daysAgo:false as days">
+        <b>{{ 'general.nextTime' | translate }}</b>
+        
+        <span *ngIf="days < 0; else inFuture" [ngStyle]="{ 'color': 'red' }">
+          {{ 'general.daysAgo' | translate:{ days: (plant.fertNext | daysAgo) } }}
+        </span>
+        <ng-template #inFuture>
+          {{ 'general.daysCount' | translate:{ days: (plant.fertNext | daysAgo) } }}
+        </ng-template>
+      </ng-container>
+    </p>
+  </ng-container>
+  <ng-template #noFertData>
+    <p>{{ 'plant-widget-fert.noData' | translate }}</p>
+  </ng-template>
+
+  <mat-action-row *ngIf="this.plantService.owned">
+    <button mat-button color="primary" (click)="openFertDialog()">{{ 'plant-widget-fert.now' | translate }}</button>
+    <button mat-button color="primary" (click)="openEdit()">{{ 'general.edit' | translate }}</button>
+  </mat-action-row>
 </mat-expansion-panel>

@@ -1,11 +1,13 @@
 <form *ngIf="plantService.plant$ | async as plant" [formGroup]="waterForm" method="post" (submit)="submit()">
-  <div class="modal-text">
-    <p [innerHTML]="'plant-edit-watering.warning' | translate"></p>
-    <p [innerHTML]="'plant-edit-watering.sensitive' | translate"></p>
-    <p [innerHTML]="'plant-edit-watering.reminder' | translate"></p>
-  </div>
+  <mat-card>
+    <mat-card-content>
+      <p [innerHTML]="'plant-edit-watering.warning' | translate"></p>
+      <p [innerHTML]="'plant-edit-watering.sensitive' | translate"></p>
+      <p [innerHTML]="'plant-edit-watering.reminder' | translate"></p>
+    </mat-card-content>
+  </mat-card>
   
-  <div class="form__date">
+  <div>
     <p [innerHTML]="'plant-edit-watering.lastTime' | translate"></p>
 
     <mat-form-field appearance="fill" class="full-width">
@@ -21,6 +23,9 @@
     </mat-form-field>
 
   </div>
+
+  <mat-divider></mat-divider>
+
   <div>
     <p [innerHTML]="'plant-edit-watering.nextTime' | translate"></p>
     <mat-form-field class="full-width">

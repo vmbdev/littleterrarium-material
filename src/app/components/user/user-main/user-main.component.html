@@ -1,0 +1,17 @@
+<ng-container *ngIf="auth.user$ | async as user">
+  <profile></profile>
+
+  <mat-nav-list class="user-main">
+    <a mat-list-item matRipple (click)="openEdit()">
+      <span matRipple matListItemTitle>{{ 'userbox.profile' | translate }}</span>
+    </a>
+
+    <a [routerLink]="['/terrarium', user.username]" mat-list-item matRipple>
+      <span matListItemTitle>{{ 'userbox.terrarium' | translate }}</span>
+    </a>
+
+    <a routerLink="/logout" mat-list-item matRipple>
+      <span matListItemTitle>{{ 'general.logout' | translate }}</span>
+    </a>
+  </mat-nav-list>
+</ng-container>
