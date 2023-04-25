@@ -17,7 +17,7 @@
     <mat-icon aria-label="Side nav toggle icon">task</mat-icon>
   </button>
   <button type="button" routerLink="/user" mat-icon-button>
-    <ng-container *ngIf="auth.user$ | async as user"; else noUser>
+    <ng-container *ngIf="auth.user$ | async as user; else noUser">
       <div
         *ngIf="user.avatar"
         class="bottom-toolbar__avatar"

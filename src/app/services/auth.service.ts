@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of, map, catchError, throwError, BehaviorSubject } from 'rxjs';
 import { ApiService } from '@services/api.service';
 import { User } from '@models/user.model';
+import { BackendResponse } from '@models/backend-response.model';
 
 @Injectable({
   providedIn: 'root'
@@ -66,5 +67,9 @@ export class AuthService {
 
   updateUser(user: User): void {
     this.user$.next(user);
+  }
+
+  checkPassword(password: string): Observable<BackendResponse> {
+    return this.api.checkPassword(password);
   }
 }

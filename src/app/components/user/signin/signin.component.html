@@ -20,6 +20,6 @@
     </div>
 
     <button type="submit" mat-raised-button color="primary">{{ 'general.signin' | translate }}</button>
-    <button mat-raised-button color="link" [routerLink]="['/register']" [innerHTML]="'signin.createAccount' | translate"></button>
+    <button mat-button color="link" routerLink="/register" [innerHTML]="'signin.createAccount' | translate"></button>
   </div>
 </form>

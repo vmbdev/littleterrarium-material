@@ -21,9 +21,10 @@ import { UserFormPrivacyComponent } from '@components/user/forms/user-form-priva
 import { FormBaseComponent } from '@components/form-base/form-base.component';
 import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog.component';
 import { FileUploaderComponent } from '@components/file-uploader/file-uploader.component';
+import { MainToolbarService } from '@services/main-toolbar.service';
 
 @Component({
-  selector: 'app-user-edit',
+  selector: 'user-edit',
   standalone: true,
   templateUrl: './user-edit.component.html',
   styleUrls: ['./user-edit.component.scss'],
@@ -60,12 +61,15 @@ export class UserEditComponent {
     private api: ApiService,
     public auth: AuthService,
     private errorHandler: ErrorHandlerService,
+    private mt: MainToolbarService,
     private translate: TranslateService,
     private dialog: MatDialog,
     @Optional() private bottomSheetRef: MatBottomSheetRef,
   ) { }
 
   ngOnInit(): void {
+    this.mt.hide();
+
     this.auth.checked$.pipe(
       skipWhile(val => val === false)
     ).subscribe(() => {

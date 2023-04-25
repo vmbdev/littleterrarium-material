@@ -1,1 +1,17 @@
-<p>register works!</p>
+<mat-stepper *ngIf="!(auth.signedIn$ | async)" [selectedIndex]="stepperIndex" labelPosition="bottom" linear="true" animationDuration="300">
+  <mat-step [stepControl]="formUsername.form" [label]="'general.username' | translate">
+    <user-form-username #formUsername></user-form-username>
+    <stepper-navigation backButton="false"></stepper-navigation>
+  </mat-step>
+
+  <mat-step [stepControl]="formEmail.form" [label]="'general.email' | translate">
+    <user-form-email #formEmail></user-form-email>
+    <stepper-navigation></stepper-navigation>
+  </mat-step>
+
+  <mat-step [stepControl]="formPassword.form" [label]="'general.password' | translate">
+    <user-form-password #formPassword></user-form-password>
+    <stepper-navigation finishButton="true" (finish)="submit()"></stepper-navigation>
+  </mat-step>
+
+</mat-stepper>

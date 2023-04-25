@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { TranslateModule } from '@ngx-translate/core';
@@ -20,12 +20,24 @@ import { FormBaseComponent } from '@components/form-base/form-base.component';
   styleUrls: ['./user-form-username.component.scss']
 })
 export class UserFormUsernameComponent implements FormBaseComponent {
-  @Input() currentUsername: string | null = '';
-  public form = this.fb.group({ username: [''] });
+  @Input() currentUsername?: string;
+  public form = this.fb.group({ username: ['', Validators.required] });
 
-  constructor (private fb: FormBuilder) {}
+  constructor (
+    private fb: FormBuilder
+  ) {}
 
   ngOnInit(): void {
-    this.form.patchValue({ username: this.currentUsername })
+    if (this.currentUsername) this.form.patchValue({ username: this.currentUsername })
+  }
+
+  isTaken(): boolean {
+    const errors = this.form.get('username')?.errors;
+    return (errors && errors['taken']);
+  }
+
+  isInvalid(): boolean {
+    const errors = this.form.get('username')?.errors;
+    return (errors && errors['invalid']);
   }
 }

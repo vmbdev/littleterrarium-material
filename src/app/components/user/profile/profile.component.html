@@ -1,7 +1,7 @@
 <div *ngIf="auth.user$ | async as user; else userNotFound" class="profile">
   <div class="profile__userbox">
     <div class="profile__avatar">
-      <img class="profile__avatarpic" [src]="getAvatar()">
+      <img *ngIf="user.avatar" class="profile__avatarpic" [src]="getAvatar()">
     </div>
     <div class="profile__username">
       <h1>{{ user.username }}</h1>

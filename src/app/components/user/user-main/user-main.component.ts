@@ -8,6 +8,7 @@ import { AuthService } from '@services/auth.service';
 import { MatRippleModule } from '@angular/material/core';
 import { MatBottomSheet, MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { UserEditComponent } from '../user-edit/user-edit.component';
+import { MainToolbarService } from '@services/main-toolbar.service';
 
 @Component({
   selector: 'app-user-main',
@@ -27,10 +28,13 @@ import { UserEditComponent } from '../user-edit/user-edit.component';
 export class UserMainComponent {
   constructor(
     public auth: AuthService,
+    private mt: MainToolbarService,
     private bottomSheet: MatBottomSheet
   ) {}
 
-  ngAfterViewInit() { }
+  ngOnInit(): void {
+    this.mt.hide();
+  }
 
   openEdit(): void {
     this.bottomSheet.open(UserEditComponent);

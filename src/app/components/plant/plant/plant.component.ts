@@ -2,12 +2,12 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
-import { catchError, EMPTY, finalize } from 'rxjs';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatBottomSheet, MatBottomSheetModule } from '@angular/material/bottom-sheet';
+import { catchError, EMPTY, finalize } from 'rxjs';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 import { Condition, Plant } from '@models/plant.model';
 import { MainToolbarService } from '@services/main-toolbar.service';
@@ -19,8 +19,8 @@ import { PropertyComponent } from '@components/info-box/property/property.compon
 import { PhotoListComponent } from '@components/photo/photo-list/photo-list.component';
 import { FabComponent } from '@components/fab/fab.component';
 import { PlantEditComponent } from '@components/plant/plant-edit/plant-edit.component';
-import { CapitalizePipe } from '@pipes/capitalize/capitalize.pipe';
 import { PlantExpansionInfoComponent } from '@components/plant/plant-expansion-info/plant-expansion-info.component';
+import { CapitalizePipe } from '@pipes/capitalize/capitalize.pipe';
 
 @Component({
     selector: 'plant',

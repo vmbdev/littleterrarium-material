@@ -198,11 +198,11 @@
   "user-register.emailInvalid": "Lo sentimos, tu dirección de correo no tiene el formato adecuado.",
   "user-register.emailTaken": "Lo sentimos, tu correo electrónico ya está en nuestro sistema. ¿Seguro que no tienes ya una cuenta?",
   "user-register.lookingForward": "¡Estamos deseando darte la bienvenida a nuestra familia!",
-  "user-register.passwordAlphanum": "Un carácter no alfanumérico: {$INTERPOLATION}",
+  "user-register.passwordAlphanum": "Un carácter no alfanumérico: {{chars}}",
   "user-register.passwordDesc": "<b>Ya casi hemos terminado</b>. Por último, una <b>contraseña</b> para proteger tu cuenta.",
   "user-register.passwordInput": "Tu contraseña",
   "user-register.passwordInputRepeat": "Tu contraseña otra vez",
-  "user-register.passwordLength": "La contraseña debe tener al menos <b>{$INTERPOLATION} caracteres</b>",
+  "user-register.passwordLength": "La contraseña debe tener al menos <b>{{length}} caracteres</b>",
   "user-register.passwordNumber": "Un número",
   "user-register.passwordReq": "La contraseña debe tener:",
   "user-register.passwordUppercase": "Una mayúscula",
@@ -215,5 +215,6 @@
   "userbox.username": "Hola <b>{$INTERPOLATION}</b>",
   "general.firstname": "Nombre",
   "general.lastname": "Apellidos",
-  "general.tasks": "Tareas"
+  "general.tasks": "Tareas",
+  "user-form-password.passwordDifferent": "Las contraseñas no coinciden"
 }

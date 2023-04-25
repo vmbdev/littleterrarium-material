@@ -3,5 +3,7 @@
   <mat-form-field class="full-width">
     <mat-label>{{ 'general.username' | translate }}</mat-label>
     <input matInput type="text" formControlName="username">
+    <mat-error *ngIf="isTaken()">{{ 'user-register.usernameTaken' | translate }}</mat-error>
+    <mat-error *ngIf="isInvalid()">{{ 'user-register.usernameInvalid' | translate }}</mat-error>
   </mat-form-field>
 </form>
