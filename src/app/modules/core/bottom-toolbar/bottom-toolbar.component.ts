@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { AuthService } from '@services/auth.service';
 import { ImagePathService } from '@services/image-path.service';
+import { TaskService } from '@services/task.service';
 
 @Component({
   selector: 'bottom-toolbar',
@@ -12,7 +13,8 @@ export class BottomToolbarComponent {
 
   constructor(
     public auth: AuthService,
-    public imagePath: ImagePathService
+    public imagePath: ImagePathService,
+    public taskService: TaskService
   ) { }
 
   emitToggleSidenav() {

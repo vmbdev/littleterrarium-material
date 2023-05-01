@@ -1,0 +1,10 @@
+.button {
+  &__water {
+    color: #2698f6;
+
+    &-disabled {
+      color: grey;
+      pointer-events: none;
+    }
+  }
+}

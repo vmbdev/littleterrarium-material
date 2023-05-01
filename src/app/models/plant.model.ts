@@ -29,6 +29,10 @@ export interface Plant {
   visibleName?: string
 }
 
+export interface CoverPhoto {
+  coverId: number | null
+}
+
 export const Condition: { [key: string]: string } = {
   BAD: 'On the line', // red
   POOR: 'Holding on to life', // yellow

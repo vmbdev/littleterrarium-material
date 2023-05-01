@@ -28,6 +28,7 @@
     
     <ng-template #plantToolbar>
       <plant-toolbar
+        [id]="plant.id"
         (remove)="openRemoveDialog(getName(plant), plant.id)"
         (edit)="openEdit(plant.id)"
       ></plant-toolbar>

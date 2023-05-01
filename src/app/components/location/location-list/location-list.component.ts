@@ -9,7 +9,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatBottomSheet, MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
-import { ApiService } from '@services/api.service';
+import { ApiService, LocationGetConfig } from '@services/api.service';
 import { ImagePathService } from '@services/image-path.service';
 import { Location } from '@models/location.model';
 import { ImagePath } from '@models/image-path.model';
@@ -62,7 +62,7 @@ export class LocationListComponent {
   getLocationList() {
     const wd = this.openWaitDialog();
 
-    const options = {
+    const options: LocationGetConfig = {
       plantCount: true,
       userId: this.userId ? this.userId : null
     }
@@ -83,7 +83,10 @@ export class LocationListComponent {
       if (updatedLocation) {
         const list = this.locations$.getValue();
         const index = list.findIndex((loc) => loc.id === updatedLocation.id);
-        updatedLocation._count = { plants: list[index]._count.plants };
+        const plantCount = list[index]._count?.plants;
+
+        if (plantCount) updatedLocation._count = { plants: plantCount };
+
         list[index] = updatedLocation;
         this.locations$.next(list);
       }
@@ -103,7 +106,7 @@ export class LocationListComponent {
       data: {
         title: name,
         question: [this.translate.instant('location.remove')],
-        accept: () => this.delete(id)
+        accept: () => { this.delete(id) }
       },
     });
   }
@@ -132,6 +135,5 @@ export class LocationListComponent {
         }
       }
     });
-
   }
 }

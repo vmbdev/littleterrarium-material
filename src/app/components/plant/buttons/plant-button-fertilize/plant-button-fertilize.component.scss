@@ -1,0 +1,10 @@
+.button {
+  &__fert {
+    color: #5dba4a;
+    
+    &-disabled {
+      color: grey;
+      pointer-events: none;
+    }
+  }
+}

@@ -66,15 +66,11 @@ export class PhotoService {
     );
   }
 
-  delete(): Observable<any> {
-    const photo = this.photo$.getValue();
-
-    if (photo) {
-      const id = photo.id;
-
-      return this.api.deletePhoto(id);
-    }
-    else return of(null);
+  delete(id?: number): Observable<any> {
+    if (!id) id = this.photo$.getValue()?.id;
+    
+    if (id) return this.api.deletePhoto(id);
+    else return EMPTY;
   }
 
 }

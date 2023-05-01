@@ -17,8 +17,6 @@ export class MainToolbarService {
   menu$ = new BehaviorSubject<MainToolbarButton[]>([]);
   hidden$ = new BehaviorSubject<boolean>(true);
 
-  constructor() { }
-
   setName(name: string) {
     this.hidden$.next(false);
     this.name$.next(name);
@@ -35,6 +33,9 @@ export class MainToolbarService {
   }
 
   hide() {
+    this.buttons$.next([]);
+    this.menu$.next([]);
+    this.name$.next('');
     this.hidden$.next(true);
   }
 

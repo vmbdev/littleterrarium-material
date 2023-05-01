@@ -5,7 +5,7 @@
       <mat-card-title-group>
         <img mat-card-sm-image [src]="(item.pictures ? getHeaderPic(item.pictures) : 'assets/nopic.png')">
         <mat-card-title>{{ item.name }}</mat-card-title>
-        <mat-card-subtitle *ngIf="item._count.plants > 0; else noPlants">
+        <mat-card-subtitle *ngIf="item._count && (item._count.plants > 0); else noPlants">
           {{ 'location-list.amount' | translate:{ plantCount: item._count.plants } }}
         </mat-card-subtitle>
         <ng-template #noPlants>

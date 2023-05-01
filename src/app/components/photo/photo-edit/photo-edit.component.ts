@@ -107,18 +107,13 @@ export class PhotoEditComponent {
     const wd = this.openWaitDialog();
 
     this.photoService.update(photo).pipe(
-      finalize(() => {
-        wd.close();
-
-        if (this.editPhoto && this.bottomSheetRef) {
-          this.bottomSheetRef.dismiss(this.returnedPhoto);
-        }
-      })
+      finalize(() => { wd.close() })
     ).subscribe((updatedPhoto: Photo) => {
       const currentPhoto = this.photoService.photo$.value;
 
       if (this.editPhoto && this.bottomSheetRef) {
         this.returnedPhoto = { ...currentPhoto, ...updatedPhoto };
+        this.bottomSheetRef.dismiss(this.returnedPhoto);
       }
     })
   }

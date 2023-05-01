@@ -89,7 +89,7 @@ export class PlantListComponent {
       data: {
         title: name,
         question: [this.translate.instant('plant.remove')],
-        accept: () => this.delete(id)
+        accept: () => { this.delete(id) }
       },
     });
   }

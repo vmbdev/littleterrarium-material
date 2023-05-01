@@ -1,6 +1,7 @@
 import { Location } from '@angular/common';
 import { Component } from '@angular/core';
 import { MainToolbarService } from '@services/main-toolbar.service';
+import { SearchService } from '@services/search.service';
 
 @Component({
   selector: 'main-toolbar',
@@ -11,6 +12,7 @@ export class MainToolbarComponent {
 
   constructor(
     public mt: MainToolbarService,
+    public search: SearchService,
     private location: Location
   ) {}
 

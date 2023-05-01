@@ -108,12 +108,15 @@ export class PlantService {
     else return EMPTY;
   }
 
-  fertilize(): Observable<any> {
-    const id = this.plant$.getValue()?.id;
+  fertilize(id?: number): Observable<any> {
+    let plantId: number | undefined;
 
-    if (id) {
+    if (id) plantId = id;
+    else plantId = this.plant$.getValue()?.id;
+
+    if (plantId) {
       const updatedPlant = {
-        id: id,
+        id: plantId,
         fertLast: new Date()
       } as Plant;
       return this.update(updatedPlant);
@@ -122,12 +125,15 @@ export class PlantService {
     return EMPTY;
   }
 
-  water(): Observable<any> {
-    const id = this.plant$.getValue()?.id;
+  water(id?: number): Observable<any> {
+    let plantId: number | undefined;
 
-    if (id) {
+    if (id) plantId = id;
+    else plantId = this.plant$.getValue()?.id;
+
+    if (plantId) {
       const updatedPlant = {
-        id: id,
+        id: plantId,
         waterLast: new Date()
       } as Plant;
       return this.update(updatedPlant);

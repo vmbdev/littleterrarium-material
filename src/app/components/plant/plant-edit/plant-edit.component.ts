@@ -124,18 +124,13 @@ export class PlantEditComponent {
     const wd = this.openWaitDialog();
 
     this.plantService.update(plant).pipe(
-      finalize(() => {
-        wd.close();
-
-        if (this.editPlant && this.bottomSheetRef) {
-          this.bottomSheetRef.dismiss(this.returnedPlant);
-        }
-      })
+      finalize(() => { wd.close() })
     ).subscribe((updatedPlant: Plant) => {
       const currentPlant = this.plantService.plant$.getValue();
 
       if (this.editPlant && this.bottomSheetRef) {
         this.returnedPlant = { ...currentPlant, ...updatedPlant };
+        this.bottomSheetRef.dismiss(this.returnedPlant);
       }
     });
 

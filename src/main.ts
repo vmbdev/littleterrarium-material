@@ -30,7 +30,7 @@ bootstrapApplication(AppComponent, {
     { provide: HAMMER_GESTURE_CONFIG, useClass: LTHammerConfig },
     provideAnimations(),
     provideHttpClient(withInterceptorsFromDi()),
-    importProvidersFrom(RouterModule.forRoot(routes, { onSameUrlNavigation: 'reload' })),
+    importProvidersFrom(RouterModule.forRoot(routes)),
     importProvidersFrom(TranslateModule.forRoot({
       defaultLanguage: 'en',
       loader: {

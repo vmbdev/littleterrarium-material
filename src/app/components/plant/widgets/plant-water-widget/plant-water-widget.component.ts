@@ -34,10 +34,6 @@ export class PlantWaterWidgetComponent {
     private translate: TranslateService
   ) {}
 
-  addWater(): void {
-    this.plantService.water().subscribe();
-  }
-
   openEdit(): void {
     this.bottomSheet.open(PlantEditWaterComponent);
   }
@@ -50,7 +46,7 @@ export class PlantWaterWidgetComponent {
           this.translate.instant('plant-widget-water.confirm'),
           this.translate.instant('plant-widget-water.warning')
         ],
-        accept: () => this.addWater()
+        accept: () => this.plantService.water().subscribe()
       },
     });
   }

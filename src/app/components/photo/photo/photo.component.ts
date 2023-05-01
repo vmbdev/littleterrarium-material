@@ -3,7 +3,7 @@ import { Component, ElementRef, QueryList, ViewChildren } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ActivatedRoute, Params, Router, RouterModule } from '@angular/router';
-import { catchError, EMPTY, finalize, fromEvent, Observable, startWith, Subscription, switchMap } from 'rxjs';
+import { catchError, EMPTY, finalize, fromEvent, startWith, Subscription, switchMap } from 'rxjs';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { DateTime } from 'luxon';
 
@@ -25,6 +25,7 @@ import { PhotoEditComponent } from '../photo-edit/photo-edit.component';
 import { NavigationData, Photo } from '@models/photo.model';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
+import { ConfirmDialogComponent } from '@components/dialogs/confirm-dialog/confirm-dialog.component';
 
 @Component({
     selector: 'photo',
@@ -131,7 +132,9 @@ export class PhotoComponent {
           this.mt.setName(this.getDateTitle(photo.takenAt));
           this.mt.setMenu([
             { icon: 'edit', tooltip: 'general.edit', click: () => { this.openEdit() } },
+            { icon: 'delete', tooltip: 'general.delete', click: () => { this.openRemoveDialog() }}
           ]);
+          this.mt.setButtons([]);
 
           return this.photoService.getNavigation(photo.id);
         }),
@@ -145,6 +148,25 @@ export class PhotoComponent {
       ).subscribe((cover: any) => {
         this.plantCoverId = cover.coverId;
       });
+    }
+  }
+
+  openRemoveDialog() {
+    this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        title: this.translate.instant('general.delete'),
+        question: [this.translate.instant('photo.remove')],
+        accept: () => { this.delete() }
+      },
+    });
+  }
+
+  delete(): void {
+    const photo = this.photoService.photo$.getValue();
+    if (photo) {
+      this.photoService.delete(photo.id).subscribe(() => {
+        this.router.navigate(['/plant', photo.plantId]);
+      })
     }
   }
 

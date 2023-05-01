@@ -38,8 +38,8 @@ export const routes: Routes = [
   //   path: 'terrarium/:username',
   //   loadComponent: () => import('./components/terrarium/terrarium.component').then(m => m.TerrariumComponent)
   // },
-  // {
-  //   path: 'tasks',
-  //   loadComponent: () => import('./components/tasks/tasks.component').then(m => m.TasksComponent), canActivate: [AuthGuard]
-  // },
+  {
+    path: 'tasks',
+    loadComponent: () => import('./components/task/task-list/task-list.component').then(m => m.TaskListComponent), canActivate: [AuthGuard]
+  },
 ];

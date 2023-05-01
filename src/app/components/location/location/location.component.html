@@ -8,8 +8,8 @@
       {{ (location.public ? 'general.public' : 'general.private') | translate }}
     </property>
     <property icon="forest">
-      <ng-container *ngIf="location.plants && location.plants.length; else noPlants">
-        {{ 'location.plants' | translate:{ plantCount: location.plants.length } }}
+      <ng-container *ngIf="location._count?.plants; else noPlants">
+        {{ 'location.plants' | translate:{ plantCount: location._count?.plants } }}
       </ng-container>
       <ng-template #noPlants>
         {{ 'location.noPlants' | translate }}

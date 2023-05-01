@@ -219,5 +219,6 @@
   "userbox.profile": "Edit profile",
   "userbox.terrarium": "Your Terrarium",
   "userbox.username": "Hi <b>{$INTERPOLATION}</b>",
-  "plant-widget-fert.now": "Fertilize now"
+  "plant-widget-fert.now": "Fertilize now",
+  "general.share": "Share"
 }

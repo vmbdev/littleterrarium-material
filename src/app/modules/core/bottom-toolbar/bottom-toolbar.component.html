@@ -5,16 +5,16 @@
     mat-icon-button
     (click)="emitToggleSidenav()"
   >
-    <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+    <mat-icon>menu</mat-icon>
   </button>
   <button type="button" routerLink="/" mat-icon-button>
-    <mat-icon aria-label="Side nav toggle icon">roofing</mat-icon>
+    <mat-icon>roofing</mat-icon>
   </button>
   <button type="button" routerLink="/plant/all" mat-icon-button>
-    <mat-icon aria-label="Side nav toggle icon">forest</mat-icon>
+    <mat-icon>forest</mat-icon>
   </button>
-  <button type="button" mat-icon-button>
-    <mat-icon aria-label="Side nav toggle icon">task</mat-icon>
+  <button type="button" routerLink="/tasks" mat-icon-button>
+    <mat-icon [matBadge]="taskService.getCount()" matBadgeColor="warn">task</mat-icon>
   </button>
   <button type="button" routerLink="/user" mat-icon-button>
     <ng-container *ngIf="auth.user$ | async as user; else noUser">
@@ -26,7 +26,7 @@
       </div>
     </ng-container>
     <ng-template #noUser>
-      <mat-icon aria-label="Side nav toggle icon">account_circle</mat-icon>
+      <mat-icon>account_circle</mat-icon>
     </ng-template>
   </button>
 </mat-toolbar>

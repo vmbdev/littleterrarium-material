@@ -1,6 +1,6 @@
-<mat-tab-group *ngIf="auth.user$ | async as user" mat-stretch-tabs="false" mat-align-tabs="center">
+<mat-tab-group *ngIf="auth.user$ | async as user" [selectedIndex]="tabIndex" mat-stretch-tabs="false" mat-align-tabs="center">
   <mat-tab [label]="'general.username' | translate">
-    <user-form-username #form [currentUsername]="user.username"></user-form-username>
+    <user-form-username #form #formUsername [currentUsername]="user.username"></user-form-username>
   </mat-tab>
   
   <mat-tab [label]="'general.fullname' | translate">
@@ -13,7 +13,7 @@
   </mat-tab>
   
   <mat-tab [label]="'general.email' | translate">
-    <user-form-email #form [currentEmail]="user.email"></user-form-email>
+    <user-form-email #form #formEmail [currentEmail]="user.email"></user-form-email>
   </mat-tab>
   
   <mat-tab [label]="'general.bio' | translate">

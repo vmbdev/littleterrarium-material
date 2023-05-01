@@ -1,11 +1,7 @@
 <mat-toolbar class="plant-toolbar">
   <mat-toolbar-row class="plant-toolbar__row">
-    <button mat-icon-button class="button__water" (click)="water.emit()">
-      <mat-icon>water_drop</mat-icon>
-    </button>
-    <button mat-icon-button class="button__fert" (click)="fertilise.emit()">
-      <mat-icon>local_pizza</mat-icon>
-    </button>
+    <plant-button-water [id]="this.id"></plant-button-water>
+    <plant-button-fertilize [id]="this.id"></plant-button-fertilize>
     <button mat-icon-button class="button__edit" (click)="edit.emit()">
        <!-- (click)="openEdit(plant.id)"> -->
       <mat-icon>edit</mat-icon>

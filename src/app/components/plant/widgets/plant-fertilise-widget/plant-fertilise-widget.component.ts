@@ -35,10 +35,6 @@ export class PlantFertiliseWidgetComponent {
     private translate: TranslateService
   ) {}
 
-  addFert(): void {
-    this.plantService.fertilize().subscribe();
-  }
-
   openEdit(): void {
     this.bottomSheet.open(PlantEditFertilizerComponent);
   }
@@ -50,7 +46,7 @@ export class PlantFertiliseWidgetComponent {
         question: [
           this.translate.instant('plant-widget-fertilizer.confirm')
         ],
-        accept: () => this.addFert()
+        accept: () => this.plantService.fertilize().subscribe()
       },
     });
   }

@@ -216,5 +216,6 @@
   "general.firstname": "Nombre",
   "general.lastname": "Apellidos",
   "general.tasks": "Tareas",
-  "user-form-password.passwordDifferent": "Las contraseñas no coinciden"
+  "user-form-password.passwordDifferent": "Las contraseñas no coinciden",
+  "general.share": "Compartir"
 }

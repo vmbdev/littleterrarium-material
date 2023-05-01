@@ -9,7 +9,9 @@ export interface Location {
   createdAt: Date
   updatedAt: Date
   plants?: Plant[]
-  _count?: any
+  _count?: {
+    plants: number
+  },
   pictureFile: File
   pictures?: any
 }

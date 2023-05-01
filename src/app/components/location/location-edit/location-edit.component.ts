@@ -1,18 +1,18 @@
-import { Component, Inject, Injector, Optional } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FileUploaderComponent } from '@components/file-uploader/file-uploader.component';
-import { TranslateModule } from '@ngx-translate/core';
-import { MatTabsModule } from '@angular/material/tabs';
-
-import { Location } from '@models/location.model';
-import { LocationFormLightComponent } from '@components/location/forms/location-form-light/location-form-light.component';
-import { LocationFormNameComponent } from '@components/location/forms/location-form-name/location-form-name.component';
-import { LocationFormPrivacyComponent } from '@components/location/forms/location-form-privacy/location-form-privacy.component';
-import { MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
+import { Component, Inject, Injector, Optional } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { catchError, EMPTY, finalize } from 'rxjs';
 import { MatButtonModule } from '@angular/material/button';
-import { LocationUpsertBaseComponent } from '../location-upsert-base/location-upsert-base.component';
+import { MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
+import { MatTabsModule } from '@angular/material/tabs';
+import { TranslateModule } from '@ngx-translate/core';
+
+import { FileUploaderComponent } from '@components/file-uploader/file-uploader.component';
+import { LocationFormLightComponent } from '@components/location/forms/location-form-light/location-form-light.component';
+import { LocationFormNameComponent } from '@components/location/forms/location-form-name/location-form-name.component';
+import { LocationFormPrivacyComponent } from '@components/location/forms/location-form-privacy/location-form-privacy.component';
+import { LocationUpsertBaseComponent } from '@components/location/location-upsert-base/location-upsert-base.component';
+import { Location } from '@models/location.model';
 
 @Component({
   selector: 'location-edit',
@@ -69,20 +69,17 @@ export class LocationEditComponent extends LocationUpsertBaseComponent {
     if (this.editLocation.id) {
       data.id = this.editLocation.id;
 
-      this.api.updateLocation(data, this.removePicture).pipe(
+      this.api.updateLocation(data, { removePicture: this.removePicture }).pipe(
         catchError((error: HttpErrorResponse) => {
           if (error.error?.msg === 'IMG_NOT_VALID') this.errorHandler.push(this.translate.instant('errors.invalidImg'));
 
           return EMPTY;
         }),
-        finalize(() => {
-          ud.close();
-
-          if (this.editLocation && this.bottomSheetRef) this.bottomSheetRef.dismiss(this.returnedLocation);
-        })
+        finalize(() => { ud.close() })
       ).subscribe((location: Location) => {
         if (this.editLocation && this.bottomSheetRef) {
           this.returnedLocation = location;
+          this.bottomSheetRef.dismiss(this.returnedLocation);
         }
       });
     }

@@ -1,4 +1,4 @@
-import { Component, Optional, QueryList, ViewChildren } from '@angular/core';
+import { Component, Optional, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
@@ -44,6 +44,8 @@ import { MainToolbarService } from '@services/main-toolbar.service';
 })
 export class UserEditComponent {
   @ViewChildren('form') formComponents!: QueryList<FormBaseComponent>;
+  @ViewChild('formEmail') emailComponent!: UserFormEmailComponent;
+  @ViewChild('formUsername') usernameComponent!: UserFormUsernameComponent;
 
   userForm: FormGroup = this.fb.group({
     username: new FormControl<string>('', Validators.required),
@@ -55,6 +57,7 @@ export class UserEditComponent {
     public: new FormControl<boolean>(true),
   });
   avatar?: File;
+  tabIndex: number | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -124,6 +127,12 @@ export class UserEditComponent {
     }
   }
 
+  tabMoveTo(i: number): void {
+    // trigger an Input() change detection
+    this.tabIndex = null;
+    this.tabIndex = i;
+  }
+
   submit(): void {
     if (!this.checkFormValidity()) {
       this.errorHandler.push(this.translate.instant('general.formErrors'));
@@ -134,15 +143,34 @@ export class UserEditComponent {
 
     if (user) {
       this.api.editUser(user).pipe(
-        finalize(() => {
-          wd.close();
-  
-          if (this.bottomSheetRef) {
-            this.bottomSheetRef.dismiss();
+        finalize(() => { wd.close() }),
+        catchError((err: HttpErrorResponse) => {
+          const error = err.error;
+
+          if (error.msg === 'IMG_NOT_VALID') {
+            this.errorHandler.push(this.translate.instant('errors.invalidImg'));
           }
-        }),
-        catchError((error: HttpErrorResponse) => {
-          if (error.error?.msg === 'IMG_NOT_VALID') this.errorHandler.push(this.translate.instant('errors.invalidImg'));
+          else if (error.msg === 'USER_FIELD_EXISTS') {
+            if (error.errorData.field === 'username') {
+              this.usernameComponent.form.get('username')?.setErrors({ taken: true });
+              this.tabMoveTo(0);
+            }
+            else if (error.errorData.field === 'email') {
+              this.emailComponent.form.get('email')?.setErrors({ taken: true });
+              this.tabMoveTo(3);
+            }
+          }
+  
+          else if (error.msg === 'USER_FIELD_INVALID') {
+            if (error.errorData.field === 'username') {
+              this.usernameComponent.form.get('username')?.setErrors({ invalid: true });
+              this.tabMoveTo(0);
+            }
+            else if (error.errorData.field === 'email') {
+              this.emailComponent.form.get('email')?.setErrors({ invalid: true });
+              this.tabMoveTo(3);
+            }
+          }
 
           return EMPTY;
         })

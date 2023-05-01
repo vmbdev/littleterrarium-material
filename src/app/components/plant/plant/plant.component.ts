@@ -21,6 +21,7 @@ import { FabComponent } from '@components/fab/fab.component';
 import { PlantEditComponent } from '@components/plant/plant-edit/plant-edit.component';
 import { PlantExpansionInfoComponent } from '@components/plant/plant-expansion-info/plant-expansion-info.component';
 import { CapitalizePipe } from '@pipes/capitalize/capitalize.pipe';
+import { ConfirmDialogComponent } from '@components/dialogs/confirm-dialog/confirm-dialog.component';
 
 @Component({
     selector: 'plant',
@@ -109,7 +110,28 @@ export class PlantComponent {
       { icon: 'search', tooltip: 'general.search' },
       { icon: 'sort', tooltip: 'general.sort' },
       { icon: 'view_list', tooltip: 'general.viewList' },
+      { icon: 'delete', tooltip: 'general.delete', click: () => { this.openRemoveDialog() }}
     ]);
+  }
+
+  openRemoveDialog() {
+    this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        title: this.translate.instant('general.delete'),
+        question: [this.translate.instant('plant.remove')],
+        accept: () => { this.delete() }
+      },
+    });
+  }
+
+  delete(): void {
+    const plant = this.plantService.plant$.getValue();
+
+    if (plant) {
+      this.plantService.delete(plant.id).subscribe(() => {
+        this.router.navigate(['/location', plant.locationId]);
+      })
+    }
   }
 
   openEdit(): void {
