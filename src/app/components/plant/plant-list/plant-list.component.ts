@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -17,6 +17,8 @@ import { MatBottomSheet, MatBottomSheetModule } from '@angular/material/bottom-s
 import { PlantToolbarComponent } from '../plant-toolbar/plant-toolbar.component';
 import { MatRippleModule } from '@angular/material/core';
 import { LocationService } from '@services/location.service';
+import { SearchService } from '@services/search.service';
+import { PlantGetConfig } from '@services/api.service';
 
 @Component({
   selector: 'plant-list',
@@ -43,37 +45,49 @@ export class PlantListComponent {
   @Input() owned: boolean = true;
   @Input() small: boolean = false;
   list$ = new BehaviorSubject<Plant[]>([]);
+  search$?: Subscription;
 
   constructor(
     private plantService: PlantService,
     private locationService: LocationService,
     private dialog: MatDialog,
     private translate: TranslateService,
-    private bottomSheet: MatBottomSheet
+    private bottomSheet: MatBottomSheet,
+    private search: SearchService
   ) {}
 
   ngOnInit(): void {
     if (this.list) this.list$.next(this.list);
+    else this.fetchPlants();
 
-    else {
-      let obs: Observable<Plant[]>;
+    this.search$ = this.search.text$.subscribe((val: string) => {
+      this.fetchPlants({ filter: val })
+    });
+  }
 
-      if (this.locationId) {
-        obs = this.locationService.getPlants(this.locationId);
-      }
-      else {
-        const options = {
-          userId: this.userId,
-          cover: true
-        };
+  ngOnDestroy(): void {
+    if (this.search$) this.search$.unsubscribe();
+  }
 
-        obs = this.plantService.getMany(options);
-      }
+  fetchPlants(options?: PlantGetConfig): void {
+    let obs: Observable<Plant[]>;
 
-      obs.subscribe((plants: Plant[]) => {
-        this.list$.next(plants);
-      });
+    if (this.locationId) {
+      obs = this.locationService.getPlants(this.locationId, options);
     }
+    else {
+      const optionsForPS = {
+        ...options,
+        userId: this.userId,
+        cover: true
+      };
+
+      obs = this.plantService.getMany(optionsForPS);
+    }
+
+    obs.subscribe((plants: Plant[]) => {
+      this.list$.next(plants);
+    });
   }
 
   getName(plant: Plant): string {

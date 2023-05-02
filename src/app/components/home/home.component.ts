@@ -32,7 +32,7 @@ export class HomeComponent {
         this.translate.get('general.locations').subscribe((res: string) => {
           this.mt.setName(res);
         });
-    
+        this.mt.setButtons([]);
         this.mt.setMenu([]);
       }
       else this.mt.hide();

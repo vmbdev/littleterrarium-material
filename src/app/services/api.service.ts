@@ -27,6 +27,8 @@ export interface PlantGetConfig {
   locationId?: number
   photos?: boolean
   cover?: boolean
+  limit?: number
+  filter?: string
 }
 
 export interface PlantUpdateConfig {
@@ -142,12 +144,13 @@ export class ApiService {
     return this.http.get<Location[]>(this.endpoint(url));
   }
 
-  getLocationPlants(id: number, options?: LocationGetConfig): Observable<Plant[]> {
+  getLocationPlants(id: number, options?: PlantGetConfig): Observable<Plant[]> {
     let url = `locations/${id}/plants`;
 
     if (options) {
       url += '?';
 
+      if (options.filter) url +=`filter=${options.filter}&`
       if (options.limit) url += `limit=${options.limit ? options.limit : 0}`;
     }
 
@@ -201,9 +204,13 @@ export class ApiService {
     if (options) {
       if (options.userId) url += `/user/${options.userId}`;
       if (options.locationId) url += `/location/${options.locationId}`;
+
+      url += '?';
+
       if (options.photos || options.cover) {
-        url += `?photos=${options.photos ? true : false}&cover=${options.cover ? true : false}`;
+        url += `photos=${options.photos ? true : false}&cover=${options.cover ? true : false}&`;
       }
+      if (options.filter) url += `filter=${options.filter}&`
     }
 
     return this.http.get<Plant[]>(this.endpoint(url));

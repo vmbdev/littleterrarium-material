@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Light, Location } from '@models/location.model';
 import { Plant } from '@models/plant.model';
 import { map, Observable } from 'rxjs';
-import { ApiService, LocationGetConfig } from './api.service';
+import { ApiService, LocationGetConfig, PlantGetConfig } from './api.service';
 import { PlantService } from './plant.service';
 
 @Injectable({
@@ -22,7 +22,7 @@ export class LocationService {
     return this.api.getLocationList(options);
   }
 
-  getPlants(id:number, options?: any): Observable<Plant[]> {
+  getPlants(id:number, options?: PlantGetConfig): Observable<Plant[]> {
     return this.api.getLocationPlants(id, options).pipe(
       map((plants: Plant[]) => {
         for (const plant of plants) {

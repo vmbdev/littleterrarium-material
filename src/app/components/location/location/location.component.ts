@@ -44,8 +44,6 @@ export class LocationComponent {
   owned: boolean = false;
   smallView: boolean;
 
-  search$?: Subscription;
-
   constructor(
     private api: ApiService,
     private locationService: LocationService,
@@ -67,14 +65,6 @@ export class LocationComponent {
     this.id = paramId ? +paramId : NaN;
     
     if (this.id) this.getLocation();
-
-    this.search$ = this.search.text$.subscribe((val: string) => {
-      // console.log(val);
-    });
-  }
-
-  ngOnDestroy(): void {
-    if (this.search$) this.search$.unsubscribe();
   }
 
   setSmallView(val: boolean) {

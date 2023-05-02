@@ -48,7 +48,7 @@ export class PlantService {
     );
   }
 
-  getMany(options: any): Observable<Plant[]> {
+  getMany(options?: PlantGetConfig): Observable<Plant[]> {
     return this.api.getPlants(options).pipe(
       map((plants: Plant[]) => {
         for (const plant of plants) {

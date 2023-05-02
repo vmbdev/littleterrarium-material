@@ -62,6 +62,7 @@ export class PlantComponent {
   ngOnInit(): void {
     const paramId = this.route.snapshot.paramMap.get('plantId');
     this.id = paramId ? +paramId : NaN;
+    this.mt.setButtons([]);
 
     if (this.id) this.fetchPlantData();
   }
