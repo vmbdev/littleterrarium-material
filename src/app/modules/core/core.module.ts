@@ -17,6 +17,7 @@ import { NavigationComponent } from './navigation/navigation.component';
 import { BottomToolbarComponent } from './bottom-toolbar/bottom-toolbar.component';
 import { LangSwitcherComponent } from './lang-switcher/lang-switcher.component';
 import { SearchComponent } from '@modules/core/search/search.component';
+import { MatDividerModule } from '@angular/material/divider';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { SearchComponent } from '@modules/core/search/search.component';
     MatMenuModule,
     MatBadgeModule,
     MatSelectModule,
+    MatDividerModule,
     
     TranslateModule,
     SearchComponent

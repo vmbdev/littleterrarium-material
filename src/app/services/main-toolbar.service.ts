@@ -3,10 +3,13 @@ import { BehaviorSubject } from 'rxjs';
 
 interface MainToolbarButton {
   icon: string,
-  tooltip: string,
+  tooltip?: string,
   route?: any,
   click?: any
+  selected?: BehaviorSubject<boolean>
 }
+
+type MainToolbarButtonCollection = MainToolbarButton[];
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +17,7 @@ interface MainToolbarButton {
 export class MainToolbarService {
   name$ = new BehaviorSubject<string>('');
   buttons$ = new BehaviorSubject<MainToolbarButton[]>([]);
-  menu$ = new BehaviorSubject<MainToolbarButton[]>([]);
+  menu$ = new BehaviorSubject<MainToolbarButtonCollection[]>([]);
   hidden$ = new BehaviorSubject<boolean>(true);
 
   setName(name: string) {
@@ -27,10 +30,23 @@ export class MainToolbarService {
     this.buttons$.next(buttons);
   }
 
-  setMenu(menu: MainToolbarButton[]) {
+  addButtons(buttons: MainToolbarButton[]) {
+    const curr = this.buttons$.getValue();
+
+    this.setButtons([...curr, ...buttons]);
+  }
+
+  setMenu(menu: MainToolbarButtonCollection[]) {
     this.hidden$.next(false);
     this.menu$.next(menu);
   }
+
+  addButtonsToMenu(menu: MainToolbarButtonCollection[]) {
+    const curr = this.menu$.getValue();
+
+    this.setMenu([...curr, ...menu]);
+  }
+
 
   hide() {
     this.buttons$.next([]);

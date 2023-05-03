@@ -131,8 +131,8 @@ export class PhotoComponent {
         switchMap((photo: Photo) => {
           this.mt.setName(this.getDateTitle(photo.takenAt));
           this.mt.setMenu([
-            { icon: 'edit', tooltip: 'general.edit', click: () => { this.openEdit() } },
-            { icon: 'delete', tooltip: 'general.delete', click: () => { this.openRemoveDialog() }}
+            [{ icon: 'edit', tooltip: 'general.edit', click: () => { this.openEdit() } }],
+            [{ icon: 'delete', tooltip: 'general.delete', click: () => { this.openRemoveDialog() }}]
           ]);
           this.mt.setButtons([]);
 

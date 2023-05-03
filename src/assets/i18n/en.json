@@ -64,8 +64,8 @@
   "general.update": "Update",
   "general.uploadFinished": "Upload finished. Processing your photos, please wait.",
   "general.username": "Username",
-  "general.viewCards": "Icon view",
-  "general.viewList": "List view",
+  "general.viewCards": "Icon",
+  "general.viewList": "List",
   "general.visibility": "Visibility:",
   "general.visibilityPublic": "Publicly visible",
   "general.watering": "Watering",
@@ -188,6 +188,7 @@
   "tasks.fertilizerRequired": "{$INTERPOLATION} requires fertilizing",
   "tasks.noTasks": "Hooray! Nothing left to do!",
   "tasks.waterRequired": "{$INTERPOLATION} requires watering",
+  "tasks.msg": "According to your plant settings, these are the tasks left to do. Blue drop, plant needs to drink; green spoon, plants need to eat!",
   "terrarium.locationsHeader": "Public locations",
   "terrarium.plantsHeader": "Public plants",
   "terrarium.userNotFound": "User not found",
@@ -220,5 +221,7 @@
   "userbox.terrarium": "Your Terrarium",
   "userbox.username": "Hi <b>{$INTERPOLATION}</b>",
   "plant-widget-fert.now": "Fertilize now",
-  "general.share": "Share"
+  "general.share": "Share",
+  "sort.alphabetically": "Name",
+  "sort.date": "Date"
 }

@@ -29,6 +29,8 @@ export interface PlantGetConfig {
   cover?: boolean
   limit?: number
   filter?: string
+  sort?: 'name' | 'date',
+  order?: 'asc' | 'desc'
 }
 
 export interface PlantUpdateConfig {
@@ -145,16 +147,7 @@ export class ApiService {
   }
 
   getLocationPlants(id: number, options?: PlantGetConfig): Observable<Plant[]> {
-    let url = `locations/${id}/plants`;
-
-    if (options) {
-      url += '?';
-
-      if (options.filter) url +=`filter=${options.filter}&`
-      if (options.limit) url += `limit=${options.limit ? options.limit : 0}`;
-    }
-
-    return this.http.get<Plant[]>(this.endpoint(url));
+    return this.getPlants({ ...options, locationId: id });
   }
 
   /**
@@ -199,18 +192,24 @@ export class ApiService {
    */
 
   getPlants(options?: PlantGetConfig): Observable<Plant[]> {
-    let url = 'plants';
+    let url = 'plants/';
 
     if (options) {
-      if (options.userId) url += `/user/${options.userId}`;
-      if (options.locationId) url += `/location/${options.locationId}`;
+      if (options.locationId) {
+        url = `locations/${options.locationId}/${url}`;
+      }
+      if (options.userId) {
+        url = `user/${options.userId}${url}`;
+      }
 
       url += '?';
 
       if (options.photos || options.cover) {
         url += `photos=${options.photos ? true : false}&cover=${options.cover ? true : false}&`;
       }
-      if (options.filter) url += `filter=${options.filter}&`
+      if (options.filter) url += `filter=${options.filter}&`;
+      if (options.sort) url += `sort=${options.sort}&`;
+      if (options.order) url += `order=${options.order}&`;
     }
 
     return this.http.get<Plant[]>(this.endpoint(url));

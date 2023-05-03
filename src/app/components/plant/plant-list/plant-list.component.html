@@ -1,7 +1,7 @@
 <div class="plant-list">
   <mat-card *ngFor="let plant of list$ | async" matRipple class="plant-card">
 
-    <ng-container *ngIf="!small; else smallCard">
+    <ng-container *ngIf="!smallView; else smallCard">
       <img mat-card-image class="plant-card__image" [src]="getImgUrl(plant)" [routerLink]="['/plant', plant.id]">
       <mat-card-header class="plant-card__header" [routerLink]="['/plant', plant.id]">
         <mat-card-title class="plant-card__title">

@@ -107,11 +107,11 @@ export class PlantComponent {
   processPlant(plant: Plant) {
     this.mt.setName(plant.visibleName ? plant.visibleName : this.plantService.getVisibleName(plant));
     this.mt.setMenu([
-      { icon: 'edit', tooltip: 'general.edit', click: () => { this.openEdit() } },
-      { icon: 'search', tooltip: 'general.search' },
-      { icon: 'sort', tooltip: 'general.sort' },
-      { icon: 'view_list', tooltip: 'general.viewList' },
-      { icon: 'delete', tooltip: 'general.delete', click: () => { this.openRemoveDialog() }}
+      [{ icon: 'edit', tooltip: 'general.edit', click: () => { this.openEdit() } }],
+      [{ icon: 'search', tooltip: 'general.search' }],
+      [{ icon: 'sort', tooltip: 'general.sort' }],
+      [{ icon: 'view_list', tooltip: 'general.viewList' }],
+      [{ icon: 'delete', tooltip: 'general.delete', click: () => { this.openRemoveDialog() } }]
     ]);
   }
 

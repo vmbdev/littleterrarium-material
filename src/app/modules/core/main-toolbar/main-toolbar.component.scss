@@ -8,4 +8,20 @@
   &__spacer {
     flex: 1 1 auto;
   }
+
+  &__menurow {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    padding: 6px 0;
+
+    &item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    &icon {
+      margin-right: 0 !important;
+    }
+  }
 }

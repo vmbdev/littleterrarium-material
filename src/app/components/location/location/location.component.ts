@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BehaviorSubject, catchError, EMPTY, map, Observable, of, shareReplay, Subscription } from 'rxjs';
+import { BehaviorSubject, catchError, EMPTY, map } from 'rxjs';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { MatBottomSheet, MatBottomSheetModule, MatBottomSheetRef } from '@angular/material/bottom-sheet';
+import { MatBottomSheet, MatBottomSheetModule } from '@angular/material/bottom-sheet';
 
 import { Light, Location } from '@models/location.model';
 import { ApiService } from '@services/api.service';
@@ -42,7 +42,6 @@ export class LocationComponent {
   private id?: number;
   location$ = new BehaviorSubject<Location | null>(null);
   owned: boolean = false;
-  smallView: boolean;
 
   constructor(
     private api: ApiService,
@@ -56,20 +55,13 @@ export class LocationComponent {
     private translate: TranslateService,
     private bottomSheet: MatBottomSheet,
     private dialog: MatDialog
-  ) {
-    this.smallView = (localStorage.getItem('LT_plantListView') === 'true');
-  }
+  ) { }
 
   ngOnInit(): void {
     const paramId = this.route.snapshot.paramMap.get('locationId');
     this.id = paramId ? +paramId : NaN;
     
     if (this.id) this.getLocation();
-  }
-
-  setSmallView(val: boolean) {
-    this.smallView = val;
-    localStorage.setItem('LT_plantListView', val.toString());
   }
 
   getLocation(): void {
@@ -104,15 +96,10 @@ export class LocationComponent {
     this.owned = (this.auth.user$.getValue()?.id === location.ownerId) ? true : false;
         
     this.mt.setName(location.name);
-    this.mt.setButtons([
-      { icon: 'search', tooltip: 'general.search', click: () => { this.search.toggle() } },
-    ]);
+    this.mt.setButtons([]);
     this.mt.setMenu([
-      { icon: 'edit', tooltip: 'general.edit', click: () => { this.openBottomSheet() } },
-      { icon: 'sort', tooltip: 'general.sort' },
-      { icon: 'view_list', tooltip: 'general.viewList', click: () => { this.setSmallView(true) } },
-      { icon: 'preview', tooltip: 'general.viewCards', click: () => { this.setSmallView(false) } },
-      { icon: 'delete', tooltip: 'general.delete', click: () => { this.openRemoveDialog(location.id)} }
+      [{ icon: 'edit', tooltip: 'general.edit', click: () => { this.openBottomSheet() } }],
+      [{ icon: 'delete', tooltip: 'general.delete', click: () => { this.openRemoveDialog(location.id)} }],
     ]);
   }
 

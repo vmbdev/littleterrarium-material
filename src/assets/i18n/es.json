@@ -60,8 +60,8 @@
   "general.update": "Actualizar",
   "general.uploadFinished": "Se han subido las fotos. Las estamos procesando, por favor, espera.",
   "general.username": "Usuario",
-  "general.viewCards": "Vista de fotos",
-  "general.viewList": "Vista detallada",
+  "general.viewCards": "Foto",
+  "general.viewList": "Lista",
   "general.visibility": "Visibilidad:",
   "general.visibilityPublic": "Visible públicamente",
   "general.watering": "Riego",
@@ -217,5 +217,8 @@
   "general.lastname": "Apellidos",
   "general.tasks": "Tareas",
   "user-form-password.passwordDifferent": "Las contraseñas no coinciden",
-  "general.share": "Compartir"
+  "general.share": "Compartir",
+  "sort.alphabetically": "Nombre",
+  "sort.date": "Fecha",
+  "tasks.msg": "Según los datos de tus plantas, éstas son las tareas pendientes. Gota azul, la planta necesita beber; cuchara verde, la planta necesita comer."
 }

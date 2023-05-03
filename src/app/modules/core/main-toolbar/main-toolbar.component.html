@@ -18,20 +18,39 @@
         <mat-icon>more_vert</mat-icon>
       </button>
       <mat-menu #menu="matMenu">
-        <button
-          *ngFor="let b of menuList"
-          mat-menu-item
-          (click)="b.click ? b.click() : null"
-          [routerLink]="b.route ? b.route : null"
-        >
-          <mat-icon>{{ b.icon }}</mat-icon>
-          <span>{{ b.tooltip | translate }}</span>
-        </button>
+        <ng-container *ngFor="let item of menuList">
+          <ng-container *ngIf="item.length === 1; else menuRow">
+            <button
+              mat-menu-item
+              (click)="item[0].click ? item[0].click() : null"
+              [routerLink]="item[0].route ? item[0].route : null"
+            >
+              <mat-icon>{{ item[0].icon }}</mat-icon>
+              <span *ngIf="item[0].tooltip as tooltip">{{ tooltip | translate }}</span>
+            </button>
+          </ng-container>
 
-        <button mat-menu-item>
-          <mat-icon>share</mat-icon>
-          <span>{{ 'general.share' | translate }}</span>
-        </button>
+          <ng-template #menuRow>
+            <mat-divider></mat-divider>
+            <div class="toolbar__menurow">
+                <button
+                  *ngFor="let i of item"
+                  mat-mini-fab
+                  class="toolbar__menurowitem"
+                  (click)="i.click ? i.click() : null"
+                  [routerLink]="i.route ? i.route : null"
+                  [color]="(i.selected | async) === true ? 'primary' : 'basic'"
+                >
+                  <mat-icon class="toolbar__menurowicon">{{ i.icon }}</mat-icon>
+                  <!-- <span *ngIf="i.tooltip as tooltip">
+                    {{ (i.selected | async) === true ? 'v' : '' }}
+                    {{ tooltip | translate }}
+                  </span> -->
+                </button>
+              </div>
+          </ng-template>
+        </ng-container>
+
       </mat-menu>
     </ng-container>
   </mat-toolbar-row>
