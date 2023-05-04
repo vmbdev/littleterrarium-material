@@ -19,6 +19,9 @@ import { ErrorHandlerService } from '@services/error-handler.service';
 import { ConfirmDialogComponent } from '@components/dialogs/confirm-dialog/confirm-dialog.component';
 import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog.component';
 import { LocationEditComponent } from '@components/location/location-edit/location-edit.component';
+import { AuthService } from '@services/auth.service';
+import { User } from '@models/user.model';
+import { MatIconModule } from '@angular/material/icon';
 
 
 @Component({
@@ -32,6 +35,7 @@ import { LocationEditComponent } from '@components/location/location-edit/locati
     MatRippleModule,
     MatDialogModule,
     MatBottomSheetModule,
+    MatIconModule,
     TranslateModule,
     FabComponent,
     WaitDialogComponent
@@ -40,12 +44,13 @@ import { LocationEditComponent } from '@components/location/location-edit/locati
   styleUrls: ['./location-list.component.scss']
 })
 export class LocationListComponent {
-  @Input() userId?: number;
-  @Input() owned: boolean = true;
+  @Input() user?: User;
+  owned: boolean = true;
   locations$ = new BehaviorSubject<Location[]>([]);
 
   constructor(
-    private apiService: ApiService,
+    private api: ApiService,
+    private auth: AuthService,
     private locationService: LocationService,
     private imagePath: ImagePathService,
     private router: Router,
@@ -56,6 +61,10 @@ export class LocationListComponent {
   ) { }
 
   ngOnInit(): void {
+    if (this.user?.id) {
+      this.owned = this.auth.isSameUser('id', this.user.id);
+    }
+
     this.getLocationList();
   }
 
@@ -64,10 +73,10 @@ export class LocationListComponent {
 
     const options: LocationGetConfig = {
       plantCount: true,
-      userId: this.userId ? this.userId : null
+      userId: this.user?.id
     }
 
-    const obs = this.apiService.getLocationList(options).pipe(
+    const obs = this.api.getLocationList(options).pipe(
       finalize(() => { wd.close(); })
     );
 

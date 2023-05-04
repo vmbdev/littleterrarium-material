@@ -73,8 +73,12 @@ export class ApiService {
     return this.http.get<User>(this.endpoint('users'))
   }
 
+  getUser(id: number): Observable<User> {
+    return this.http.get<User>(this.endpoint(`users/id/${id}`));
+  }
+
   getUserByName(username: string): Observable<User> {
-    return this.http.get<User>(this.endpoint(`users/${username}`));
+    return this.http.get<User>(this.endpoint(`users/username/${username}`));
   }
 
   signIn(username: string, password: string): Observable<User> {
@@ -82,7 +86,7 @@ export class ApiService {
   }
 
   logOut(): Observable<any> {
-    return this.http.get<any>(this.endpoint('users/logout'));
+    return this.http.post<any>(this.endpoint('users/logout'), null);
   }
 
   getPasswordRequirements(): Observable<BackendResponse> {
@@ -90,7 +94,7 @@ export class ApiService {
   }
 
   getUsernameRequirements(): Observable<BackendResponse> {
-    return this.http.get<BackendResponse>(this.endpoint('users/username/requirements'));
+    return this.http.get<BackendResponse>(this.endpoint('users/usernamerequirements'));
   }
 
   checkPassword(password: string): Observable<BackendResponse> {
@@ -195,11 +199,13 @@ export class ApiService {
     let url = 'plants/';
 
     if (options) {
+      // for location's plants it's location/:id/plants
       if (options.locationId) {
         url = `locations/${options.locationId}/${url}`;
       }
-      if (options.userId) {
-        url = `user/${options.userId}${url}`;
+      // for plants of user it's plants/user/:id
+      else if (options.userId) {
+        url += `user/${options.userId}`;
       }
 
       url += '?';

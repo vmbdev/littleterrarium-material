@@ -1,21 +1,16 @@
-<div *ngIf="auth.user$ | async as user; else userNotFound" class="profile">
-  <div class="profile__userbox">
-    <div class="profile__avatar">
-      <img *ngIf="user.avatar" class="profile__avatarpic" [src]="getAvatar()">
-    </div>
-    <div class="profile__username">
-      <h1>{{ user.username }}</h1>
-    </div>
-    <div *ngIf="getFullName()" class="profile__realnames">
-      <h2>{{ getFullName() }}</h2>
-    </div>
-    <div *ngIf="user.bio" class="profile__bio">
-      <blockquote>
-        <p>{{ user.bio }}</p>
-      </blockquote>
-    </div>
-  </div>
+<div *ngIf="user$ | async as user; else userNotFound" class="profile">
+  <div class="profile__userbox" [ngClass]="{ 'profile__userbox-small': small }">
+    <img *ngIf="user.avatar" class="profile__avatar" [ngClass]="{ 'profile__avatar-small': small }" [src]="getAvatar()">
+    <h1 class="profile__username">{{ user.username }}</h1>
 
+    <ng-container *ngIf="!small">
+      <h2 *ngIf="getFullName() as fullName" class="profile__realnames">{{ fullName }}</h2>
+      <blockquote *ngIf="user.bio" class="profile__bio">
+        {{ user.bio }}
+      </blockquote>
+    </ng-container>
+
+  </div>
 </div>
 
 <ng-template #userNotFound>

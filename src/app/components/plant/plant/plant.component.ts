@@ -6,7 +6,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatBottomSheet, MatBottomSheetModule } from '@angular/material/bottom-sheet';
-import { catchError, EMPTY, finalize } from 'rxjs';
+import { catchError, EMPTY, finalize, forkJoin } from 'rxjs';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 import { Condition, Plant } from '@models/plant.model';
@@ -108,21 +108,23 @@ export class PlantComponent {
     this.mt.setName(plant.visibleName ? plant.visibleName : this.plantService.getVisibleName(plant));
     this.mt.setMenu([
       [{ icon: 'edit', tooltip: 'general.edit', click: () => { this.openEdit() } }],
-      [{ icon: 'search', tooltip: 'general.search' }],
-      [{ icon: 'sort', tooltip: 'general.sort' }],
-      [{ icon: 'view_list', tooltip: 'general.viewList' }],
       [{ icon: 'delete', tooltip: 'general.delete', click: () => { this.openRemoveDialog() } }]
     ]);
   }
 
   openRemoveDialog() {
-    this.dialog.open(ConfirmDialogComponent, {
-      data: {
-        title: this.translate.instant('general.delete'),
-        question: [this.translate.instant('plant.remove')],
-        accept: () => { this.delete() }
-      },
-    });
+    forkJoin({
+      title: this.translate.get('general.delete'),
+      question: this.translate.get('plant.remove')
+    }).subscribe(({ title, question }) => {
+      this.dialog.open(ConfirmDialogComponent, {
+        data: {
+          title,
+          question: [question],
+          accept: () => { this.delete() }
+        },
+      });
+    })
   }
 
   delete(): void {

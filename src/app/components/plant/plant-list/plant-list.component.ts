@@ -20,6 +20,8 @@ import { LocationService } from '@services/location.service';
 import { PlantService } from '@services/plant.service';
 import { SearchService } from '@services/search.service';
 import { MainToolbarService } from '@services/main-toolbar.service';
+import { User } from '@models/user.model';
+import { AuthService } from '@services/auth.service';
 
 @Component({
   selector: 'plant-list',
@@ -42,8 +44,8 @@ import { MainToolbarService } from '@services/main-toolbar.service';
 export class PlantListComponent {
   @Input() list?: Plant[];
   @Input() locationId?: number;
-  @Input() userId?: number;
-  @Input() owned: boolean = true;
+  @Input() user?: User;
+  owned: boolean = true;
   list$ = new BehaviorSubject<Plant[]>([]);
   search$?: Subscription;
   smallView: boolean;
@@ -58,6 +60,7 @@ export class PlantListComponent {
   cardView$: BehaviorSubject<boolean>;
 
   constructor(
+    private auth: AuthService,
     private plantService: PlantService,
     private locationService: LocationService,
     private dialog: MatDialog,
@@ -71,10 +74,11 @@ export class PlantListComponent {
     this.cardView$ = new BehaviorSubject<boolean>(!this.smallView);
 
     const order = localStorage.getItem('LT_plantListOrder');
+    const sort = localStorage.getItem('LT_plantListSort');
+
     if ((order === 'asc') || (order === 'desc')) this.order = order;
     else this.order = 'desc';
 
-    const sort = localStorage.getItem('LT_plantListSort');
     if (sort === 'name') {
       this.sort = sort;
       this.nameSelected$ = new BehaviorSubject<boolean>(true);
@@ -88,6 +92,10 @@ export class PlantListComponent {
   }
 
   ngOnInit(): void {
+    if (this.user?.id) {
+      this.owned = this.auth.isSameUser('id', this.user.id);
+    }
+
     if (this.list) this.list$.next(this.list);
     else this.fetchPlants();
 
@@ -197,7 +205,7 @@ export class PlantListComponent {
     else {
       const optionsForPS = {
         ...options,
-        userId: this.userId,
+        userId: this.user?.id,
         cover: true
       };
 

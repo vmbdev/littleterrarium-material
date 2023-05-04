@@ -1,0 +1,5 @@
+<ng-container *ngIf="user$ | async as user">
+  <profile [user]="user"></profile>
+  <location-list [user]="user"></location-list>
+  <plant-list [user]="user"></plant-list>
+</ng-container>

@@ -72,4 +72,10 @@ export class AuthService {
   checkPassword(password: string): Observable<BackendResponse> {
     return this.api.checkPassword(password);
   }
+
+  isSameUser(param: 'username' | 'id', val: string | number): boolean {
+    const user = this.user$.getValue();
+
+    return !!(user && (user[param] === val));
+  }
 }

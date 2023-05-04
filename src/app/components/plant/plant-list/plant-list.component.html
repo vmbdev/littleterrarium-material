@@ -8,8 +8,8 @@
           {{ getName(plant) }}
         </mat-card-title>
       </mat-card-header>
-      <mat-card-footer>
-        <ng-container [ngTemplateOutlet]="plantToolbar"></ng-container>
+      <mat-card-footer class="plant-card__footer">
+        <ng-container *ngIf="owned" [ngTemplateOutlet]="plantToolbar"></ng-container>
       </mat-card-footer>
     </ng-container>
 
@@ -20,8 +20,8 @@
           <img mat-card-sm-image [src]="getImgUrl(plant)">
         </mat-card-title-group>
       </mat-card-header>
-      <mat-card-footer>
-        <ng-container [ngTemplateOutlet]="plantToolbar"></ng-container>
+      <mat-card-footer class="plant-card__footer">
+        <ng-container *ngIf="owned" [ngTemplateOutlet]="plantToolbar"></ng-container>
       </mat-card-footer>
     </ng-template>
 
