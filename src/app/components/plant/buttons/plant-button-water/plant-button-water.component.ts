@@ -20,7 +20,7 @@ import { ConfirmDialogComponent } from '@components/dialogs/confirm-dialog/confi
   styleUrls: ['./plant-button-water.component.scss']
 })
 export class PlantButtonWaterComponent {
-  @Input() id?: number;
+  @Input({ required: true }) id?: number;
   @Input() disabled: boolean = false;
   @Output() done = new EventEmitter();
 

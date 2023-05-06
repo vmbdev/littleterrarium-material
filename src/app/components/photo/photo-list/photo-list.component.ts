@@ -1,4 +1,4 @@
-import { Component, Input, SimpleChanges } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { Photo } from '@models/photo.model';
@@ -21,7 +21,7 @@ import { SortPipe } from "@pipes/sort/sort.pipe";
     ]
 })
 export class PhotoListComponent {
-  @Input() plantId?: number;
+  @Input({ required: true }) plantId?: number;
   @Input() owned: boolean = true;
   list$ = new BehaviorSubject<Photo[]>([]);
 

@@ -2,9 +2,10 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatBottomSheet, MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { BehaviorSubject, catchError, EMPTY, map } from 'rxjs';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { MatBottomSheet, MatBottomSheetModule } from '@angular/material/bottom-sheet';
 
 import { Light, Location } from '@models/location.model';
 import { ApiService } from '@services/api.service';
@@ -17,9 +18,7 @@ import { PropertyComponent } from '@components/info-box/property/property.compon
 import { InfoBoxComponent } from "@components/info-box/info-box/info-box.component";
 import { FabComponent } from '@components/fab/fab.component';
 import { LocationEditComponent } from '@components/location/location-edit/location-edit.component';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '@components/dialogs/confirm-dialog/confirm-dialog.component';
-import { SearchService } from '@services/search.service';
 
 // TODO: Use LocationService
 @Component({
@@ -50,7 +49,6 @@ export class LocationComponent {
     private route: ActivatedRoute,
     private router: Router,
     private mt: MainToolbarService,
-    private search: SearchService,
     private errorHandler: ErrorHandlerService,
     private translate: TranslateService,
     private bottomSheet: MatBottomSheet,
