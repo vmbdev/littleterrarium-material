@@ -76,7 +76,7 @@ export class UserEditComponent {
     this.auth.checked$.pipe(
       skipWhile(val => val === false)
     ).subscribe(() => {
-      const user = this.auth.user$.getValue();
+      const user = this.auth.getUser();
 
       if (user) {
         this.userForm.patchValue({
@@ -102,7 +102,7 @@ export class UserEditComponent {
   }
 
   getUserFromForm(): User | null {
-    const user = this.auth.user$.getValue();
+    const user = this.auth.getUser();
 
     if (user) {
       return {

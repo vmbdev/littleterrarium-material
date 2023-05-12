@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { UserFormPasswordComponent } from './user-form-password.component';
 
@@ -8,7 +10,11 @@ describe('UserFormPasswordComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ UserFormPasswordComponent ]
+      imports: [
+        UserFormPasswordComponent,
+        TranslateModule.forRoot(),
+        BrowserAnimationsModule
+      ]
     })
     .compileComponents();
 

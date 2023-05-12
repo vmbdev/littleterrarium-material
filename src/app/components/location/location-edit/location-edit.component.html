@@ -10,11 +10,11 @@
   </mat-tab>
 
   <mat-tab [label]="'general.light' | translate">
-    <location-form-light [location]="location"></location-form-light>
+    <location-form-light [location]="locationService.location$ | async"></location-form-light>
   </mat-tab>
 
   <mat-tab [label]="'general.privacy' | translate">
-    <location-form-privacy [location]="location"></location-form-privacy>
+    <location-form-privacy [location]="locationService.location$ | async"></location-form-privacy>
   </mat-tab>
 </mat-tab-group>
 

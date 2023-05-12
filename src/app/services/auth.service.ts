@@ -11,19 +11,24 @@ import { BackendResponse } from '@models/backend-response.model';
 export class AuthService {
   // signedIn$ exists just for convenience.
   // We can achieve the same checking if user$ is null
-  signedIn$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  checked$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  user$: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
+  private signedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public signedIn$ = this.signedIn.asObservable();
+
+  private checked: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public checked$ = this.checked.asObservable();
+
+  private user: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
+  public user$ = this.user.asObservable();
 
   constructor(private api: ApiService) {
     this.api.getCurrentUser().subscribe({
       next: (user: User) => {
-        this.signedIn$.next(true);
-        this.user$.next(user);
-        this.checked$.next(true);
+        this.signedIn.next(true);
+        this.user.next(user);
+        this.checked.next(true);
       },
       error: () => {
-        this.checked$.next(true);
+        this.checked.next(true);
       }
     });
   }
@@ -31,13 +36,13 @@ export class AuthService {
   signIn(username: string, password: string): Observable<User> {
     return this.api.signIn(username, password).pipe(
       map((user: User) => {
-        this.user$.next(user);
-        this.signedIn$.next(true);
+        this.user.next(user);
+        this.signedIn.next(true);
 
         return user;
       }),
       catchError((HttpError: HttpErrorResponse) => {
-        this.signedIn$.next(false);
+        this.signedIn.next(false);
         return throwError(() => HttpError.error);
       }),
     );
@@ -46,8 +51,8 @@ export class AuthService {
   register(user: User): Observable<User> {
     return this.api.createUser(user).pipe(
       map((user: User) => {
-        this.user$.next(user);
-        this.signedIn$.next(true);
+        this.user.next(user);
+        this.signedIn.next(true);
 
         return user;
       })
@@ -55,18 +60,18 @@ export class AuthService {
   }
 
   logOut(): Observable<any> {
-    this.signedIn$.next(false);
-    this.user$.next(null);
+    this.signedIn.next(false);
+    this.user.next(null);
   
     return this.api.logOut().pipe(catchError(() => of(null)));
   }
 
   getUser(): User | null {
-    return this.user$.getValue();
+    return this.user.getValue();
   }
 
   updateUser(user: User): void {
-    this.user$.next(user);
+    this.user.next(user);
   }
 
   checkPassword(password: string): Observable<BackendResponse> {
@@ -74,7 +79,7 @@ export class AuthService {
   }
 
   isSameUser(param: 'username' | 'id', val: string | number): boolean {
-    const user = this.user$.getValue();
+    const user = this.user.getValue();
 
     return !!(user && (user[param] === val));
   }

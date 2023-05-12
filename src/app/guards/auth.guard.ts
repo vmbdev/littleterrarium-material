@@ -10,7 +10,7 @@ export const AuthGuard = () => {
   return auth.checked$.pipe(
     skipWhile(isChecked => isChecked === false),
     map(() => {
-      const isSignedIn = !!auth.user$.getValue();
+      const isSignedIn = !!auth.getUser();
 
       if (!isSignedIn) router.navigate(['/signin']);
 

@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
-import { BehaviorSubject, finalize, Observable } from 'rxjs';
+import { BehaviorSubject, finalize } from 'rxjs';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatRippleModule } from '@angular/material/core';
@@ -49,7 +49,6 @@ export class LocationListComponent {
   locations$ = new BehaviorSubject<Location[]>([]);
 
   constructor(
-    private api: ApiService,
     private auth: AuthService,
     private locationService: LocationService,
     private imagePath: ImagePathService,
@@ -76,7 +75,7 @@ export class LocationListComponent {
       userId: this.user?.id
     }
 
-    const obs = this.api.getLocationList(options).pipe(
+    const obs = this.locationService.getMany(options).pipe(
       finalize(() => { wd.close(); })
     );
 

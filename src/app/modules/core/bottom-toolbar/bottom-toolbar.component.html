@@ -19,7 +19,7 @@
   <button type="button" routerLink="/user" mat-icon-button>
     <ng-container *ngIf="auth.user$ | async as user; else noUser">
       <div
-        *ngIf="user.avatar"
+        *ngIf="user && user.avatar"
         class="bottom-toolbar__avatar"
         [ngStyle]="{ 'background-image': 'url(' + this.imagePath.get(user.avatar, 'thumb') +')' }"
       >

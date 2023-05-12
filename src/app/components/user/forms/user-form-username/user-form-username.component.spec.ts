@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { UserFormUsernameComponent } from './user-form-username.component';
 
@@ -8,7 +10,11 @@ describe('UserFormUsernameComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ UserFormUsernameComponent ]
+      imports: [
+        UserFormUsernameComponent,
+        TranslateModule.forRoot(),
+        BrowserAnimationsModule
+      ]
     })
     .compileComponents();
 

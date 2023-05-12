@@ -21,7 +21,7 @@ import { TranslateModule } from '@ngx-translate/core';
   styleUrls: ['./location-form-light.component.scss']
 })
 export class LocationFormLightComponent {
-  @Input() location?: Location;
+  @Input() location?: Location | null;
   form = this.fb.group({ light: ['FULLSUN', Validators.required] });
   lightOptions = Light;
 

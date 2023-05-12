@@ -143,6 +143,14 @@ export class PlantListComponent {
     if (this.search$) this.search$.unsubscribe();
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['locationId']) {
+      if (changes['locationId'].previousValue !== changes['locationId'].currentValue) {
+        this.fetchPlants();
+      }
+    }
+  }
+
   toggleSortByName() {
     if (this.sort !== 'name') { 
       this.sort = 'name';
@@ -190,6 +198,8 @@ export class PlantListComponent {
   }
 
   fetchPlants(options?: PlantGetConfig): void {
+    this.list$.next([]);
+
     if (!options) {
       options = {
         filter: this.filter,

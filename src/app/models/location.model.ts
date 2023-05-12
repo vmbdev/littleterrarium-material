@@ -16,18 +16,9 @@ export interface Location {
   pictures?: any
 }
 
-export const Light: { [key: string]: any } = {
-  FULLSUN: {
-    desc: 'Full sun',
-    verbose: 'Sun shines over the whole day',
-  },
-  PARTIALSUN: {
-    desc: 'Partial sun',
-    verbose: 'Sun is here for a few hours each day',
-  },
-  SHADE: {
-    desc: 'Shade',
-    verbose: 'Sun is not allowed here',
-  },
+export const Light: { [key: string]: string} = {
+  FULLSUN: 'FULLSUN',
+  PARTIALSUN: 'PARTIALSUN',
+  SHADE: 'SHADE'
 }
-export type Light = (typeof Light)[keyof typeof Light];
+export type Light = (typeof Light)[keyof typeof Light]

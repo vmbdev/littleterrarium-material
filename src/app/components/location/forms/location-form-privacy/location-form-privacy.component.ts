@@ -18,7 +18,7 @@ import { Location } from '@models/location.model';
   styleUrls: ['./location-form-privacy.component.scss']
 })
 export class LocationFormPrivacyComponent {
-  @Input() location?: Location;
+  @Input() location?: Location | null;
   form = this.fb.group({ public: [true] });
 
   constructor(private fb: FormBuilder) {}

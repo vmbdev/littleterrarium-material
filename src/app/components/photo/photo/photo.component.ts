@@ -3,7 +3,7 @@ import { Component, ElementRef, QueryList, ViewChildren } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ActivatedRoute, Params, Router, RouterModule } from '@angular/router';
-import { catchError, EMPTY, finalize, fromEvent, startWith, Subscription, switchMap } from 'rxjs';
+import { catchError, EMPTY, finalize, fromEvent, Observable, startWith, Subscription, switchMap } from 'rxjs';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { DateTime } from 'luxon';
 
@@ -57,7 +57,7 @@ export class PhotoComponent {
   coverChecked: boolean = false;
   touchEvents: any;
 
-  queryList$: any;
+  queryList$?: Subscription;
   routeDetect$?: Subscription;
 
   constructor(
@@ -76,7 +76,6 @@ export class PhotoComponent {
   ngOnInit(): void {
     // Angular doesn't update a component when the route only changes its parameters,
     // so we need to do it when navigating the previous/next photo
-
     this.routeDetect$ = this.route.params.subscribe((param: Params) => {
       this.id = param['photoId'];
       this.loadPhoto();
@@ -84,16 +83,17 @@ export class PhotoComponent {
   }
 
   ngAfterViewInit(): void {
-    if (this.photoElement.first) {
-      this.queryList$ = this.photoElement.changes.pipe(startWith(this.photoElement));
-    }
-    else this.queryList$ = this.photoElement.changes;
+    let obs: Observable<any> = this.photoElement.changes;
 
-    this.queryList$.pipe(
+    if (this.photoElement.first) {
+      obs = obs.pipe(startWith(this.photoElement));
+    }
+
+    this.queryList$ = obs.pipe(
       switchMap((res: QueryList<ElementRef>) => {
         const hammerConfig = new LTHammerConfig();
         const hammer = hammerConfig.buildHammer(res.first.nativeElement);
-          
+
         return fromEvent(hammer, 'swipe');
       })
     ).subscribe((res: any) => {
@@ -104,6 +104,11 @@ export class PhotoComponent {
         if (this.navigation.next) this.router.navigate(['/photo', this.navigation.next.id], { replaceUrl: true });
       }
     })
+  }
+
+  ngOnDestroy(): void {
+    if (this.queryList$) this.queryList$.unsubscribe();
+    if (this.routeDetect$) this.routeDetect$.unsubscribe();
   }
 
   loadPhoto(): void {
@@ -123,9 +128,9 @@ export class PhotoComponent {
           this.translate.get(msg).subscribe((res: string) => {
             this.errorHandler.push(res);
           });
-          
+
           this.router.navigateByUrl('/');
-  
+
           return EMPTY;
         }),
         switchMap((photo: Photo) => {
@@ -170,11 +175,6 @@ export class PhotoComponent {
     }
   }
 
-  ngOnDestroy(): void {
-    if (this.queryList$) this.queryList$.unsubscribe();
-    if (this.routeDetect$) this.routeDetect$.unsubscribe();
-  }
-
   getDateTitle(date: string | Date): string {
     const d = date.toString();
     const dateDiff = DateTime.fromISO(d).diffNow('days').days;
@@ -209,7 +209,7 @@ export class PhotoComponent {
 
   updateCoverPhoto(setCover: boolean): void {
     const photo = this.photoService.photo$.getValue();
-    
+
     if (photo) {
       if (!setCover && (photo.id === this.plantCoverId)) {
         const plant: Plant = { id: photo.plantId } as Plant;

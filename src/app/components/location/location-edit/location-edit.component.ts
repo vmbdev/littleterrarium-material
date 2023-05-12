@@ -13,6 +13,7 @@ import { LocationFormNameComponent } from '@components/location/forms/location-f
 import { LocationFormPrivacyComponent } from '@components/location/forms/location-form-privacy/location-form-privacy.component';
 import { LocationUpsertBaseComponent } from '@components/location/location-upsert-base/location-upsert-base.component';
 import { Location } from '@models/location.model';
+import { LocationService } from '@services/location.service';
 
 @Component({
   selector: 'location-edit',
@@ -47,8 +48,7 @@ export class LocationEditComponent extends LocationUpsertBaseComponent {
 
   ngAfterViewInit(): void {
     if (this.editLocation && this.editLocation.id) {
-      this.api.getLocation(this.editLocation.id).subscribe((location: Location) => {
-        this.location = location;
+      this.locationService.get(this.editLocation.id).subscribe((location: Location) => {
 
         this.nameComponent.form.patchValue({ name: location.name });
         this.lightComponent.form.patchValue({ light: location.light });
@@ -69,18 +69,17 @@ export class LocationEditComponent extends LocationUpsertBaseComponent {
     if (this.editLocation.id) {
       data.id = this.editLocation.id;
 
-      this.api.updateLocation(data, { removePicture: this.removePicture }).pipe(
+      this.locationService.update(data, { removePicture: this.removePicture }).pipe(
         catchError((error: HttpErrorResponse) => {
-          if (error.error?.msg === 'IMG_NOT_VALID') this.errorHandler.push(this.translate.instant('errors.invalidImg'));
+          if (error.error?.msg === 'IMG_NOT_VALID') {
+            this.errorHandler.push(this.translate.instant('errors.invalidImg'));
+          }
 
           return EMPTY;
         }),
         finalize(() => { ud.close() })
-      ).subscribe((location: Location) => {
-        if (this.editLocation && this.bottomSheetRef) {
-          this.returnedLocation = location;
-          this.bottomSheetRef.dismiss(this.returnedLocation);
-        }
+      ).subscribe(() => {
+        if (this.bottomSheetRef) this.bottomSheetRef.dismiss();
       });
     }
   }

@@ -1,15 +1,14 @@
 import { Component } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatBottomSheet, MatBottomSheetModule } from '@angular/material/bottom-sheet';
-import { BehaviorSubject, catchError, EMPTY, map } from 'rxjs';
+import { catchError, EMPTY } from 'rxjs';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 import { Light, Location } from '@models/location.model';
-import { ApiService } from '@services/api.service';
-import { AuthService } from '@services/auth.service';
 import { MainToolbarService } from '@services/main-toolbar.service';
 import { ErrorHandlerService } from '@services/error-handler.service';
 import { LocationService } from '@services/location.service';
@@ -20,7 +19,6 @@ import { FabComponent } from '@components/fab/fab.component';
 import { LocationEditComponent } from '@components/location/location-edit/location-edit.component';
 import { ConfirmDialogComponent } from '@components/dialogs/confirm-dialog/confirm-dialog.component';
 
-// TODO: Use LocationService
 @Component({
   selector: 'location',
   standalone: true,
@@ -39,13 +37,10 @@ import { ConfirmDialogComponent } from '@components/dialogs/confirm-dialog/confi
 })
 export class LocationComponent {
   private id?: number;
-  location$ = new BehaviorSubject<Location | null>(null);
-  owned: boolean = false;
+  light = Light;
 
   constructor(
-    private api: ApiService,
-    private locationService: LocationService,
-    private auth: AuthService,
+    public locationService: LocationService,
     private route: ActivatedRoute,
     private router: Router,
     private mt: MainToolbarService,
@@ -53,24 +48,28 @@ export class LocationComponent {
     private translate: TranslateService,
     private bottomSheet: MatBottomSheet,
     private dialog: MatDialog
-  ) { }
+  ) {
+    this.locationService.location$
+    .pipe(takeUntilDestroyed())
+    .subscribe((location: Location | null) => {
+      if (location) this.processLocation(location);
+    });
+  }
 
   ngOnInit(): void {
     const paramId = this.route.snapshot.paramMap.get('locationId');
     this.id = paramId ? +paramId : NaN;
     
-    if (this.id) this.getLocation();
+    if (this.id) {
+      this.getLocation();
+    }
   }
+
 
   getLocation(): void {
     if (!this.id) return;
 
-    const obs = this.api.getLocation(this.id, { plantCount: true }).pipe(
-      map((location: Location) => {
-        this.processLocation(location);
-
-        return location;
-      }),
+    this.locationService.get(this.id, { plantCount: true }).pipe(
       catchError((err: HttpErrorResponse) => {
         let msg: string;
 
@@ -85,14 +84,12 @@ export class LocationComponent {
         
         return EMPTY;
       })
-    );
-
-    obs.subscribe((res) => { this.location$.next(res) });
+    ).subscribe((location: Location) => {
+      // this.processLocation(location);
+    })
   }
 
   processLocation(location: Location): void {
-    this.owned = (this.auth.user$.getValue()?.id === location.ownerId) ? true : false;
-        
     this.mt.setName(location.name);
     this.mt.setButtons([]);
     this.mt.setMenu([
@@ -128,35 +125,9 @@ export class LocationComponent {
 
   openBottomSheet(): void {
     if (this.id) {
-      const bsRef = this.bottomSheet.open(LocationEditComponent, {
+      this.bottomSheet.open(LocationEditComponent, {
         data: { id: this.id }
       });
-
-      bsRef.afterDismissed().subscribe((updatedLocation: Location) => {
-        if (updatedLocation) {
-          const currentLocation = this.location$.getValue();
-
-          if (currentLocation) {
-            updatedLocation.plants = currentLocation.plants;
-            this.location$.next(updatedLocation);
-            this.processLocation(updatedLocation);
-          }
-        }
-      });
     }
-  }
-
-  getLightName(light: string): string {
-    return Light[light].desc;
-  }
-
-  getLightAsset(light: string): string {
-    let icon: string;
-
-    if (light === 'FULLSUN') icon = 'brightness_7';
-    else if (light === 'PARTIALSUN') icon = 'brightness_6';
-    else icon = 'brightness_5';
-
-    return icon;
   }
 }

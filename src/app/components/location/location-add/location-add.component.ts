@@ -61,7 +61,7 @@ export class LocationAddComponent extends LocationUpsertBaseComponent {
     const location: Location = this.getLocationFromForm();
     const ud = this.openUploadDialog();
 
-    this.api.createLocation(location).pipe(
+    this.locationService.create(location).pipe(
       catchError((error: HttpErrorResponse) => {
         if (error.error?.msg === 'IMG_NOT_VALID') this.errorHandler.push(this.translate.instant('errors.invalidImg'));
 

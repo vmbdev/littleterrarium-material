@@ -1,10 +1,8 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { BehaviorSubject, catchError, EMPTY, map, Observable, of, switchMap, throwError } from 'rxjs';
+import { BehaviorSubject, catchError, EMPTY, map, Observable, throwError } from 'rxjs';
 import { AuthService } from '@services/auth.service';
 import { ApiService, PlantGetConfig, PlantUpdateConfig } from '@services/api.service';
-import { PhotoService } from '@services/photo.service';
 import { Photo } from '@models/photo.model';
 import { Condition, Plant } from '@models/plant.model';
 import { ImagePathService } from './image-path.service';
@@ -18,10 +16,8 @@ export class PlantService {
   owned: boolean = false;
 
   constructor(
-    private router: Router,
     private api: ApiService,
     private auth: AuthService,
-    private photoService: PhotoService,
     private imagePath: ImagePathService,
     private translate: TranslateService
   ) { }
@@ -33,7 +29,7 @@ export class PlantService {
   get(id: number, options?: PlantGetConfig): Observable<Plant> {
     return this.api.getPlant(id, options).pipe(
       map((plant: Plant) => {
-        this.owned = (this.auth.user$.getValue()?.id === plant.ownerId);
+        this.owned = (this.auth.getUser()?.id === plant.ownerId);
         plant.visibleName = this.getVisibleName(plant);
 
         this.plant$.next(plant);

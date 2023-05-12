@@ -27,8 +27,8 @@ export class HomeComponent {
   ) {}
 
   ngOnInit(): void {
-    this.auth.signedIn$.subscribe((val: boolean) => {
-      if (val) {
+    this.auth.signedIn$.subscribe((isSigned: boolean) => {
+      if (isSigned) {
         this.translate.get('general.locations').subscribe((res: string) => {
           this.mt.setName(res);
         });

@@ -27,14 +27,12 @@ export class LocationUpsertBaseComponent {
   
   protected translate: TranslateService;
   protected dialog: MatDialog;
-  protected api: ApiService;
   protected locationService: LocationService;
   protected errorHandler: ErrorHandlerService;
 
   constructor(injector: Injector) {
     this.translate = injector.get(TranslateService);
     this.dialog = injector.get(MatDialog);
-    this.api = injector.get(ApiService);
     this.locationService = injector.get(LocationService);
     this.errorHandler = injector.get(ErrorHandlerService);
   }

@@ -1,8 +1,8 @@
-<div *ngIf="location$ | async as location" class="location">
-  <fab *ngIf="owned" [link]="['/plant/create', location.id]"></fab>
+<div *ngIf="locationService.location$ | async as location" class="location">
+  <fab *ngIf="locationService.owned" [link]="['/plant/create', location.id]"></fab>
   <info-box>
-    <property [icon]="getLightAsset(location.light)">
-      {{ getLightName(location.light) }}
+    <property [icon]="locationService.getLightAsset(location.light)">
+      {{ locationService.getLightName(location.light) | translate }}
     </property>
     <property [icon]="location.public ? 'visibility' : 'visibility_off'">
       {{ (location.public ? 'general.public' : 'general.private') | translate }}

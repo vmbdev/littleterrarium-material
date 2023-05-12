@@ -23,7 +23,7 @@ export class PhotoService {
   get(id: number, options?: PhotoGetConfig): Observable<Photo> {
     return this.api.getPhoto(id, options).pipe(
       map((photo: Photo) => {
-        this.owned = (this.auth.user$.getValue()?.id === photo.ownerId);
+        this.owned = (this.auth.getUser()?.id === photo.ownerId);
         this.photo$.next(photo);
 
         return photo;
