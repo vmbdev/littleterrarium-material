@@ -10,7 +10,7 @@
       [matAutocomplete]="auto"
       [placeholder]="'specieFinder.inputPlaceholder' | translate"
       (keyup)="keyPress(specieInput.value)"
-      [value]="currentSpecieName"
+      [value]="currentSpecieName ? currentSpecieName : null"
     >
 
     <mat-autocomplete

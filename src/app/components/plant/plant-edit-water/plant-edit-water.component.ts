@@ -46,7 +46,7 @@ export class PlantEditWaterComponent {
 
   ngOnInit(): void {
     // TODO: shall it get a new one, or use the current one?
-    const plant = this.plantService.plant$.getValue();
+    const plant = this.plantService.current();
 
     if (plant) {
       this.id = plant.id;

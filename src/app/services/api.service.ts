@@ -28,7 +28,8 @@ export interface PlantGetConfig {
   photos?: boolean
   cover?: boolean
   limit?: number
-  filter?: string
+  filter?: string,
+  cursor?: number,
   sort?: 'name' | 'date',
   order?: 'asc' | 'desc'
 }
@@ -210,9 +211,10 @@ export class ApiService {
 
       url += '?';
 
-      if (options.photos || options.cover) {
-        url += `photos=${options.photos ? true : false}&cover=${options.cover ? true : false}&`;
+      if (options.cover) {
+        url += `cover=${options.cover ? true : false}&`;
       }
+      if (options.cursor) url += `cursor=${options.cursor}&`;
       if (options.filter) url += `filter=${options.filter}&`;
       if (options.sort) url += `sort=${options.sort}&`;
       if (options.order) url += `order=${options.order}&`;

@@ -17,6 +17,9 @@
       <mat-card-header [routerLink]="['/plant', plant.id]">
         <mat-card-title-group>
           <mat-card-title class="plant-card__title">{{ getName(plant) }}</mat-card-title>
+          <mat-card-subtitle *ngIf="plant.customName && plant.specie && plant.specie.name">
+            {{ plant.specie.name | capitalize }}
+          </mat-card-subtitle>
           <img mat-card-sm-image [src]="getImgUrl(plant)">
         </mat-card-title-group>
       </mat-card-header>

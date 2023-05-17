@@ -98,10 +98,10 @@ export class PhotoComponent {
       })
     ).subscribe((res: any) => {
       if (res.deltaX < 0) {
-        if (this.navigation.prev) this.router.navigate(['/photo', this.navigation.prev.id], { replaceUrl: true });
+        if (this.navigation.next) this.router.navigate(['/photo', this.navigation.next.id], { replaceUrl: true });
       }
       else {
-        if (this.navigation.next) this.router.navigate(['/photo', this.navigation.next.id], { replaceUrl: true });
+        if (this.navigation.prev) this.router.navigate(['/photo', this.navigation.prev.id], { replaceUrl: true });
       }
     })
   }

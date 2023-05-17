@@ -1,8 +1,7 @@
-import { HttpErrorResponse } from '@angular/common/http';
+import { BehaviorSubject, EMPTY, map, Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Location } from '@models/location.model';
 import { Plant } from '@models/plant.model';
-import { BehaviorSubject, catchError, EMPTY, map, Observable, throwError } from 'rxjs';
 import { ApiService, LocationGetConfig, LocationUpsertConfig, PlantGetConfig } from './api.service';
 import { AuthService } from './auth.service';
 import { PlantService } from './plant.service';
@@ -22,6 +21,8 @@ export class LocationService {
   ) { }
 
   create(location: Location): Observable<Location> {
+    this.location.next(null);
+
     return this.api.createLocation(location).pipe(
       map((location: Location) => {
         this.location.next(location);
@@ -32,6 +33,8 @@ export class LocationService {
   }
 
   get(id: number, options?: LocationGetConfig): Observable<Location>  {
+    this.location.next(null);
+
     return this.api.getLocation(id, options).pipe(
       map((location: Location) => {
         this.owned = (this.auth.getUser()?.id === location.ownerId);
@@ -39,11 +42,6 @@ export class LocationService {
         this.location.next(location);
 
         return location;
-      }),
-      catchError((HttpError: HttpErrorResponse) => {
-        this.location.next(null);
-
-        return throwError(() => HttpError);
       })
     );
   }
@@ -82,6 +80,10 @@ export class LocationService {
         return EMPTY;
       })
     )
+  }
+
+  current(): Location | null {
+    return this.location.getValue();
   }
 
   getLightName(light: string): string {

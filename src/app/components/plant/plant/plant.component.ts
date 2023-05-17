@@ -128,7 +128,7 @@ export class PlantComponent {
   }
 
   delete(): void {
-    const plant = this.plantService.plant$.getValue();
+    const plant = this.plantService.current();
 
     if (plant) {
       this.plantService.delete(plant.id).subscribe(() => {

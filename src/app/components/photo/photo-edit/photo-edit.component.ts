@@ -109,7 +109,7 @@ export class PhotoEditComponent {
     this.photoService.update(photo).pipe(
       finalize(() => { wd.close() })
     ).subscribe((updatedPhoto: Photo) => {
-      const currentPhoto = this.photoService.photo$.value;
+      const currentPhoto = this.photoService.photo$.getValue();
 
       if (this.editPhoto && this.bottomSheetRef) {
         this.returnedPhoto = { ...currentPhoto, ...updatedPhoto };

@@ -126,7 +126,7 @@ export class PlantEditComponent {
     this.plantService.update(plant).pipe(
       finalize(() => { wd.close() })
     ).subscribe((updatedPlant: Plant) => {
-      const currentPlant = this.plantService.plant$.getValue();
+      const currentPlant = this.plantService.current();
 
       if (this.editPlant && this.bottomSheetRef) {
         this.returnedPlant = { ...currentPlant, ...updatedPlant };

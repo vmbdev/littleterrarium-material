@@ -126,7 +126,7 @@ export class PhotoAddComponent {
           break;
         }
         case HttpEventType.Response: {
-          this.router.navigate(['plant', this.plantId])
+          this.router.navigate(['plant', this.plantId], { replaceUrl: true })
           break;
         }
 

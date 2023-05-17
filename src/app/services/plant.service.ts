@@ -12,7 +12,8 @@ import { TranslateService } from '@ngx-translate/core';
   providedIn: 'root'
 })
 export class PlantService {
-  plant$: BehaviorSubject<Plant | null> = new BehaviorSubject<Plant | null>(null);
+  plant: BehaviorSubject<Plant | null> = new BehaviorSubject<Plant | null>(null);
+  plant$ = this.plant.asObservable();
   owned: boolean = false;
 
   constructor(
@@ -27,19 +28,16 @@ export class PlantService {
   }
 
   get(id: number, options?: PlantGetConfig): Observable<Plant> {
+    this.plant.next(null);
+
     return this.api.getPlant(id, options).pipe(
       map((plant: Plant) => {
         this.owned = (this.auth.getUser()?.id === plant.ownerId);
         plant.visibleName = this.getVisibleName(plant);
 
-        this.plant$.next(plant);
+        this.plant.next(plant);
 
         return plant;
-      }),
-      catchError((HttpError: HttpErrorResponse) => {
-        this.plant$.next(null);
-
-        return throwError(() => HttpError);
       })
     );
   }
@@ -79,28 +77,27 @@ export class PlantService {
     
     return this.api.updatePlant(plant, options).pipe(
       map((plant: Plant) => {
-        const current = this.plant$.getValue();
+        const current = this.plant.getValue();
         plant.visibleName = this.getVisibleName(plant);
 
         if (current) {
           plant.photos = current.photos;
-          this.plant$.next(plant);
+          this.plant.next(plant);
         }
 
         return plant;
-      }),
-      catchError((HttpError: HttpErrorResponse) => {
-        this.plant$.next(null);
-
-        return throwError(() => HttpError);
       })
     );
   }
 
   delete(id?: number): Observable<any> {
-    if (!id) id = this.plant$.getValue()?.id;
+    if (!id) id = this.plant.getValue()?.id;
 
-    if (id) return this.api.deletePlant(id);
+    if (id) {
+      this.plant.next(null);
+      return this.api.deletePlant(id);
+    }
+
     else return EMPTY;
   }
 
@@ -108,7 +105,7 @@ export class PlantService {
     let plantId: number | undefined;
 
     if (id) plantId = id;
-    else plantId = this.plant$.getValue()?.id;
+    else plantId = this.plant.getValue()?.id;
 
     if (plantId) {
       const updatedPlant = {
@@ -125,7 +122,7 @@ export class PlantService {
     let plantId: number | undefined;
 
     if (id) plantId = id;
-    else plantId = this.plant$.getValue()?.id;
+    else plantId = this.plant.getValue()?.id;
 
     if (plantId) {
       const updatedPlant = {
@@ -138,10 +135,14 @@ export class PlantService {
     return EMPTY;
   }
 
+  current(): Plant | null {
+    return this.plant.getValue();
+  }
+
   coverPhoto(plant?: Plant): string {
     let workingPlant;
 
-    if (!plant) workingPlant = this.plant$.getValue();
+    if (!plant) workingPlant = this.plant.getValue();
     else workingPlant = plant;
 
     if (workingPlant) {

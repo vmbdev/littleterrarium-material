@@ -9,22 +9,24 @@ import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatBadgeModule } from '@angular/material/badge';
+import { MatDividerModule } from '@angular/material/divider';
 
 import { TranslateModule } from '@ngx-translate/core';
 
-import { MainToolbarComponent } from './main-toolbar/main-toolbar.component';
-import { NavigationComponent } from './navigation/navigation.component';
-import { BottomToolbarComponent } from './bottom-toolbar/bottom-toolbar.component';
-import { LangSwitcherComponent } from './lang-switcher/lang-switcher.component';
+import { MainToolbarComponent } from '@modules/core/main-toolbar/main-toolbar.component';
+import { NavigationComponent } from '@modules/core/navigation/navigation.component';
+import { BottomToolbarComponent } from '@modules/core/bottom-toolbar/bottom-toolbar.component';
+import { LangSwitcherComponent } from '@modules/core/lang-switcher/lang-switcher.component';
 import { SearchComponent } from '@modules/core/search/search.component';
-import { MatDividerModule } from '@angular/material/divider';
+import { UserBoxComponent } from '@modules/core/user-box/user-box.component';
 
 @NgModule({
   declarations: [
     NavigationComponent,
     MainToolbarComponent,
     BottomToolbarComponent,
-    LangSwitcherComponent
+    LangSwitcherComponent,
+    UserBoxComponent
   ],
   imports: [
     CommonModule,

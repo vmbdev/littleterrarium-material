@@ -34,7 +34,7 @@ export class PlantSoilWidgetComponent {
 
   getPotName(): string {
     let potName;
-    const potType = this.plantService.plant$.getValue()?.potType;
+    const potType = this.plantService.current()?.potType;
 
     if (potType) {
       if (potChoices.hasOwnProperty(potType)) potName = potChoices[potType].name;

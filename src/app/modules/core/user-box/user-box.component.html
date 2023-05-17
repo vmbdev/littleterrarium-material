@@ -1,0 +1,11 @@
+<ng-container *ngIf="auth.user$ | async as user; else noUser">
+  <div
+    *ngIf="user && user.avatar"
+    class="userbox"
+    [ngStyle]="{ 'background-image': 'url(' + this.imagePath.get(user.avatar, 'thumb') +')' }"
+  >
+  </div>
+</ng-container>
+<ng-template #noUser>
+  <mat-icon>account_circle</mat-icon>
+</ng-template>

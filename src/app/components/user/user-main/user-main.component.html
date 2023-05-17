@@ -2,16 +2,19 @@
   <profile></profile>
 
   <mat-nav-list class="user-main">
-    <a mat-list-item matRipple (click)="openEdit()">
-      <span matRipple matListItemTitle>{{ 'userbox.profile' | translate }}</span>
-    </a>
+    <mat-list-item matRipple (click)="openEdit()">
+      <mat-icon matListItemIcon>edit</mat-icon>
+      <h1 matListItemTitle>{{ 'userbox.profile' | translate }}</h1>
+    </mat-list-item>
 
-    <a [routerLink]="['/terrarium', user.username]" mat-list-item matRipple>
-      <span matListItemTitle>{{ 'userbox.terrarium' | translate }}</span>
-    </a>
+    <mat-list-item [routerLink]="['/terrarium', user.username]" matRipple>
+      <mat-icon matListItemIcon>theaters</mat-icon>
+      <h1 matListItemTitle>{{ 'userbox.terrarium' | translate }}</h1>
+    </mat-list-item>
 
-    <a routerLink="/logout" mat-list-item matRipple>
-      <span matListItemTitle>{{ 'general.logout' | translate }}</span>
-    </a>
+    <mat-list-item routerLink="/logout" matRipple>
+      <mat-icon matListItemIcon>logout</mat-icon>
+      <h1 matListItemTitle>{{ 'general.logout' | translate }}</h1>
+    </mat-list-item>
   </mat-nav-list>
 </ng-container>

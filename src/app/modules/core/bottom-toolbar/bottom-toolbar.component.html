@@ -17,16 +17,6 @@
     <mat-icon [matBadge]="taskService.getCount()" matBadgeColor="warn">task</mat-icon>
   </button>
   <button type="button" routerLink="/user" mat-icon-button>
-    <ng-container *ngIf="auth.user$ | async as user; else noUser">
-      <div
-        *ngIf="user && user.avatar"
-        class="bottom-toolbar__avatar"
-        [ngStyle]="{ 'background-image': 'url(' + this.imagePath.get(user.avatar, 'thumb') +')' }"
-      >
-      </div>
-    </ng-container>
-    <ng-template #noUser>
-      <mat-icon>account_circle</mat-icon>
-    </ng-template>
+    <user-box></user-box>
   </button>
 </mat-toolbar>

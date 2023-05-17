@@ -1,4 +1,5 @@
 import { Component, Input, SimpleChanges } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
@@ -10,7 +11,6 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatBottomSheet, MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { TranslateService } from '@ngx-translate/core';
 
-import { Plant } from '@models/plant.model';
 import { ConfirmDialogComponent } from '@components/dialogs/confirm-dialog/confirm-dialog.component';
 import { FabComponent } from '@components/fab/fab.component';
 import { PlantEditComponent } from '@components/plant/plant-edit/plant-edit.component';
@@ -18,14 +18,20 @@ import { PlantToolbarComponent } from '@components/plant/plant-toolbar/plant-too
 import { PlantGetConfig } from '@services/api.service';
 import { LocationService } from '@services/location.service';
 import { PlantService } from '@services/plant.service';
-import { SearchService } from '@services/search.service';
+import { SearchReceipt, SearchService } from '@services/search.service';
 import { MainToolbarService } from '@services/main-toolbar.service';
-import { User } from '@models/user.model';
 import { AuthService } from '@services/auth.service';
+import { BottomScrollDetectorService } from '@services/bottom-scroll-detector.service';
+import { User } from '@models/user.model';
+import { Plant } from '@models/plant.model';
+import { SortColumn, SortOrder } from '@models/sort-options.model';
+import { CapitalizePipe } from "@pipes/capitalize/capitalize.pipe";
 
 @Component({
   selector: 'plant-list',
   standalone: true,
+  templateUrl: './plant-list.component.html',
+  styleUrls: ['./plant-list.component.scss'],
   imports: [
     CommonModule,
     RouterModule,
@@ -36,10 +42,9 @@ import { AuthService } from '@services/auth.service';
     MatRippleModule,
     MatBottomSheetModule,
     FabComponent,
-    PlantToolbarComponent
-  ],
-  templateUrl: './plant-list.component.html',
-  styleUrls: ['./plant-list.component.scss']
+    PlantToolbarComponent,
+    CapitalizePipe
+  ]
 })
 export class PlantListComponent {
   @Input() list?: Plant[];
@@ -50,10 +55,14 @@ export class PlantListComponent {
   search$?: Subscription;
   smallView: boolean;
 
-  filter: string = '';
-  order: 'asc' | 'desc';
-  sort: 'name' | 'date';
+  cursor?: number;
+  lastCursor?: number;
 
+  filter: string | null = null;
+  order: SortOrder;
+  sort: SortColumn;
+
+  // subjects for the menus of MainToolbar
   nameSelected$: BehaviorSubject<boolean>;
   dateSelected$: BehaviorSubject<boolean>;
   listView$: BehaviorSubject<boolean>;
@@ -67,7 +76,8 @@ export class PlantListComponent {
     private translate: TranslateService,
     private bottomSheet: MatBottomSheet,
     private search: SearchService,
-    private mt: MainToolbarService
+    private mt: MainToolbarService,
+    private bottomScrollDetector: BottomScrollDetectorService
   ) {
     this.smallView = (localStorage.getItem('LT_plantListView') === 'true');
     this.listView$ = new BehaviorSubject<boolean>(this.smallView);
@@ -76,7 +86,7 @@ export class PlantListComponent {
     const order = localStorage.getItem('LT_plantListOrder');
     const sort = localStorage.getItem('LT_plantListSort');
 
-    if ((order === 'asc') || (order === 'desc')) this.order = order;
+    if (order === 'asc') this.order = 'asc';
     else this.order = 'desc';
 
     if (sort === 'name') {
@@ -89,6 +99,8 @@ export class PlantListComponent {
       this.nameSelected$ = new BehaviorSubject<boolean>(false);
       this.dateSelected$ = new BehaviorSubject<boolean>(true);
     }
+
+    this.detectBottomReached();
   }
 
   ngOnInit(): void {
@@ -99,6 +111,68 @@ export class PlantListComponent {
     if (this.list) this.list$.next(this.list);
     else this.fetchPlants();
 
+    this.createMainToolbarContext();
+
+    this.search$ = this.search.text$.subscribe((res: SearchReceipt) => {
+      if (res.mode !== 'Begin') {
+        this.filter = res.value;
+        this.fetchPlants()
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.search$) this.search$.unsubscribe();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['locationId'] && changes['locationId'].previousValue) {
+      if (changes['locationId'].previousValue !== changes['locationId'].currentValue) {
+        this.fetchPlants();
+      }
+    }
+  }
+  
+  fetchPlants(scroll: boolean = false): void {
+    let obs: Observable<Plant[]>;
+    let options: PlantGetConfig = {
+      cursor: scroll && this.cursor ? this.cursor : undefined,
+      filter: this.filter ? this.filter : '',
+      sort: this.sort,
+      order: this.order
+    }
+
+    // in case of multiple bottom reached signals, we avoid asking twice
+    if (this.cursor) this.lastCursor = this.cursor;
+
+    if (this.locationId) {
+      obs = this.locationService.getPlants(this.locationId, options);
+    }
+    else {
+      options = {
+        ...options,
+        userId: this.user?.id,
+        cover: true
+      };
+
+      obs = this.plantService.getMany(options);
+    }
+
+    obs.subscribe((plants: Plant[]) => {
+      if (plants.length > 0) {
+        this.cursor = plants[plants.length - 1].id;
+      }
+
+      if (scroll) {
+        const currentList = this.list$.getValue();
+
+        this.list$.next([...currentList, ...plants]);
+      }
+      else this.list$.next(plants);
+    });
+  }
+
+  createMainToolbarContext(): void {
     this.mt.addButtons([
       { icon: 'search', tooltip: 'general.search', click: () => { this.search.toggle() } },
     ]);
@@ -121,67 +195,46 @@ export class PlantListComponent {
         {
           icon: 'sort_by_alpha',
           tooltip: 'sort.alphabetically',
-          click: () => { this.toggleSortByName() },
+          click: () => { this.toggleSortColumn('name') },
           selected: this.nameSelected$
         },
         {
           icon: 'history',
           tooltip: 'sort.date',
-          click: () => { this.toggleSortByDate() },
+          click: () => { this.toggleSortColumn('date') },
           selected: this.dateSelected$
         },
       ],
     ])
-
-    this.search$ = this.search.text$.subscribe((val: string) => {
-      this.filter = val;
-      this.fetchPlants()
-    });
   }
 
-  ngOnDestroy(): void {
-    if (this.search$) this.search$.unsubscribe();
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['locationId']) {
-      if (changes['locationId'].previousValue !== changes['locationId'].currentValue) {
-        this.fetchPlants();
+  detectBottomReached(): void {
+    this.bottomScrollDetector.detected$
+    .pipe(takeUntilDestroyed())
+    .subscribe((reachedBottom: boolean) => {
+      if (reachedBottom && (this.cursor !== this.lastCursor)) {
+        this.fetchPlants(true);
       }
-    }
+    })
   }
 
-  toggleSortByName() {
-    if (this.sort !== 'name') { 
-      this.sort = 'name';
+  toggleSortColumn(column: SortColumn) {
+    if (this.sort !== column) {
+      this.sort = column;
+      // when a new sortable column is chosen, we order 'asc' by default
       this.order = 'asc';
     }
     else this.toggleSortOrder();
 
-    this.nameSelected$.next(true);
-    this.dateSelected$.next(false);
-    this.storeSortOptions();
-
-    this.fetchPlants();
-  }
-
-  toggleSortByDate() {
-    if (this.sort !== 'date'){
-      this.sort = 'date';
-      this.order = 'asc';
-    }
-    else this.toggleSortOrder();
-
-    this.nameSelected$.next(false);
-    this.dateSelected$.next(true);
+    this.nameSelected$.next(column === 'name');
+    this.dateSelected$.next(column === 'date');
     this.storeSortOptions();
 
     this.fetchPlants();
   }
 
   toggleSortOrder() {
-    if (this.order === 'asc') this.order = 'desc';
-    else this.order = 'asc';
+    this.order = (this.order === 'asc') ? 'desc' : 'asc';
   }
 
   storeSortOptions() {
@@ -195,36 +248,6 @@ export class PlantListComponent {
 
     this.listView$.next(val);
     this.cardView$.next(!val);
-  }
-
-  fetchPlants(options?: PlantGetConfig): void {
-    this.list$.next([]);
-
-    if (!options) {
-      options = {
-        filter: this.filter,
-        sort: this.sort,
-        order: this.order
-      }
-    }
-    let obs: Observable<Plant[]>;
-
-    if (this.locationId) {
-      obs = this.locationService.getPlants(this.locationId, options);
-    }
-    else {
-      const optionsForPS = {
-        ...options,
-        userId: this.user?.id,
-        cover: true
-      };
-
-      obs = this.plantService.getMany(optionsForPS);
-    }
-
-    obs.subscribe((plants: Plant[]) => {
-      this.list$.next(plants);
-    });
   }
 
   getName(plant: Plant): string {

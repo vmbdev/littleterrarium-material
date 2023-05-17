@@ -1,25 +1,14 @@
   <mat-form-field appearance="fill" class="search">
     <input
+      matInput
+      type="text"
       #searchInput
       class="full-width"
-      type="text"
-      matInput
-      [matAutocomplete]="auto"
       [placeholder]="'general.search' | translate"
       (keyup)="keyPress(searchInput.value)"
     >
-
-    <mat-autocomplete
-      autoActiveFirstOption
-      #auto="matAutocomplete"
-      >
-      <!-- [displayWith]="getSpecieName" -->
-      <!-- (optionSelected)="selectSpecie($event.option.value.id)" -->
-      <!-- <mat-option *ngFor="let specie of results$ | async" [value]="specie">
-        {{ specie.name }}
-      </mat-option> -->
-    </mat-autocomplete>
+      
     <button *ngIf="searchInput.value" matSuffix mat-icon-button (click)="clear(searchInput)">
-      <mat-icon>close</mat-icon>
+      <mat-icon color="warn">close</mat-icon>
     </button>
   </mat-form-field>

@@ -9,6 +9,7 @@ import { MatRippleModule } from '@angular/material/core';
 import { MatBottomSheet, MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { UserEditComponent } from '../user-edit/user-edit.component';
 import { MainToolbarService } from '@services/main-toolbar.service';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-user-main',
@@ -19,6 +20,7 @@ import { MainToolbarService } from '@services/main-toolbar.service';
     MatListModule,
     MatRippleModule,
     MatBottomSheetModule,
+    MatIconModule,
     TranslateModule,
     ProfileComponent,
   ],
