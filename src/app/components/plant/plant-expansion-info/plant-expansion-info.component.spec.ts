@@ -1,23 +1,13 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { MockBuilder } from 'ng-mocks';
 import { PlantExpansionInfoComponent } from './plant-expansion-info.component';
 
 describe('PlantExpansionInfoComponent', () => {
-  let component: PlantExpansionInfoComponent;
-  let fixture: ComponentFixture<PlantExpansionInfoComponent>;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [ PlantExpansionInfoComponent ]
-    })
-    .compileComponents();
-
-    fixture = TestBed.createComponent(PlantExpansionInfoComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+  beforeEach(() => {
+    return MockBuilder(PlantExpansionInfoComponent);
   });
 
   it('should create', () => {
+    const component = PlantExpansionInfoComponent;
     expect(component).toBeTruthy();
   });
 });

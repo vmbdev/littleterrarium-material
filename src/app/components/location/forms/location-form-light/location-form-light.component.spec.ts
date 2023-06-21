@@ -18,17 +18,7 @@ describe('LocationFormLightComponent', () => {
         // MockPipe(TranslatePipe, value => value)
       ],
       providers: [
-        ...MockProviders(LocationService),
-        MockProvider(TranslateService, {
-          currentLang: 'en',
-          get: (key: any) => of(key),
-          onLangChange: new EventEmitter(),
-          onTranslationChange: new EventEmitter(),
-          onDefaultLangChange: new EventEmitter(),
-          isLoadedSubject: of(true),
-          instant: (key: string) => key
-          
-        }, 'useValue')
+        ...MockProviders(LocationService,TranslateService),
       ],
       declarations: [
       ]

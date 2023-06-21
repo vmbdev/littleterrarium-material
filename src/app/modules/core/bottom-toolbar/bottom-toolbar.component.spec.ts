@@ -1,23 +1,14 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { MockBuilder } from 'ng-mocks';
+import { CoreModule } from '../core.module';
 import { BottomToolbarComponent } from './bottom-toolbar.component';
 
 describe('BottomToolbarComponent', () => {
-  let component: BottomToolbarComponent;
-  let fixture: ComponentFixture<BottomToolbarComponent>;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ BottomToolbarComponent ]
-    })
-    .compileComponents();
-
-    fixture = TestBed.createComponent(BottomToolbarComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+  beforeEach(() => {
+    return MockBuilder(BottomToolbarComponent, CoreModule);
   });
 
   it('should create', () => {
+    const component = BottomToolbarComponent;
     expect(component).toBeTruthy();
   });
 });

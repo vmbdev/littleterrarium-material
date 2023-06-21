@@ -1,23 +1,14 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MockBuilder } from 'ng-mocks';
 
 import { ToggleOptionComponent } from './toggle-option.component';
 
 describe('ToggleOptionComponent', () => {
-  let component: ToggleOptionComponent;
-  let fixture: ComponentFixture<ToggleOptionComponent>;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [ ToggleOptionComponent ]
-    })
-    .compileComponents();
-
-    fixture = TestBed.createComponent(ToggleOptionComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+  beforeEach(() => {
+    return MockBuilder(ToggleOptionComponent);
   });
 
   it('should create', () => {
+    const component = ToggleOptionComponent;
     expect(component).toBeTruthy();
   });
 });

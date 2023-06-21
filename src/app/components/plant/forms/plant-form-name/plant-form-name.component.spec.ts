@@ -1,23 +1,14 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MockBuilder } from 'ng-mocks';
 
 import { PlantFormNameComponent } from './plant-form-name.component';
 
 describe('PlantFormNameComponent', () => {
-  let component: PlantFormNameComponent;
-  let fixture: ComponentFixture<PlantFormNameComponent>;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [ PlantFormNameComponent ]
-    })
-    .compileComponents();
-
-    fixture = TestBed.createComponent(PlantFormNameComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+  beforeEach(() => {
+    return MockBuilder(PlantFormNameComponent)
   });
 
   it('should create', () => {
+    const component = PlantFormNameComponent;
     expect(component).toBeTruthy();
   });
 });

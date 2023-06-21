@@ -10,6 +10,7 @@ import { User } from '@models/user.model';
 import { BackendResponse, NavigationData } from '@models/backend-response.model';
 import { endpoint } from '@config';
 import { BACKEND_URL } from 'src/tokens';
+import { SortColumn, SortOrder } from '@models/sort-options.model';
 
 export interface LocationGetConfig {
   plantCount?: boolean
@@ -28,10 +29,10 @@ export interface PlantGetConfig {
   photos?: boolean
   cover?: boolean
   limit?: number
-  filter?: string,
-  cursor?: number,
-  sort?: 'name' | 'date',
-  order?: 'asc' | 'desc'
+  filter?: string
+  cursor?: number
+  sort?: SortColumn
+  order?: SortOrder
 }
 
 export interface PlantUpdateConfig {

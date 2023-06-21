@@ -1,23 +1,14 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MockBuilder } from 'ng-mocks';
 
 import { PlantSoilWidgetComponent } from './plant-soil-widget.component';
 
 describe('PlantSoilWidgetComponent', () => {
-  let component: PlantSoilWidgetComponent;
-  let fixture: ComponentFixture<PlantSoilWidgetComponent>;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [ PlantSoilWidgetComponent ]
-    })
-    .compileComponents();
-
-    fixture = TestBed.createComponent(PlantSoilWidgetComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+  beforeEach(() => {
+    return MockBuilder(PlantSoilWidgetComponent);
   });
 
   it('should create', () => {
+    const component = PlantSoilWidgetComponent;
     expect(component).toBeTruthy();
   });
 });

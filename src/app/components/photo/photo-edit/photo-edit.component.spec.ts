@@ -1,23 +1,19 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { TranslateService } from '@ngx-translate/core';
+import { MockBuilder } from 'ng-mocks';
 
 import { PhotoEditComponent } from './photo-edit.component';
 
 describe('PhotoEditComponent', () => {
-  let component: PhotoEditComponent;
-  let fixture: ComponentFixture<PhotoEditComponent>;
+  beforeEach(() => {
+    return MockBuilder(PhotoEditComponent)
+      .mock(TranslateService)
+      .mock(MAT_DIALOG_DATA, { id: 100 })
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [ PhotoEditComponent ]
-    })
-    .compileComponents();
-
-    fixture = TestBed.createComponent(PhotoEditComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
   it('should create', () => {
+    const component = PhotoEditComponent;
     expect(component).toBeTruthy();
   });
 });

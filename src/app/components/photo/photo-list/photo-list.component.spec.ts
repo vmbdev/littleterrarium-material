@@ -1,23 +1,16 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MockBuilder } from 'ng-mocks';
+import { BACKEND_URL } from 'src/tokens';
 
 import { PhotoListComponent } from './photo-list.component';
 
 describe('PhotoListComponent', () => {
-  let component: PhotoListComponent;
-  let fixture: ComponentFixture<PhotoListComponent>;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [ PhotoListComponent ]
-    })
-    .compileComponents();
-
-    fixture = TestBed.createComponent(PhotoListComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+  beforeEach(() => {
+    return MockBuilder(PhotoListComponent)
+      .mock(BACKEND_URL)
   });
 
   it('should create', () => {
+    const component = PhotoListComponent;
     expect(component).toBeTruthy();
   });
 });

@@ -1,23 +1,18 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormBuilder } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
+import { MockBuilder, MockRender } from 'ng-mocks';
 
 import { PhotoFormDateComponent } from './photo-form-date.component';
 
 describe('PhotoFormDateComponent', () => {
-  let component: PhotoFormDateComponent;
-  let fixture: ComponentFixture<PhotoFormDateComponent>;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [ PhotoFormDateComponent ]
-    })
-    .compileComponents();
-
-    fixture = TestBed.createComponent(PhotoFormDateComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+  beforeEach(() => {
+    return MockBuilder(PhotoFormDateComponent)
+      .mock(TranslateService)
+      .keep(FormBuilder)
   });
 
   it('should create', () => {
+    const component = PhotoFormDateComponent;
     expect(component).toBeTruthy();
   });
 });

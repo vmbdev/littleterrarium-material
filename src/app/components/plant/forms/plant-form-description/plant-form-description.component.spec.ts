@@ -1,23 +1,18 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormBuilder } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
+import { MockBuilder } from 'ng-mocks';
 
 import { PlantFormDescriptionComponent } from './plant-form-description.component';
 
 describe('PlantFormDescriptionComponent', () => {
-  let component: PlantFormDescriptionComponent;
-  let fixture: ComponentFixture<PlantFormDescriptionComponent>;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [ PlantFormDescriptionComponent ]
-    })
-    .compileComponents();
-
-    fixture = TestBed.createComponent(PlantFormDescriptionComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+  beforeEach( () => {
+    return MockBuilder(PlantFormDescriptionComponent)
+      .mock(TranslateService)
+      .keep(FormBuilder)
   });
 
   it('should create', () => {
+    const component = PlantFormDescriptionComponent;
     expect(component).toBeTruthy();
   });
 });

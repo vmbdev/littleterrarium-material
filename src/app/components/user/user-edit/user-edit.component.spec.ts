@@ -1,23 +1,14 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MockBuilder } from 'ng-mocks';
 
 import { UserEditComponent } from './user-edit.component';
 
 describe('UserEditComponent', () => {
-  let component: UserEditComponent;
-  let fixture: ComponentFixture<UserEditComponent>;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [ UserEditComponent ]
-    })
-    .compileComponents();
-
-    fixture = TestBed.createComponent(UserEditComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+  beforeEach(() => {
+    return MockBuilder(UserEditComponent);
   });
 
   it('should create', () => {
+    const component = UserEditComponent;
     expect(component).toBeTruthy();
   });
 });

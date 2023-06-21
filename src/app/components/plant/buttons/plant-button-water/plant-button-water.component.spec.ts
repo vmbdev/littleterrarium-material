@@ -1,23 +1,16 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TranslateService } from '@ngx-translate/core';
+import { MockBuilder } from 'ng-mocks';
 
 import { PlantButtonWaterComponent } from './plant-button-water.component';
 
 describe('PlantButtonWaterComponent', () => {
-  let component: PlantButtonWaterComponent;
-  let fixture: ComponentFixture<PlantButtonWaterComponent>;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [ PlantButtonWaterComponent ]
-    })
-    .compileComponents();
-
-    fixture = TestBed.createComponent(PlantButtonWaterComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+  beforeEach(() => {
+    return MockBuilder(PlantButtonWaterComponent)
+      .mock(TranslateService)
   });
 
   it('should create', () => {
+    const component = PlantButtonWaterComponent;
     expect(component).toBeTruthy();
   });
 });

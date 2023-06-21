@@ -1,23 +1,13 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { MockBuilder } from 'ng-mocks';
 import { PlantFormPrivacyComponent } from './plant-form-privacy.component';
 
 describe('PlantFormPrivacyComponent', () => {
-  let component: PlantFormPrivacyComponent;
-  let fixture: ComponentFixture<PlantFormPrivacyComponent>;
-
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [ PlantFormPrivacyComponent ]
-    })
-    .compileComponents();
-
-    fixture = TestBed.createComponent(PlantFormPrivacyComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    return MockBuilder(PlantFormPrivacyComponent);
   });
 
   it('should create', () => {
+    const component = PlantFormPrivacyComponent;
     expect(component).toBeTruthy();
   });
 });

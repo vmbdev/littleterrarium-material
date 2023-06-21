@@ -1,23 +1,18 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { TranslateService } from '@ngx-translate/core';
+import { MockBuilder } from 'ng-mocks';
 
 import { PhotoComponent } from './photo.component';
 
 describe('PhotoComponent', () => {
-  let component: PhotoComponent;
-  let fixture: ComponentFixture<PhotoComponent>;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [ PhotoComponent ]
-    })
-    .compileComponents();
-
-    fixture = TestBed.createComponent(PhotoComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+  beforeEach(() => {
+    return MockBuilder(PhotoComponent)
+      .keep(RouterTestingModule)
+      .mock(TranslateService)
   });
 
   it('should create', () => {
+    const component = PhotoComponent;
     expect(component).toBeTruthy();
   });
 });

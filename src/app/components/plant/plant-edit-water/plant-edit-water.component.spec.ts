@@ -1,23 +1,14 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MockBuilder } from 'ng-mocks';
 
 import { PlantEditWaterComponent } from './plant-edit-water.component';
 
 describe('PlantEditWaterComponent', () => {
-  let component: PlantEditWaterComponent;
-  let fixture: ComponentFixture<PlantEditWaterComponent>;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [ PlantEditWaterComponent ]
-    })
-    .compileComponents();
-
-    fixture = TestBed.createComponent(PlantEditWaterComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+  beforeEach(() => {
+    return MockBuilder(PlantEditWaterComponent);
   });
 
   it('should create', () => {
+    const component = PlantEditWaterComponent;
     expect(component).toBeTruthy();
   });
 });

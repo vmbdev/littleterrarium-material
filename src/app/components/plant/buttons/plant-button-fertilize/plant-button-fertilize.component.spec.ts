@@ -1,23 +1,16 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TranslateService } from '@ngx-translate/core';
+import { MockBuilder } from 'ng-mocks';
 
 import { PlantButtonFertilizeComponent } from './plant-button-fertilize.component';
 
 describe('PlantButtonFertilizeComponent', () => {
-  let component: PlantButtonFertilizeComponent;
-  let fixture: ComponentFixture<PlantButtonFertilizeComponent>;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [ PlantButtonFertilizeComponent ]
-    })
-    .compileComponents();
-
-    fixture = TestBed.createComponent(PlantButtonFertilizeComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+  beforeEach(() => {
+    return MockBuilder(PlantButtonFertilizeComponent)
+      .mock(TranslateService)
   });
 
   it('should create', () => {
+    const component = PlantButtonFertilizeComponent;
     expect(component).toBeTruthy();
   });
 });

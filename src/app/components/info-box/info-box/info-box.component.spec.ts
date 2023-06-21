@@ -1,23 +1,14 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MockBuilder } from 'ng-mocks';
 
 import { InfoBoxComponent } from './info-box.component';
 
 describe('InfoBoxComponent', () => {
-  let component: InfoBoxComponent;
-  let fixture: ComponentFixture<InfoBoxComponent>;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [ InfoBoxComponent ]
-    })
-    .compileComponents();
-
-    fixture = TestBed.createComponent(InfoBoxComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+  beforeEach(() => {
+    return MockBuilder(InfoBoxComponent);
   });
 
   it('should create', () => {
+    const component = InfoBoxComponent;
     expect(component).toBeTruthy();
   });
 });

@@ -1,23 +1,13 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { MockBuilder } from 'ng-mocks';
 import { StepperNavigationComponent } from './stepper-navigation.component';
 
 describe('StepperNavigationComponent', () => {
-  let component: StepperNavigationComponent;
-  let fixture: ComponentFixture<StepperNavigationComponent>;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [ StepperNavigationComponent ]
-    })
-    .compileComponents();
-
-    fixture = TestBed.createComponent(StepperNavigationComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+  beforeEach(() => {
+    return MockBuilder(StepperNavigationComponent);
   });
 
   it('should create', () => {
+    const component = StepperNavigationComponent;
     expect(component).toBeTruthy();
   });
 });

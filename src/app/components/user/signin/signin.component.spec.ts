@@ -1,23 +1,14 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MockBuilder } from 'ng-mocks';
 
 import { SigninComponent } from './signin.component';
 
 describe('SigninComponent', () => {
-  let component: SigninComponent;
-  let fixture: ComponentFixture<SigninComponent>;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [ SigninComponent ]
-    })
-    .compileComponents();
-
-    fixture = TestBed.createComponent(SigninComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+  beforeEach(() => {
+    return MockBuilder(SigninComponent);
   });
 
   it('should create', () => {
+    const component = SigninComponent;
     expect(component).toBeTruthy();
   });
 });

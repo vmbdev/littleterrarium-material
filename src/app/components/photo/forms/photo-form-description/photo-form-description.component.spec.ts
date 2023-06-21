@@ -1,23 +1,18 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormBuilder } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
+import { MockBuilder, MockRender } from 'ng-mocks';
 
 import { PhotoFormDescriptionComponent } from './photo-form-description.component';
 
 describe('PhotoFormDescriptionComponent', () => {
-  let component: PhotoFormDescriptionComponent;
-  let fixture: ComponentFixture<PhotoFormDescriptionComponent>;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [ PhotoFormDescriptionComponent ]
-    })
-    .compileComponents();
-
-    fixture = TestBed.createComponent(PhotoFormDescriptionComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+  beforeEach(() => {
+    return MockBuilder(PhotoFormDescriptionComponent)
+      .keep(FormBuilder)
+      .mock(TranslateService)
   });
 
   it('should create', () => {
+    const component = PhotoFormDescriptionComponent
     expect(component).toBeTruthy();
   });
 });

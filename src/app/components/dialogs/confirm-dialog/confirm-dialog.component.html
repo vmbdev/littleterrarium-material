@@ -3,6 +3,10 @@
   <p *ngFor="let q of data.question" [innerHTML]="q"></p>
 </div>
 <div mat-dialog-actions align="center">
-  <button mat-raised-button mat-dialog-close cdkFocusInitial>{{ 'general.cancel' | translate }}</button>
-  <button mat-raised-button mat-dialog-close color="primary" (click)="accept()">{{ 'general.accept' | translate }}</button>
+  <button mat-raised-button mat-dialog-close cdkFocusInitial>
+    {{ 'general.cancel' | translate }}
+  </button>
+  <button mat-raised-button mat-dialog-close color="primary" (click)="accept()">
+    {{ 'general.accept' | translate }}
+  </button>
 </div>

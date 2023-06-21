@@ -1,23 +1,18 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormBuilder } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
+import { MockBuilder, MockRender } from 'ng-mocks';
 
 import { PhotoFormPrivacyComponent } from './photo-form-privacy.component';
 
 describe('PhotoFormPrivacyComponent', () => {
-  let component: PhotoFormPrivacyComponent;
-  let fixture: ComponentFixture<PhotoFormPrivacyComponent>;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [ PhotoFormPrivacyComponent ]
-    })
-    .compileComponents();
-
-    fixture = TestBed.createComponent(PhotoFormPrivacyComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+  beforeEach(() => {
+    return MockBuilder(PhotoFormPrivacyComponent)
+      .keep(FormBuilder)
+      .mock(TranslateService)
   });
 
   it('should create', () => {
+    const component = PhotoFormPrivacyComponent
     expect(component).toBeTruthy();
   });
 });
