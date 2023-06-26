@@ -1,31 +1,64 @@
-<mat-tab-group *ngIf="plant$ | async as plant" mat-stretch-tabs="false" mat-align-tabs="center">
-  <mat-tab [label]="'general.name' | translate">
-    <plant-form-name [currentCustomName]="plant.customName"></plant-form-name>
-  </mat-tab>
+<ng-container *ngIf="plant$ | async as plant" mat-stretch-tabs="false" mat-align-tabs="center">
 
-  <mat-tab [label]="'general.description' | translate">
-    <plant-form-description [currentDescription]="plant.description"></plant-form-description>
-  </mat-tab>
+  <mat-card class="settings-card">
+    <mat-card-header>
+      <mat-card-title>{{ 'general.name' | translate }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <plant-form-name [currentCustomName]="plant.customName"></plant-form-name>
+    </mat-card-content>
+  </mat-card>
 
-  <mat-tab [label]="'general.specie' | translate">
-    <plant-form-specie [currentSpecie]="plant.specieId"></plant-form-specie>
-  </mat-tab>
+  <mat-card class="settings-card">
+    <mat-card-header>
+      <mat-card-title>{{ 'general.description' | translate }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <plant-form-description [currentDescription]="plant.description"></plant-form-description>
+    </mat-card-content>
+  </mat-card>
 
-  <mat-tab [label]="'plant-edit.condition' | translate">
-    <plant-form-condition [currentCondition]="plant.condition"></plant-form-condition>
-  </mat-tab>
+  <mat-card class="settings-card">
+    <mat-card-header>
+      <mat-card-title>{{ 'general.specie' | translate }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <plant-form-specie [currentSpecie]="plant.specieId"></plant-form-specie>
+    </mat-card-content>
+  </mat-card>
 
-  <mat-tab [label]="'general.location' | translate">
-    <plant-form-location [currentLocation]="plant.locationId"></plant-form-location>
-  </mat-tab>
+  <mat-card class="settings-card">
+    <mat-card-header>
+      <mat-card-title>{{ 'plant-edit.condition' | translate }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <plant-form-condition [currentCondition]="plant.condition"></plant-form-condition>
+    </mat-card-content>
+  </mat-card>
 
-  <mat-tab [label]="'general.privacy' | translate">
-    <plant-form-privacy [currentPrivacy]="plant.public"></plant-form-privacy>
-  </mat-tab>
-</mat-tab-group>
+  <mat-card class="settings-card">
+    <mat-card-header>
+      <mat-card-title>{{ 'general.location' | translate }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <plant-form-location [currentLocation]="plant.locationId"></plant-form-location>
+    </mat-card-content>
+  </mat-card>
 
-<div class="tab-navigation">
-  <button type="submit" mat-raised-button color="primary" (click)="submit()">
-    {{ 'general.finish' | translate }}
-  </button>
-</div>
+  <mat-card class="settings-card">
+    <mat-card-header>
+      <mat-card-title>{{ 'general.privacy' | translate }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <plant-form-privacy [currentPrivacy]="plant.public"></plant-form-privacy>
+    </mat-card-content>
+  </mat-card>
+  
+  <div class="tab-navigation">
+    <button type="submit" mat-raised-button color="primary" (click)="submit()">
+      <mat-icon>edit_square</mat-icon>
+      {{ 'general.update' | translate }}
+    </button>
+  </div>
+
+</ng-container>

@@ -1,7 +1,8 @@
+import { MatIconModule } from '@angular/material/icon';
+import { MatCardModule } from '@angular/material/card';
 import { Component, Inject, Optional, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
-import { MatTabsModule } from '@angular/material/tabs';
 import { MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
 import { MatDialog } from '@angular/material/dialog';
 import { FormGroup } from '@angular/forms';
@@ -27,8 +28,9 @@ interface PhotoEditConfig {
   imports: [
     CommonModule,
     TranslateModule,
-    MatTabsModule,
     MatButtonModule,
+    MatCardModule,
+    MatIconModule,
 
     PhotoFormDescriptionComponent,
     PhotoFormPrivacyComponent,

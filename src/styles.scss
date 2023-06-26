@@ -1,5 +1,6 @@
-@use 'themes/light.scss';
+@use '@angular/material' as mat;
 @use 'ngx-toastr/toastr';
+@use 'themes/light.scss';
 
 @mixin border-style {
   border-width: 1px !important;
@@ -70,6 +71,12 @@ mat-bottom-sheet-container {
 
 .mat-expansion-panel-content {
   font: inherit !important;
+}
+
+.settings-card {
+  border-radius: 25px 0 25px 0 !important;
+  border: 0 !important;
+  box-shadow: none !important;
 }
 
 // mat-stepper, .mat-horizontal-stepper-wrapper, .mat-horizontal-content-container, .mat-horizontal-stepper-content {

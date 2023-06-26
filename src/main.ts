@@ -1,6 +1,6 @@
 import { HttpClient, HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from "@angular/common/http";
 import { importProvidersFrom, isDevMode } from "@angular/core";
-import { bootstrapApplication, HAMMER_GESTURE_CONFIG } from "@angular/platform-browser";
+import { bootstrapApplication, HammerModule, HAMMER_GESTURE_CONFIG } from "@angular/platform-browser";
 import { provideAnimations } from "@angular/platform-browser/animations";
 import { RouterModule } from "@angular/router";
 import { DateAdapter, NativeDateAdapter } from "@angular/material/core";
@@ -30,6 +30,7 @@ bootstrapApplication(AppComponent, {
     { provide: HAMMER_GESTURE_CONFIG, useClass: LTHammerConfig },
     provideAnimations(),
     provideHttpClient(withInterceptorsFromDi()),
+    importProvidersFrom(HammerModule),
     importProvidersFrom(RouterModule.forRoot(routes)),
     importProvidersFrom(TranslateModule.forRoot({
       defaultLanguage: 'en',

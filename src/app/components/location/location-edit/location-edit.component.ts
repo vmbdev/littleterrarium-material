@@ -4,7 +4,6 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { catchError, EMPTY, finalize } from 'rxjs';
 import { MatButtonModule } from '@angular/material/button';
 import { MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
-import { MatTabsModule } from '@angular/material/tabs';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { FileUploaderComponent } from '@components/file-uploader/file-uploader.component';
@@ -13,7 +12,8 @@ import { LocationFormNameComponent } from '@components/location/forms/location-f
 import { LocationFormPrivacyComponent } from '@components/location/forms/location-form-privacy/location-form-privacy.component';
 import { LocationUpsertBaseComponent } from '@components/location/location-upsert-base/location-upsert-base.component';
 import { Location } from '@models/location.model';
-import { LocationService } from '@services/location.service';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'location-edit',
@@ -21,8 +21,9 @@ import { LocationService } from '@services/location.service';
   imports: [
     CommonModule,
     TranslateModule,
-    MatTabsModule,
     MatButtonModule,
+    MatCardModule,
+    MatIconModule,
     FileUploaderComponent,
 
     LocationFormNameComponent,

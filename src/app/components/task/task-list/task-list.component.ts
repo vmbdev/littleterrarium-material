@@ -1,17 +1,14 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PlantService } from '@services/plant.service';
-import { MainToolbarService } from '@services/main-toolbar.service';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { ApiService } from '@services/api.service';
-import { MatListModule } from '@angular/material/list';
-import { PlantButtonWaterComponent } from '@components/plant/buttons/plant-button-water/plant-button-water.component';
-import { PlantButtonFertilizeComponent } from '@components/plant/buttons/plant-button-fertilize/plant-button-fertilize.component';
 import { RouterModule } from '@angular/router';
 import { MatRippleModule } from '@angular/material/core';
-import { BehaviorSubject } from 'rxjs';
-import { Plant } from '@models/plant.model';
+import { MatListModule } from '@angular/material/list';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { PlantService } from '@services/plant.service';
+import { MainToolbarService } from '@services/main-toolbar.service';
 import { TaskService } from '@services/task.service';
+import { PlantButtonWaterComponent } from '@components/plant/buttons/plant-button-water/plant-button-water.component';
+import { PlantButtonFertilizeComponent } from '@components/plant/buttons/plant-button-fertilize/plant-button-fertilize.component';
 
 @Component({
   selector: 'task-list',

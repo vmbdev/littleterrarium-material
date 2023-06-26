@@ -2,20 +2,25 @@
 
 @include mat.core();
 
-$my-primary: mat.define-palette(mat.$blue-palette, 500);
-$my-accent: mat.define-palette(mat.$green-palette, 400);
+$color-primary: mat.define-palette(mat.$blue-palette, 500);
+$color-accent: mat.define-palette(mat.$green-palette, 400);
 
-$my-theme: mat.define-light-theme((
+$light-theme: mat.define-light-theme((
  color: (
-   primary: $my-primary,
-   accent: $my-accent,
+   primary: $color-primary,
+   accent: $color-accent,
  ),
  typography: mat.define-typography-config(),
  density: 0,
 ));
 
-@include mat.all-component-themes($my-theme);
+@include mat.all-component-themes($light-theme);
 
 mat-card {
-  background-color: #f2f2f2 !important;
+  // background-color: #f2f2f2 !important;
+  @include mat.elevation(8);
+}
+
+.settings-card {
+  background-color: #F1F6F9 !important;
 }

@@ -1,11 +1,17 @@
-.plant-list {
-  display: flex;
-  flex-direction: column;
-}
-
 .plant-card {
+  border: 0 !important;
+  box-shadow: none !important;
+  background-color: transparent !important;
+
   &__header {
     justify-content: center;
+  }
+
+  &__title {
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
   }
 
   &__image {
@@ -15,5 +21,26 @@
 
   &__footer {
     min-height: 15px;
+  }
+
+  &__menu {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    z-index: 1000;
+
+    & > button {
+      padding: 0;
+      width: 25px;
+      border-radius: 0;
+      height: 25px;
+    }
+  }
+}
+
+.plant-list {
+  &__menu {
+    margin-right: 0;
+    order: 10;
   }
 }

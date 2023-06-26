@@ -1,25 +1,45 @@
-<mat-tab-group mat-stretch-tabs="false" mat-align-tabs="center">
-  <mat-tab [label]="'general.name' | translate">
+<mat-card class="settings-card">
+  <mat-card-header>
+    <mat-card-title>{{ 'general.name' | translate }}</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
     <location-form-name [location]="location"></location-form-name>
-  </mat-tab>
+  </mat-card-content>
+</mat-card>
 
-  <mat-tab [label]="'general.picture' | translate">
+<mat-card class="settings-card">
+  <mat-card-header>
+    <mat-card-title>{{ 'general.picture' | translate }}</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
     <p [innerHTML]="'location-add-edit.choose' | translate"></p>
     <p [innerHTML]="'location-add-edit.ornot' | translate"></p>
     <file-uploader [amount]="1" (fileChange)="fileChange($event)"></file-uploader>
-  </mat-tab>
+  </mat-card-content>
+</mat-card>
 
-  <mat-tab [label]="'general.light' | translate">
+
+<mat-card class="settings-card">
+  <mat-card-header>
+    <mat-card-title>{{ 'general.light' | translate }}</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
     <location-form-light [location]="locationService.location$ | async"></location-form-light>
-  </mat-tab>
+  </mat-card-content>
+</mat-card>
 
-  <mat-tab [label]="'general.privacy' | translate">
+<mat-card class="settings-card">
+  <mat-card-header>
+    <mat-card-title>{{ 'general.privacy' | translate }}</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
     <location-form-privacy [location]="locationService.location$ | async"></location-form-privacy>
-  </mat-tab>
-</mat-tab-group>
+  </mat-card-content>
+</mat-card>
 
 <div class="tab-navigation">
   <button type="submit" mat-raised-button color="primary" (click)="submit()">
-    {{ 'general.finish' | translate }}
+    <mat-icon>edit_square</mat-icon>
+    {{ 'general.update' | translate }}
   </button>
 </div>

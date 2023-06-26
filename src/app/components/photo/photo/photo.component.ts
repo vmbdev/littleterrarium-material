@@ -1,54 +1,50 @@
-import { HammerModule } from '@angular/platform-browser';
 import { Component, ElementRef, QueryList, ViewChildren } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ActivatedRoute, Params, Router, RouterModule } from '@angular/router';
-import { catchError, EMPTY, finalize, fromEvent, Observable, startWith, Subscription, switchMap } from 'rxjs';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatBottomSheet, MatBottomSheetModule } from '@angular/material/bottom-sheet';
+import { catchError, EMPTY, finalize, Subscription, switchMap } from 'rxjs';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { DateTime } from 'luxon';
 
 import { PhotoService } from '@services/photo.service';
 import { PlantService } from '@services/plant.service';
+import { MainToolbarService } from '@services/main-toolbar.service';
 import { ErrorHandlerService } from '@services/error-handler.service';
 import { ImagePathService } from '@services/image-path.service';
 import { InfoBoxComponent } from "@components/info-box/info-box/info-box.component";
 import { PropertyComponent } from "@components/info-box/property/property.component";
-import { MainToolbarService } from '@services/main-toolbar.service';
 import { ToggleOptionComponent } from '@components/toggle-option/toggle-option.component';
-import { Plant } from '@models/plant.model';
-import { DaysAgoPipe } from "@pipes/days-ago/days-ago.pipe";
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog.component';
-import { LTHammerConfig } from 'src/config.hammerjs';
-import { MatBottomSheet, MatBottomSheetModule } from '@angular/material/bottom-sheet';
-import { PhotoEditComponent } from '../photo-edit/photo-edit.component';
-import { NavigationData, Photo } from '@models/photo.model';
-import { MatCardModule } from '@angular/material/card';
-import { MatIconModule } from '@angular/material/icon';
+import { PhotoEditComponent } from '@components/photo/photo-edit/photo-edit.component';
 import { ConfirmDialogComponent } from '@components/dialogs/confirm-dialog/confirm-dialog.component';
+import { Plant } from '@models/plant.model';
+import { NavigationData, Photo } from '@models/photo.model';
+import { DaysAgoPipe } from "@pipes/days-ago/days-ago.pipe";
 
 @Component({
-    selector: 'photo',
-    standalone: true,
-    templateUrl: './photo.component.html',
-    styleUrls: ['./photo.component.scss'],
-    imports: [
-      CommonModule,
-      RouterModule,
-      MatDialogModule,
-      MatBottomSheetModule,
-      MatCardModule,
-      MatIconModule,
-      TranslateModule,
-      HammerModule,
-      InfoBoxComponent,
-      PropertyComponent,
-      ToggleOptionComponent,
-      DaysAgoPipe,
-    ]
+  selector: 'photo',
+  standalone: true,
+  templateUrl: './photo.component.html',
+  styleUrls: ['./photo.component.scss'],
+  imports: [
+    CommonModule,
+    RouterModule,
+    MatDialogModule,
+    MatBottomSheetModule,
+    MatCardModule,
+    MatIconModule,
+    TranslateModule,
+    InfoBoxComponent,
+    PropertyComponent,
+    ToggleOptionComponent,
+    DaysAgoPipe,
+  ]
 })
 export class PhotoComponent {
-  @ViewChildren('photo') photoElement!: QueryList<ElementRef>;
   id?: number;
   confirmDelete: boolean = false;
   enablePhotoEditing: boolean = false;
@@ -57,7 +53,6 @@ export class PhotoComponent {
   coverChecked: boolean = false;
   touchEvents: any;
 
-  queryList$?: Subscription;
   routeDetect$?: Subscription;
 
   constructor(
@@ -82,32 +77,19 @@ export class PhotoComponent {
     })
   }
 
-  ngAfterViewInit(): void {
-    let obs: Observable<any> = this.photoElement.changes;
-
-    if (this.photoElement.first) {
-      obs = obs.pipe(startWith(this.photoElement));
+  loadNextPhoto() {
+    if (this.navigation.next) {
+      this.router.navigate(['/photo', this.navigation.next.id], { replaceUrl: true });
     }
+  }
 
-    this.queryList$ = obs.pipe(
-      switchMap((res: QueryList<ElementRef>) => {
-        const hammerConfig = new LTHammerConfig();
-        const hammer = hammerConfig.buildHammer(res.first.nativeElement);
-
-        return fromEvent(hammer, 'swipe');
-      })
-    ).subscribe((res: any) => {
-      if (res.deltaX < 0) {
-        if (this.navigation.next) this.router.navigate(['/photo', this.navigation.next.id], { replaceUrl: true });
-      }
-      else {
-        if (this.navigation.prev) this.router.navigate(['/photo', this.navigation.prev.id], { replaceUrl: true });
-      }
-    })
+  loadPrevPhoto() {
+    if (this.navigation.prev) {
+      this.router.navigate(['/photo', this.navigation.prev.id], { replaceUrl: true });
+    }
   }
 
   ngOnDestroy(): void {
-    if (this.queryList$) this.queryList$.unsubscribe();
     if (this.routeDetect$) this.routeDetect$.unsubscribe();
   }
 

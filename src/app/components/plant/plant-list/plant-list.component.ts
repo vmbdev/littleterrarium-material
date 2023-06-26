@@ -3,13 +3,16 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
-import { MatCardModule } from '@angular/material/card';
-import { MatRippleModule } from '@angular/material/core';
+import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatCardModule } from '@angular/material/card';
+import { MatRippleModule } from '@angular/material/core';
+import { MatGridListModule } from '@angular/material/grid-list';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatBottomSheet, MatBottomSheetModule } from '@angular/material/bottom-sheet';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 import { ConfirmDialogComponent } from '@components/dialogs/confirm-dialog/confirm-dialog.component';
 import { FabComponent } from '@components/fab/fab.component';
@@ -26,6 +29,8 @@ import { User } from '@models/user.model';
 import { Plant } from '@models/plant.model';
 import { SortColumn, SortOrder } from '@models/sort-options.model';
 import { CapitalizePipe } from "@pipes/capitalize/capitalize.pipe";
+import { PlantMenuWaterComponent } from '../menu/plant-menu-water/plant-menu-water.component';
+import { PlantMenuFertComponent } from '../menu/plant-menu-fert/plant-menu-fert.component';
 
 @Component({
   selector: 'plant-list',
@@ -38,11 +43,17 @@ import { CapitalizePipe } from "@pipes/capitalize/capitalize.pipe";
     MatCardModule,
     MatButtonModule,
     MatIconModule,
+    MatMenuModule,
     MatDialogModule,
     MatRippleModule,
     MatBottomSheetModule,
+    MatGridListModule,
+    MatListModule,
+    TranslateModule,
     FabComponent,
     PlantToolbarComponent,
+    PlantMenuWaterComponent,
+    PlantMenuFertComponent,
     CapitalizePipe
   ]
 })
@@ -185,7 +196,7 @@ export class PlantListComponent {
           selected: this.listView$
         },
         {
-          icon: 'preview',
+          icon: 'grid_view',
           tooltip: 'general.viewCards',
           click: () => { this.setSmallView(false) },
           selected: this.cardView$

@@ -2,7 +2,6 @@ import { Component, Inject, Optional, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FileUploaderComponent } from '@components/file-uploader/file-uploader.component';
 import { MatButtonModule } from '@angular/material/button';
-import { MatTabsModule } from '@angular/material/tabs';
 import { FormGroup } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
@@ -21,6 +20,8 @@ import { PlantFormSpecieComponent } from '@components/plant/forms/plant-form-spe
 import { PlantFormDescriptionComponent } from '@components/plant/forms/plant-form-description/plant-form-description.component';
 import { PlantFormConditionComponent } from '@components/plant/forms/plant-form-condition/plant-form-condition.component';
 import { PlantFormLocationComponent } from '@components/plant/forms/plant-form-location/plant-form-location.component';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
 
 interface PlantEditConfig {
   id: number,
@@ -33,7 +34,8 @@ interface PlantEditConfig {
   imports: [
     CommonModule,
     TranslateModule,
-    MatTabsModule,
+    MatCardModule,
+    MatIconModule,
     MatButtonModule,
     FileUploaderComponent,
 

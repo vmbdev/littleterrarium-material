@@ -14,7 +14,7 @@
     <mat-icon>forest</mat-icon>
   </button>
   <button type="button" routerLink="/tasks" mat-icon-button>
-    <mat-icon [matBadge]="taskService.getCount()" matBadgeColor="warn">task</mat-icon>
+    <mat-icon [matBadge]="getTaskCount()" matBadgeColor="warn">task</mat-icon>
   </button>
   <button type="button" routerLink="/user" mat-icon-button>
     <user-box></user-box>

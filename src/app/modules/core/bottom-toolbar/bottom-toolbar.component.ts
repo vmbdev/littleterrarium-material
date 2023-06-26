@@ -20,4 +20,10 @@ export class BottomToolbarComponent {
   emitToggleSidenav() {
     this.toggleSidenav.emit();
   }
+
+  getTaskCount(): number | null {
+    const count = this.taskService.getCount()
+
+    return count > 0 ? count : null;
+  }
 }

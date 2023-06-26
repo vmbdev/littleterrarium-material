@@ -112,6 +112,7 @@ export class PlantService {
         id: plantId,
         fertLast: new Date()
       } as Plant;
+
       return this.update(updatedPlant);
     }
 
@@ -129,6 +130,7 @@ export class PlantService {
         id: plantId,
         waterLast: new Date()
       } as Plant;
+
       return this.update(updatedPlant);
     }
 

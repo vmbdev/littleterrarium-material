@@ -3,7 +3,7 @@
     {{ 'photo.cover' | translate }}
   </toggle-option>
   
-  <div class="photo">
+  <div class="photo" (swipeleft)="loadPrevPhoto()" (swiperight)="loadNextPhoto()">
     <img #photo draggable="false" [src]="imagePath.get(photo.images, 'full')">
   </div>
 
