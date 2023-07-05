@@ -11,8 +11,14 @@ export class LTHammerConfig extends HammerGestureConfig {
      touchAction: 'auto',
      inputClass: Hammer.TouchInput,
      recognizers: [
-       [Hammer.Swipe, { direction: Hammer.DIRECTION_HORIZONTAL }],
-       [Hammer.Pinch, { enable: true }]
+      [Hammer.Swipe, { direction: Hammer.DIRECTION_HORIZONTAL }],
+      [Hammer.Tap, { event: 'doubletap', taps: 2 }],
+      [Hammer.Pinch, {
+        direction: Hammer.DIRECTION_ALL,
+      }],
+      [Hammer.Pan, {
+        direction: Hammer.DIRECTION_ALL,
+      }, ['swipe']]
      ]
    });
  }

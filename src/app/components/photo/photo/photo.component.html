@@ -1,12 +1,4 @@
 <ng-container *ngIf="photoService.photo$ | async as photo">
-  <toggle-option [checked]="plantCoverId === photo.id" (change)="updateCoverPhoto($event)">
-    {{ 'photo.cover' | translate }}
-  </toggle-option>
-  
-  <div class="photo" (swipeleft)="loadPrevPhoto()" (swiperight)="loadNextPhoto()">
-    <img #photo draggable="false" [src]="imagePath.get(photo.images, 'full')">
-  </div>
-
   <info-box [description]="photo.description">
     <property icon="event">
       {{ 'general.daysAgo' | translate: { days: (photo.takenAt | daysAgo) } }}
@@ -15,4 +7,21 @@
       {{ (photo.public ? 'general.public' : 'general.private') | translate }}
     </property>
   </info-box>
+  <toggle-option [checked]="plantCoverId === photo.id" (change)="updateCoverPhoto($event)">
+    {{ 'photo.cover' | translate }}
+  </toggle-option>
+  
+  <ng-container *ngIf="imagePath.get(photo.images, 'full') as image">
+    <div class="photo">
+      <img
+        [src]="image"
+        draggable="false"
+        (swipeleft)="loadPrevPhoto()"
+        (swiperight)="loadNextPhoto()"
+        (click)="toggleViewer()"
+      >
+    </div>
+
+    <viewer *ngIf="showViewer" (close)="toggleViewer()" [imageSrc]="image"></viewer>
+  </ng-container>
 </ng-container>

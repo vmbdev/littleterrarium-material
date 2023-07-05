@@ -27,10 +27,12 @@ bootstrapApplication(AppComponent, {
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorHandlerInterceptor, multi: true },
     { provide: DateAdapter, useClass: NativeDateAdapter },
-    { provide: HAMMER_GESTURE_CONFIG, useClass: LTHammerConfig },
     provideAnimations(),
     provideHttpClient(withInterceptorsFromDi()),
+
     importProvidersFrom(HammerModule),
+    { provide: HAMMER_GESTURE_CONFIG, useClass: LTHammerConfig },
+
     importProvidersFrom(RouterModule.forRoot(routes)),
     importProvidersFrom(TranslateModule.forRoot({
       defaultLanguage: 'en',

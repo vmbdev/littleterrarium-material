@@ -1,0 +1,39 @@
+.viewer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  height: 100vh;
+  width: 100vw;
+  z-index: 10000;
+
+  &__toolbar {
+    background-color: transparent;
+  }
+
+  &__closeicon {
+    color: white;
+  }
+
+  &__content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    z-index: -1;
+    touch-action: none;
+
+  }
+
+  &__pic {
+    position: absolute;
+    width: 100%;
+    height: auto;
+
+    // transition: ease-in 250ms;
+  }
+}

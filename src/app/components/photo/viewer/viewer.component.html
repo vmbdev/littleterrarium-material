@@ -1,0 +1,21 @@
+<div class="viewer">
+  <mat-toolbar class="viewer__toolbar">
+    <button mat-icon-button (click)="closeEvent()">
+      <mat-icon class="viewer__closeicon">close</mat-icon>
+    </button>
+  </mat-toolbar>
+  <div class="viewer__content">
+    <img
+      #photo
+      class="viewer__pic"
+      draggable="false"
+      (load)="imageLoaded()"
+      (doubletap)="doubleTap($event)"
+      (pinchend)="pinchEnd($event)"
+      (pinchmove)="pinchMove($event)"
+      (panmove)="panMove($event)"
+      (panend)="panEnd($event)"
+      [src]="imageSrc"
+      >
+    </div>
+  </div>

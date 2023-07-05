@@ -1,4 +1,4 @@
-import { Component, ElementRef, QueryList, ViewChildren } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ActivatedRoute, Params, Router, RouterModule } from '@angular/router';
@@ -18,12 +18,14 @@ import { ImagePathService } from '@services/image-path.service';
 import { InfoBoxComponent } from "@components/info-box/info-box/info-box.component";
 import { PropertyComponent } from "@components/info-box/property/property.component";
 import { ToggleOptionComponent } from '@components/toggle-option/toggle-option.component';
-import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog.component';
 import { PhotoEditComponent } from '@components/photo/photo-edit/photo-edit.component';
+import { ViewerComponent } from '@components/photo/viewer/viewer.component';
+import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog.component';
 import { ConfirmDialogComponent } from '@components/dialogs/confirm-dialog/confirm-dialog.component';
 import { Plant } from '@models/plant.model';
 import { NavigationData, Photo } from '@models/photo.model';
 import { DaysAgoPipe } from "@pipes/days-ago/days-ago.pipe";
+import { HammerModule } from '@angular/platform-browser';
 
 @Component({
   selector: 'photo',
@@ -41,7 +43,8 @@ import { DaysAgoPipe } from "@pipes/days-ago/days-ago.pipe";
     InfoBoxComponent,
     PropertyComponent,
     ToggleOptionComponent,
-    DaysAgoPipe,
+    ViewerComponent,
+    DaysAgoPipe
   ]
 })
 export class PhotoComponent {
@@ -52,6 +55,8 @@ export class PhotoComponent {
   plantCoverId?: number;
   coverChecked: boolean = false;
   touchEvents: any;
+
+  showViewer: boolean = false;
 
   routeDetect$?: Subscription;
 
@@ -76,6 +81,7 @@ export class PhotoComponent {
       this.loadPhoto();
     })
   }
+
 
   loadNextPhoto() {
     if (this.navigation.next) {
@@ -136,6 +142,10 @@ export class PhotoComponent {
         this.plantCoverId = cover.coverId;
       });
     }
+  }
+
+  toggleViewer() {
+    this.showViewer = !this.showViewer;
   }
 
   openRemoveDialog() {
