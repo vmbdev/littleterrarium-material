@@ -7,10 +7,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { AuthService } from '@services/auth.service';
 import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog.component';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
 @Component({
   selector: 'signin',

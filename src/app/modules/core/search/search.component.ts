@@ -1,11 +1,11 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatIconModule } from '@angular/material/icon';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatInputModule } from '@angular/material/input';
+import { MatInput, MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { SearchService } from '@services/search.service';
 
@@ -26,10 +26,17 @@ import { SearchService } from '@services/search.service';
   styleUrls: ['./search.component.scss']
 })
 export class SearchComponent {
+  @ViewChild('searchInput') searchElement!: ElementRef<MatInput>;
 
   constructor(
-    private search: SearchService
+    private search: SearchService,
+    private cdr: ChangeDetectorRef
   ) {}
+    
+  ngAfterViewInit() {
+    this.searchElement.nativeElement.focus();
+    this.cdr.detectChanges();
+  }
 
   keyPress(value: string): void {
     if (value.length > 0) this.search.setText(value);
