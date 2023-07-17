@@ -1,8 +1,8 @@
-<p [innerHtml]="'photo-add.visibility' | translate"></p>
-<p [innerHtml]="'photo-add.visibilityNote' | translate"></p>
+<ng-content></ng-content>
 
 <form [formGroup]="form">
   <mat-checkbox formControlName="public" [checked]="currentPrivacy">
     {{ 'general.visibilityPublic' | translate }}
   </mat-checkbox>
+
 </form>

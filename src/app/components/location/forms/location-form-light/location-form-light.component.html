@@ -6,14 +6,15 @@
     <mat-button-toggle
       *ngFor="let option of lightOptions | keyvalue"
       [value]="option.key"
-      [checked]="location && (option.key === location.light)"
-    >
+      [checked]="option.key === currentLight"
+      >
       <div class="icon-button-toggle__option">
         <mat-icon>{{ locationService.getLightAsset(option.key) }}</mat-icon>
         <div>{{ locationService.getLightName(option.key) | translate }}</div>
       </div>
     </mat-button-toggle>
   </mat-button-toggle-group>
+
   <div *ngIf="form.get('light')?.value as light" class="icon-button-toggle__selection">
     {{ locationService.getLightVerbose(light) | translate }}
   </div>

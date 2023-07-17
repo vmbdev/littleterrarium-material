@@ -1,27 +1,28 @@
 import { Component, Inject, Optional, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FileUploaderComponent } from '@components/file-uploader/file-uploader.component';
-import { MatButtonModule } from '@angular/material/button';
 import { FormGroup } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDialog } from '@angular/material/dialog';
+import { MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
+import { finalize, Observable } from 'rxjs';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 import { Plant } from '@models/plant.model';
 import { Location } from '@models/location.model';
-import { MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
-import { finalize, Observable } from 'rxjs';
-import { MatDialog } from '@angular/material/dialog';
 import { ErrorHandlerService } from '@services/error-handler.service';
 import { PlantService } from '@services/plant.service';
-import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog.component';
 import { PlantGetConfig } from '@services/api.service';
+import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog.component';
+import { FileUploaderComponent } from '@components/file-uploader/file-uploader.component';
 import { PlantFormNameComponent } from '@components/plant/forms/plant-form-name/plant-form-name.component';
-import { PlantFormPrivacyComponent } from '@components/plant/forms/plant-form-privacy/plant-form-privacy.component';
 import { PlantFormSpecieComponent } from '@components/plant/forms/plant-form-specie/plant-form-specie.component';
 import { PlantFormDescriptionComponent } from '@components/plant/forms/plant-form-description/plant-form-description.component';
 import { PlantFormConditionComponent } from '@components/plant/forms/plant-form-condition/plant-form-condition.component';
 import { PlantFormLocationComponent } from '@components/plant/forms/plant-form-location/plant-form-location.component';
-import { MatCardModule } from '@angular/material/card';
-import { MatIconModule } from '@angular/material/icon';
+import { EditPageComponent } from '@components/edit-page/edit-page.component';
+import { FormPrivacyComponent } from '@components/form-privacy/form-privacy.component';
 
 interface PlantEditConfig {
   id: number,
@@ -40,11 +41,12 @@ interface PlantEditConfig {
     FileUploaderComponent,
 
     PlantFormNameComponent,
-    PlantFormPrivacyComponent,
     PlantFormSpecieComponent,
     PlantFormDescriptionComponent,
     PlantFormConditionComponent,
-    PlantFormLocationComponent
+    PlantFormLocationComponent,
+    FormPrivacyComponent,
+    EditPageComponent
   ],
   templateUrl: './plant-edit.component.html',
   styleUrls: ['./plant-edit.component.scss']
@@ -52,7 +54,7 @@ interface PlantEditConfig {
 export class PlantEditComponent {
   @ViewChild(PlantFormNameComponent) nameComponent!: PlantFormNameComponent;
   @ViewChild(PlantFormSpecieComponent) specieComponent!: PlantFormSpecieComponent;
-  @ViewChild(PlantFormPrivacyComponent) privacyComponent!: PlantFormPrivacyComponent;
+  @ViewChild(FormPrivacyComponent) privacyComponent!: FormPrivacyComponent;
   @ViewChild(PlantFormDescriptionComponent) descriptionComponent!: PlantFormDescriptionComponent;
   @ViewChild(PlantFormConditionComponent) conditionComponent!: PlantFormConditionComponent;
   @ViewChild(PlantFormLocationComponent) locationComponent!: PlantFormLocationComponent;

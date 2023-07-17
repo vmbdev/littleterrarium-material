@@ -51,6 +51,8 @@ mat-bottom-sheet-container {
 .tab-navigation {
   display: flex;
   flex-direction: row;
+  position: sticky;
+  bottom: 15px;
   width: 100%;
   justify-content: center;
 
@@ -77,6 +79,10 @@ mat-bottom-sheet-container {
   border-radius: 25px 0 25px 0 !important;
   border: 0 !important;
   box-shadow: none !important;
+}
+
+.toolbar-spacer {
+  flex: 1 1 auto;
 }
 
 // mat-stepper, .mat-horizontal-stepper-wrapper, .mat-horizontal-content-container, .mat-horizontal-stepper-content {

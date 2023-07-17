@@ -1,12 +1,12 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
+import { FormBaseComponent } from '@components/form-base/form-base.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { Location } from '@models/location.model';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
-  selector: 'location-form-privacy',
+  selector: 'ltm-form-privacy',
   standalone: true,
   imports: [
     CommonModule,
@@ -14,12 +14,16 @@ import { Location } from '@models/location.model';
     MatCheckboxModule,
     TranslateModule
   ],
-  templateUrl: './location-form-privacy.component.html',
-  styleUrls: ['./location-form-privacy.component.scss']
+  templateUrl: './form-privacy.component.html',
+  styleUrls: ['./form-privacy.component.scss']
 })
-export class LocationFormPrivacyComponent {
-  @Input() location?: Location | null;
+export class FormPrivacyComponent implements FormBaseComponent {
+  @Input() currentPrivacy: boolean = true;
   form = this.fb.group({ public: [true] });
 
   constructor(private fb: FormBuilder) {}
+
+  ngOnInit(): void {
+    this.form.patchValue({ public: this.currentPrivacy })
+  }
 }

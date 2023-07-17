@@ -4,7 +4,7 @@
       <mat-icon>arrow_back_ios_new</mat-icon>
     </button>
     <span class="toolbar__title">{{ mt.name$ | async }}</span>
-    <span class="toolbar__spacer"></span>
+    <span class="toolbar-spacer"></span>
     <button *ngFor="let b of mt.buttons$ | async"
       mat-icon-button
       (click)="b.click ? b.click() : null"

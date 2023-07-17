@@ -1,5 +1,8 @@
-<ng-container *ngIf="photoService.photo$ | async as photo" mat-stretch-tabs="false" mat-align-tabs="center">
-
+<edit-page 
+  *ngIf="photoService.photo$ | async as photo"
+  [title]="'photo-edit.header' | translate"
+  (accept)="submit()"
+>
   <mat-card class="settings-card">
     <mat-card-header>
       <mat-card-title>{{ 'general.description' | translate }}</mat-card-title>
@@ -23,15 +26,11 @@
       <mat-card-title>{{ 'general.privacy' | translate }}</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <photo-form-privacy [currentPrivacy]="photo.public"></photo-form-privacy>
+      <ltm-form-privacy [currentPrivacy]="photo.public">
+        <p [innerHtml]="'photo-add.visibility' | translate"></p>
+        <p [innerHtml]="'photo-add.visibilityNote' | translate"></p>
+      </ltm-form-privacy>
     </mat-card-content>
   </mat-card>
-  
-  <div class="tab-navigation">
-    <button type="submit" mat-raised-button color="primary" (click)="submit()">
-      <mat-icon>edit_square</mat-icon>
-      {{ 'general.update' | translate }}
-    </button>
-  </div>
 
-</ng-container>
+</edit-page>

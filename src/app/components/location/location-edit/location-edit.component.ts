@@ -1,19 +1,20 @@
 import { CommonModule } from '@angular/common';
 import { Component, Inject, Injector, Optional } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
-import { catchError, EMPTY, finalize } from 'rxjs';
+import { catchError, EMPTY, finalize, Observable } from 'rxjs';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
 import { MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { FileUploaderComponent } from '@components/file-uploader/file-uploader.component';
 import { LocationFormLightComponent } from '@components/location/forms/location-form-light/location-form-light.component';
 import { LocationFormNameComponent } from '@components/location/forms/location-form-name/location-form-name.component';
-import { LocationFormPrivacyComponent } from '@components/location/forms/location-form-privacy/location-form-privacy.component';
 import { LocationUpsertBaseComponent } from '@components/location/location-upsert-base/location-upsert-base.component';
+import { EditPageComponent } from '@components/edit-page/edit-page.component';
+import { FormPrivacyComponent } from '@components/form-privacy/form-privacy.component';
 import { Location } from '@models/location.model';
-import { MatCardModule } from '@angular/material/card';
-import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'location-edit',
@@ -28,7 +29,8 @@ import { MatIconModule } from '@angular/material/icon';
 
     LocationFormNameComponent,
     LocationFormLightComponent,
-    LocationFormPrivacyComponent
+    FormPrivacyComponent,
+    EditPageComponent
   ],
   templateUrl: './location-edit.component.html',
   styleUrls: ['./location-edit.component.scss']
@@ -36,7 +38,7 @@ import { MatIconModule } from '@angular/material/icon';
 export class LocationEditComponent extends LocationUpsertBaseComponent {
   removePicture: boolean = false;
 
-  location?: Location;
+  location$?: Observable<Location>;
   returnedLocation?: Location;
 
   constructor(
@@ -47,14 +49,9 @@ export class LocationEditComponent extends LocationUpsertBaseComponent {
     super(injector);
   }
 
-  ngAfterViewInit(): void {
+  ngOnInit(): void {
     if (this.editLocation && this.editLocation.id) {
-      this.locationService.get(this.editLocation.id).subscribe((location: Location) => {
-
-        this.nameComponent.form.patchValue({ name: location.name });
-        this.lightComponent.form.patchValue({ light: location.light });
-        this.privacyComponent.form.patchValue({ public: location.public });
-      });
+      this.location$ = this.locationService.get(this.editLocation.id);
     }
   }
 

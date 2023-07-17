@@ -4,6 +4,7 @@ import { ReactiveFormsModule, FormBuilder } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { FormBaseComponent } from '@components/form-base/form-base.component';
 
 @Component({
   selector: 'plant-form-description',
@@ -18,7 +19,7 @@ import { MatInputModule } from '@angular/material/input';
   templateUrl: './plant-form-description.component.html',
   styleUrls: ['./plant-form-description.component.scss']
 })
-export class PlantFormDescriptionComponent {
+export class PlantFormDescriptionComponent implements FormBaseComponent {
   @Input() currentDescription: string | null = '';
   form = this.fb.group({ description: [''] });
 

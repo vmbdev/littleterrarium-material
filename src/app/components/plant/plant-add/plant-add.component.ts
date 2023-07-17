@@ -10,7 +10,6 @@ import { FileUploaderComponent } from '@components/file-uploader/file-uploader.c
 import { StepperNavigationComponent } from '@components/stepper-navigation/stepper-navigation.component';
 import { PlantFormNameComponent } from '@components/plant/forms/plant-form-name/plant-form-name.component';
 import { PlantFormSpecieComponent } from '@components/plant/forms/plant-form-specie/plant-form-specie.component';
-import { PlantFormPrivacyComponent } from '@components/plant/forms/plant-form-privacy/plant-form-privacy.component';
 import { PlantService } from '@services/plant.service';
 import { ErrorHandlerService } from '@services/error-handler.service';
 import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog.component';
@@ -20,6 +19,7 @@ import { HttpEventType } from '@angular/common/http';
 import { LocationService } from '@services/location.service';
 import { Photo } from '@models/photo.model';
 import { PhotoService } from '@services/photo.service';
+import { FormPrivacyComponent } from '@components/form-privacy/form-privacy.component';
 
 @Component({
   selector: 'plant-add',
@@ -39,8 +39,8 @@ import { PhotoService } from '@services/photo.service';
     FileUploaderComponent,
 
     PlantFormNameComponent,
-    PlantFormPrivacyComponent,
-    PlantFormSpecieComponent
+    PlantFormSpecieComponent,
+    FormPrivacyComponent
   ],
   templateUrl: './plant-add.component.html',
   styleUrls: ['./plant-add.component.scss']
@@ -48,7 +48,7 @@ import { PhotoService } from '@services/photo.service';
 export class PlantAddComponent {
   @ViewChild(PlantFormNameComponent) nameComponent!: PlantFormNameComponent;
   @ViewChild(PlantFormSpecieComponent) specieComponent!: PlantFormSpecieComponent;
-  @ViewChild(PlantFormPrivacyComponent) privacyComponent!: PlantFormPrivacyComponent;
+  @ViewChild(FormPrivacyComponent) privacyComponent!: FormPrivacyComponent;
 
   locationId?: number;
   photos: File[] = [];

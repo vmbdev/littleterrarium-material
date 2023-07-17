@@ -1,10 +1,10 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Location } from '@models/location.model';
-import { TranslateModule } from '@ngx-translate/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { TranslateModule } from '@ngx-translate/core';
+import { FormBaseComponent } from '@components/form-base/form-base.component';
 
 @Component({
   selector: 'location-form-name',
@@ -19,10 +19,14 @@ import { MatInputModule } from '@angular/material/input';
   templateUrl: './location-form-name.component.html',
   styleUrls: ['./location-form-name.component.scss']
 })
-export class LocationFormNameComponent {
-  @Input() location?: Location;
+export class LocationFormNameComponent implements FormBaseComponent {
+  @Input() currentName?: string | null;
   public form = this.fb.group({ name: ['', Validators.required] });
 
   constructor (private fb: FormBuilder) {}
+
+  ngOnInit(): void {
+    this.form.patchValue({ name: this.currentName })
+  }
 
 }

@@ -20,7 +20,11 @@
 
 
   <mat-step [stepControl]="formPrivacy.form" [label]="'general.privacy' | translate">
-    <plant-form-privacy #formPrivacy></plant-form-privacy>
+    <ltm-form-privacy #formPrivacy>
+      <p [innerHtml]="'plant-add.privacy' | translate"></p>
+      <p [innerHtml]="'plant-add.privacyTip' | translate"></p>
+    </ltm-form-privacy>
+
     <stepper-navigation finishButton="true" (finish)="submit()"></stepper-navigation>
   </mat-step>
 </mat-stepper>

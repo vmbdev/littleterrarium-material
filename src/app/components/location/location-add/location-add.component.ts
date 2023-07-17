@@ -3,19 +3,18 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatStepperModule } from '@angular/material/stepper';
 import { catchError, EMPTY, finalize } from 'rxjs';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { MatStepperModule } from '@angular/material/stepper';
-
-import { Location } from '@models/location.model';
 import { StepperNavigationComponent } from '@components/stepper-navigation/stepper-navigation.component';
 import { FileUploaderComponent } from '@components/file-uploader/file-uploader.component';
 import { LocationFormNameComponent } from '@components/location/forms/location-form-name/location-form-name.component';
 import { LocationFormLightComponent } from '@components/location/forms/location-form-light/location-form-light.component';
-import { LocationFormPrivacyComponent } from '@components/location/forms/location-form-privacy/location-form-privacy.component';
-import { MatDialogModule } from '@angular/material/dialog';
-import { LocationUpsertBaseComponent } from '../location-upsert-base/location-upsert-base.component';
+import { LocationUpsertBaseComponent } from '@components/location/location-upsert-base/location-upsert-base.component';
+import { FormPrivacyComponent } from '@components/form-privacy/form-privacy.component';
+import { Location } from '@models/location.model';
 ;
 
 @Component({
@@ -39,7 +38,7 @@ import { LocationUpsertBaseComponent } from '../location-upsert-base/location-up
 
     LocationFormNameComponent,
     LocationFormLightComponent,
-    LocationFormPrivacyComponent
+    FormPrivacyComponent
   ]
 })
 export class LocationAddComponent extends LocationUpsertBaseComponent {

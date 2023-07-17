@@ -10,6 +10,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { FormBaseComponent } from '@components/form-base/form-base.component';
 
 
 @Component({
@@ -28,7 +29,7 @@ import { MatButtonModule } from '@angular/material/button';
   templateUrl: './plant-form-specie.component.html',
   styleUrls: ['./plant-form-specie.component.scss']
 })
-export class PlantFormSpecieComponent {
+export class PlantFormSpecieComponent implements FormBaseComponent {
   @Input() currentSpecie?: number | null;
   form = this.fb.group({ specieId: new FormControl<number | null>(null) });
   results$ = new BehaviorSubject<Specie[]>([]);

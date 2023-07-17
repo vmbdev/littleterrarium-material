@@ -289,11 +289,11 @@ export class PlantListComponent {
 
     bsRef.afterDismissed().subscribe((updatedPlant: Plant) => {
       if (updatedPlant) {
-        let list = this.list$.getValue();
+        const list = this.list$.getValue();
         const index = list.findIndex((plant) => plant.id === updatedPlant.id);
 
         // we moved the plant, hence we remove it from the list
-        if (updatedPlant.locationId !== this.locationId) {
+        if (this.locationId && (updatedPlant.locationId !== this.locationId)) {
           list.splice(index, 1);
         }
         else list[index] = updatedPlant;

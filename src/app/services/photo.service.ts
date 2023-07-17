@@ -56,7 +56,7 @@ export class PhotoService {
       map((updatedPhoto: Photo) => {
         this.photo$.next(updatedPhoto);
 
-        return photo;
+        return updatedPhoto;
       }),
       catchError((HttpError: HttpErrorResponse) => {
         this.photo$.next(null);

@@ -10,13 +10,14 @@ import { BehaviorSubject, finalize } from 'rxjs';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 import { PhotoFormDescriptionComponent } from '@components/photo/forms/photo-form-description/photo-form-description.component';
-import { PhotoFormPrivacyComponent } from '@components/photo/forms/photo-form-privacy/photo-form-privacy.component';
 import { PhotoFormDateComponent } from '@components/photo/forms/photo-form-date/photo-form-date.component';
 import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog.component';
 import { ErrorHandlerService } from '@services/error-handler.service';
 import { PlantService } from '@services/plant.service';
 import { PhotoService } from '@services/photo.service';
 import { Photo } from '@models/photo.model';
+import { EditPageComponent } from '@components/edit-page/edit-page.component';
+import { FormPrivacyComponent } from '@components/form-privacy/form-privacy.component';
 
 interface PhotoEditConfig {
   id: number
@@ -33,15 +34,16 @@ interface PhotoEditConfig {
     MatIconModule,
 
     PhotoFormDescriptionComponent,
-    PhotoFormPrivacyComponent,
-    PhotoFormDateComponent
+    PhotoFormDateComponent,
+    FormPrivacyComponent,
+    EditPageComponent
   ],
   templateUrl: './photo-edit.component.html',
   styleUrls: ['./photo-edit.component.scss']
 })
 export class PhotoEditComponent {
   @ViewChild(PhotoFormDescriptionComponent) descriptionComp!: PhotoFormDescriptionComponent;
-  @ViewChild(PhotoFormPrivacyComponent) privacyComp!: PhotoFormPrivacyComponent;
+  @ViewChild(FormPrivacyComponent) privacyComp!: FormPrivacyComponent;
   @ViewChild(PhotoFormDateComponent) dateComp!: PhotoFormDateComponent;
 
   photo$? = new BehaviorSubject<Photo | null>(null);

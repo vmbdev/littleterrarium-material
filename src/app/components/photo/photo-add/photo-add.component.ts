@@ -12,12 +12,12 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 import { StepperNavigationComponent } from '@components/stepper-navigation/stepper-navigation.component';
 import { FileUploaderComponent } from '@components/file-uploader/file-uploader.component';
-import { PhotoFormPrivacyComponent } from '@components/photo/forms/photo-form-privacy/photo-form-privacy.component';
 import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog.component';
 import { PlantService } from '@services/plant.service';
 import { PhotoService } from '@services/photo.service';
 import { ErrorHandlerService } from '@services/error-handler.service';
 import { Photo } from '@models/photo.model';
+import { FormPrivacyComponent } from '@components/form-privacy/form-privacy.component';
 
 @Component({
   selector: 'photo-add',
@@ -37,13 +37,13 @@ import { Photo } from '@models/photo.model';
     TranslateModule,
     StepperNavigationComponent,
     FileUploaderComponent,
-    PhotoFormPrivacyComponent
+    FormPrivacyComponent
   ],
   templateUrl: './photo-add.component.html',
   styleUrls: ['./photo-add.component.scss']
 })
 export class PhotoAddComponent {
-  @ViewChild(PhotoFormPrivacyComponent) privacyComponent!: PhotoFormPrivacyComponent;
+  @ViewChild(FormPrivacyComponent) privacyComponent!: FormPrivacyComponent;
   plantId?: number;
   pictures: File[] = [];
 

@@ -194,7 +194,9 @@ export class PhotoComponent {
       });
 
       ref.afterDismissed().subscribe((photo: Photo) => {
-        if (photo) this.mt.setName(this.getDateTitle(photo.takenAt));
+        if (photo) {
+          this.mt.setName(this.getDateTitle(photo.takenAt));
+        }
       })
     }
   }

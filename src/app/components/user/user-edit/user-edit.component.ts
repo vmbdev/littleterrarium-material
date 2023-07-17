@@ -11,7 +11,6 @@ import { ApiService } from '@services/api.service';
 import { AuthService } from '@services/auth.service';
 import { ErrorHandlerService } from '@services/error-handler.service';
 import { MatButtonModule } from '@angular/material/button';
-import { MatTabsModule } from '@angular/material/tabs';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { UserFormBioComponent } from '@components/user/forms/user-form-bio/user-form-bio.component';
 import { UserFormEmailComponent } from '@components/user/forms/user-form-email/user-form-email.component';
@@ -22,6 +21,8 @@ import { FormBaseComponent } from '@components/form-base/form-base.component';
 import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog.component';
 import { FileUploaderComponent } from '@components/file-uploader/file-uploader.component';
 import { MainToolbarService } from '@services/main-toolbar.service';
+import { EditPageComponent } from '@components/edit-page/edit-page.component';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'user-edit',
@@ -31,15 +32,16 @@ import { MainToolbarService } from '@services/main-toolbar.service';
   imports: [
     CommonModule,
     MatButtonModule,
-    MatTabsModule,
     MatDialogModule,
+    MatCardModule,
     TranslateModule,
     FileUploaderComponent,
     UserFormBioComponent,
     UserFormEmailComponent,
     UserFormUsernameComponent,
     UserFormNameComponent,
-    UserFormPrivacyComponent
+    UserFormPrivacyComponent,
+    EditPageComponent
   ]
 })
 export class UserEditComponent {
@@ -57,7 +59,7 @@ export class UserEditComponent {
     public: new FormControl<boolean>(true),
   });
   avatar?: File;
-  tabIndex: number | null = null;
+  // tabIndex: number | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -73,22 +75,10 @@ export class UserEditComponent {
   ngOnInit(): void {
     this.mt.hide();
 
-    this.auth.checked$.pipe(
+    this.auth.checked$
+    .pipe(
       skipWhile(val => val === false)
-    ).subscribe(() => {
-      const user = this.auth.getUser();
-
-      if (user) {
-        this.userForm.patchValue({
-          username: user.username,
-          firstname: user.firstname,
-          lastname: user.lastname,
-          email: user.email,
-          bio: user.bio,
-          public: user.public
-        });
-      }
-    });
+    ).subscribe();
   }
 
   openWaitDialog() {
@@ -127,11 +117,11 @@ export class UserEditComponent {
     }
   }
 
-  tabMoveTo(i: number): void {
-    // trigger an Input() change detection
-    this.tabIndex = null;
-    this.tabIndex = i;
-  }
+  // tabMoveTo(i: number): void {
+  //   // trigger an Input() change detection
+  //   this.tabIndex = null;
+  //   this.tabIndex = i;
+  // }
 
   submit(): void {
     if (!this.checkFormValidity()) {
@@ -153,22 +143,22 @@ export class UserEditComponent {
           else if (error.msg === 'USER_FIELD_EXISTS') {
             if (error.errorData.field === 'username') {
               this.usernameComponent.form.get('username')?.setErrors({ taken: true });
-              this.tabMoveTo(0);
+              // this.tabMoveTo(0);
             }
             else if (error.errorData.field === 'email') {
               this.emailComponent.form.get('email')?.setErrors({ taken: true });
-              this.tabMoveTo(3);
+              // this.tabMoveTo(3);
             }
           }
   
           else if (error.msg === 'USER_FIELD_INVALID') {
             if (error.errorData.field === 'username') {
               this.usernameComponent.form.get('username')?.setErrors({ invalid: true });
-              this.tabMoveTo(0);
+              // this.tabMoveTo(0);
             }
             else if (error.errorData.field === 'email') {
               this.emailComponent.form.get('email')?.setErrors({ invalid: true });
-              this.tabMoveTo(3);
+              // this.tabMoveTo(3);
             }
           }
 

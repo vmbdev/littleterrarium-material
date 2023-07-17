@@ -7,6 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { Observable } from 'rxjs';
 import { Location } from '@models/location.model';
+import { FormBaseComponent } from '@components/form-base/form-base.component';
 
 @Component({
   selector: 'plant-form-location',
@@ -21,7 +22,7 @@ import { Location } from '@models/location.model';
   templateUrl: './plant-form-location.component.html',
   styleUrls: ['./plant-form-location.component.scss']
 })
-export class PlantFormLocationComponent {
+export class PlantFormLocationComponent implements FormBaseComponent {
   @Input() currentLocation?: number;
   form = this.fb.group({
     locationId: new FormControl<number | null>(null, [ Validators.required ])

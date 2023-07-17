@@ -4,10 +4,9 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { LocationFormLightComponent } from '@components/location/forms/location-form-light/location-form-light.component';
 import { LocationFormNameComponent } from '@components/location/forms/location-form-name/location-form-name.component';
-import { LocationFormPrivacyComponent } from '@components/location/forms/location-form-privacy/location-form-privacy.component';
 import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog.component';
+import { FormPrivacyComponent } from '@components/form-privacy/form-privacy.component';
 import { Location } from '@models/location.model';
-import { ApiService } from '@services/api.service';
 import { LocationService } from '@services/location.service';
 import { ErrorHandlerService } from '@services/error-handler.service';
 
@@ -21,7 +20,7 @@ import { ErrorHandlerService } from '@services/error-handler.service';
 export class LocationUpsertBaseComponent {
   @ViewChild(LocationFormNameComponent) nameComponent!: LocationFormNameComponent;
   @ViewChild(LocationFormLightComponent) lightComponent!: LocationFormLightComponent;
-  @ViewChild(LocationFormPrivacyComponent) privacyComponent!: LocationFormPrivacyComponent;
+  @ViewChild(FormPrivacyComponent) privacyComponent!: FormPrivacyComponent;
 
   picture?: File;
   

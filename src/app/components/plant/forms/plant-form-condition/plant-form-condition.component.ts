@@ -6,6 +6,7 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { Condition } from '@models/plant.model';
 import { PlantService } from '@services/plant.service';
+import { FormBaseComponent } from '@components/form-base/form-base.component';
 
 @Component({
   selector: 'plant-form-condition',
@@ -20,7 +21,7 @@ import { PlantService } from '@services/plant.service';
   templateUrl: './plant-form-condition.component.html',
   styleUrls: ['./plant-form-condition.component.scss']
 })
-export class PlantFormConditionComponent {
+export class PlantFormConditionComponent implements FormBaseComponent {
   @Input() currentCondition: Condition | null = 'GOOD';
   form = this.fb.group({ condition: [''] });
   plantConditions = Condition;

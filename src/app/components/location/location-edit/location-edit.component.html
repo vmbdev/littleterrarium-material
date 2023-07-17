@@ -1,45 +1,47 @@
-<mat-card class="settings-card">
-  <mat-card-header>
-    <mat-card-title>{{ 'general.name' | translate }}</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <location-form-name [location]="location"></location-form-name>
-  </mat-card-content>
-</mat-card>
+<edit-page 
+  *ngIf="location$ | async as location"
+  [title]="'location-add-edit.header' | translate:{ location: location.name }"
+  (accept)="submit()"
+>
+  <mat-card class="settings-card">
+    <mat-card-header>
+      <mat-card-title>{{ 'general.name' | translate }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <location-form-name [currentName]="location.name"></location-form-name>
+    </mat-card-content>
+  </mat-card>
 
-<mat-card class="settings-card">
-  <mat-card-header>
-    <mat-card-title>{{ 'general.picture' | translate }}</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <p [innerHTML]="'location-add-edit.choose' | translate"></p>
-    <p [innerHTML]="'location-add-edit.ornot' | translate"></p>
-    <file-uploader [amount]="1" (fileChange)="fileChange($event)"></file-uploader>
-  </mat-card-content>
-</mat-card>
+  <mat-card class="settings-card">
+    <mat-card-header>
+      <mat-card-title>{{ 'general.picture' | translate }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p [innerHTML]="'location-add-edit.choose' | translate"></p>
+      <p [innerHTML]="'location-add-edit.ornot' | translate"></p>
+      <file-uploader [amount]="1" (fileChange)="fileChange($event)"></file-uploader>
+    </mat-card-content>
+  </mat-card>
 
 
-<mat-card class="settings-card">
-  <mat-card-header>
-    <mat-card-title>{{ 'general.light' | translate }}</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <location-form-light [location]="locationService.location$ | async"></location-form-light>
-  </mat-card-content>
-</mat-card>
+  <mat-card class="settings-card">
+    <mat-card-header>
+      <mat-card-title>{{ 'general.light' | translate }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <location-form-light [currentLight]="location.light"></location-form-light>
+    </mat-card-content>
+  </mat-card>
 
-<mat-card class="settings-card">
-  <mat-card-header>
-    <mat-card-title>{{ 'general.privacy' | translate }}</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <location-form-privacy [location]="locationService.location$ | async"></location-form-privacy>
-  </mat-card-content>
-</mat-card>
-
-<div class="tab-navigation">
-  <button type="submit" mat-raised-button color="primary" (click)="submit()">
-    <mat-icon>edit_square</mat-icon>
-    {{ 'general.update' | translate }}
-  </button>
-</div>
+  <mat-card class="settings-card">
+    <mat-card-header>
+      <mat-card-title>{{ 'general.privacy' | translate }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <ltm-form-privacy [currentPrivacy]="location.public">
+        <p [innerHtml]="'location-add-edit.visibility' | translate"></p>
+        <p [innerHtml]="'location-add-edit.visibilityNote' | translate"></p>
+      </ltm-form-privacy>
+    </mat-card-content>
+  </mat-card>
+</edit-page>
