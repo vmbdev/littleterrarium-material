@@ -10,10 +10,10 @@
   <div *ngIf="files.length === 0">
     <b>{{ 'fileUploader.select' | translate }}</b>
   </div>
-  <div *ngIf="files.length > 0">
-    <div *ngFor="let file of files; let i = index" class="file-uploader__file">
+  <div *ngIf="files.length > 0" class="file-uploader__picturegrid">
+    <div *ngFor="let preview of previews; let i = index" class="file-uploader__picture">
       <span class="file-uploader__removelink" (click)="removeFile(i)">&#10006;</span>
-      <span class="file-uploader__filename">{{ file.name | shortFilename:15 }} </span>
+      <img [src]="preview" class="file-uploader__previewimg" (load)="revokeUrl(preview)">
     </div>
   </div>
 
@@ -21,11 +21,20 @@
     #fileInput
     type="file"
     (change)="fileInputChange($event)"
-    [disabled]="availableSlots() === 0" [multiple]="amount > 1"
+    [disabled]="availableSlots() === 0"
+    [multiple]="amount > 1"
     accept="image/*"
     capture
     hidden
   >
 
-  <button type="button" mat-raised-button color="primary" (click)="fileInput.click()">{{ 'fileUploader.upload' | translate }}</button>
+  <button
+    type="button"
+    mat-raised-button
+    color="primary"
+    (click)="fileInput.click()"
+    [disabled]="availableSlots() === 0"
+  >
+    {{ 'fileUploader.selectButton' | translate }}
+  </button>
 </div>

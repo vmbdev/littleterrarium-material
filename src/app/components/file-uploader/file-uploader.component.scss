@@ -5,8 +5,9 @@
   align-items: center;
   justify-content: space-evenly;
   margin: 10px 0;
-  min-height: 15em;
   color: black;
+  min-height: 15em;
+  width: 80vw;
 
   input[type=file] {
     display: none;
@@ -22,11 +23,35 @@
 
   &__removelink {
     font-weight: 600;
-    color: #FF6B6B;
+    color: #ffffff;
+    background-color: black;
+    border-radius: 5px;
+    padding: 3px;
+    position: absolute;
+    top: 5px;
+    left: 5px;
     cursor: pointer;
   }
 
   &__filename {
     word-wrap: break-word;
+  }
+
+  &__picture {
+    position: relative;
+  }
+
+  &__picturegrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 100px);
+    gap: 5px;
+    width: 100%;
+  }
+  
+  &__previewimg {
+    height: 100px;
+    width: 100px;
+    object-fit: cover;
+    object-position: 50% 50%;
   }
 }

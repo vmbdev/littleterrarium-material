@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { TranslateModule } from '@ngx-translate/core';
 import { ShortFilenamePipe } from '@pipes/short-filename/short-filename.pipe';
@@ -16,15 +16,16 @@ import { ShortFilenamePipe } from '@pipes/short-filename/short-filename.pipe';
   templateUrl: './file-uploader.component.html',
   styleUrls: ['./file-uploader.component.scss']
 })
-export class FileUploaderComponent implements OnInit {
+export class FileUploaderComponent {
   @Input() amount: number = 1;
   @Output() fileChange: EventEmitter<File[]> = new EventEmitter<File[]>();
   files: File[] = [];
+  previews: string[] = new Array<string>(this.amount);
   dragOver: boolean = false;
 
-  constructor() { }
+  onDestroy() {
 
-  ngOnInit(): void { }
+  }
 
   dragEnter(event: Event): void {
     event.stopPropagation();
@@ -41,31 +42,51 @@ export class FileUploaderComponent implements OnInit {
   }
 
   dropFile(event: DragEvent): void {
-    const files = event.dataTransfer?.files;
-  
     event.stopPropagation();
     event.preventDefault();
+
+    const files = event.dataTransfer?.files;
+
     this.dragOver = false;
-  
-    if (files) this.setFiles(files);
+
+    if (files) this.addFiles(files);
   }
 
   fileInputChange(event: Event): void {
     const target = event.target as HTMLInputElement;
-    if (target.files) this.setFiles(target.files);
+
+    if (target.files) this.addFiles(target.files);
   }
 
   availableSlots(): number {
     return (this.amount - this.files.length);
   }
 
-  setFiles(list: FileList): void {
-    this.files.push(...Array.from(list).splice(0, this.availableSlots()));
-    this.fileChange.emit(this.files);
+  addFiles(list: FileList): void {
+    const slots = this.availableSlots();
+
+    if (slots > 0) {
+      const limit = list.length > slots ? slots : list.length;
+      const base = this.files.length;
+
+      this.files.push(...Array.from(list).splice(0, slots));
+
+      // previews array must follow the same order as files array
+      for (let i = base; i < base + limit; i++) {
+        this.previews[i] = URL.createObjectURL(this.files[i]);
+      }
+
+      this.fileChange.emit(this.files);
+    }
   }
 
   removeFile(index: number): void {
     this.files.splice(index, 1);
+    this.previews.splice(index, 1);
+  }
+
+  revokeUrl(url: string) {
+    URL.revokeObjectURL(url);
   }
 
 }
