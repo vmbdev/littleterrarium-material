@@ -19,8 +19,7 @@ interface ConfirmDataConfig {
     MatDialogModule,
     MatButtonModule
   ],
-  templateUrl: './confirm-dialog.component.html',
-  styleUrls: ['./confirm-dialog.component.scss']
+  templateUrl: './confirm-dialog.component.html'
 })
 export class ConfirmDialogComponent {
   constructor(@Inject(MAT_DIALOG_DATA) public data: ConfirmDataConfig) {}

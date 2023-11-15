@@ -43,6 +43,7 @@
 
   &__picturegrid {
     display: grid;
+    justify-content: center;
     grid-template-columns: repeat(auto-fit, 100px);
     gap: 5px;
     width: 100%;

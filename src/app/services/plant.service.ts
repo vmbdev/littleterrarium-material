@@ -1,6 +1,5 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, catchError, EMPTY, map, Observable, throwError } from 'rxjs';
+import { BehaviorSubject, EMPTY, map, Observable } from 'rxjs';
 import { AuthService } from '@services/auth.service';
 import { ApiService, PlantGetConfig, PlantUpdateConfig } from '@services/api.service';
 import { Photo } from '@models/photo.model';

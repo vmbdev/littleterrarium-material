@@ -2,12 +2,29 @@
   <p>{{ 'tasks.msg' | translate }}</p>
   <mat-list>
     <mat-list-item *ngFor="let task of tasks" matRipple>
-      <img matListItemAvatar [src]="plantService.coverPhoto(task)" [routerLink]="['/plant', task.id]">
-      <span matListItemTitle [routerLink]="['/plant', task.id]">{{ plantService.getVisibleName(task) }}</span>
+      <img
+        matListItemAvatar
+        [src]="plantService.coverPhoto(task)"
+        [routerLink]="['/plant', task.id]"
+      >
+
+      <span matListItemTitle [routerLink]="['/plant', task.id]">
+        {{ plantService.getVisibleName(task) }}
+      </span>
+
       <div matListItemIcon class="tasks__buttons">
-        <plant-button-water [disabled]="!!(!task.waterNext)" [id]="task.id" (done)="taskService.loadTasks()">
+        <plant-button-water
+          [id]="task.id"
+          [disabled]="!!(!task.waterNext)"
+          (done)="taskService.loadTasks()"
+        >
         </plant-button-water>
-        <plant-button-fertilize [disabled]="!!(!task.fertNext)" [id]="task.id" (done)="taskService.loadTasks()">
+
+        <plant-button-fertilize
+          [id]="task.id"
+          [disabled]="!!(!task.fertNext)"
+          (done)="taskService.loadTasks()"
+        >
         </plant-button-fertilize>
       </div>
     </mat-list-item>
