@@ -1,4 +1,4 @@
-import { Component, Inject, Input } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
@@ -12,7 +12,7 @@ interface WaitDialogConfig {
 }
 
 @Component({
-  selector: 'wait-dialog',
+  selector: 'ltm-wait-dialog',
   standalone: true,
   imports: [
     CommonModule,

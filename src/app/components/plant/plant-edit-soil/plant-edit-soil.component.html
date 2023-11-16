@@ -1,50 +1,60 @@
-<form *ngIf="plantService.plant$ | async as plant" [formGroup]="potForm" method="post" (submit)="submit()">
-  <mat-card>
-    <mat-card-content>
-    <p [innerHTML]="'plant-edit-soil.potDesc' | translate"></p>
-    </mat-card-content>
-  </mat-card>
-  
-  <div>
-    <p [innerHTML]="'plant-edit-soil.material' | translate"></p>
+@if (plantService.plant$ | async; as plant) {
+  <form [formGroup]="potForm" method="post" (submit)="submit()">
+    <mat-card>
+      <mat-card-content>
+        <p [innerHTML]="'plant-edit-soil.potDesc' | translate"></p>
+      </mat-card-content>
+    </mat-card>
+    
+    <div>
+      <p [innerHTML]="'plant-edit-soil.material' | translate"></p>
 
-    <div class="pot-selector">
-      <div
-        *ngFor="let pot of pots"
-        class="pot-selector__material"
-        (click)="selectPot(pot.id)"
-        [ngClass]="{ 'pot-selector__material-selected': selectedPot === pot.id } "
-      >
-        <img [src]="pot.image">
-        <p>{{ pot.name }}</p>
+      <div class="pot-selector">
+        <div
+          *ngFor="let pot of pots"
+          class="pot-selector__material"
+          (click)="selectPot(pot.id)"
+          [ngClass]="{
+            'pot-selector__material-selected': selectedPot === pot.id
+          }"
+        >
+          <img [src]="pot.image">
+          <p>{{ pot.name }}</p>
+        </div>
       </div>
     </div>
-  </div>
 
-  <mat-divider></mat-divider>
+    <mat-divider />
 
-  <div>
-    <p [innerHTML]="'plant-edit-soil.size' | translate"></p>
-    <mat-form-field class="full-width">
-      <input matInput type="number" formControlName="potSize">
-    </mat-form-field>
+    <div>
+      <p [innerHTML]="'plant-edit-soil.size' | translate"></p>
+      <mat-form-field class="full-width">
+        <input matInput type="number" formControlName="potSize">
+      </mat-form-field>
 
-    <mat-radio-group formControlName="potSizeUnits">
-      <mat-radio-button value="cm">{{ 'general.cm' | translate }}</mat-radio-button>
-      <mat-radio-button value="in">{{ 'general.in' | translate }}</mat-radio-button>
-    </mat-radio-group>
-  </div>
+      <mat-radio-group formControlName="potSizeUnits">
+        <mat-radio-button value="cm">
+          {{ 'general.cm' | translate }}
+        </mat-radio-button>
+        <mat-radio-button value="in">
+          {{ 'general.in' | translate }}
+        </mat-radio-button>
+      </mat-radio-group>
+    </div>
 
-  <mat-divider></mat-divider>
+    <mat-divider />
 
-  <div>
-    <p [innerHTML]="'plant-edit-soil.composition' | translate"></p>
-    <mat-form-field class="full-width">
-      <input matInput type="text" formControlName="soil">
-    </mat-form-field>
-  </div>
+    <div>
+      <p [innerHTML]="'plant-edit-soil.composition' | translate"></p>
+      <mat-form-field class="full-width">
+        <input matInput type="text" formControlName="soil">
+      </mat-form-field>
+    </div>
 
-  <div class="tab-navigation">
-    <button mat-raised-button color="primary">{{ 'general.update' | translate }}</button>
-  </div>
-</form>
+    <div class="tab-navigation">
+      <button mat-raised-button color="primary">
+        {{ 'general.update' | translate }}
+      </button>
+    </div>
+  </form>
+}

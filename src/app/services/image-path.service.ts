@@ -1,6 +1,17 @@
 import { Inject, Injectable } from '@angular/core';
-import { ImagePath } from '@models/image-path.model';
 import { BACKEND_URL } from 'src/tokens';
+
+export interface ImageSize {
+  [key: string]: string,
+  full: string,
+  mid: string,
+  thumb: string
+}
+
+export interface ImagePath {
+  path: ImageSize,
+  webp?: ImageSize
+}
 
 @Injectable({
   providedIn: 'root'

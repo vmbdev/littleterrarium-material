@@ -14,7 +14,8 @@ export class ShortFilenamePipe implements PipeTransform {
       const ext = name.pop();
       const filename = name.join('.');
 
-      const res = `${filename.slice(0, length / 2)}...${filename.slice(-(length / 2))}.${ext}`;
+      const res = 
+        `${filename.slice(0, length / 2)}...${filename.slice(-(length / 2))}.${ext}`;
 
       return res;
     }

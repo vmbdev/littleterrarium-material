@@ -20,7 +20,9 @@ export class SearchService {
 
   constructor(private router: Router) {
     this.router.events.pipe(
-      filter((event: Event): event is NavigationEnd => event instanceof NavigationEnd)
+      filter((event: Event): event is NavigationEnd =>
+        event instanceof NavigationEnd
+      )
     ).subscribe(() => {
       this.enabled$.next(false);
       this.text$.next( { mode: 'Begin', value: null })

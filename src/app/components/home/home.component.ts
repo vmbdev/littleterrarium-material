@@ -1,13 +1,16 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { LocationListComponent } from '@components/location/location-list/location-list.component';
+
+import {
+  LocationListComponent
+} from '@components/location/location-list/location-list.component';
 import { SigninComponent } from '@components/user/signin/signin.component';
 import { AuthService } from '@services/auth.service';
 import { MainToolbarService } from '@services/main-toolbar.service';
 
 @Component({
-  selector: 'home',
+  selector: 'ltm-home',
   standalone: true,
   imports: [
     CommonModule,
@@ -15,8 +18,7 @@ import { MainToolbarService } from '@services/main-toolbar.service';
     LocationListComponent,
     SigninComponent,
   ],
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  templateUrl: './home.component.html'
 })
 export class HomeComponent {
 

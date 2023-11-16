@@ -1,69 +1,76 @@
-<edit-page 
-  *ngIf="plant$ | async as plant"
-  [title]="'plant-edit.header' | translate:{ plantName:plant.visibleName }"
-  (accept)="submit()"
->
-  <mat-card class="settings-card">
-    <mat-card-header>
-      <mat-card-title>{{ 'general.name' | translate }}</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <plant-form-name [currentCustomName]="plant.customName"></plant-form-name>
-    </mat-card-content>
-  </mat-card>
+@if (plant$ | async; as plant) {
+  <ltm-edit-page 
+    [title]="'plant-edit.header' | translate:{ plantName: plant.visibleName }"
+    (accept)="submit()"
+  >
+    <mat-card class="settings-card">
+      <mat-card-header>
+        <mat-card-title>
+          {{ 'general.name' | translate }}
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <ltm-plant-form-name [currentCustomName]="plant.customName" />
+      </mat-card-content>
+    </mat-card>
 
-  <mat-card class="settings-card">
-    <mat-card-header>
-      <mat-card-title>{{ 'general.description' | translate }}</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <plant-form-description [currentDescription]="plant.description"></plant-form-description>
-    </mat-card-content>
-  </mat-card>
+    <mat-card class="settings-card">
+      <mat-card-header>
+        <mat-card-title>
+          {{ 'general.description' | translate }}
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <ltm-plant-form-description [currentDescription]="plant.description" />
+      </mat-card-content>
+    </mat-card>
 
-  <mat-card class="settings-card">
-    <mat-card-header>
-      <mat-card-title>{{ 'general.specie' | translate }}</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <plant-form-specie [currentSpecie]="plant.specieId"></plant-form-specie>
-    </mat-card-content>
-  </mat-card>
+    <mat-card class="settings-card">
+      <mat-card-header>
+        <mat-card-title>
+          {{ 'general.specie' | translate }}
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <ltm-plant-form-specie [currentSpecie]="plant.specieId" />
+      </mat-card-content>
+    </mat-card>
 
-  <mat-card class="settings-card">
-    <mat-card-header>
-      <mat-card-title>{{ 'plant-edit.condition' | translate }}</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <plant-form-condition [currentCondition]="plant.condition"></plant-form-condition>
-    </mat-card-content>
-  </mat-card>
+    <mat-card class="settings-card">
+      <mat-card-header>
+        <mat-card-title>
+          {{ 'plant-edit.condition' | translate }}
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <ltm-plant-form-condition [currentCondition]="plant.condition" />
+      </mat-card-content>
+    </mat-card>
 
-  <mat-card class="settings-card">
-    <mat-card-header>
-      <mat-card-title>{{ 'general.location' | translate }}</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <plant-form-location [currentLocation]="plant.locationId"></plant-form-location>
-    </mat-card-content>
-  </mat-card>
+    <mat-card class="settings-card">
+      <mat-card-header>
+        <mat-card-title>
+          {{ 'general.location' | translate }}
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <ltm-plant-form-location [currentLocation]="plant.locationId" />
+      </mat-card-content>
+    </mat-card>
 
-  <mat-card class="settings-card">
-    <mat-card-header>
-      <mat-card-title>{{ 'general.privacy' | translate }}</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <ltm-form-privacy [currentPrivacy]="plant.public">
-        <p [innerHtml]="'plant-add.privacy' | translate"></p>
-        <p [innerHtml]="'plant-add.privacyTip' | translate"></p>
-      </ltm-form-privacy>
-    </mat-card-content>
-  </mat-card>
-  
-  <!-- <div class="tab-navigation">
-    <button type="submit" mat-raised-button color="primary" (click)="submit()">
-      <mat-icon>edit_square</mat-icon>
-      {{ 'general.update' | translate }}
-    </button>
-  </div> -->
-</edit-page>
+    <mat-card class="settings-card">
+      <mat-card-header>
+        <mat-card-title>
+          {{ 'general.privacy' | translate }}
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <ltm-form-privacy [currentPrivacy]="plant.public">
+          <p [innerHtml]="'plant-add.privacy' | translate"></p>
+          <p [innerHtml]="'plant-add.privacyTip' | translate"></p>
+        </ltm-form-privacy>
+      </mat-card-content>
+    </mat-card>
+
+  </ltm-edit-page>
+}

@@ -1,64 +1,68 @@
-<edit-page 
-  *ngIf="auth.user$ | async as user"
-  [title]="'user-edit.header' | translate"
-  (accept)="submit()"
->
+@if (auth.user$ | async; as user) {
+  <ltm-edit-page [title]="'user-edit.header' | translate" (accept)="submit()">
+    <mat-card class="settings-card">
+      <mat-card-header>
+        <mat-card-title>{{ 'general.username' | translate }}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <ltm-user-form-username
+          #form
+          #formUsername
+          [currentUsername]="user.username"
+        />
+      </mat-card-content>
+    </mat-card>
 
-  <mat-card class="settings-card">
-    <mat-card-header>
-      <mat-card-title>{{ 'general.username' | translate }}</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <user-form-username #form #formUsername [currentUsername]="user.username"></user-form-username>
-    </mat-card-content>
-  </mat-card>
+    <mat-card class="settings-card">
+      <mat-card-header>
+        <mat-card-title>{{ 'general.fullname' | translate }}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <ltm-user-form-name
+          #form
+          [currentFirstname]="user.firstname"
+          [currentLastname]="user.lastname"
+        />
+      </mat-card-content>
+    </mat-card>
 
+    <mat-card class="settings-card">
+      <mat-card-header>
+        <mat-card-title>{{ 'general.avatar' | translate }}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p [innerHTML]="'user-edit.avatarDesc' | translate"></p>
 
-  <mat-card class="settings-card">
-    <mat-card-header>
-      <mat-card-title>{{ 'general.fullname' | translate }}</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <user-form-name #form [currentFirstname]="user.firstname" [currentLastname]="user.lastname"></user-form-name>
-    </mat-card-content>
-  </mat-card>
+        <ltm-file-uploader maxAmount="1" (fileChange)="fileChange($event)" />
+      </mat-card-content>
+    </mat-card>
 
-  <mat-card class="settings-card">
-    <mat-card-header>
-      <mat-card-title>{{ 'general.avatar' | translate }}</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <p [innerHTML]="'user-edit.avatarDesc' | translate"></p>
+    <mat-card class="settings-card">
+      <mat-card-header>
+        <mat-card-title>{{ 'general.email' | translate }}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <ltm-user-form-email #form #formEmail [currentEmail]="user.email" />
+      </mat-card-content>
+    </mat-card>
 
-      <file-uploader [amount]="1" (fileChange)="fileChange($event)"></file-uploader>
-    </mat-card-content>
-  </mat-card>
+    <mat-card class="settings-card">
+      <mat-card-header>
+        <mat-card-title>{{ 'general.bio' | translate }}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <ltm-user-form-bio #form [currentBio]="user.bio" />
+      </mat-card-content>
+    </mat-card>
 
-  <mat-card class="settings-card">
-    <mat-card-header>
-      <mat-card-title>{{ 'general.email' | translate }}</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <user-form-email #form #formEmail [currentEmail]="user.email"></user-form-email>
-    </mat-card-content>
-  </mat-card>
+    <mat-card class="settings-card">
+      <mat-card-header>
+        <mat-card-title>{{ 'general.privacy' | translate }}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <ltm-form-privacy #form [currentPrivacy]="user.public" />
+      </mat-card-content>
+    </mat-card>
 
-  <mat-card class="settings-card">
-    <mat-card-header>
-      <mat-card-title>{{ 'general.bio' | translate }}</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <user-form-bio #form [currentBio]="user.bio"></user-form-bio>
-    </mat-card-content>
-  </mat-card>
-
-  <mat-card class="settings-card">
-    <mat-card-header>
-      <mat-card-title>{{ 'general.privacy' | translate }}</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <user-form-privacy #form [currentPrivacy]="user.public"></user-form-privacy>
-    </mat-card-content>
-  </mat-card>
-
-</edit-page>
+  </ltm-edit-page>
+}

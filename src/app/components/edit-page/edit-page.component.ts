@@ -6,7 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
-  selector: 'edit-page',
+  selector: 'ltm-edit-page',
   standalone: true,
   imports: [
     CommonModule,

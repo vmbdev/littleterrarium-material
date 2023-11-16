@@ -1,22 +1,30 @@
 import { Component, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatStepperModule } from '@angular/material/stepper';
-
-import { StepperNavigationComponent } from '@components/stepper-navigation/stepper-navigation.component';
-import { UserFormPasswordComponent } from '../forms/user-form-password/user-form-password.component';
 import { AuthService } from '@services/auth.service';
 import { TranslateModule } from '@ngx-translate/core';
-import { UserFormUsernameComponent } from '../forms/user-form-username/user-form-username.component';
-import { UserFormEmailComponent } from '../forms/user-form-email/user-form-email.component';
-import { User } from '@models/user.model';
-import { catchError, EMPTY, switchMap } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Router } from '@angular/router';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
+import { catchError, EMPTY, switchMap } from 'rxjs';
+
+import {
+  StepperNavigationComponent
+} from '@components/stepper-navigation/stepper-navigation.component';
+import {
+  UserFormPasswordComponent
+} from '@components/user/forms/user-form-password/user-form-password.component';
+import {
+  UserFormUsernameComponent
+} from '@components/user/forms/user-form-username/user-form-username.component';
+import {
+  UserFormEmailComponent
+} from '@components/user/forms/user-form-email/user-form-email.component';
+import { User } from '@models/user.model';
 
 @Component({
-  selector: 'register',
+  selector: 'ltm-register',
   standalone: true,
   imports: [
     CommonModule,
@@ -29,7 +37,6 @@ import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
     UserFormEmailComponent
   ],
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss'],
   providers: [
     {
       provide: STEPPER_GLOBAL_OPTIONS,
@@ -63,7 +70,9 @@ export class RegisterComponent {
     return {
       ...this.emailComponent.form.value,
       ...this.usernameComponent.form.value,
-      password: this.passwordComponent.form.get('passwordCheck')?.get('password')?.value
+      password: this.passwordComponent.form
+        .get('passwordCheck')
+        ?.get('password')?.value
     } as User;
   }
 
@@ -87,22 +96,34 @@ export class RegisterComponent {
 
         if (error.msg === 'USER_FIELD_EXISTS') {
           if (error.errorData.field === 'username') {
-            this.usernameComponent.form.get('username')?.setErrors({ taken: true });
+            this.usernameComponent.form
+              .get('username')
+              ?.setErrors({ taken: true });
+
             this.stepperMoveTo(0);
           }
           else if (error.errorData.field === 'email') {
-            this.emailComponent.form.get('email')?.setErrors({ taken: true });
+            this.emailComponent.form
+              .get('email')
+              ?.setErrors({ taken: true });
+
             this.stepperMoveTo(1);
           }
         }
 
         else if (error.msg === 'USER_FIELD_INVALID') {
           if (error.errorData.field === 'username') {
-            this.usernameComponent.form.get('username')?.setErrors({ invalid: true });
+            this.usernameComponent.form
+              .get('username')
+              ?.setErrors({ invalid: true });
+
             this.stepperMoveTo(0);
           }
           else if (error.errorData.field === 'email') {
-            this.emailComponent.form.get('email')?.setErrors({ invalid: true });
+            this.emailComponent.form
+              .get('email')
+              ?.setErrors({ invalid: true });
+
             this.stepperMoveTo(1);
           }
         }

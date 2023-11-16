@@ -4,13 +4,17 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 
 import { ProfileComponent } from '@components/user/profile/profile.component';
-import { User } from '@models/user.model';
+import {
+  LocationListComponent
+} from '@components/location/location-list/location-list.component';
+import {
+  PlantListComponent
+} from '@components/plant/plant-list/plant-list.component';
 import { ApiService } from '@services/api.service';
-import { LocationListComponent } from '@components/location/location-list/location-list.component';
-import { PlantListComponent } from '@components/plant/plant-list/plant-list.component';
+import { User } from '@models/user.model';
 
 @Component({
-  selector: 'terrarium',
+  selector: 'ltm-terrarium',
   standalone: true,
   imports: [
     CommonModule,
@@ -18,8 +22,7 @@ import { PlantListComponent } from '@components/plant/plant-list/plant-list.comp
     LocationListComponent,
     PlantListComponent
   ],
-  templateUrl: './terrarium.component.html',
-  styleUrls: ['./terrarium.component.scss']
+  templateUrl: './terrarium.component.html'
 })
 export class TerrariumComponent {
   user$?: Observable<User>;

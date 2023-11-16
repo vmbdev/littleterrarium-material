@@ -1,9 +1,11 @@
 <div class="photo-list">
-  <div *ngFor="let photo of (list$ | async | sort:'takenAt':'desc')" class="photo-list__box">
-    <a [routerLink]="['/photo', photo.id]">
-      <img [src]="getThumb(photo.images)">
-    </a>
-  </div>
+  @for (photo of (list$ | async | sort:'takenAt':'desc'); track photo.id) {
+    <div class="photo-list__box">
+      <a [routerLink]="['/photo', photo.id]">
+        <img [src]="getThumb(photo.images)">
+      </a>
+    </div>
+  }
 
   <!-- FIXME: hacky, proper css to avoid the phot list colliding under the bottom toolbar -->
   <div class="photo-list__box"></div>

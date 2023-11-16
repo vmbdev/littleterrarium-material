@@ -14,7 +14,10 @@ export class ErrorHandlerInterceptor implements HttpInterceptor {
 
   constructor(private errorHandler: ErrorHandlerService) {}
 
-  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+  intercept(
+    request: HttpRequest<any>,
+    next: HttpHandler
+  ): Observable<HttpEvent<any>> {
     return next.handle(request).pipe(
       catchError((res: HttpErrorResponse) => {
         let errorMsg: string | undefined;
@@ -39,6 +42,7 @@ export class ErrorHandlerInterceptor implements HttpInterceptor {
 
         if (errorMsg) {
           this.errorHandler.push(errorMsg);
+
           return EMPTY;
         }
         else return throwError(() => res);

@@ -1,6 +1,14 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of, map, catchError, throwError, BehaviorSubject } from 'rxjs';
+import {
+  Observable,
+  of,
+  map,
+  catchError,
+  throwError,
+  BehaviorSubject
+} from 'rxjs';
+
 import { ApiService } from '@services/api.service';
 import { User } from '@models/user.model';
 import { BackendResponse } from '@models/backend-response.model';

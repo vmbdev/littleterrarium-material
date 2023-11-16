@@ -1,6 +1,8 @@
 <h1 mat-dialog-title>{{ data.title }}</h1>
 <div mat-dialog-content>
-  <p *ngFor="let q of data.question" [innerHTML]="q"></p>
+  @for (q of data.question; track q) {
+    <p [innerHTML]="q"></p>
+  }
 </div>
 <div mat-dialog-actions align="center">
   <button mat-raised-button mat-dialog-close cdkFocusInitial>

@@ -1,12 +1,19 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  numberAttribute,
+  Output
+} from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { TranslateModule } from '@ngx-translate/core';
+
 import { ShortFilenamePipe } from '@pipes/short-filename/short-filename.pipe';
 
 @Component({
   standalone: true,
-  selector: 'file-uploader',
+  selector: 'ltm-file-uploader',
   imports: [
     CommonModule,
     ShortFilenamePipe,
@@ -17,30 +24,60 @@ import { ShortFilenamePipe } from '@pipes/short-filename/short-filename.pipe';
   styleUrls: ['./file-uploader.component.scss']
 })
 export class FileUploaderComponent {
-  @Input() amount: number = 1;
+  /**
+  * Max amount of files the user can select. By default, 1.
+  */
+  @Input({ transform: numberAttribute }) maxAmount: number = 1;
+
+  /**
+   * Emitted when the files selected in the component have changed.
+   */
   @Output() fileChange: EventEmitter<File[]> = new EventEmitter<File[]>();
+
+  /**
+   * Files currently selected in the component.
+   */
   files: File[] = [];
-  previews: string[] = new Array<string>(this.amount);
+
+  /**
+   * Thumbnails for the current file selection, in the same order.
+   */
+  previews: string[] = new Array<string>(this.maxAmount);
+
+  /**
+   * Mouse is over the component containing a file.
+   */
   dragOver: boolean = false;
 
-  onDestroy() {
-
-  }
-
-  dragEnter(event: Event): void {
+  /**
+   * Mouse is dragging a file over the component.
+   * 
+   * @param {DragEvent} event  The drag and drop event.
+   */
+  dragEnter(event: DragEvent): void {
     event.stopPropagation();
     event.preventDefault();
 
     if (!this.dragOver && (this.availableSlots() > 0)) this.dragOver = true;
   }
 
-  dragLeave(event: Event): void {
+  /**
+   * Mouse left the component.
+   * 
+   * @param {DragEvent} event  The drag and drop event.
+   */
+  dragLeave(event: DragEvent): void {
     event.stopPropagation();
     event.preventDefault();
 
     if (this.dragOver) this.dragOver = false;
   }
 
+  /**
+   * A file was dropped over the component, containing one or more files.
+   * 
+   * @param {DragEvent} event  The drag and drop event.
+   */
   dropFile(event: DragEvent): void {
     event.stopPropagation();
     event.preventDefault();
@@ -52,16 +89,34 @@ export class FileUploaderComponent {
     if (files) this.addFiles(files);
   }
 
+  /**
+   * One or more files have been manually selected by the user.
+   * 
+   * @param {Event} event  The input event.
+   */
   fileInputChange(event: Event): void {
     const target = event.target as HTMLInputElement;
 
     if (target.files) this.addFiles(target.files);
   }
 
+  /**
+   * The number of files that can still be added, depending on the max amount
+   * of files allowed.
+   * 
+   * @returns {number} The difference between maxAmount and the number of files
+   * already selected.
+   */
   availableSlots(): number {
-    return (this.amount - this.files.length);
+    return (this.maxAmount - this.files.length);
   }
 
+  /**
+   * Add files to the current selection. Called when the user drags and drop
+   * or selects more files.
+   * 
+   * @param {FileList} list  The list of files to be added.
+   */
   addFiles(list: FileList): void {
     const slots = this.availableSlots();
 
@@ -80,11 +135,22 @@ export class FileUploaderComponent {
     }
   }
 
+  /**
+   * Removes a file from the current selection.
+   * 
+   * @param {number} index  The index of the file to be removed.
+   */
   removeFile(index: number): void {
     this.files.splice(index, 1);
     this.previews.splice(index, 1);
   }
 
+  /**
+   * Revokes an URL object to free memory after the thumbnail for the preview
+   * has been rendered.
+   * 
+   * @param url 
+   */
   revokeUrl(url: string) {
     URL.revokeObjectURL(url);
   }

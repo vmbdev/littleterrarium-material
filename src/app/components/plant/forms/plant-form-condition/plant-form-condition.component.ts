@@ -1,15 +1,16 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
-import { Condition } from '@models/plant.model';
-import { PlantService } from '@services/plant.service';
+import { TranslateModule } from '@ngx-translate/core';
+
 import { FormBaseComponent } from '@components/form-base/form-base.component';
+import { PlantService } from '@services/plant.service';
+import { Condition } from '@models/plant.model';
 
 @Component({
-  selector: 'plant-form-condition',
+  selector: 'ltm-plant-form-condition',
   standalone: true,
   imports: [
     CommonModule,
@@ -18,8 +19,7 @@ import { FormBaseComponent } from '@components/form-base/form-base.component';
     MatIconModule,
     ReactiveFormsModule
   ],
-  templateUrl: './plant-form-condition.component.html',
-  styleUrls: ['./plant-form-condition.component.scss']
+  templateUrl: './plant-form-condition.component.html'
 })
 export class PlantFormConditionComponent implements FormBaseComponent {
   @Input() currentCondition: Condition | null = 'GOOD';

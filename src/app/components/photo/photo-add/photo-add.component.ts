@@ -6,21 +6,33 @@ import { HttpEventType } from '@angular/common/http';
 import { finalize } from 'rxjs';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { MatStepperModule } from '@angular/material/stepper';
-import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import {
+  MatDialog,
+  MatDialogModule,
+  MatDialogRef
+} from '@angular/material/dialog';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
-import { StepperNavigationComponent } from '@components/stepper-navigation/stepper-navigation.component';
-import { FileUploaderComponent } from '@components/file-uploader/file-uploader.component';
-import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog.component';
+import {
+  StepperNavigationComponent
+} from '@components/stepper-navigation/stepper-navigation.component';
+import {
+  FileUploaderComponent
+} from '@components/file-uploader/file-uploader.component';
+import {
+  WaitDialogComponent
+} from '@components/dialogs/wait-dialog/wait-dialog.component';
+import {
+  FormPrivacyComponent
+} from '@components/form-privacy/form-privacy.component';
 import { PlantService } from '@services/plant.service';
 import { PhotoService } from '@services/photo.service';
 import { ErrorHandlerService } from '@services/error-handler.service';
 import { Photo } from '@models/photo.model';
-import { FormPrivacyComponent } from '@components/form-privacy/form-privacy.component';
 
 @Component({
-  selector: 'photo-add',
+  selector: 'ltm-photo-add',
   standalone: true,
   providers: [
     {
@@ -39,8 +51,7 @@ import { FormPrivacyComponent } from '@components/form-privacy/form-privacy.comp
     FileUploaderComponent,
     FormPrivacyComponent
   ],
-  templateUrl: './photo-add.component.html',
-  styleUrls: ['./photo-add.component.scss']
+  templateUrl: './photo-add.component.html'
 })
 export class PhotoAddComponent {
   @ViewChild(FormPrivacyComponent) privacyComponent!: FormPrivacyComponent;
@@ -122,7 +133,9 @@ export class PhotoAddComponent {
       switch (event.type) {
         case HttpEventType.UploadProgress: {
           const eventTotal = event.total ? event.total : 0;
-          ud.componentInstance.data.progressValue = Math.round(event.loaded / eventTotal * 100);
+          const progressVal = Math.round(event.loaded / eventTotal * 100);
+
+          ud.componentInstance.data.progressValue = progressVal;
           break;
         }
         case HttpEventType.Response: {

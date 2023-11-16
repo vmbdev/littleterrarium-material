@@ -1,13 +1,16 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
-import { PlantBaseActionComponent } from '@components/plant/plant-base-action/plant-base-action.component';
 import { MatIconModule } from '@angular/material/icon';
-import { TranslateModule } from '@ngx-translate/core';
 import { MatMenuModule } from '@angular/material/menu';
+import { TranslateModule } from '@ngx-translate/core';
+
+import {
+  PlantBaseActionComponent
+} from '@components/plant/plant-base-action/plant-base-action.component';
 
 @Component({
-  selector: 'plant-menu-water',
+  selector: 'ltm-plant-menu-water',
   standalone: true,
   imports: [
     CommonModule,
@@ -16,9 +19,6 @@ import { MatMenuModule } from '@angular/material/menu';
     MatMenuModule,
     TranslateModule
   ],
-  templateUrl: './plant-menu-water.component.html',
-  styleUrls: ['./plant-menu-water.component.scss']
+  templateUrl: './plant-menu-water.component.html'
 })
-export class PlantMenuWaterComponent extends PlantBaseActionComponent {
-
-}
+export class PlantMenuWaterComponent extends PlantBaseActionComponent { }

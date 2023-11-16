@@ -1,18 +1,24 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ProfileComponent } from '../profile/profile.component';
 import { MatListModule } from '@angular/material/list';
 import { RouterModule } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
-import { AuthService } from '@services/auth.service';
 import { MatRippleModule } from '@angular/material/core';
-import { MatBottomSheet, MatBottomSheetModule } from '@angular/material/bottom-sheet';
-import { UserEditComponent } from '../user-edit/user-edit.component';
-import { MainToolbarService } from '@services/main-toolbar.service';
 import { MatIconModule } from '@angular/material/icon';
+import {
+  MatBottomSheet,
+  MatBottomSheetModule
+} from '@angular/material/bottom-sheet';
+import { TranslateModule } from '@ngx-translate/core';
+
+import {
+  UserEditComponent
+} from '@components/user/user-edit/user-edit.component';
+import { ProfileComponent } from '@components/user/profile/profile.component';
+import { MainToolbarService } from '@services/main-toolbar.service';
+import { AuthService } from '@services/auth.service';
 
 @Component({
-  selector: 'app-user-main',
+  selector: 'ltm-user-main',
   standalone: true,
   imports: [
     CommonModule,

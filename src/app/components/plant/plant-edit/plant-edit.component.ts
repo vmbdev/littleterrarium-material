@@ -5,24 +5,43 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
-import { MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
+import {
+  MatBottomSheetRef,
+  MAT_BOTTOM_SHEET_DATA
+} from '@angular/material/bottom-sheet';
 import { finalize, Observable } from 'rxjs';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
-import { Plant } from '@models/plant.model';
-import { Location } from '@models/location.model';
+import {
+  WaitDialogComponent
+} from '@components/dialogs/wait-dialog/wait-dialog.component';
+import {
+  FileUploaderComponent
+} from '@components/file-uploader/file-uploader.component';
+import {
+  PlantFormNameComponent
+} from '@components/plant/forms/plant-form-name/plant-form-name.component';
+import {
+  PlantFormSpecieComponent
+} from '@components/plant/forms/plant-form-specie/plant-form-specie.component';
+import {
+  PlantFormDescriptionComponent
+} from '@components/plant/forms/plant-form-description/plant-form-description.component';
+import {
+  PlantFormConditionComponent
+} from '@components/plant/forms/plant-form-condition/plant-form-condition.component';
+import {
+  PlantFormLocationComponent
+} from '@components/plant/forms/plant-form-location/plant-form-location.component';
+import { EditPageComponent } from '@components/edit-page/edit-page.component';
+import {
+  FormPrivacyComponent
+} from '@components/form-privacy/form-privacy.component';
+import { PlantGetConfig } from '@services/api.service';
 import { ErrorHandlerService } from '@services/error-handler.service';
 import { PlantService } from '@services/plant.service';
-import { PlantGetConfig } from '@services/api.service';
-import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog.component';
-import { FileUploaderComponent } from '@components/file-uploader/file-uploader.component';
-import { PlantFormNameComponent } from '@components/plant/forms/plant-form-name/plant-form-name.component';
-import { PlantFormSpecieComponent } from '@components/plant/forms/plant-form-specie/plant-form-specie.component';
-import { PlantFormDescriptionComponent } from '@components/plant/forms/plant-form-description/plant-form-description.component';
-import { PlantFormConditionComponent } from '@components/plant/forms/plant-form-condition/plant-form-condition.component';
-import { PlantFormLocationComponent } from '@components/plant/forms/plant-form-location/plant-form-location.component';
-import { EditPageComponent } from '@components/edit-page/edit-page.component';
-import { FormPrivacyComponent } from '@components/form-privacy/form-privacy.component';
+import { Plant } from '@models/plant.model';
+import { Location } from '@models/location.model';
 
 interface PlantEditConfig {
   id: number,
@@ -30,7 +49,7 @@ interface PlantEditConfig {
 }
 
 @Component({
-  selector: 'plant-edit',
+  selector: 'ltm-plant-edit',
   standalone: true,
   imports: [
     CommonModule,
@@ -48,8 +67,7 @@ interface PlantEditConfig {
     FormPrivacyComponent,
     EditPageComponent
   ],
-  templateUrl: './plant-edit.component.html',
-  styleUrls: ['./plant-edit.component.scss']
+  templateUrl: './plant-edit.component.html'
 })
 export class PlantEditComponent {
   @ViewChild(PlantFormNameComponent) nameComponent!: PlantFormNameComponent;
@@ -75,7 +93,10 @@ export class PlantEditComponent {
   ) { }
 
   ngOnInit(): void {
-    this.plant$ = this.plantService.get(this.editPlant.id, this.editPlant.config);
+    this.plant$ = this.plantService.get(
+      this.editPlant.id,
+      this.editPlant.config
+    );
   }
   
   openWaitDialog() {

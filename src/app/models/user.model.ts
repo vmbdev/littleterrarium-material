@@ -1,5 +1,5 @@
-import { Photo } from "./photo.model"
-import { Plant } from "./plant.model"
+import { Photo } from "@models/photo.model";
+import { Plant } from "@models/plant.model";
 
 export interface User {
   id: number
@@ -34,3 +34,15 @@ export const UserStatus: { [key: string]: string } = {
   BANNED: 'BANNED'
 };
 export type UserStatus = (typeof UserStatus)[keyof typeof UserStatus]
+
+export interface UsernameRequirements {
+  minLength: number,
+  maxLength: number
+}
+
+export interface PasswordRequirements {
+  minLength: number,
+	requireUppercase: boolean,
+	requireNumber: boolean,
+	requireNonAlphanumeric: boolean
+}

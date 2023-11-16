@@ -1,22 +1,28 @@
-<div *ngIf="locationService.location$ | async as location" class="location">
-  <fab *ngIf="locationService.owned" [link]="['/plant/create', location.id]"></fab>
-  <info-box>
-    <property [icon]="locationService.getLightAsset(location.light)">
-      {{ locationService.getLightName(location.light) | translate }}
-    </property>
-    <property [icon]="location.public ? 'visibility' : 'visibility_off'">
-      {{ (location.public ? 'general.public' : 'general.private') | translate }}
-    </property>
-    <property icon="forest">
-      <ng-container *ngIf="location._count?.plants; else noPlants">
-        {{ 'location.plants' | translate:{ plantCount: location._count?.plants } }}
-      </ng-container>
-      <ng-template #noPlants>
-        {{ 'location.noPlants' | translate }}
-      </ng-template>
-    </property>
-  </info-box>
+@if (locationService.location$ | async; as location) {
+  <div>
+    @if (locationService.isOwned()) {
+      <ltm-fab [link]="['/plant/create', location.id]" />
+    }
+    <ltm-info-box>
+      <ltm-property [icon]="locationService.getLightAsset(location.light)">
+        {{ locationService.getLightName(location.light) | translate }}
+      </ltm-property>
 
-  <h1 class="centered">{{ 'general.plants' | translate }}</h1>
-  <plant-list [locationId]="location.id"></plant-list>
-</div>
+      <ltm-property [icon]="location.public ? 'visibility' : 'visibility_off'">
+        {{ (location.public ? 'general.public' : 'general.private') | translate }}
+      </ltm-property>
+
+      <ltm-property icon="forest">
+        @if (location._count?.plants; as count) {
+          {{ 'location.plants' | translate:{ plantCount: count } }}
+        } @else {
+          {{ 'location.noPlants' | translate }}
+        }
+      </ltm-property>
+    </ltm-info-box>
+
+    <h1 class="centered">{{ 'general.plants' | translate }}</h1>
+
+    <ltm-plant-list [locationId]="location.id" />
+  </div>
+}

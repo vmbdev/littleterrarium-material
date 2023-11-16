@@ -5,29 +5,44 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { MatBottomSheet, MatBottomSheetModule } from '@angular/material/bottom-sheet';
+import {
+  MatBottomSheet,
+  MatBottomSheetModule
+} from '@angular/material/bottom-sheet';
 import { catchError, EMPTY, finalize, forkJoin } from 'rxjs';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
-import { Condition, Plant } from '@models/plant.model';
+import {
+  WaitDialogComponent
+} from '@components/dialogs/wait-dialog/wait-dialog.component';
+import {
+  InfoBoxComponent
+} from '@components/info-box/info-box/info-box.component';
+import {
+  PropertyComponent
+} from '@components/info-box/property/property.component';
+import {
+  PhotoListComponent
+} from '@components/photo/photo-list/photo-list.component';
+import { FabComponent } from '@components/fab/fab.component';
+import {
+  PlantEditComponent
+} from '@components/plant/plant-edit/plant-edit.component';
+import {
+  PlantExpansionInfoComponent
+} from '@components/plant/plant-expansion-info/plant-expansion-info.component';
+import {
+  ConfirmDialogComponent
+} from '@components/dialogs/confirm-dialog/confirm-dialog.component';
 import { MainToolbarService } from '@services/main-toolbar.service';
 import { PlantService } from '@services/plant.service';
 import { ErrorHandlerService } from '@services/error-handler.service';
-import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog.component';
-import { InfoBoxComponent } from '@components/info-box/info-box/info-box.component';
-import { PropertyComponent } from '@components/info-box/property/property.component';
-import { PhotoListComponent } from '@components/photo/photo-list/photo-list.component';
-import { FabComponent } from '@components/fab/fab.component';
-import { PlantEditComponent } from '@components/plant/plant-edit/plant-edit.component';
-import { PlantExpansionInfoComponent } from '@components/plant/plant-expansion-info/plant-expansion-info.component';
+import { Condition, Plant } from '@models/plant.model';
 import { CapitalizePipe } from '@pipes/capitalize/capitalize.pipe';
-import { ConfirmDialogComponent } from '@components/dialogs/confirm-dialog/confirm-dialog.component';
 
 @Component({
-    selector: 'plant',
+    selector: 'ltm-plant',
     standalone: true,
-    templateUrl: './plant.component.html',
-    styleUrls: ['./plant.component.scss'],
     imports: [
         CommonModule,
         TranslateModule,
@@ -42,7 +57,8 @@ import { ConfirmDialogComponent } from '@components/dialogs/confirm-dialog/confi
         FabComponent,
         CapitalizePipe,
         PlantExpansionInfoComponent
-    ]
+    ],
+    templateUrl: './plant.component.html'
 })
 export class PlantComponent {
   id?: number;
@@ -105,10 +121,22 @@ export class PlantComponent {
   }
 
   processPlant(plant: Plant) {
-    this.mt.setName(plant.visibleName ? plant.visibleName : this.plantService.getVisibleName(plant));
+    this.mt.setName(
+      plant.visibleName ?
+      plant.visibleName :
+      this.plantService.getVisibleName(plant)
+    );
     this.mt.setMenu([
-      [{ icon: 'edit', tooltip: 'general.edit', click: () => { this.openEdit() } }],
-      [{ icon: 'delete', tooltip: 'general.delete', click: () => { this.openRemoveDialog() } }]
+      [{
+        icon: 'edit',
+        tooltip: 'general.edit',
+        click: () => { this.openEdit() }
+      }],
+      [{
+        icon: 'delete',
+        tooltip: 'general.delete',
+        click: () => { this.openRemoveDialog() }
+      }]
     ]);
   }
 

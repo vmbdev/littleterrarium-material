@@ -1,6 +1,13 @@
 import { Injectable } from '@angular/core';
-import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor, HttpErrorResponse } from '@angular/common/http';
+import {
+  HttpRequest,
+  HttpHandler,
+  HttpEvent,
+  HttpInterceptor,
+  HttpErrorResponse
+} from '@angular/common/http';
 import { catchError, EMPTY, Observable, throwError } from 'rxjs';
+
 import { ErrorHandlerService } from '@services/error-handler.service';
 
 
@@ -9,7 +16,10 @@ export class AuthInterceptor implements HttpInterceptor {
 
   constructor(private errorHandler: ErrorHandlerService) {}
 
-  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+  intercept(
+    request: HttpRequest<any>,
+    next: HttpHandler
+  ): Observable<HttpEvent<any>> {
     request = request.clone({
       withCredentials: true
     });

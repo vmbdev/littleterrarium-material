@@ -1,12 +1,15 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { ConfirmDialogComponent } from '@components/dialogs/confirm-dialog/confirm-dialog.component';
 import { TranslateService } from '@ngx-translate/core';
+
+import {
+  ConfirmDialogComponent
+} from '@components/dialogs/confirm-dialog/confirm-dialog.component';
 import { PlantService } from '@services/plant.service';
 
 @Component({
-  selector: 'plant-base-action',
+  selector: 'ltm-plant-base-action',
   standalone: true,
   imports: [
     CommonModule,

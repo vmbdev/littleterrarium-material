@@ -1,19 +1,23 @@
 import { Component, Optional } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatBottomSheetModule, MatBottomSheetRef } from '@angular/material/bottom-sheet';
+import {
+  MatBottomSheetModule,
+  MatBottomSheetRef
+} from '@angular/material/bottom-sheet';
 import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
-import { TranslateModule } from '@ngx-translate/core';
-import { PlantService } from '@services/plant.service';
-import { Plant } from '@models/plant.model';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatCardModule } from '@angular/material/card';
+import { TranslateModule } from '@ngx-translate/core';
+
+import { PlantService } from '@services/plant.service';
+import { Plant } from '@models/plant.model';
 
 @Component({
-  selector: 'plant-edit-water',
+  selector: 'ltm-plant-edit-water',
   standalone: true,
   imports: [
     CommonModule,
@@ -27,8 +31,7 @@ import { MatCardModule } from '@angular/material/card';
     MatCardModule,
     TranslateModule
   ],
-  templateUrl: './plant-edit-water.component.html',
-  styleUrls: ['./plant-edit-water.component.scss']
+  templateUrl: './plant-edit-water.component.html'
 })
 export class PlantEditWaterComponent {
   waterForm = this.fb.group({

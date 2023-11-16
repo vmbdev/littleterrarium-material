@@ -3,17 +3,20 @@
     <p [innerHTML]="'photo-add.addMsg' | translate"></p>
     <p [innerHTML]="'photo-add.addMsgLimit' | translate"></p>
 
-    <file-uploader [amount]="10" (fileChange)="fileChange($event)"></file-uploader>
+    <ltm-file-uploader maxAmount="10" (fileChange)="fileChange($event)" />
 
-    <stepper-navigation></stepper-navigation>
+    <ltm-stepper-navigation />
   </mat-step>
   
   
-  <mat-step [stepControl]="formPrivacy.form" [label]="'general.privacy' | translate">
+  <mat-step
+    [stepControl]="formPrivacy.form"
+    [label]="'general.privacy' | translate"
+  >
     <ltm-form-privacy #formPrivacy>
       <p [innerHtml]="'photo-add.visibility' | translate"></p>
       <p [innerHtml]="'photo-add.visibilityNote' | translate"></p>
     </ltm-form-privacy>
-    <stepper-navigation finishButton="true" (finish)="submit()"></stepper-navigation>
+    <ltm-stepper-navigation finishButton="true" (finish)="submit()" />
   </mat-step>
 </mat-stepper>

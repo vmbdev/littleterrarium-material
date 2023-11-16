@@ -1,39 +1,43 @@
-<form *ngIf="plantService.plant$ | async as plant" [formGroup]="waterForm" method="post" (submit)="submit()">
-  <mat-card>
-    <mat-card-content>
-      <p [innerHTML]="'plant-edit-watering.warning' | translate"></p>
-      <p [innerHTML]="'plant-edit-watering.sensitive' | translate"></p>
-      <p [innerHTML]="'plant-edit-watering.reminder' | translate"></p>
-    </mat-card-content>
-  </mat-card>
-  
-  <div>
-    <p [innerHTML]="'plant-edit-watering.lastTime' | translate"></p>
+@if (plantService.plant$ | async; as plant) {
+  <form [formGroup]="waterForm" method="post" (submit)="submit()">
+    <mat-card>
+      <mat-card-content>
+        <p [innerHTML]="'plant-edit-watering.warning' | translate"></p>
+        <p [innerHTML]="'plant-edit-watering.sensitive' | translate"></p>
+        <p [innerHTML]="'plant-edit-watering.reminder' | translate"></p>
+      </mat-card-content>
+    </mat-card>
+    
+    <div>
+      <p [innerHTML]="'plant-edit-watering.lastTime' | translate"></p>
 
-    <mat-form-field appearance="fill" class="full-width">
-      <mat-label>{{ 'general.date' | translate }}</mat-label>
-      <input
-        formControlName="waterLast"
-        [max]="today"
-        matInput
-        [matDatepicker]="picker"
-      >
-      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker>
-    </mat-form-field>
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>{{ 'general.date' | translate }}</mat-label>
+        <input
+          formControlName="waterLast"
+          [max]="today"
+          matInput
+          [matDatepicker]="picker"
+        >
+        <mat-datepicker-toggle matIconSuffix [for]="picker" />
+        <mat-datepicker #picker />
+      </mat-form-field>
 
-  </div>
+    </div>
 
-  <mat-divider></mat-divider>
+    <mat-divider />
 
-  <div>
-    <p [innerHTML]="'plant-edit-watering.nextTime' | translate"></p>
-    <mat-form-field class="full-width">
-      <input matInput type="number" formControlName="waterFreq">
-    </mat-form-field>
-  </div>
+    <div>
+      <p [innerHTML]="'plant-edit-watering.nextTime' | translate"></p>
+      <mat-form-field class="full-width">
+        <input matInput type="number" formControlName="waterFreq">
+      </mat-form-field>
+    </div>
 
-  <div class="tab-navigation">
-    <button mat-raised-button color="primary">{{ 'general.update' | translate }}</button>
-  </div>
-</form>
+    <div class="tab-navigation">
+      <button mat-raised-button color="primary">
+        {{ 'general.update' | translate }}
+      </button>
+    </div>
+  </form>
+}

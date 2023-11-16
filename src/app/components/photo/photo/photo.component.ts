@@ -5,30 +5,44 @@ import { ActivatedRoute, Params, Router, RouterModule } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { MatBottomSheet, MatBottomSheetModule } from '@angular/material/bottom-sheet';
+import {
+  MatBottomSheet,
+  MatBottomSheetModule
+} from '@angular/material/bottom-sheet';
 import { catchError, EMPTY, finalize, Subscription, switchMap } from 'rxjs';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { DateTime } from 'luxon';
 
+import {
+  InfoBoxComponent
+} from "@components/info-box/info-box/info-box.component";
+import {
+  PropertyComponent
+} from "@components/info-box/property/property.component";
+import {
+  ToggleOptionComponent
+} from '@components/toggle-option/toggle-option.component';
+import {
+  PhotoEditComponent
+} from '@components/photo/photo-edit/photo-edit.component';
+import { ViewerComponent } from '@components/photo/viewer/viewer.component';
+import {
+  WaitDialogComponent
+} from '@components/dialogs/wait-dialog/wait-dialog.component';
+import {
+  ConfirmDialogComponent
+} from '@components/dialogs/confirm-dialog/confirm-dialog.component';
 import { PhotoService } from '@services/photo.service';
 import { PlantService } from '@services/plant.service';
 import { MainToolbarService } from '@services/main-toolbar.service';
 import { ErrorHandlerService } from '@services/error-handler.service';
 import { ImagePathService } from '@services/image-path.service';
-import { InfoBoxComponent } from "@components/info-box/info-box/info-box.component";
-import { PropertyComponent } from "@components/info-box/property/property.component";
-import { ToggleOptionComponent } from '@components/toggle-option/toggle-option.component';
-import { PhotoEditComponent } from '@components/photo/photo-edit/photo-edit.component';
-import { ViewerComponent } from '@components/photo/viewer/viewer.component';
-import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog.component';
-import { ConfirmDialogComponent } from '@components/dialogs/confirm-dialog/confirm-dialog.component';
 import { Plant } from '@models/plant.model';
 import { NavigationData, Photo } from '@models/photo.model';
 import { DaysAgoPipe } from "@pipes/days-ago/days-ago.pipe";
-import { HammerModule } from '@angular/platform-browser';
 
 @Component({
-  selector: 'photo',
+  selector: 'ltm-photo',
   standalone: true,
   templateUrl: './photo.component.html',
   styleUrls: ['./photo.component.scss'],
@@ -74,8 +88,8 @@ export class PhotoComponent {
   ) { }
 
   ngOnInit(): void {
-    // Angular doesn't update a component when the route only changes its parameters,
-    // so we need to do it when navigating the previous/next photo
+    // Angular doesn't update a component when the route only changes its
+    // parameters, so we need to do it when navigating the previous/next photo
     this.routeDetect$ = this.route.params.subscribe((param: Params) => {
       this.id = param['photoId'];
       this.loadPhoto();
@@ -85,13 +99,19 @@ export class PhotoComponent {
 
   loadNextPhoto() {
     if (this.navigation.next) {
-      this.router.navigate(['/photo', this.navigation.next.id], { replaceUrl: true });
+      this.router.navigate(
+        ['/photo', this.navigation.next.id],
+        { replaceUrl: true }
+      );
     }
   }
 
   loadPrevPhoto() {
     if (this.navigation.prev) {
-      this.router.navigate(['/photo', this.navigation.prev.id], { replaceUrl: true });
+      this.router.navigate(
+        ['/photo', this.navigation.prev.id],
+        { replaceUrl: true }
+      );
     }
   }
 
@@ -124,8 +144,16 @@ export class PhotoComponent {
         switchMap((photo: Photo) => {
           this.mt.setName(this.getDateTitle(photo.takenAt));
           this.mt.setMenu([
-            [{ icon: 'edit', tooltip: 'general.edit', click: () => { this.openEdit() } }],
-            [{ icon: 'delete', tooltip: 'general.delete', click: () => { this.openRemoveDialog() }}]
+            [{
+              icon: 'edit',
+              tooltip: 'general.edit',
+              click: () => { this.openEdit() }
+            }],
+            [{
+              icon: 'delete',
+              tooltip: 'general.delete',
+              click: () => { this.openRemoveDialog() }
+            }]
           ]);
           this.mt.setButtons([]);
 

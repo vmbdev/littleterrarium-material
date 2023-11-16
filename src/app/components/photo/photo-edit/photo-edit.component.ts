@@ -3,28 +3,39 @@ import { MatCardModule } from '@angular/material/card';
 import { Component, Inject, Optional, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
-import { MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
+import {
+  MatBottomSheetRef,
+  MAT_BOTTOM_SHEET_DATA
+} from '@angular/material/bottom-sheet';
 import { MatDialog } from '@angular/material/dialog';
 import { FormGroup } from '@angular/forms';
 import { BehaviorSubject, finalize } from 'rxjs';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
-import { PhotoFormDescriptionComponent } from '@components/photo/forms/photo-form-description/photo-form-description.component';
-import { PhotoFormDateComponent } from '@components/photo/forms/photo-form-date/photo-form-date.component';
-import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog.component';
+import {
+  PhotoFormDescriptionComponent
+} from '@components/photo/forms/photo-form-description/photo-form-description.component';
+import {
+  PhotoFormDateComponent
+} from '@components/photo/forms/photo-form-date/photo-form-date.component';
+import {
+  WaitDialogComponent
+} from '@components/dialogs/wait-dialog/wait-dialog.component';
+import { EditPageComponent } from '@components/edit-page/edit-page.component';
+import {
+  FormPrivacyComponent
+} from '@components/form-privacy/form-privacy.component';
 import { ErrorHandlerService } from '@services/error-handler.service';
 import { PlantService } from '@services/plant.service';
 import { PhotoService } from '@services/photo.service';
 import { Photo } from '@models/photo.model';
-import { EditPageComponent } from '@components/edit-page/edit-page.component';
-import { FormPrivacyComponent } from '@components/form-privacy/form-privacy.component';
 
 interface PhotoEditConfig {
   id: number
 }
 
 @Component({
-  selector: 'photo-edit',
+  selector: 'ltm-photo-edit',
   standalone: true,
   imports: [
     CommonModule,
@@ -38,8 +49,7 @@ interface PhotoEditConfig {
     FormPrivacyComponent,
     EditPageComponent
   ],
-  templateUrl: './photo-edit.component.html',
-  styleUrls: ['./photo-edit.component.scss']
+  templateUrl: './photo-edit.component.html'
 })
 export class PhotoEditComponent {
   @ViewChild(PhotoFormDescriptionComponent) descriptionComp!: PhotoFormDescriptionComponent;
@@ -61,7 +71,10 @@ export class PhotoEditComponent {
   ) {}
 
   ngOnInit(): void {
-    this.photoService.get(this.editPhoto.id, { navigation: true, cover: true }).subscribe();
+    this.photoService.get(
+      this.editPhoto.id,
+      { navigation: true, cover: true }
+    ).subscribe();
   }
 
   openWaitDialog() {

@@ -7,7 +7,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { FormBaseComponent } from '@components/form-base/form-base.component';
 
 @Component({
-  selector: 'location-form-name',
+  selector: 'ltm-location-form-name',
   standalone: true,
   imports: [
     CommonModule,
@@ -16,8 +16,7 @@ import { FormBaseComponent } from '@components/form-base/form-base.component';
     MatInputModule,
     TranslateModule
   ],
-  templateUrl: './location-form-name.component.html',
-  styleUrls: ['./location-form-name.component.scss']
+  templateUrl: './location-form-name.component.html'
 })
 export class LocationFormNameComponent implements FormBaseComponent {
   @Input() currentName?: string | null;

@@ -1,19 +1,23 @@
 import { Component, Optional } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
-import { MatBottomSheetModule, MatBottomSheetRef } from '@angular/material/bottom-sheet';
+import {
+  MatBottomSheetModule,
+  MatBottomSheetRef
+} from '@angular/material/bottom-sheet';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { TranslateModule } from '@ngx-translate/core';
-import { Plant } from '@models/plant.model';
-import { PlantService } from '@services/plant.service';
 import { MatDividerModule } from '@angular/material/divider';
+import { TranslateModule } from '@ngx-translate/core';
+
 import { MatCardModule } from '@angular/material/card';
+import { PlantService } from '@services/plant.service';
+import { Plant } from '@models/plant.model';
 
 @Component({
-  selector: 'app-plant-edit-fertilizer',
+  selector: 'ltm-plant-edit-fertilizer',
   standalone: true,
   imports: [
     CommonModule,
@@ -27,8 +31,7 @@ import { MatCardModule } from '@angular/material/card';
     MatCardModule,
     TranslateModule
   ],
-  templateUrl: './plant-edit-fertilizer.component.html',
-  styleUrls: ['./plant-edit-fertilizer.component.scss']
+  templateUrl: './plant-edit-fertilizer.component.html'
 })
 export class PlantEditFertilizerComponent {
   fertForm = this.fb.group({

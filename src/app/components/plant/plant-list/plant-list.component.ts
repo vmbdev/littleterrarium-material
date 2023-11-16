@@ -2,7 +2,6 @@ import { Component, Input, SimpleChanges } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -11,29 +10,45 @@ import { MatCardModule } from '@angular/material/card';
 import { MatRippleModule } from '@angular/material/core';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { MatBottomSheet, MatBottomSheetModule } from '@angular/material/bottom-sheet';
+import {
+  MatBottomSheet,
+  MatBottomSheetModule
+} from '@angular/material/bottom-sheet';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
-import { ConfirmDialogComponent } from '@components/dialogs/confirm-dialog/confirm-dialog.component';
 import { FabComponent } from '@components/fab/fab.component';
-import { PlantEditComponent } from '@components/plant/plant-edit/plant-edit.component';
-import { PlantToolbarComponent } from '@components/plant/plant-toolbar/plant-toolbar.component';
+import {
+  ConfirmDialogComponent
+} from '@components/dialogs/confirm-dialog/confirm-dialog.component';
+import {
+  PlantEditComponent
+} from '@components/plant/plant-edit/plant-edit.component';
+import {
+  PlantToolbarComponent
+} from '@components/plant/plant-toolbar/plant-toolbar.component';
+import {
+  PlantMenuWaterComponent
+} from '@components/plant/menu/plant-menu-water/plant-menu-water.component';
+import {
+  PlantMenuFertComponent
+} from '@components/plant/menu/plant-menu-fert/plant-menu-fert.component';
 import { PlantGetConfig } from '@services/api.service';
 import { LocationService } from '@services/location.service';
 import { PlantService } from '@services/plant.service';
 import { SearchReceipt, SearchService } from '@services/search.service';
 import { MainToolbarService } from '@services/main-toolbar.service';
 import { AuthService } from '@services/auth.service';
-import { BottomScrollDetectorService } from '@services/bottom-scroll-detector.service';
+import {
+  BottomScrollDetectorService
+} from '@services/bottom-scroll-detector.service';
 import { User } from '@models/user.model';
 import { Plant } from '@models/plant.model';
 import { SortColumn, SortOrder } from '@models/sort-options.model';
 import { CapitalizePipe } from "@pipes/capitalize/capitalize.pipe";
-import { PlantMenuWaterComponent } from '../menu/plant-menu-water/plant-menu-water.component';
-import { PlantMenuFertComponent } from '../menu/plant-menu-fert/plant-menu-fert.component';
 
 @Component({
-  selector: 'plant-list',
+  selector: 'ltm-plant-list',
   standalone: true,
   templateUrl: './plant-list.component.html',
   styleUrls: ['./plant-list.component.scss'],
@@ -185,7 +200,11 @@ export class PlantListComponent {
 
   createMainToolbarContext(): void {
     this.mt.addButtons([
-      { icon: 'search', tooltip: 'general.search', click: () => { this.search.toggle() } },
+      {
+        icon: 'search',
+        tooltip: 'general.search',
+        click: () => { this.search.toggle() }
+      },
     ]);
     this.mt.addButtonsToMenu([
       [
@@ -306,7 +325,9 @@ export class PlantListComponent {
 
   delete(id: number): void {
     this.plantService.delete(id).subscribe(() => {
-      const newList = this.list$.getValue().filter((plant: Plant) => plant.id !== id);
+      const newList = this.list$
+        .getValue()
+        .filter((plant: Plant) => plant.id !== id);
 
       this.list$.next(newList);
     })

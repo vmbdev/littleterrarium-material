@@ -1,10 +1,15 @@
 <h1 mat-dialog-title>{{ data.message }}</h1>
+
 <div mat-dialog-content>
-  <mat-spinner *ngIf="!data.progressBar; else progressBar" class="wait-dialog__spinner"></mat-spinner>
-  <ng-template #progressBar>
-    <mat-progress-bar mode="determinate" [value]="data.progressValue"></mat-progress-bar>
-  </ng-template>
-  <div *ngIf="data.finalMessage && (data.progressValue === 100)">
-    {{ data.finalMessage }}
-  </div>
+  @if (!data.progressBar) {
+    <mat-spinner class="wait-dialog__spinner" />
+  } @else {
+    <mat-progress-bar mode="determinate" [value]="data.progressValue" />
+  }
+
+  @if (data.finalMessage && data.progressValue === 100) {
+    <div>
+      {{ data.finalMessage }}
+    </div>
+  }
 </div>

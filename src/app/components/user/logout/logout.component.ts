@@ -1,15 +1,17 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { AuthService } from '@services/auth.service';
-import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog.component';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { finalize } from 'rxjs';
 
+import {
+  WaitDialogComponent
+} from '@components/dialogs/wait-dialog/wait-dialog.component';
+import { AuthService } from '@services/auth.service';
 
 @Component({
-  selector: 'logout',
+  selector: 'ltm-logout',
   standalone: true,
   imports: [
     CommonModule,
@@ -17,8 +19,7 @@ import { finalize } from 'rxjs';
     TranslateModule,
     MatDialogModule
   ],
-  templateUrl: './logout.component.html',
-  styleUrls: ['./logout.component.scss']
+  templateUrl: './logout.component.html'
 })
 export class LogoutComponent {
   constructor(

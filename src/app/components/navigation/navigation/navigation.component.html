@@ -1,0 +1,48 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #drawer class="sidenav" fixedInViewport
+      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+      [mode]="(isHandset$ | async) ? 'over' : 'side'"
+      opened="false">
+    <mat-toolbar>Little Terrarium</mat-toolbar>
+    <mat-nav-list>
+      <mat-list-item routerLink="/">
+        <mat-icon matListItemIcon>home</mat-icon>
+        <h1 matListItemTitle>{{ 'general.locations' | translate }}</h1>
+      </mat-list-item>
+
+      <mat-list-item routerLink="/plant/all">
+        <mat-icon matListItemIcon>forest</mat-icon>
+        <h1 matListItemTitle>{{ 'general.plants' | translate }}</h1>
+      </mat-list-item>
+
+      <mat-list-item routerLink="/tasks">
+        <mat-icon matListItemIcon>task</mat-icon>
+        <h1 matListItemTitle>{{ 'general.tasks' | translate }}</h1>
+        <h2 matListItemLine>{{ 'tasks.remaining' | translate:{ taskNumber: taskService.getCount() } }}</h2>
+      </mat-list-item>
+
+      <mat-list-item [routerLink]="getUserLink()">
+        <div matListItemIcon>
+          <ltm-user-box />
+        </div>
+        <h1 matListItemTitle>
+          <ng-container *ngIf="auth.user$ | async as user; else notSigned">
+            {{ user.username }}
+          </ng-container>
+          <ng-template #notSigned>
+            {{ 'general.signin' | translate }}
+          </ng-template>
+        </h1>
+      </mat-list-item>
+
+    </mat-nav-list>
+    <ltm-lang-switcher />
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <ltm-main-toolbar />
+    <div class="main-content" #content>
+      <router-outlet></router-outlet>
+    </div>
+    <ltm-bottom-toolbar (toggleSidenav)="drawer.toggle()" />
+  </mat-sidenav-content>
+</mat-sidenav-container>

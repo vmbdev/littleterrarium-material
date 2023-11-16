@@ -1,24 +1,23 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-import { Photo } from '@models/photo.model';
-import { ImagePathService } from '@services/image-path.service';
-import { ImagePath } from '@models/image-path.model';
 import { RouterModule } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
+
+import { ImagePath, ImagePathService } from '@services/image-path.service';
 import { PlantService } from '@services/plant.service';
+import { Photo } from '@models/photo.model';
 import { SortPipe } from "@pipes/sort/sort.pipe";
 
 @Component({
-    selector: 'photo-list',
-    standalone: true,
-    templateUrl: './photo-list.component.html',
-    styleUrls: ['./photo-list.component.scss'],
-    imports: [
-      CommonModule,
-      RouterModule,
-      SortPipe
-    ]
+  selector: 'ltm-photo-list',
+  standalone: true,
+  templateUrl: './photo-list.component.html',
+  styleUrls: ['./photo-list.component.scss'],
+  imports: [
+    CommonModule,
+    RouterModule,
+    SortPipe
+  ]
 })
 export class PhotoListComponent {
   @Input({ required: true }) plantId?: number;

@@ -1,10 +1,15 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, EMPTY, map, Observable } from 'rxjs';
+
+import {
+  ApiService,
+  PlantGetConfig,
+  PlantUpdateConfig
+} from '@services/api.service';
 import { AuthService } from '@services/auth.service';
-import { ApiService, PlantGetConfig, PlantUpdateConfig } from '@services/api.service';
+import { ImagePathService } from '@services/image-path.service';
 import { Photo } from '@models/photo.model';
 import { Condition, Plant } from '@models/plant.model';
-import { ImagePathService } from './image-path.service';
 import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
@@ -41,7 +46,7 @@ export class PlantService {
     );
   }
 
-  getMany(options?: PlantGetConfig): Observable<Plant[]> {
+  getMany(options: PlantGetConfig): Observable<Plant[]> {
     return this.api.getPlants(options).pipe(
       map((plants: Plant[]) => {
         for (const plant of plants) {
@@ -65,7 +70,9 @@ export class PlantService {
     let name;
 
     if (plant.customName) name = plant.customName;
-    else if (plant.specie?.name) name = plant.specie.name.slice(0,1).toUpperCase() + plant.specie.name.slice(1);
+    else if (plant.specie?.name) {
+      name = plant.specie.name.slice(0,1).toUpperCase() + plant.specie.name.slice(1);
+    }
     else name = this.translate.instant('general.unnamedPlant', { plantId: plant.id });
 
     return name;
@@ -149,8 +156,14 @@ export class PlantService {
     if (workingPlant) {
       let image: any;
 
-      if (workingPlant.cover) image = this.imagePath.get(workingPlant.cover.images, 'thumb');
-      else if (workingPlant.photos && workingPlant.photos[0] && workingPlant.photos[0].images) {
+      if (workingPlant.cover) {
+        image = this.imagePath.get(workingPlant.cover.images, 'thumb');
+      }
+      else if (
+        workingPlant.photos
+        && workingPlant.photos[0]
+        && workingPlant.photos[0].images
+      ) {
         image = this.imagePath.get(workingPlant.photos[0].images, 'thumb');
       }
       else image = 'assets/nopic.png';

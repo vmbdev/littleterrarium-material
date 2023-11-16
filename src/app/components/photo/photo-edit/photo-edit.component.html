@@ -1,36 +1,37 @@
-<edit-page 
-  *ngIf="photoService.photo$ | async as photo"
-  [title]="'photo-edit.header' | translate"
-  (accept)="submit()"
->
-  <mat-card class="settings-card">
-    <mat-card-header>
-      <mat-card-title>{{ 'general.description' | translate }}</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <photo-form-description [currentDescription]="photo.description"></photo-form-description>
-    </mat-card-content>
-  </mat-card>
+@if (photoService.photo$ | async; as photo) {
+  <ltm-edit-page 
+    [title]="'photo-edit.header' | translate"
+    (accept)="submit()"
+  >
+    <mat-card class="settings-card">
+      <mat-card-header>
+        <mat-card-title>{{ 'general.description' | translate }}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <ltm-photo-form-description [currentDescription]="photo.description" />
+      </mat-card-content>
+    </mat-card>
 
-  <mat-card class="settings-card">
-    <mat-card-header>
-      <mat-card-title>{{ 'general.date' | translate }}</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <photo-form-date [currentTakenAt]="photo.takenAt"></photo-form-date>
-    </mat-card-content>
-  </mat-card>
+    <mat-card class="settings-card">
+      <mat-card-header>
+        <mat-card-title>{{ 'general.date' | translate }}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <ltm-photo-form-date [currentTakenAt]="photo.takenAt" />
+      </mat-card-content>
+    </mat-card>
 
-  <mat-card class="settings-card">
-    <mat-card-header>
-      <mat-card-title>{{ 'general.privacy' | translate }}</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <ltm-form-privacy [currentPrivacy]="photo.public">
-        <p [innerHtml]="'photo-add.visibility' | translate"></p>
-        <p [innerHtml]="'photo-add.visibilityNote' | translate"></p>
-      </ltm-form-privacy>
-    </mat-card-content>
-  </mat-card>
+    <mat-card class="settings-card">
+      <mat-card-header>
+        <mat-card-title>{{ 'general.privacy' | translate }}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <ltm-form-privacy [currentPrivacy]="photo.public">
+          <p [innerHtml]="'photo-add.visibility' | translate"></p>
+          <p [innerHtml]="'photo-add.visibilityNote' | translate"></p>
+        </ltm-form-privacy>
+      </mat-card-content>
+    </mat-card>
 
-</edit-page>
+  </ltm-edit-page>
+}

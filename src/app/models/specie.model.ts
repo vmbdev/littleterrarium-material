@@ -1,4 +1,4 @@
-import { Plant } from "./plant.model"
+import { Plant } from "@models/plant.model";
 
 export interface Specie {
   id: number

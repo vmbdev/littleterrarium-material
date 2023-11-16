@@ -2,20 +2,28 @@ import { Component, Injector, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
-import { LocationFormLightComponent } from '@components/location/forms/location-form-light/location-form-light.component';
-import { LocationFormNameComponent } from '@components/location/forms/location-form-name/location-form-name.component';
-import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog.component';
-import { FormPrivacyComponent } from '@components/form-privacy/form-privacy.component';
-import { Location } from '@models/location.model';
+
+import {
+  LocationFormLightComponent
+} from '@components/location/forms/location-form-light/location-form-light.component';
+import {
+  LocationFormNameComponent
+} from '@components/location/forms/location-form-name/location-form-name.component';
+import {
+  WaitDialogComponent
+} from '@components/dialogs/wait-dialog/wait-dialog.component';
+import {
+  FormPrivacyComponent
+} from '@components/form-privacy/form-privacy.component';
 import { LocationService } from '@services/location.service';
 import { ErrorHandlerService } from '@services/error-handler.service';
+import { Location } from '@models/location.model';
 
 @Component({
-  selector: 'location-upsert-base',
+  selector: 'ltm-location-upsert-base',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './location-upsert-base.component.html',
-  styleUrls: ['./location-upsert-base.component.scss']
+  templateUrl: './location-upsert-base.component.html'
 })
 export class LocationUpsertBaseComponent {
   @ViewChild(LocationFormNameComponent) nameComponent!: LocationFormNameComponent;

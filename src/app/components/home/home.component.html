@@ -1,13 +1,11 @@
-<ng-container *ngIf="auth.checked$ | async">
-  <ng-container *ngIf="auth.signedIn$ | async; else notSignedIn">
-    <div class="section-header">
-      <p [innerHTML]="'home.locations' | translate"></p>
-      <p [innerHTML]="'home.locationsNote' | translate"></p>
-    </div>
-    <location-list></location-list>
-  </ng-container>
-
-  <ng-template #notSignedIn>
-    <signin></signin>
-  </ng-template>
-</ng-container>
+@if (auth.checked$ | async) {
+    @if (auth.signedIn$ | async) {
+      <div class="section-header">
+        <p [innerHTML]="'home.locations' | translate"></p>
+        <p [innerHTML]="'home.locationsNote' | translate"></p>
+      </div>
+      <ltm-location-list />
+    } @else {
+      <ltm-signin />
+    }
+}

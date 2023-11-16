@@ -2,28 +2,33 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
-import { MatBottomSheetModule, MatBottomSheet } from '@angular/material/bottom-sheet';
+import {
+  MatBottomSheetModule,
+  MatBottomSheet
+} from '@angular/material/bottom-sheet';
 import { MatButtonModule } from '@angular/material/button';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+
+import {
+  PlantEditSoilComponent
+} from '@components/plant/plant-edit-soil/plant-edit-soil.component';
 import { PlantService } from '@services/plant.service';
-import { UnitPipe } from "@pipes/unit/unit.pipe";
 import { potChoices } from '@models/plant.model';
-import { PlantEditSoilComponent } from '@components/plant/plant-edit-soil/plant-edit-soil.component';
+import { UnitPipe } from "@pipes/unit/unit.pipe";
 
 @Component({
-    selector: 'plant-soil-widget',
+    selector: 'ltm-plant-soil-widget',
     standalone: true,
-    templateUrl: './plant-soil-widget.component.html',
-    styleUrls: ['./plant-soil-widget.component.scss'],
     imports: [
-        CommonModule,
-        MatExpansionModule,
-        MatIconModule,
-        MatButtonModule,
-        MatBottomSheetModule,
-        TranslateModule,
-        UnitPipe
-    ]
+      CommonModule,
+      MatExpansionModule,
+      MatIconModule,
+      MatButtonModule,
+      MatBottomSheetModule,
+      TranslateModule,
+      UnitPipe
+    ],
+    templateUrl: './plant-soil-widget.component.html',
 })
 export class PlantSoilWidgetComponent {
   constructor(
@@ -37,7 +42,9 @@ export class PlantSoilWidgetComponent {
     const potType = this.plantService.current()?.potType;
 
     if (potType) {
-      if (potChoices.hasOwnProperty(potType)) potName = potChoices[potType].name;
+      if (potChoices.hasOwnProperty(potType)) {
+        potName = potChoices[potType].name;
+      }
       else potName = potType;
     }
     else potName = this.translate.instant('general.unknown:Unknown');

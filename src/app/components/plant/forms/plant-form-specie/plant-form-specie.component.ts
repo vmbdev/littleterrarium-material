@@ -1,20 +1,21 @@
-import { Component, Input, SimpleChanges } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { ApiService } from '@services/api.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
-import { Specie } from '@models/specie.model';
-import { TranslateModule } from '@ngx-translate/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { TranslateModule } from '@ngx-translate/core';
+
 import { FormBaseComponent } from '@components/form-base/form-base.component';
+import { ApiService } from '@services/api.service';
+import { Specie } from '@models/specie.model';
 
 
 @Component({
-  selector: 'plant-form-specie',
+  selector: 'ltm-plant-form-specie',
   standalone: true,
   imports: [
     CommonModule,
@@ -26,8 +27,7 @@ import { FormBaseComponent } from '@components/form-base/form-base.component';
     MatIconModule,
     MatButtonModule
   ],
-  templateUrl: './plant-form-specie.component.html',
-  styleUrls: ['./plant-form-specie.component.scss']
+  templateUrl: './plant-form-specie.component.html'
 })
 export class PlantFormSpecieComponent implements FormBaseComponent {
   @Input() currentSpecie?: number | null;

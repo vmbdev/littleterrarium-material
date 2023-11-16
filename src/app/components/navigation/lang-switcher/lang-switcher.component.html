@@ -1,0 +1,14 @@
+<mat-form-field appearance="fill" class="lang-switcher">
+  <mat-label>{{ 'general.language' | translate }}</mat-label>
+  <mat-select
+    #select
+    (selectionChange)="setLang(select.value)"
+    [(value)]="storedLanguage"
+  >
+    @for (lang of languages; track lang.value) {
+      <mat-option [value]="lang.value">
+        {{ lang.name }}
+      </mat-option>
+    }
+  </mat-select>
+</mat-form-field>

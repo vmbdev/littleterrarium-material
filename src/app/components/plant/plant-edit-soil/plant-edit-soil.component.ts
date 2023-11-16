@@ -1,19 +1,25 @@
 import { ChangeDetectionStrategy, Component, Optional } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormControl, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormControl,
+  FormBuilder,
+  ReactiveFormsModule,
+  Validators
+} from '@angular/forms';
 import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
-import { Plant, potChoices } from '@models/plant.model';
-import { PlantService } from '@services/plant.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatRadioModule } from '@angular/material/radio';
-import { TranslateModule } from '@ngx-translate/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatCardModule } from '@angular/material/card';
+import { TranslateModule } from '@ngx-translate/core';
+
+import { PlantService } from '@services/plant.service';
+import { Plant, potChoices } from '@models/plant.model';
 
 @Component({
-  selector: 'plant-edit-soil',
+  selector: 'ltm-plant-edit-soil',
   standalone: true,
   imports: [
     CommonModule,
@@ -77,7 +83,9 @@ export class PlantEditSoilComponent {
   }
 
   getPots(): any[] {
-    return Object.keys(potChoices).map(key => { return { id: key, ...potChoices[key] } });
+    return Object.keys(potChoices).map(key => {
+      return { id: key, ...potChoices[key] }
+    });
   }
 
   submit(): void {
@@ -87,7 +95,10 @@ export class PlantEditSoilComponent {
       plant.id = this.id;
 
       if (plant.potSize) {
-        plant.potSize = this.potForm.value.potSizeUnits === 'in' ? plant.potSize * 2.54 : plant.potSize;
+        plant.potSize =
+          this.potForm.value.potSizeUnits === 'in' ?
+          plant.potSize * 2.54 :
+          plant.potSize;
       }
 
       this.plantService.update(plant).subscribe(() => {

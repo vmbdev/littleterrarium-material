@@ -1,28 +1,44 @@
 import { Component, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { HttpEventType } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
-import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import {
+  MatDialog,
+  MatDialogModule,
+  MatDialogRef
+} from '@angular/material/dialog';
 import { MatStepperModule } from '@angular/material/stepper';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { catchError, EMPTY, finalize, switchMap } from 'rxjs';
 
-import { FileUploaderComponent } from '@components/file-uploader/file-uploader.component';
-import { StepperNavigationComponent } from '@components/stepper-navigation/stepper-navigation.component';
-import { PlantFormNameComponent } from '@components/plant/forms/plant-form-name/plant-form-name.component';
-import { PlantFormSpecieComponent } from '@components/plant/forms/plant-form-specie/plant-form-specie.component';
+import {
+  FileUploaderComponent
+} from '@components/file-uploader/file-uploader.component';
+import {
+  StepperNavigationComponent
+} from '@components/stepper-navigation/stepper-navigation.component';
+import {
+  PlantFormNameComponent
+} from '@components/plant/forms/plant-form-name/plant-form-name.component';
+import {
+  PlantFormSpecieComponent
+} from '@components/plant/forms/plant-form-specie/plant-form-specie.component';
+import {
+  WaitDialogComponent
+} from '@components/dialogs/wait-dialog/wait-dialog.component';
+import {
+  FormPrivacyComponent
+} from '@components/form-privacy/form-privacy.component';
+import { LocationService } from '@services/location.service';
 import { PlantService } from '@services/plant.service';
 import { ErrorHandlerService } from '@services/error-handler.service';
-import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog.component';
-import { catchError, EMPTY, finalize, switchMap } from 'rxjs';
-import { Plant } from '@models/plant.model';
-import { HttpEventType } from '@angular/common/http';
-import { LocationService } from '@services/location.service';
-import { Photo } from '@models/photo.model';
 import { PhotoService } from '@services/photo.service';
-import { FormPrivacyComponent } from '@components/form-privacy/form-privacy.component';
+import { Plant } from '@models/plant.model';
+import { Photo } from '@models/photo.model';
 
 @Component({
-  selector: 'plant-add',
+  selector: 'ltm-plant-add',
   standalone: true,
   providers: [
     {
@@ -42,8 +58,7 @@ import { FormPrivacyComponent } from '@components/form-privacy/form-privacy.comp
     PlantFormSpecieComponent,
     FormPrivacyComponent
   ],
-  templateUrl: './plant-add.component.html',
-  styleUrls: ['./plant-add.component.scss']
+  templateUrl: './plant-add.component.html'
 })
 export class PlantAddComponent {
   @ViewChild(PlantFormNameComponent) nameComponent!: PlantFormNameComponent;
@@ -133,7 +148,8 @@ export class PlantAddComponent {
   
           return this.photoService.create(photos, true).pipe(
             catchError(() => {
-              // Plant is created even though photo upload may have failed - we redirect to Plant
+              // Plant is created even though photo upload may have failed
+              // we redirect to Plant
               this.router.navigate(['/plant', plant.id]);
       
               return EMPTY;
@@ -144,13 +160,19 @@ export class PlantAddComponent {
         switch (event.type) {
           case HttpEventType.UploadProgress: {
             const eventTotal = event.total ? event.total : 0;
-            ud.componentInstance.data.progressValue = Math.round(event.loaded / eventTotal * 100);
+            const progressVal = Math.round(event.loaded / eventTotal * 100);
+            ud.componentInstance.data.progressValue = progressVal;
+
             break;
           }
           case HttpEventType.Response: {
             if (event.body?.data?.plantId) {
-              this.router.navigate(['/plant', event.body.data.plantId], { replaceUrl: true });
+              this.router.navigate(
+                ['/plant', event.body.data.plantId],
+                { replaceUrl: true }
+              );
             }
+
             break;
           }
         }

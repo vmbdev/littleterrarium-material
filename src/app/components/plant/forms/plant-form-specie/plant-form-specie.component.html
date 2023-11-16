@@ -19,12 +19,17 @@
       (optionSelected)="selectSpecie($event.option.value.id)"
       [displayWith]="getSpecieName"
     >
-      <mat-option *ngFor="let specie of results$ | async" [value]="specie">
-        {{ specie.name }}
-      </mat-option>
+      @for (specie of results$ | async; track specie.id) {
+        <mat-option [value]="specie">
+          {{ specie.name }}
+        </mat-option>
+      }
     </mat-autocomplete>
-    <button *ngIf="specieInput.value" matSuffix mat-icon-button (click)="clear(specieInput)">
-      <mat-icon>close</mat-icon>
-    </button>
+    
+    @if (specieInput.value) {
+      <button matSuffix mat-icon-button (click)="clear(specieInput)">
+        <mat-icon>close</mat-icon>
+      </button>
+    }
   </mat-form-field>
 </form>

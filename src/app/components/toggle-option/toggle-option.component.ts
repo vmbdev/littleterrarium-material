@@ -1,5 +1,10 @@
-import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  SimpleChanges
+} from '@angular/core';
 import { MatRippleModule } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
@@ -7,10 +12,9 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 
 @Component({
-  selector: 'toggle-option',
+  selector: 'ltm-toggle-option',
   standalone: true,
   imports: [
-    CommonModule,
     MatSlideToggleModule,
     MatFormFieldModule,
     MatRippleModule,

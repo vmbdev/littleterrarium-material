@@ -3,7 +3,14 @@
   <mat-form-field class="full-width">
     <mat-label>{{ 'general.bio' | translate }}</mat-label>
     <textarea
-      #bio formControlName="bio" matInput maxlength="300" rows="6">{{ currentBio }}</textarea>
+      #bio
+      formControlName="bio"
+      matInput
+      maxlength="300"
+      rows="6"
+    >
+      {{ currentBio }}
+    </textarea>
     <mat-hint align="end">{{ bio.value.length }} / 300</mat-hint>
   </mat-form-field>
 </form>

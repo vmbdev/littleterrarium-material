@@ -1,17 +1,29 @@
-<div *ngIf="user$ | async as user; else userNotFound" class="profile">
-  <div class="profile__userbox" [ngClass]="{ 'profile__userbox-small': small }">
-    <img *ngIf="user.avatar" class="profile__avatar" [ngClass]="{ 'profile__avatar-small': small }" [src]="getAvatar()">
-    <h1 class="profile__username">{{ user.username }}</h1>
+@if (user$ | async; as user) {
+  <div class="profile">
+    <div
+      class="profile__userbox"
+      [ngClass]="{ 'profile__userbox-small': small }"
+    >
 
-    <ng-container *ngIf="!small">
-      <h2 *ngIf="getFullName() as fullName" class="profile__realnames">{{ fullName }}</h2>
-      <blockquote *ngIf="user.bio" class="profile__bio">
-        {{ user.bio }}
-      </blockquote>
-    </ng-container>
+      @if (user.avatar) {
+        <img
+          class="profile__avatar"
+          [ngClass]="{ 'profile__avatar-small': small }"
+          [src]="getAvatar()"
+        >
+      }
 
+      <h1 class="profile__username">{{ user.username }}</h1>
+  
+      @if (!small) {
+        @if (getFullName(); as fullName) {
+          <h2 class="profile__realnames">{{ fullName }}</h2>
+        }
+        <blockquote *ngIf="user.bio" class="profile__bio">
+          {{ user.bio }}
+        </blockquote>
+      }
+  
+    </div>
   </div>
-</div>
-
-<ng-template #userNotFound>
-</ng-template>
+}

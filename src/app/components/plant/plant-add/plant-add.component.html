@@ -1,30 +1,43 @@
-<mat-stepper *ngIf="locationId" labelPosition="bottom" linear="false" animationDuration="300">
-  <mat-step [stepControl]="formName.form" optional="true" [label]="'general.name' | translate">
-    <plant-form-name #formName></plant-form-name>
-    <stepper-navigation backButton="false"></stepper-navigation>
-  </mat-step>
+@if (locationId) {
+  <mat-stepper labelPosition="bottom" linear="false" animationDuration="300">
+    <mat-step
+      [stepControl]="formName.form"
+      optional="true"
+      [label]="'general.name' | translate"
+    >
+      <ltm-plant-form-name #formName />
+      <ltm-stepper-navigation backButton="false" />
+    </mat-step>
 
-  <mat-step [stepControl]="formSpecie.form" optional="true" [label]="'general.specie' | translate">
-    <plant-form-specie #formSpecie></plant-form-specie>
-    <stepper-navigation></stepper-navigation>
-  </mat-step>
+    <mat-step
+      [stepControl]="formSpecie.form"
+      optional="true"
+      [label]="'general.specie' | translate"
+    >
+      <ltm-plant-form-specie #formSpecie />
+      <ltm-stepper-navigation />
+    </mat-step>
 
-  <mat-step optional="true" [label]="'general.picture' | translate">
-    <p [innerHTML]="'photo-add.addMsg' | translate"></p>
-    <p [innerHTML]="'photo-add.addMsgLimit' | translate"></p>
+    <mat-step optional="true" [label]="'general.picture' | translate">
+      <p [innerHTML]="'photo-add.addMsg' | translate"></p>
+      <p [innerHTML]="'photo-add.addMsgLimit' | translate"></p>
 
-    <file-uploader [amount]="10" (fileChange)="fileChange($event)"></file-uploader>
+      <ltm-file-uploader maxAmount="10" (fileChange)="fileChange($event)" />
 
-    <stepper-navigation></stepper-navigation>
-  </mat-step>
+      <ltm-stepper-navigation />
+    </mat-step>
 
 
-  <mat-step [stepControl]="formPrivacy.form" [label]="'general.privacy' | translate">
-    <ltm-form-privacy #formPrivacy>
-      <p [innerHtml]="'plant-add.privacy' | translate"></p>
-      <p [innerHtml]="'plant-add.privacyTip' | translate"></p>
-    </ltm-form-privacy>
+    <mat-step
+      [stepControl]="formPrivacy.form"
+      [label]="'general.privacy' | translate"
+    >
+      <ltm-form-privacy #formPrivacy>
+        <p [innerHtml]="'plant-add.privacy' | translate"></p>
+        <p [innerHtml]="'plant-add.privacyTip' | translate"></p>
+      </ltm-form-privacy>
 
-    <stepper-navigation finishButton="true" (finish)="submit()"></stepper-navigation>
-  </mat-step>
-</mat-stepper>
+      <ltm-stepper-navigation finishButton="true" (finish)="submit()" />
+    </mat-step>
+  </mat-stepper>
+}

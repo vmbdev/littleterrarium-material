@@ -2,17 +2,25 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
-import { MatBottomSheetModule, MatBottomSheet } from '@angular/material/bottom-sheet';
+import {
+  MatBottomSheetModule,
+  MatBottomSheet
+} from '@angular/material/bottom-sheet';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { ConfirmDialogComponent } from '@components/dialogs/confirm-dialog/confirm-dialog.component';
-import { PlantEditFertilizerComponent } from '@components/plant/plant-edit-fertilizer/plant-edit-fertilizer.component';
-import { DaysAgoPipe } from '@pipes/days-ago/days-ago.pipe';
+
+import {
+  ConfirmDialogComponent
+} from '@components/dialogs/confirm-dialog/confirm-dialog.component';
+import {
+  PlantEditFertilizerComponent
+} from '@components/plant/plant-edit-fertilizer/plant-edit-fertilizer.component';
 import { PlantService } from '@services/plant.service';
+import { DaysAgoPipe } from '@pipes/days-ago/days-ago.pipe';
 
 @Component({
-  selector: 'plant-fertilise-widget',
+  selector: 'ltm-plant-fertilise-widget',
   standalone: true,
   imports: [
     CommonModule,
@@ -24,8 +32,7 @@ import { PlantService } from '@services/plant.service';
     TranslateModule,
     DaysAgoPipe,
   ],
-  templateUrl: './plant-fertilise-widget.component.html',
-  styleUrls: ['./plant-fertilise-widget.component.scss']
+  templateUrl: './plant-fertilise-widget.component.html'
 })
 export class PlantFertiliseWidgetComponent {
   constructor(

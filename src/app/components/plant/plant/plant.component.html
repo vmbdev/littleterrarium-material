@@ -1,27 +1,32 @@
-<ng-container *ngIf="plantService.plant$ | async as plant">
-  <fab *ngIf="plantService.owned" [link]="['/photo/create', plant.id]"></fab>
+@if (plantService.plant$ | async; as plant) {
+  @if (plantService.owned) {
+    <ltm-fab [link]="['/photo/create', plant.id]" />
+  }
 
-  <info-box [description]="plant.description">
-    <property *ngIf="plant.specie && plant.specie.name" icon="grass">
-      {{ plant.specie.name | capitalize }}
-    </property>
+  <ltm-info-box [description]="plant.description">
+    @if (plant.specie && plant.specie.name) {
+      <ltm-property icon="grass">
+        {{ plant.specie.name | capitalize }}
+      </ltm-property>
+    }
 
-    <property
-      *ngIf="plant.condition"
-      icon="circle"
-      [iconColor]="plantService.getConditionColor(plant.condition)"
-    >
-      {{ plantCondition[plant.condition] }}
-    </property>
+    @if (plant.condition) {
+      <ltm-property
+        icon="circle"
+        [iconColor]="plantService.getConditionColor(plant.condition)"
+      >
+        {{ plantCondition[plant.condition] }}
+      </ltm-property>
+    }
 
-    <property [icon]="plant.public ? 'visibility' : 'visibility_off'">
+    <ltm-property [icon]="plant.public ? 'visibility' : 'visibility_off'">
       {{ (plant.public ? 'general.public' : 'general.private') | translate }}
-    </property>
-  </info-box>
+    </ltm-property>
+  </ltm-info-box>
 
-  <plant-expansion-info></plant-expansion-info>
+  <ltm-plant-expansion-info />
 
   <h1 class="centered">{{ 'general.pictures' | translate }}</h1>
 
-  <photo-list [owned]="this.plantService.owned" [plantId]="this.id"></photo-list>
-</ng-container>
+  <ltm-photo-list [owned]="this.plantService.owned" [plantId]="this.id" />
+}

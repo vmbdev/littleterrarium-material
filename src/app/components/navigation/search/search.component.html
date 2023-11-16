@@ -1,0 +1,16 @@
+  <mat-form-field appearance="fill" class="search">
+    <input
+      matInput
+      type="text"
+      #searchInput
+      class="full-width"
+      [placeholder]="'general.search' | translate"
+      (keyup)="keyPress(searchInput.value)"
+    >
+      
+    @if (searchInput.value) {
+      <button matSuffix mat-icon-button (click)="clear(searchInput)">
+        <mat-icon color="warn">close</mat-icon>
+      </button>
+    }
+  </mat-form-field>

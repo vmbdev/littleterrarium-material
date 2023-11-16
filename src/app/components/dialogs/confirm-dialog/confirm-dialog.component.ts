@@ -11,7 +11,7 @@ interface ConfirmDataConfig {
 }
 
 @Component({
-  selector: 'confirm-dialog',
+  selector: 'ltm-confirm-dialog',
   standalone: true,
   imports: [
     CommonModule,

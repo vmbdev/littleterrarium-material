@@ -4,36 +4,48 @@ import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { MatBottomSheet, MatBottomSheetModule } from '@angular/material/bottom-sheet';
+import {
+  MatBottomSheet,
+  MatBottomSheetModule
+} from '@angular/material/bottom-sheet';
 import { catchError, EMPTY } from 'rxjs';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
-import { Light, Location } from '@models/location.model';
+import {
+  PlantListComponent
+} from '@components/plant/plant-list/plant-list.component';
+import {
+  PropertyComponent
+} from '@components/info-box/property/property.component';
+import {
+  InfoBoxComponent
+} from "@components/info-box/info-box/info-box.component";
+import { FabComponent } from '@components/fab/fab.component';
+import {
+  LocationEditComponent
+} from '@components/location/location-edit/location-edit.component';
+import {
+  ConfirmDialogComponent
+} from '@components/dialogs/confirm-dialog/confirm-dialog.component';
 import { MainToolbarService } from '@services/main-toolbar.service';
 import { ErrorHandlerService } from '@services/error-handler.service';
 import { LocationService } from '@services/location.service';
-import { PlantListComponent } from '@components/plant/plant-list/plant-list.component';
-import { PropertyComponent } from '@components/info-box/property/property.component';
-import { InfoBoxComponent } from "@components/info-box/info-box/info-box.component";
-import { FabComponent } from '@components/fab/fab.component';
-import { LocationEditComponent } from '@components/location/location-edit/location-edit.component';
-import { ConfirmDialogComponent } from '@components/dialogs/confirm-dialog/confirm-dialog.component';
+import { Light, Location } from '@models/location.model';
 
 @Component({
-  selector: 'location',
+  selector: 'ltm-location',
   standalone: true,
-  templateUrl: './location.component.html',
-  styleUrls: ['./location.component.scss'],
   imports: [
     CommonModule,
+    MatBottomSheetModule,
+    MatDialogModule,
+    TranslateModule,
     PlantListComponent,
     PropertyComponent,
     InfoBoxComponent,
-    FabComponent,
-    TranslateModule,
-    MatBottomSheetModule,
-    MatDialogModule
-  ]
+    FabComponent
+  ],
+  templateUrl: './location.component.html'
 })
 export class LocationComponent {
   private id?: number;
@@ -93,8 +105,16 @@ export class LocationComponent {
     this.mt.setName(location.name);
     this.mt.setButtons([]);
     this.mt.setMenu([
-      [{ icon: 'edit', tooltip: 'general.edit', click: () => { this.openBottomSheet() } }],
-      [{ icon: 'delete', tooltip: 'general.delete', click: () => { this.openRemoveDialog(location.id)} }],
+      [{
+        icon: 'edit',
+        tooltip: 'general.edit',
+        click: () => { this.openBottomSheet() }
+      }],
+      [{
+        icon: 'delete',
+        tooltip: 'general.delete',
+        click: () => { this.openRemoveDialog(location.id)}
+      }],
     ]);
   }
 

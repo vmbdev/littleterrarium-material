@@ -3,7 +3,11 @@
   <mat-form-field class="full-width">
     <mat-label>{{ 'general.email' | translate }}</mat-label>
     <input matInput type="email" formControlName="email">
-    <mat-error *ngIf="isTaken()">{{ 'user-register.emailTaken' | translate }}</mat-error>
-    <mat-error *ngIf="isInvalid()">{{ 'user-register.emailInvalid' | translate }}</mat-error>
+    <mat-error *ngIf="isTaken()">
+      {{ 'user-register.emailTaken' | translate }}
+    </mat-error>
+    <mat-error *ngIf="isInvalid()">
+      {{ 'user-register.emailInvalid' | translate }}
+    </mat-error>
   </mat-form-field>
 </form>

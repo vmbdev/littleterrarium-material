@@ -14,8 +14,7 @@ import { TranslateModule } from '@ngx-translate/core';
     MatCheckboxModule,
     TranslateModule
   ],
-  templateUrl: './form-privacy.component.html',
-  styleUrls: ['./form-privacy.component.scss']
+  templateUrl: './form-privacy.component.html'
 })
 export class FormPrivacyComponent implements FormBaseComponent {
   @Input() currentPrivacy: boolean = true;

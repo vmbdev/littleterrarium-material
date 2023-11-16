@@ -1,19 +1,19 @@
 import { CommonModule, Location } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { App } from '@capacitor/app';
 import { MatNativeDateModule } from '@angular/material/core';
-import { CoreModule } from './modules/core/core.module';
+import { App } from '@capacitor/app';
+
+import { NavigationComponent } from '@components/navigation/navigation/navigation.component';
 
 @Component({
-    selector: 'app-root',
+    selector: 'ltm-app-root',
     standalone: true,
     templateUrl: './app.component.html',
-    styleUrls: ['./app.component.scss'],
     imports: [
       CommonModule,
       RouterModule,
-      CoreModule,
+      NavigationComponent,
       MatNativeDateModule
     ]
 })

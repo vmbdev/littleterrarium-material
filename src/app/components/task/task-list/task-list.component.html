@@ -1,40 +1,39 @@
-<ng-container *ngIf="taskService.tasks$ | async as tasks; else noTasks">
+@if (taskService.tasks$ | async; as tasks) {
   <p>{{ 'tasks.msg' | translate }}</p>
   <mat-list>
-    <mat-list-item *ngFor="let task of tasks" matRipple>
-      <img
-        matListItemAvatar
-        [src]="plantService.coverPhoto(task)"
-        [routerLink]="['/plant', task.id]"
-      >
 
-      <span matListItemTitle [routerLink]="['/plant', task.id]">
-        {{ plantService.getVisibleName(task) }}
-      </span>
-
-      <div matListItemIcon class="tasks__buttons">
-        <plant-button-water
-          [id]="task.id"
-          [disabled]="!!(!task.waterNext)"
-          (done)="taskService.loadTasks()"
+    @for (task of tasks; track task.id) {
+      <mat-list-item matRipple>
+        <img
+          matListItemAvatar
+          [src]="plantService.coverPhoto(task)"
+          [routerLink]="['/plant', task.id]"
         >
-        </plant-button-water>
 
-        <plant-button-fertilize
-          [id]="task.id"
-          [disabled]="!!(!task.fertNext)"
-          (done)="taskService.loadTasks()"
-        >
-        </plant-button-fertilize>
-      </div>
-    </mat-list-item>
+        <span matListItemTitle [routerLink]="['/plant', task.id]">
+          {{ plantService.getVisibleName(task) }}
+        </span>
+
+        <div matListItemIcon class="tasks__buttons">
+          <ltm-plant-button-water
+            [id]="task.id"
+            [disabled]="!!(!task.waterNext)"
+            (done)="taskService.loadTasks()"
+          >
+          </ltm-plant-button-water>
+
+          <ltm-plant-button-fertilize
+            [id]="task.id"
+            [disabled]="!!(!task.fertNext)"
+            (done)="taskService.loadTasks()"
+          >
+          </ltm-plant-button-fertilize>
+        </div>
+      </mat-list-item>
+    }
+
   </mat-list>
 
-  <ng-template #emptyIcon>
-    <div class="tasks__empty"></div>
-  </ng-template>
-</ng-container>
-
-<ng-template #noTasks>
+} @else {
   <p>{{ 'tasks.noTask' }}
-</ng-template>
+}

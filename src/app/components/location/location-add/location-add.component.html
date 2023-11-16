@@ -1,29 +1,39 @@
 <mat-stepper labelPosition="bottom" linear="true" animationDuration="300">
-  <mat-step [stepControl]="formName.form" [errorMessage]="'general.required' | translate" [label]="'general.name' | translate">
-    <location-form-name #formName></location-form-name>
-    <stepper-navigation backButton="false"></stepper-navigation>
+  <mat-step
+    [stepControl]="formName.form"
+    [errorMessage]="'general.required' | translate"
+    [label]="'general.name' | translate"
+  >
+    <ltm-location-form-name #formName />
+    <ltm-stepper-navigation backButton="false" />
   </mat-step>
 
   <mat-step optional="true" [label]="'general.picture' | translate">
     <p [innerHTML]="'location-add-edit.choose' | translate"></p>
     <p [innerHTML]="'location-add-edit.ornot' | translate"></p>
 
-    <file-uploader [amount]="1" (fileChange)="fileChange($event)"></file-uploader>
+    <ltm-file-uploader maxAmount="1" (fileChange)="fileChange($event)" />
 
-    <stepper-navigation></stepper-navigation>
+    <ltm-stepper-navigation />
   </mat-step>
 
-  <mat-step [stepControl]="formLight.form" [label]="'general.light' | translate">
-    <location-form-light #formLight></location-form-light>
-    <stepper-navigation></stepper-navigation>
+  <mat-step
+    [stepControl]="formLight.form"
+    [label]="'general.light' | translate"
+  >
+    <ltm-location-form-light #formLight />
+    <ltm-stepper-navigation />
   </mat-step>
 
-  <mat-step [stepControl]="formPrivacy.form" [label]="'general.privacy' | translate">
+  <mat-step
+    [stepControl]="formPrivacy.form"
+    [label]="'general.privacy' | translate"
+  >
     <ltm-form-privacy #formPrivacy>
       <p [innerHtml]="'location-add-edit.visibility' | translate"></p>
       <p [innerHtml]="'location-add-edit.visibilityNote' | translate"></p>
     </ltm-form-privacy>
 
-    <stepper-navigation finishButton="true" (finish)="submit()"></stepper-navigation>
+    <ltm-stepper-navigation finishButton="true" (finish)="submit()" />
   </mat-step>
 </mat-stepper>

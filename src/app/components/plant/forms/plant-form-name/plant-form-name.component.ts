@@ -4,10 +4,11 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { TranslateModule } from '@ngx-translate/core';
+
 import { FormBaseComponent } from '@components/form-base/form-base.component';
 
 @Component({
-  selector: 'plant-form-name',
+  selector: 'ltm-plant-form-name',
   standalone: true,
   imports: [
     CommonModule,
@@ -16,8 +17,7 @@ import { FormBaseComponent } from '@components/form-base/form-base.component';
     MatInputModule,
     TranslateModule
   ],
-  templateUrl: './plant-form-name.component.html',
-  styleUrls: ['./plant-form-name.component.scss']
+  templateUrl: './plant-form-name.component.html'
 })
 export class PlantFormNameComponent implements FormBaseComponent {
   @Input() currentCustomName: string | null = '';

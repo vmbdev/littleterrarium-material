@@ -8,7 +8,6 @@ import { LocationAddComponent } from './location-add.component';
 import { LocationFormNameComponent } from '../forms/location-form-name/location-form-name.component';
 import { FileUploaderComponent } from '@components/file-uploader/file-uploader.component';
 import { LocationFormLightComponent } from '../forms/location-form-light/location-form-light.component';
-import { LocationFormPrivacyComponent } from '../forms/location-form-privacy/location-form-privacy.component';
 import { StepperNavigationComponent } from '@components/stepper-navigation/stepper-navigation.component';
 import { AuthService } from '@services/auth.service';
 import { LocationService } from '@services/location.service';
@@ -27,7 +26,6 @@ describe('LocationAddComponent', () => {
           FileUploaderComponent,
           LocationFormNameComponent,
           LocationFormLightComponent,
-          LocationFormPrivacyComponent,
           StepperNavigationComponent
         )
       ],

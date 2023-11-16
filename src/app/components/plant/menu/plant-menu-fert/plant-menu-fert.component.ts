@@ -3,11 +3,14 @@ import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
-import { PlantBaseActionComponent } from '@components/plant/plant-base-action/plant-base-action.component';
 import { TranslateModule } from '@ngx-translate/core';
 
+import {
+  PlantBaseActionComponent
+} from '@components/plant/plant-base-action/plant-base-action.component';
+
 @Component({
-  selector: 'plant-menu-fert',
+  selector: 'ltm-plant-menu-fert',
   standalone: true,
   imports: [
     CommonModule,
@@ -16,9 +19,6 @@ import { TranslateModule } from '@ngx-translate/core';
     MatMenuModule,
     TranslateModule
   ],
-  templateUrl: './plant-menu-fert.component.html',
-  styleUrls: ['./plant-menu-fert.component.scss']
+  templateUrl: './plant-menu-fert.component.html'
 })
-export class PlantMenuFertComponent extends PlantBaseActionComponent {
-
-}
+export class PlantMenuFertComponent extends PlantBaseActionComponent { }

@@ -1,17 +1,19 @@
 import { Component } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { PlantListComponent } from '@components/plant/plant-list/plant-list.component';
+
+import {
+  PlantListComponent
+} from '@components/plant/plant-list/plant-list.component';
 import { MainToolbarService } from '@services/main-toolbar.service';
 
 @Component({
-  selector: 'plant-all',
+  selector: 'ltm-plant-all',
   standalone: true,
   imports: [
     PlantListComponent,
     TranslateModule
   ],
-  templateUrl: './plant-all.component.html',
-  styleUrls: ['./plant-all.component.scss']
+  templateUrl: './plant-all.component.html'
 })
 export class PlantAllComponent {
   constructor(

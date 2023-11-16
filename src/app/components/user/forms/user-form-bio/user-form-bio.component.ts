@@ -4,10 +4,11 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { TranslateModule } from '@ngx-translate/core';
+
 import { FormBaseComponent } from '@components/form-base/form-base.component';
 
 @Component({
-  selector: 'user-form-bio',
+  selector: 'ltm-user-form-bio',
   standalone: true,
   imports: [
     CommonModule,
@@ -16,8 +17,7 @@ import { FormBaseComponent } from '@components/form-base/form-base.component';
     MatInputModule,
     TranslateModule
   ],
-  templateUrl: './user-form-bio.component.html',
-  styleUrls: ['./user-form-bio.component.scss']
+  templateUrl: './user-form-bio.component.html'
 })
 export class UserFormBioComponent implements FormBaseComponent {
   @Input() currentBio: string | null = '';

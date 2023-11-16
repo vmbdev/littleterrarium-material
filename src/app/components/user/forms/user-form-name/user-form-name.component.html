@@ -2,11 +2,21 @@
   <p [innerHTML]="'user-edit.fullnameDesc' | translate"></p>
   <mat-form-field class="full-width">
     <mat-label>{{ 'general.firstname' | translate }}</mat-label>
-    <input matInput type="text" formControlName="firstname" placeholder="Greta">
+    <input
+      matInput
+      type="text"
+      formControlName="firstname"
+      placeholder="Greta"
+    >
   </mat-form-field>
 
   <mat-form-field class="full-width">
     <mat-label>{{ 'general.lastname' | translate }}</mat-label>
-    <input matInput type="text" formControlName="lastname" placeholder="Plantberg">
+    <input
+      matInput
+      type="text"
+      formControlName="lastname"
+      placeholder="Plantberg"
+    >
   </mat-form-field>
 </form>

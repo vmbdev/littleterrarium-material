@@ -4,11 +4,10 @@ import { FormGroup } from '@angular/forms';
 
 // TODO: adapt location, plant and photos to use this
 @Component({
-  selector: 'form-base',
+  selector: 'ltm-form-base',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './form-base.component.html',
-  styleUrls: ['./form-base.component.scss']
+  templateUrl: './form-base.component.html'
 })
 export abstract class FormBaseComponent {
   public form!: FormGroup;

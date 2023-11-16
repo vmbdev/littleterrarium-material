@@ -1,16 +1,22 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
-import { LocationService } from '@services/location.service';
+import {
+  FormBuilder,
+  FormControl,
+  ReactiveFormsModule,
+  Validators
+} from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { Observable } from 'rxjs';
-import { Location } from '@models/location.model';
+import { TranslateModule } from '@ngx-translate/core';
+
 import { FormBaseComponent } from '@components/form-base/form-base.component';
+import { LocationService } from '@services/location.service';
+import { Location } from '@models/location.model';
 
 @Component({
-  selector: 'plant-form-location',
+  selector: 'ltm-plant-form-location',
   standalone: true,
   imports: [
     CommonModule,
@@ -19,8 +25,7 @@ import { FormBaseComponent } from '@components/form-base/form-base.component';
     MatFormFieldModule,
     MatSelectModule
   ],
-  templateUrl: './plant-form-location.component.html',
-  styleUrls: ['./plant-form-location.component.scss']
+  templateUrl: './plant-form-location.component.html'
 })
 export class PlantFormLocationComponent implements FormBaseComponent {
   @Input() currentLocation?: number;
@@ -35,7 +40,9 @@ export class PlantFormLocationComponent implements FormBaseComponent {
   ) {}
 
   ngOnInit(): void {
-    if (this.currentLocation) this.form.patchValue({ locationId: this.currentLocation });
+    if (this.currentLocation) {
+      this.form.patchValue({ locationId: this.currentLocation });
+    }
 
     this.locations$ = this.locationService.getMany();
 

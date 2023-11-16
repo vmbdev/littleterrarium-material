@@ -1,34 +1,57 @@
-import { Component, Optional, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import {
+  Component,
+  Optional,
+  QueryList,
+  ViewChild,
+  ViewChildren
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import {
+  FormGroup,
+  FormBuilder,
+  Validators,
+  FormControl
+} from '@angular/forms';
 import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { skipWhile, catchError, EMPTY, finalize } from 'rxjs';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
-import { User } from '@models/user.model';
+import {
+  UserFormBioComponent
+} from '@components/user/forms/user-form-bio/user-form-bio.component';
+import {
+  UserFormEmailComponent
+} from '@components/user/forms/user-form-email/user-form-email.component';
+import {
+  UserFormUsernameComponent
+} from '@components/user/forms/user-form-username/user-form-username.component';
+import {
+  UserFormNameComponent
+} from '@components/user/forms/user-form-name/user-form-name.component';
+import {
+  FormPrivacyComponent
+} from '@components/form-privacy/form-privacy.component';
+import { FormBaseComponent } from '@components/form-base/form-base.component';
+import {
+  WaitDialogComponent
+} from '@components/dialogs/wait-dialog/wait-dialog.component';
+import {
+  FileUploaderComponent
+} from '@components/file-uploader/file-uploader.component';
+import { EditPageComponent } from '@components/edit-page/edit-page.component';
+import { MainToolbarService } from '@services/main-toolbar.service';
 import { ApiService } from '@services/api.service';
 import { AuthService } from '@services/auth.service';
 import { ErrorHandlerService } from '@services/error-handler.service';
-import { MatButtonModule } from '@angular/material/button';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { UserFormBioComponent } from '@components/user/forms/user-form-bio/user-form-bio.component';
-import { UserFormEmailComponent } from '@components/user/forms/user-form-email/user-form-email.component';
-import { UserFormUsernameComponent } from '@components/user/forms/user-form-username/user-form-username.component';
-import { UserFormNameComponent } from '@components/user/forms/user-form-name/user-form-name.component';
-import { UserFormPrivacyComponent } from '@components/user/forms/user-form-privacy/user-form-privacy.component';
-import { FormBaseComponent } from '@components/form-base/form-base.component';
-import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog.component';
-import { FileUploaderComponent } from '@components/file-uploader/file-uploader.component';
-import { MainToolbarService } from '@services/main-toolbar.service';
-import { EditPageComponent } from '@components/edit-page/edit-page.component';
-import { MatCardModule } from '@angular/material/card';
+import { User } from '@models/user.model';
 
 @Component({
-  selector: 'user-edit',
+  selector: 'ltm-user-edit',
   standalone: true,
-  templateUrl: './user-edit.component.html',
-  styleUrls: ['./user-edit.component.scss'],
   imports: [
     CommonModule,
     MatButtonModule,
@@ -40,9 +63,10 @@ import { MatCardModule } from '@angular/material/card';
     UserFormEmailComponent,
     UserFormUsernameComponent,
     UserFormNameComponent,
-    UserFormPrivacyComponent,
+    FormPrivacyComponent,
     EditPageComponent
-  ]
+  ],
+  templateUrl: './user-edit.component.html'
 })
 export class UserEditComponent {
   @ViewChildren('form') formComponents!: QueryList<FormBaseComponent>;
@@ -59,7 +83,6 @@ export class UserEditComponent {
     public: new FormControl<boolean>(true),
   });
   avatar?: File;
-  // tabIndex: number | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -117,12 +140,6 @@ export class UserEditComponent {
     }
   }
 
-  // tabMoveTo(i: number): void {
-  //   // trigger an Input() change detection
-  //   this.tabIndex = null;
-  //   this.tabIndex = i;
-  // }
-
   submit(): void {
     if (!this.checkFormValidity()) {
       this.errorHandler.push(this.translate.instant('general.formErrors'));
@@ -142,23 +159,27 @@ export class UserEditComponent {
           }
           else if (error.msg === 'USER_FIELD_EXISTS') {
             if (error.errorData.field === 'username') {
-              this.usernameComponent.form.get('username')?.setErrors({ taken: true });
-              // this.tabMoveTo(0);
+              this.usernameComponent.form
+                .get('username')
+                ?.setErrors({ taken: true });
             }
             else if (error.errorData.field === 'email') {
-              this.emailComponent.form.get('email')?.setErrors({ taken: true });
-              // this.tabMoveTo(3);
+              this.emailComponent.form
+                .get('email')
+                ?.setErrors({ taken: true });
             }
           }
   
           else if (error.msg === 'USER_FIELD_INVALID') {
             if (error.errorData.field === 'username') {
-              this.usernameComponent.form.get('username')?.setErrors({ invalid: true });
-              // this.tabMoveTo(0);
+              this.usernameComponent.form
+                .get('username')
+                ?.setErrors({ invalid: true });
             }
             else if (error.errorData.field === 'email') {
-              this.emailComponent.form.get('email')?.setErrors({ invalid: true });
-              // this.tabMoveTo(3);
+              this.emailComponent.form
+                .get('email')
+                ?.setErrors({ invalid: true });
             }
           }
 

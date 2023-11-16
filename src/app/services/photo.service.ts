@@ -1,6 +1,14 @@
 import { HttpErrorResponse, HttpEvent } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, catchError, EMPTY, map, Observable, of, throwError } from 'rxjs';
+import {
+  BehaviorSubject,
+  catchError,
+  EMPTY,
+  map,
+  Observable,
+  throwError
+} from 'rxjs';
+
 import { AuthService } from '@services/auth.service';
 import { ErrorHandlerService } from '@services/error-handler.service';
 import { ApiService, PhotoGetConfig } from '@services/api.service';
@@ -43,7 +51,9 @@ export class PhotoService {
   create(photo: Photo, propagateError: boolean = false): Observable<HttpEvent<BackendResponse>> {
     return this.api.createPhoto(photo).pipe(
       catchError((error: HttpErrorResponse) => {
-        if (error.error?.msg === 'IMG_NOT_VALID') this.errorHandler.push('Invalid image.');
+        if (error.error?.msg === 'IMG_NOT_VALID') {
+          this.errorHandler.push('Invalid image.');
+        }
 
         if (propagateError) return throwError(() => error);
         else return EMPTY;

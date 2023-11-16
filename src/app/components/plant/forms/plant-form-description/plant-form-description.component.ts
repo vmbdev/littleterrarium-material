@@ -7,7 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { FormBaseComponent } from '@components/form-base/form-base.component';
 
 @Component({
-  selector: 'plant-form-description',
+  selector: 'ltm-plant-form-description',
   standalone: true,
   imports: [
     CommonModule,
@@ -16,8 +16,7 @@ import { FormBaseComponent } from '@components/form-base/form-base.component';
     MatFormFieldModule,
     MatInputModule
   ],
-  templateUrl: './plant-form-description.component.html',
-  styleUrls: ['./plant-form-description.component.scss']
+  templateUrl: './plant-form-description.component.html'
 })
 export class PlantFormDescriptionComponent implements FormBaseComponent {
   @Input() currentDescription: string | null = '';

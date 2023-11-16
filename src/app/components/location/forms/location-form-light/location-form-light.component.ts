@@ -10,7 +10,7 @@ import { LocationService } from '@services/location.service';
 import { FormBaseComponent } from '@components/form-base/form-base.component';
 
 @Component({
-  selector: 'location-form-light',
+  selector: 'ltm-location-form-light',
   standalone: true,
   imports: [
     CommonModule,
@@ -19,8 +19,7 @@ import { FormBaseComponent } from '@components/form-base/form-base.component';
     MatIconModule,
     TranslateModule
   ],
-  templateUrl: './location-form-light.component.html',
-  styleUrls: ['./location-form-light.component.scss']
+  templateUrl: './location-form-light.component.html'
 })
 export class LocationFormLightComponent implements FormBaseComponent {
   @Input() currentLight?: Light | null;

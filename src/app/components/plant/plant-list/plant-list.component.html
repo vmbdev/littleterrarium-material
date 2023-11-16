@@ -1,44 +1,62 @@
-<mat-grid-list *ngIf="!smallView" cols="2" rowHeight="1:1.2" gutterSize="6">
-  <mat-grid-tile *ngFor="let plant of list$ | async">
-    <mat-card matRipple class="plant-card">
-      <img mat-card-image class="plant-card__image" [src]="getImgUrl(plant)" [routerLink]="['/plant', plant.id]">
-      <mat-card-title class="plant-card__title">
-        {{ getName(plant) }}
-      </mat-card-title>
-      <div class="plant-card__menu">
-        <ng-container
-          [ngTemplateOutlet]="plantMenu"
-          [ngTemplateOutletContext]="{ plant: plant }"
+@if (smallView) {
+  <mat-list>
+    @for (plant of list$ | async; track plant.id) {
+      <mat-list-item>
+        <img
+          matListItemAvatar
+          class="plant-list__avatar"
+          [src]="getImgUrl(plant)"
+          [routerLink]="['/plant', plant.id]"
         >
-        </ng-container>
-      </div>
-    </mat-card>
-  </mat-grid-tile>
-</mat-grid-list>
+        <span matListItemTitle [routerLink]="['/plant', plant.id]">
+          {{ getName(plant) }}
+        </span>
+        <div matListItemIcon class="plant-list__menu">
+          <ng-container
+            [ngTemplateOutlet]="plantMenu"
+            [ngTemplateOutletContext]="{plant:plant}"
+          >
+          </ng-container>
+        </div>
+      </mat-list-item>
+    }
+  </mat-list>
+} @else {
+  <mat-grid-list cols="2" rowHeight="1:1.2" gutterSize="6">
 
+    @for (plant of list$ | async; track plant.id) {
+      <mat-grid-tile>
+        <mat-card matRipple class="plant-card">
+          <img
+            mat-card-image
+            class="plant-card__image"
+            [src]="getImgUrl(plant)"
+            [routerLink]="['/plant', plant.id]"
+          >
+          <mat-card-title class="plant-card__title">
+            {{ getName(plant) }}
+          </mat-card-title>
+          <div class="plant-card__menu">
+            <ng-container
+              [ngTemplateOutlet]="plantMenu"
+              [ngTemplateOutletContext]="{ plant: plant }"
+            >
+            </ng-container>
+          </div>
+        </mat-card>
+      </mat-grid-tile>
+    }
 
-<mat-list *ngIf="smallView">
-  <mat-list-item *ngFor="let plant of list$ | async">
-    <img matListItemAvatar class="plant-list__avatar" [src]="getImgUrl(plant)" [routerLink]="['/plant', plant.id]">
-    <span matListItemTitle [routerLink]="['/plant', plant.id]">{{ getName(plant) }}</span>
-    <div matListItemIcon class="plant-list__menu">
-      <ng-container
-        [ngTemplateOutlet]="plantMenu"
-        [ngTemplateOutletContext]="{plant:plant}"
-      >
-      </ng-container>
-    </div>
-  </mat-list-item>
-</mat-list>
-
+  </mat-grid-list>
+}
 
 <ng-template let-plant="plant" #plantMenu>
   <button mat-icon-button [matMenuTriggerFor]="menu">
     <mat-icon>more_vert</mat-icon>
   </button>
   <mat-menu #menu="matMenu">
-    <plant-menu-water [id]="plant.id"></plant-menu-water>
-    <plant-menu-fert [id]="plant.id"></plant-menu-fert>
+    <ltm-plant-menu-water [id]="plant.id" />
+    <ltm-plant-menu-fert [id]="plant.id" />
     <button mat-menu-item (click)="openEdit(plant.id)">
       <mat-icon>edit_square</mat-icon>
       <span>{{ 'general.edit' | translate }}</span>

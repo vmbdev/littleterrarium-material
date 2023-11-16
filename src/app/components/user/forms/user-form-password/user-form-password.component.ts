@@ -1,14 +1,21 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
+import {
+  ReactiveFormsModule,
+  FormBuilder,
+  Validators,
+  AbstractControl,
+  ValidationErrors
+} from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { TranslateModule } from '@ngx-translate/core';
-import { ApiService } from '@services/api.service';
+
 import { FormBaseComponent } from '@components/form-base/form-base.component';
+import { ApiService } from '@services/api.service';
 
 @Component({
-  selector: 'user-form-password',
+  selector: 'ltm-user-form-password',
   standalone: true,
   imports: [
     CommonModule,
@@ -29,7 +36,12 @@ export class UserFormPasswordComponent implements FormBaseComponent {
         password: ['', [Validators.required]],
         password2: ['', Validators.required]
       },
-      { validators: [this.checkPasswordStrength.bind(this), this.checkPasswordsEqual] }
+      {
+        validators: [
+          this.checkPasswordStrength.bind(this),
+          this.checkPasswordsEqual
+        ]
+      }
     )
   });
   pwdReq: any = null;
@@ -41,7 +53,9 @@ export class UserFormPasswordComponent implements FormBaseComponent {
   ) {}
 
   ngOnInit(): void {
-    this.api.getPasswordRequirements().subscribe((requirements: any) => { this.pwdReq = requirements });
+    this.api.getPasswordRequirements().subscribe((requirements: any) => {
+      this.pwdReq = requirements
+    });
   }
 
   checkPasswordStrength(group: AbstractControl): ValidationErrors | null {
@@ -50,9 +64,16 @@ export class UserFormPasswordComponent implements FormBaseComponent {
 
     if (this.pwdReq) {
       if (value.length < this.pwdReq.minLength) errorObj['minLength'] = true;
-      if (this.pwdReq.requireUppercase && !(/.*([A-Z]).*/).test(value)) errorObj['missingUppercase'] = true;
-      if (this.pwdReq.requireNumber && !(/.*(\d).*/).test(value)) errorObj['missingNumber'] = true;
-      if (this.pwdReq.requireNonAlphanumeric && !(/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/).test(value)) {
+      if (this.pwdReq.requireUppercase && !(/.*([A-Z]).*/).test(value)) {
+        errorObj['missingUppercase'] = true;
+      }
+      if (this.pwdReq.requireNumber && !(/.*(\d).*/).test(value)) {
+        errorObj['missingNumber'] = true;
+      }
+      if (
+        this.pwdReq.requireNonAlphanumeric
+        && !(/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/).test(value)
+      ) {
         errorObj['missingNonAlphanumeric'] = true;
       }
     }
@@ -70,7 +91,14 @@ export class UserFormPasswordComponent implements FormBaseComponent {
   }
 
   hasPasswordConditions(): boolean {
-    return !!(this.pwdReq && (this.pwdReq.requireNumber || this.pwdReq.requireUppercase || this.pwdReq.requireNonAlphanumeric));
+    return !!(
+      this.pwdReq
+      && (
+        this.pwdReq.requireNumber
+        || this.pwdReq.requireUppercase
+        || this.pwdReq.requireNonAlphanumeric
+        )
+    );
   }
 
   hasPasswordError(control: string): boolean | undefined {

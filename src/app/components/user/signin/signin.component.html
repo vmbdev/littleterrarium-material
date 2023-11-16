@@ -2,6 +2,7 @@
   <div class="signin">
     <h1>{{ 'signin.homepageTitle' | translate }}</h1>
     <p [innerHTML]="'signin.homepageMsg' | translate"></p>
+
     <mat-form-field>
       <mat-label>{{ 'signin.identification' | translate }}</mat-label>
       <input type="text" matInput formControlName="username">
@@ -9,9 +10,21 @@
     
     <mat-form-field>
       <mat-label>{{ 'general.password' | translate }}</mat-label>
-      <input [type]="hidePassword ? 'password' : 'text'" matInput formControlName="password">
-      <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
-        <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+      <input
+        [type]="hidePassword ? 'password' : 'text'"
+        matInput
+        formControlName="password"
+      >
+      <button
+        mat-icon-button
+        matSuffix
+        (click)="toggleHidePassword()"
+        [attr.aria-label]="'Hide password'"
+        [attr.aria-pressed]="hidePassword"
+      >
+        <mat-icon>
+          {{ hidePassword ? 'visibility_off' : 'visibility' }}
+        </mat-icon>
       </button>
     </mat-form-field>
 
@@ -19,7 +32,15 @@
       {{ 'signin.invalidCredentials' | translate }}
     </div>
 
-    <button type="submit" mat-raised-button color="primary">{{ 'general.signin' | translate }}</button>
-    <button mat-button color="link" routerLink="/register" [innerHTML]="'signin.createAccount' | translate"></button>
+    <button type="submit" mat-raised-button color="primary">
+      {{ 'general.signin' | translate }}
+    </button>
+    <button
+      mat-button
+      color="link"
+      routerLink="/register"
+      [innerHTML]="'signin.createAccount' | translate"
+    >
+    </button>
   </div>
 </form>

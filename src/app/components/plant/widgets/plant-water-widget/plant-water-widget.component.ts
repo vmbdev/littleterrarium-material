@@ -3,18 +3,26 @@ import { CommonModule } from '@angular/common';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { MatBottomSheet, MatBottomSheetModule } from '@angular/material/bottom-sheet';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { PlantService } from '@services/plant.service';
-import { PlantEditWaterComponent } from '@components/plant/plant-edit-water/plant-edit-water.component';
-import { DaysAgoPipe } from '@pipes/days-ago/days-ago.pipe';
+import {
+  MatBottomSheet,
+  MatBottomSheetModule
+} from '@angular/material/bottom-sheet';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { ConfirmDialogComponent } from '@components/dialogs/confirm-dialog/confirm-dialog.component';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+
+import {
+  PlantEditWaterComponent
+} from '@components/plant/plant-edit-water/plant-edit-water.component';
+import {
+  ConfirmDialogComponent
+} from '@components/dialogs/confirm-dialog/confirm-dialog.component';
+import { PlantService } from '@services/plant.service';
+import { DaysAgoPipe } from '@pipes/days-ago/days-ago.pipe';
+
 @Component({
-  selector: 'plant-water-widget',
+  selector: 'ltm-plant-water-widget',
   standalone: true,
   templateUrl: './plant-water-widget.component.html',
-  styleUrls: ['./plant-water-widget.component.scss'],
   imports: [
     CommonModule,
     MatExpansionModule,

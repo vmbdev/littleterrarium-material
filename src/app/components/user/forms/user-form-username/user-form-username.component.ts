@@ -4,10 +4,11 @@ import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { TranslateModule } from '@ngx-translate/core';
+
 import { FormBaseComponent } from '@components/form-base/form-base.component';
 
 @Component({
-  selector: 'user-form-username',
+  selector: 'ltm-user-form-username',
   standalone: true,
   imports: [
     CommonModule,
@@ -16,8 +17,7 @@ import { FormBaseComponent } from '@components/form-base/form-base.component';
     MatInputModule,
     TranslateModule
   ],
-  templateUrl: './user-form-username.component.html',
-  styleUrls: ['./user-form-username.component.scss']
+  templateUrl: './user-form-username.component.html'
 })
 export class UserFormUsernameComponent implements FormBaseComponent {
   @Input() currentUsername?: string;
@@ -28,7 +28,9 @@ export class UserFormUsernameComponent implements FormBaseComponent {
   ) {}
 
   ngOnInit(): void {
-    if (this.currentUsername) this.form.patchValue({ username: this.currentUsername })
+    if (this.currentUsername) {
+      this.form.patchValue({ username: this.currentUsername });
+    }
   }
 
   isTaken(): boolean {

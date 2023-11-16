@@ -4,9 +4,13 @@
     <mat-form-field appearance="fill">
       <mat-label>{{ 'general.location' | translate }}</mat-label>
       <mat-select formControlName="locationId" [value]="currentLocation">
-        <mat-option *ngFor="let location of locations$ | async" [value]="location.id">
-          {{ location.name }}
-        </mat-option>
+
+        @for (location of locations$ | async; track location.id) {
+          <mat-option [value]="location.id">
+            {{ location.name }}
+          </mat-option>
+        }
+
       </mat-select>
     </mat-form-field>
 </form>

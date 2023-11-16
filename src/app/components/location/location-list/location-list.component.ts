@@ -6,26 +6,33 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatRippleModule } from '@angular/material/core';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { MatBottomSheet, MatBottomSheetModule } from '@angular/material/bottom-sheet';
+import {
+  MatBottomSheet,
+  MatBottomSheetModule
+} from '@angular/material/bottom-sheet';
+import { MatIconModule } from '@angular/material/icon';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
-import { ApiService, LocationGetConfig } from '@services/api.service';
-import { ImagePathService } from '@services/image-path.service';
-import { Location } from '@models/location.model';
-import { ImagePath } from '@models/image-path.model';
 import { FabComponent } from '@components/fab/fab.component';
+import {
+  ConfirmDialogComponent
+} from '@components/dialogs/confirm-dialog/confirm-dialog.component';
+import {
+  WaitDialogComponent
+} from '@components/dialogs/wait-dialog/wait-dialog.component';
+import {
+  LocationEditComponent
+} from '@components/location/location-edit/location-edit.component';
 import { LocationService } from '@services/location.service';
 import { ErrorHandlerService } from '@services/error-handler.service';
-import { ConfirmDialogComponent } from '@components/dialogs/confirm-dialog/confirm-dialog.component';
-import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog.component';
-import { LocationEditComponent } from '@components/location/location-edit/location-edit.component';
 import { AuthService } from '@services/auth.service';
+import { LocationGetConfig } from '@services/api.service';
+import { ImagePath, ImagePathService } from '@services/image-path.service';
 import { User } from '@models/user.model';
-import { MatIconModule } from '@angular/material/icon';
-
+import { Location } from '@models/location.model';
 
 @Component({
-  selector: 'location-list',
+  selector: 'ltm-location-list',
   standalone: true,
   imports: [
     CommonModule,

@@ -7,7 +7,7 @@ import { ImagePathService } from '@services/image-path.service';
 import { User } from '@models/user.model';
 
 @Component({
-  selector: 'profile',
+  selector: 'ltm-profile',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './profile.component.html',
@@ -38,7 +38,9 @@ export class ProfileComponent {
     const user = this.user$.getValue();
     
     if (user) {
-      return `${user.firstname ? user.firstname + ' ' : ''}${user.lastname ? user.lastname + ' ': ''}`;
+      const firstname = user.firstname ? user.firstname + ' ' : '';
+
+      return `${firstname}${user.lastname}`;
     }
     else return null;
   }

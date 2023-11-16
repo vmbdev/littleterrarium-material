@@ -1,29 +1,46 @@
-<mat-expansion-panel *ngIf="plantService.plant$ | async as plant">
-  <mat-expansion-panel-header>
-    <mat-panel-title>
-      {{ 'plant-widget-soil.title' | translate }}
-    </mat-panel-title>
-    <mat-panel-description class="expansion-panel-icon-right">
-      <mat-icon>yard</mat-icon>
-    </mat-panel-description>
-  </mat-expansion-panel-header>
+@if (plantService.plant$ | async; as plant) {
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        {{ 'plant-widget-soil.title' | translate }}
+      </mat-panel-title>
+      <mat-panel-description class="expansion-panel-icon-right">
+        <mat-icon>yard</mat-icon>
+      </mat-panel-description>
+    </mat-expansion-panel-header>
 
-  <ng-container *ngIf="plant.potType || plant.soil; else noSoilData">
-    <p *ngIf="plant.potType">
-      <span [innerHTML]="'plant-widget-soil.pot' | translate:{ material: getPotName() }"></span>
-      <ng-container *ngIf="plant.potSize">
-        ,
-        <span [innerHTML]="'plant-widget-soil.potSize' | translate: { size: plant.potSize | unit:'cm' }"></span>
-      </ng-container>
+    @if (plant.potType || plant.soil) {
+      <p *ngIf="plant.potType">
+        <span
+          [innerHTML]="'plant-widget-soil.pot' | translate:{ material: getPotName() }">
+        </span>
 
-    </p>
-    <p *ngIf="plant.soil" [innerHTML]="'plant-widget-soil.composition' | translate: { soil: plant.soil }"></p>
-  </ng-container>
-  <ng-template #noSoilData>
-    <p>{{ 'plant-widget-soil.noData' | translate }}</p>
-  </ng-template>
+        @if (plant.potSize) {
+          ,
+          <span
+            [innerHTML]="'plant-widget-soil.potSize' | translate: { size: plant.potSize | unit:'cm' }"
+          >
+          </span>
 
-  <mat-action-row *ngIf="this.plantService.owned">
-    <button mat-button color="primary" (click)="openEdit()">{{ 'general.edit' | translate }}</button>
-  </mat-action-row>
-</mat-expansion-panel>
+        }
+
+      </p>
+
+      @if (plant.soil) {
+        <p
+          [innerHTML]="'plant-widget-soil.composition' | translate: { soil: plant.soil }">
+        </p>
+      }
+    } @else {
+      <p>{{ 'plant-widget-soil.noData' | translate }}</p>
+    }
+
+    @if (plantService.owned) {
+      <mat-action-row>
+        <button mat-button color="primary" (click)="openEdit()">
+          {{ 'general.edit' | translate }}
+        </button>
+      </mat-action-row>
+    }
+  </mat-expansion-panel>
+}

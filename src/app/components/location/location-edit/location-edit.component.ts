@@ -5,19 +5,32 @@ import { catchError, EMPTY, finalize, Observable } from 'rxjs';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
-import { MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
+import {
+  MatBottomSheetRef,
+  MAT_BOTTOM_SHEET_DATA
+} from '@angular/material/bottom-sheet';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { FileUploaderComponent } from '@components/file-uploader/file-uploader.component';
-import { LocationFormLightComponent } from '@components/location/forms/location-form-light/location-form-light.component';
-import { LocationFormNameComponent } from '@components/location/forms/location-form-name/location-form-name.component';
-import { LocationUpsertBaseComponent } from '@components/location/location-upsert-base/location-upsert-base.component';
+import {
+  FileUploaderComponent
+} from '@components/file-uploader/file-uploader.component';
+import {
+  LocationFormLightComponent
+} from '@components/location/forms/location-form-light/location-form-light.component';
+import {
+  LocationFormNameComponent
+} from '@components/location/forms/location-form-name/location-form-name.component';
+import {
+  LocationUpsertBaseComponent
+} from '@components/location/location-upsert-base/location-upsert-base.component';
 import { EditPageComponent } from '@components/edit-page/edit-page.component';
-import { FormPrivacyComponent } from '@components/form-privacy/form-privacy.component';
+import {
+  FormPrivacyComponent
+} from '@components/form-privacy/form-privacy.component';
 import { Location } from '@models/location.model';
 
 @Component({
-  selector: 'location-edit',
+  selector: 'ltm-location-edit',
   standalone: true,
   imports: [
     CommonModule,
@@ -32,8 +45,7 @@ import { Location } from '@models/location.model';
     FormPrivacyComponent,
     EditPageComponent
   ],
-  templateUrl: './location-edit.component.html',
-  styleUrls: ['./location-edit.component.scss']
+  templateUrl: './location-edit.component.html'
 })
 export class LocationEditComponent extends LocationUpsertBaseComponent {
   removePicture: boolean = false;
@@ -67,7 +79,10 @@ export class LocationEditComponent extends LocationUpsertBaseComponent {
     if (this.editLocation.id) {
       data.id = this.editLocation.id;
 
-      this.locationService.update(data, { removePicture: this.removePicture }).pipe(
+      this.locationService.update(
+        data,
+        { removePicture: this.removePicture }
+      ).pipe(
         catchError((error: HttpErrorResponse) => {
           if (error.error?.msg === 'IMG_NOT_VALID') {
             this.errorHandler.push(this.translate.instant('errors.invalidImg'));

@@ -10,15 +10,17 @@ export class ThemeService {
 
   /**
    * Defines the theme to use.
-   * First it checks in localStorage, then in the config file, and if it all fails
-   * then it tries to get the first one in availableThemes.
+   * First it checks in localStorage, then in the config file, and if it all
+   * fails then it tries to get the first one in availableThemes.
    * If everything fails, it sets an empty theme.
    */
   constructor() {
     let newTheme: string;
     const storedTheme = localStorage.getItem('LT_theme');
 
-    if (storedTheme && availableThemes.includes(storedTheme)) newTheme = storedTheme;
+    if (storedTheme && availableThemes.includes(storedTheme)) {
+      newTheme = storedTheme;
+    }
     else if (availableThemes.includes(theme)) newTheme = theme;
     else if (availableThemes.length > 0) newTheme = availableThemes[0];
     else newTheme = '';

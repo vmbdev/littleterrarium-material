@@ -1,16 +1,19 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { PlantButtonWaterComponent } from '@components/plant/buttons/plant-button-water/plant-button-water.component';
-import { PlantButtonFertilizeComponent } from '@components/plant/buttons/plant-button-fertilize/plant-button-fertilize.component';
+
+import {
+  PlantButtonWaterComponent
+} from '@components/plant/buttons/plant-button-water/plant-button-water.component';
+import {
+  PlantButtonFertilizeComponent
+} from '@components/plant/buttons/plant-button-fertilize/plant-button-fertilize.component';
 
 @Component({
-  selector: 'plant-toolbar',
+  selector: 'ltm-plant-toolbar',
   standalone: true,
   imports: [
-    CommonModule,
     MatToolbarModule,
     MatIconModule,
     MatButtonModule,
@@ -24,6 +27,4 @@ export class PlantToolbarComponent {
   @Input({ required: true }) id?: number;
   @Output() edit = new EventEmitter();
   @Output() remove = new EventEmitter();
-
-  constructor() {}
 }

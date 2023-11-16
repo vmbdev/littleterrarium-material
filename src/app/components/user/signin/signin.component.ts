@@ -1,19 +1,27 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { finalize } from 'rxjs';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators
+} from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { finalize } from 'rxjs';
+
+import {
+  WaitDialogComponent
+} from '@components/dialogs/wait-dialog/wait-dialog.component';
 import { AuthService } from '@services/auth.service';
-import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog.component';
 
 @Component({
-  selector: 'signin',
+  selector: 'ltm-signin',
   standalone: true,
   imports: [
     CommonModule,
@@ -83,6 +91,10 @@ export class SigninComponent {
         }
       }
     });
+  }
+
+  toggleHidePassword(): void {
+    this.hidePassword = !this.hidePassword;
   }
 
 }

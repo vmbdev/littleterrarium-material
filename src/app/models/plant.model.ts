@@ -1,5 +1,5 @@
-import { Photo } from "./photo.model"
-import { Specie } from "./specie.model"
+import { Photo } from "@models/photo.model"
+import { Specie } from "@models/specie.model"
 
 export interface Plant {
   id: number

@@ -2,11 +2,14 @@ import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { PlantBaseActionComponent } from '@components/plant/plant-base-action/plant-base-action.component';
 import { MatDialogModule } from '@angular/material/dialog';
 
+import {
+  PlantBaseActionComponent
+} from '@components/plant/plant-base-action/plant-base-action.component';
+
 @Component({
-  selector: 'plant-button-water',
+  selector: 'ltm-plant-button-water',
   standalone: true,
   imports: [
     CommonModule,
