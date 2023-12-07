@@ -19,10 +19,10 @@ import { MatDividerModule } from '@angular/material/divider';
     MatFormFieldModule,
     MatRippleModule,
     MatCardModule,
-    MatDividerModule
+    MatDividerModule,
   ],
   templateUrl: './toggle-option.component.html',
-  styleUrls: ['./toggle-option.component.scss']
+  styleUrls: ['./toggle-option.component.scss'],
 })
 export class ToggleOptionComponent {
   @Input() checked: boolean = false;

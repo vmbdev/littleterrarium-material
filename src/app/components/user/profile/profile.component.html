@@ -16,12 +16,15 @@
       <h1 class="profile__username">{{ user.username }}</h1>
   
       @if (!small) {
-        @if (getFullName(); as fullName) {
-          <h2 class="profile__realnames">{{ fullName }}</h2>
+        @if (user.firstname || user.lastname) {
+          <h2 class="profile__realnames">{{ getFullName() }}</h2>
         }
-        <blockquote *ngIf="user.bio" class="profile__bio">
-          {{ user.bio }}
-        </blockquote>
+
+        @if (user.bio) {
+          <blockquote class="profile__bio">
+            {{ user.bio }}
+          </blockquote>
+        }
       }
   
     </div>

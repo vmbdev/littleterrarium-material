@@ -31,7 +31,7 @@ import { PhotoService } from '@services/photo.service';
 import { Photo } from '@models/photo.model';
 
 interface PhotoEditConfig {
-  id: number
+  id: number;
 }
 
 @Component({
@@ -47,12 +47,13 @@ interface PhotoEditConfig {
     PhotoFormDescriptionComponent,
     PhotoFormDateComponent,
     FormPrivacyComponent,
-    EditPageComponent
+    EditPageComponent,
   ],
-  templateUrl: './photo-edit.component.html'
+  templateUrl: './photo-edit.component.html',
 })
 export class PhotoEditComponent {
-  @ViewChild(PhotoFormDescriptionComponent) descriptionComp!: PhotoFormDescriptionComponent;
+  @ViewChild(PhotoFormDescriptionComponent)
+  descriptionComp!: PhotoFormDescriptionComponent;
   @ViewChild(FormPrivacyComponent) privacyComp!: FormPrivacyComponent;
   @ViewChild(PhotoFormDateComponent) dateComp!: PhotoFormDateComponent;
 
@@ -71,10 +72,9 @@ export class PhotoEditComponent {
   ) {}
 
   ngOnInit(): void {
-    this.photoService.get(
-      this.editPhoto.id,
-      { navigation: true, cover: true }
-    ).subscribe();
+    this.photoService
+      .get(this.editPhoto.id, { navigation: true, cover: true })
+      .subscribe();
   }
 
   openWaitDialog() {
@@ -101,8 +101,8 @@ export class PhotoEditComponent {
     if (this.forms.length === 0) this.createFormList();
 
     return {
-      ...Object.assign({}, ...(this.forms.map(i => i.value))),
-      id: this.editPhoto.id
+      ...Object.assign({}, ...this.forms.map((i) => i.value)),
+      id: this.editPhoto.id,
     } as Photo;
   }
 
@@ -119,19 +119,24 @@ export class PhotoEditComponent {
       this.errorHandler.push(this.translate.instant('general.formErrors'));
       return;
     }
-    
+
     const photo: Photo = this.getPhotoFromForm();
     const wd = this.openWaitDialog();
 
-    this.photoService.update(photo).pipe(
-      finalize(() => { wd.close() })
-    ).subscribe((updatedPhoto: Photo) => {
-      const currentPhoto = this.photoService.photo$.getValue();
+    this.photoService
+      .update(photo)
+      .pipe(
+        finalize(() => {
+          wd.close();
+        })
+      )
+      .subscribe((updatedPhoto: Photo) => {
+        const currentPhoto = this.photoService.photo$.getValue();
 
-      if (this.editPhoto && this.bottomSheetRef) {
-        this.returnedPhoto = { ...currentPhoto, ...updatedPhoto };
-        this.bottomSheetRef.dismiss(this.returnedPhoto);
-      }
-    })
+        if (this.editPhoto && this.bottomSheetRef) {
+          this.returnedPhoto = { ...currentPhoto, ...updatedPhoto };
+          this.bottomSheetRef.dismiss(this.returnedPhoto);
+        }
+      });
   }
 }

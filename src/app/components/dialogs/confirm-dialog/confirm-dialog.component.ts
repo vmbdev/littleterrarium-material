@@ -5,28 +5,23 @@ import { MatButtonModule } from '@angular/material/button';
 import { TranslateModule } from '@ngx-translate/core';
 
 interface ConfirmDataConfig {
-  title: string,
-  question: string[],
-  accept: any
+  title: string;
+  question: string[];
+  accept: any;
 }
 
 @Component({
   selector: 'ltm-confirm-dialog',
   standalone: true,
-  imports: [
-    CommonModule,
-    TranslateModule,
-    MatDialogModule,
-    MatButtonModule
-  ],
-  templateUrl: './confirm-dialog.component.html'
+  imports: [CommonModule, TranslateModule, MatDialogModule, MatButtonModule],
+  templateUrl: './confirm-dialog.component.html',
 })
 export class ConfirmDialogComponent {
   constructor(@Inject(MAT_DIALOG_DATA) public data: ConfirmDataConfig) {}
 
   accept(): void {
     if (this.data.accept) {
-      this.data.accept()
+      this.data.accept();
     }
   }
 }

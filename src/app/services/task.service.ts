@@ -5,21 +5,21 @@ import { ApiService } from '@services/api.service';
 import { Plant } from '@models/plant.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TaskService {
   tasks$ = new BehaviorSubject<Plant[]>([]);
   count: number = 0;
 
-  constructor(private api: ApiService) { 
+  constructor(private api: ApiService) {
     this.loadTasks();
   }
-  
+
   loadTasks(): void {
     this.api.getTasks().subscribe((plants: Plant[]) => {
       this.countTasks(plants);
       this.tasks$.next(plants);
-    })
+    });
   }
 
   /**
@@ -35,6 +35,7 @@ export class TaskService {
     }
   }
 
+  // FIXME: should be an observable
   getCount(): number {
     return this.count;
   }

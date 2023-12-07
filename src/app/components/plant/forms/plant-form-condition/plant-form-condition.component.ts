@@ -17,22 +17,19 @@ import { Condition } from '@models/plant.model';
     TranslateModule,
     MatButtonToggleModule,
     MatIconModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
-  templateUrl: './plant-form-condition.component.html'
+  templateUrl: './plant-form-condition.component.html',
 })
 export class PlantFormConditionComponent implements FormBaseComponent {
   @Input() currentCondition: Condition | null = 'GOOD';
   form = this.fb.group({ condition: [''] });
   plantConditions = Condition;
 
-  constructor(
-    private fb: FormBuilder,
-    public plantService: PlantService
-  ) {}
+  constructor(private fb: FormBuilder, public plantService: PlantService) {}
 
   ngOnInit(): void {
-    this.form.patchValue({ condition: this.currentCondition })
+    this.form.patchValue({ condition: this.currentCondition });
   }
 
   getFormConditionDesc(): string | null {
@@ -46,6 +43,6 @@ export class PlantFormConditionComponent implements FormBaseComponent {
    * @returns 0
    */
   noSort() {
-    return 0
+    return 0;
   }
 }

@@ -6,26 +6,25 @@ import {
   map,
   catchError,
   throwError,
-  BehaviorSubject
+  BehaviorSubject,
 } from 'rxjs';
-
 import { ApiService } from '@services/api.service';
 import { User } from '@models/user.model';
 import { BackendResponse } from '@models/backend-response.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
   // signedIn$ exists just for convenience.
   // We can achieve the same checking if user$ is null
-  private signedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  private signedIn = new BehaviorSubject<boolean>(false);
   public signedIn$ = this.signedIn.asObservable();
 
-  private checked: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  private checked = new BehaviorSubject<boolean>(false);
   public checked$ = this.checked.asObservable();
 
-  private user: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
+  private user = new BehaviorSubject<User | null>(null);
   public user$ = this.user.asObservable();
 
   constructor(private api: ApiService) {
@@ -37,7 +36,7 @@ export class AuthService {
       },
       error: () => {
         this.checked.next(true);
-      }
+      },
     });
   }
 
@@ -52,7 +51,7 @@ export class AuthService {
       catchError((HttpError: HttpErrorResponse) => {
         this.signedIn.next(false);
         return throwError(() => HttpError.error);
-      }),
+      })
     );
   }
 
@@ -70,7 +69,7 @@ export class AuthService {
   logOut(): Observable<any> {
     this.signedIn.next(false);
     this.user.next(null);
-  
+
     return this.api.logOut().pipe(catchError(() => of(null)));
   }
 
@@ -82,6 +81,18 @@ export class AuthService {
     this.user.next(user);
   }
 
+  forgotPassword(userRef: string): Observable<any> {
+    return this.api.forgotPassword(userRef);
+  }
+
+  recoverPassword(
+    token: string,
+    password: string,
+    userId: number
+  ): Observable<any> {
+    return this.api.recoverPassword(token, password, userId);
+  }
+
   checkPassword(password: string): Observable<BackendResponse> {
     return this.api.checkPassword(password);
   }
@@ -89,6 +100,6 @@ export class AuthService {
   isSameUser(param: 'username' | 'id', val: string | number): boolean {
     const user = this.user.getValue();
 
-    return !!(user && (user[param] === val));
+    return !!(user && user[param] === val);
   }
 }

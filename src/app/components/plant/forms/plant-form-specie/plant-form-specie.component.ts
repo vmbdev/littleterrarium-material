@@ -1,18 +1,17 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
-import { BehaviorSubject } from 'rxjs';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { BehaviorSubject } from 'rxjs';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { FormBaseComponent } from '@components/form-base/form-base.component';
 import { ApiService } from '@services/api.service';
 import { Specie } from '@models/specie.model';
-
 
 @Component({
   selector: 'ltm-plant-form-specie',
@@ -25,9 +24,9 @@ import { Specie } from '@models/specie.model';
     ReactiveFormsModule,
     TranslateModule,
     MatIconModule,
-    MatButtonModule
+    MatButtonModule,
   ],
-  templateUrl: './plant-form-specie.component.html'
+  templateUrl: './plant-form-specie.component.html',
 })
 export class PlantFormSpecieComponent implements FormBaseComponent {
   @Input() currentSpecie?: number | null;
@@ -35,10 +34,7 @@ export class PlantFormSpecieComponent implements FormBaseComponent {
   results$ = new BehaviorSubject<Specie[]>([]);
   currentSpecieName?: string;
 
-  constructor(
-    private api: ApiService,
-    private fb: FormBuilder
-  ) {}
+  constructor(private api: ApiService, private fb: FormBuilder) {}
 
   ngOnInit(): void {
     if (this.currentSpecie) {
@@ -53,9 +49,8 @@ export class PlantFormSpecieComponent implements FormBaseComponent {
     if (value.length >= 3) {
       this.api.findSpecie(value).subscribe((res) => {
         this.results$.next(res);
-      })
-    }
-    else if (value.length === 0) {
+      });
+    } else if (value.length === 0) {
       this.form.patchValue({ specieId: null });
       this.results$.next([]);
     }
@@ -63,7 +58,7 @@ export class PlantFormSpecieComponent implements FormBaseComponent {
 
   selectSpecie(id: number): void {
     this.form.patchValue({
-      specieId: id
+      specieId: id,
     });
   }
 

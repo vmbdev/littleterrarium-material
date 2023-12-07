@@ -1,12 +1,12 @@
-import { Plant } from "@models/plant.model";
+import { Plant } from '@models/plant.model';
 
 export interface Specie {
-  id: number
-  family: string
-  name: string
-  commonName: string | null
-  care: any
-  createdAt: Date
-  updatedAt: Date
-  plants?: Plant[]
+  id: number;
+  family: string;
+  name: string;
+  commonName: string | null;
+  care: any;
+  createdAt: Date;
+  updatedAt: Date;
+  plants?: Plant[];
 }

@@ -7,26 +7,28 @@ import { BehaviorSubject, filter } from 'rxjs';
  * value = null when mode = UserInput => clear
  */
 export interface SearchReceipt {
-  mode: 'Begin' | 'UserInput',
-  value: string | null
+  mode: 'Begin' | 'UserInput';
+  value: string | null;
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SearchService {
   enabled$ = new BehaviorSubject<boolean>(true);
   text$ = new BehaviorSubject<SearchReceipt>({ mode: 'Begin', value: null });
 
   constructor(private router: Router) {
-    this.router.events.pipe(
-      filter((event: Event): event is NavigationEnd =>
-        event instanceof NavigationEnd
+    this.router.events
+      .pipe(
+        filter((event: Event): event is NavigationEnd =>
+          event instanceof NavigationEnd
+        )
       )
-    ).subscribe(() => {
-      this.enabled$.next(false);
-      this.text$.next( { mode: 'Begin', value: null })
-    })
+      .subscribe(() => {
+        this.enabled$.next(false);
+        this.text$.next({ mode: 'Begin', value: null });
+      });
   }
 
   enable(val: boolean) {
@@ -41,8 +43,8 @@ export class SearchService {
   setText(val: string): void {
     const prev = this.text$.getValue();
 
-    if (prev.value != val) {
-      this.text$.next({ mode: 'UserInput', value: val});
+    if (prev.value !== val) {
+      this.text$.next({ mode: 'UserInput', value: val });
     }
   }
 

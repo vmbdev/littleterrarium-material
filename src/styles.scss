@@ -1,15 +1,22 @@
 @use '@angular/material' as mat;
 @use 'ngx-toastr/toastr';
-@use 'themes/light.scss';
+@use 'scss/themes.scss';
+@use 'scss/settings-card.scss';
 
 @mixin border-style {
   border-width: 1px !important;
-  border-color: rgba(0,0,0,.2) !important;
+  border-color: rgba(0, 0, 0, 0.2) !important;
   border-style: solid;
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+}
 
 .mat-expansion-panel {
   @include border-style();
@@ -19,6 +26,21 @@ mat-card {
   @include border-style();
 
   margin: 6px 0;
+}
+
+.user-form {
+  display: flex;
+  flex-direction: column;
+  margin: 20px;
+
+  button:not(:last-of-type) {
+    margin-bottom: 10px;
+  }
+
+  &__error {
+    color: red;
+    text-align: center;
+  }
 }
 
 .icon-button-toggle {
@@ -75,14 +97,12 @@ mat-bottom-sheet-container {
   font: inherit !important;
 }
 
-.settings-card {
-  border-radius: 25px 0 25px 0 !important;
-  border: 0 !important;
-  box-shadow: none !important;
-}
-
 .toolbar-spacer {
   flex: 1 1 auto;
+}
+
+.overlay-backdrop {
+  background-color: rgba(0, 0, 0, 0.8);
 }
 
 // mat-stepper, .mat-horizontal-stepper-wrapper, .mat-horizontal-content-container, .mat-horizontal-stepper-content {

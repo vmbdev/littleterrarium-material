@@ -15,17 +15,17 @@ import { FormBaseComponent } from '@components/form-base/form-base.component';
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
-    TranslateModule
+    TranslateModule,
   ],
-  templateUrl: './plant-form-name.component.html'
+  templateUrl: './plant-form-name.component.html',
 })
 export class PlantFormNameComponent implements FormBaseComponent {
   @Input() currentCustomName: string | null = '';
   public form = this.fb.group({ customName: [''] });
 
-  constructor (private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
-    this.form.patchValue({ customName: this.currentCustomName })
+    this.form.patchValue({ customName: this.currentCustomName });
   }
 }

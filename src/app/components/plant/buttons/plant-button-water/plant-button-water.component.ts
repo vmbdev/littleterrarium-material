@@ -11,16 +11,10 @@ import {
 @Component({
   selector: 'ltm-plant-button-water',
   standalone: true,
-  imports: [
-    CommonModule,
-    MatButtonModule,
-    MatIconModule,
-    MatDialogModule
-  ],
+  imports: [CommonModule, MatButtonModule, MatIconModule, MatDialogModule],
   templateUrl: './plant-button-water.component.html',
-  styleUrls: ['./plant-button-water.component.scss']
+  styleUrls: ['./plant-button-water.component.scss'],
 })
 export class PlantButtonWaterComponent extends PlantBaseActionComponent {
   @Input() disabled: boolean = false;
-  
 }

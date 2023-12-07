@@ -1,67 +1,70 @@
 import {
   Component,
   ElementRef,
-  EventEmitter,
   Input,
-  Output,
-  ViewChild
+  ViewChild,
+  Inject
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 
+import { VIEWER_DATA } from 'src/tokens';
+
+type ViewerData = {
+  src: string;
+  close: Function;
+};
+
 type ElementDimensions = {
-  width: number,
-  height: number
-}
+  width: number;
+  height: number;
+};
 
 type CSSElementPosition = {
-  left: number | null,
-  top: number | null,
-}
+  left: number | null;
+  top: number | null;
+};
 
 @Component({
   selector: 'ltm-viewer',
   standalone: true,
-  imports: [
-    CommonModule,
-    MatToolbarModule,
-    MatButtonModule,
-    MatIconModule
-  ],
+  imports: [CommonModule, MatToolbarModule, MatButtonModule, MatIconModule],
   templateUrl: './viewer.component.html',
-  styleUrls: ['./viewer.component.scss']
+  styleUrls: ['./viewer.component.scss'],
 })
 export class ViewerComponent {
-  @ViewChild('photo', { read: ElementRef, static: true }) photoElement!: ElementRef<HTMLImageElement>;
-  @Input({ required: true }) imageSrc?: string;
-  @Output() close = new EventEmitter();
+  @ViewChild('photo', { read: ElementRef, static: true })
+  photoElement!: ElementRef<HTMLImageElement>;
+
   scale: number = 1;
   position: CSSElementPosition = {
     left: null,
     top: null,
-  }
+  };
   previousDelta = {
     x: 0,
-    y: 0
-  }
+    y: 0,
+  };
   dimensions: ElementDimensions = {
     width: 0,
-    height: 0
-  }
+    height: 0,
+  };
   client: ElementDimensions = {
     width: 0,
-    height: 0
-  }
+    height: 0,
+  };
   rightLimit: number = 0;
   bottomLimit: number = 0;
+
+  constructor(@Inject(VIEWER_DATA) public readonly data: ViewerData) {}
 
   ngOnInit(): void {
     this.client.width = window.innerWidth;
     this.client.height = window.innerHeight;
   }
-  
+
   imageLoaded() {
     this.dimensions.width = this.photoElement.nativeElement.width;
     this.dimensions.height = this.photoElement.nativeElement.height;
@@ -72,13 +75,13 @@ export class ViewerComponent {
   /**
    * Get the current size of the image in pixels by multiplying the original
    * dimensions by its scale.
-   * @returns 
+   * @returns
    */
   getCurrentDimensions(): ElementDimensions {
     const dimensions: ElementDimensions = {
       width: this.scale * this.dimensions.width,
-      height: this.scale * this.dimensions.height
-    }
+      height: this.scale * this.dimensions.height,
+    };
 
     return dimensions;
   }
@@ -89,8 +92,8 @@ export class ViewerComponent {
    */
   findLimits(): void {
     const currDimensions = this.getCurrentDimensions();
-    const limitx = (currDimensions.width / this.client.width);
-    const limity = (currDimensions.height / this.client.height);
+    const limitx = currDimensions.width / this.client.width;
+    const limity = currDimensions.height / this.client.height;
 
     this.rightLimit = Math.ceil(this.client.width * (limitx - 1));
     this.bottomLimit = Math.ceil(this.client.height * (limity - 1));
@@ -103,10 +106,12 @@ export class ViewerComponent {
   setScale(val: number) {
     this.scale = val;
     this.photoElement.nativeElement.style.transition = '0.1s';
-    this.photoElement.nativeElement.style.width = val * this.dimensions.width + 'px';
-    this.photoElement.nativeElement.style.height = val * this.dimensions.height + 'px';
+    this.photoElement.nativeElement.style.width =
+      val * this.dimensions.width + 'px';
+    this.photoElement.nativeElement.style.height =
+      val * this.dimensions.height + 'px';
     this.findLimits();
-    
+
     setTimeout(() => {
       this.updatePosition();
       this.photoElement.nativeElement.style.transition = 'none';
@@ -114,9 +119,9 @@ export class ViewerComponent {
   }
 
   /**
-   * 
-   * @param val 
-   * @param multiply 
+   *
+   * @param val
+   * @param multiply
    */
   magnify(val: number, multiply: boolean = false) {
     if (this.position.left) {
@@ -128,8 +133,7 @@ export class ViewerComponent {
     //   this.photoElement.nativeElement.style.top = this.position.top + 'px';
     // }
 
-    this.setScale(multiply ? (this.scale * val) : val);
-
+    this.setScale(multiply ? this.scale * val : val);
   }
 
   /**
@@ -153,8 +157,7 @@ export class ViewerComponent {
   doubleTap(event: any) {
     if (this.scale > 3) {
       this.resetView();
-    }
-    else {
+    } else {
       this.magnify(2, true);
     }
   }
@@ -167,25 +170,24 @@ export class ViewerComponent {
       const deltayDiff = this.previousDelta.y - event.deltaY;
 
       if (deltaxDiff !== 0) {
-        const left = (this.position.left ? this.position.left : 0) - (deltaxDiff);
+        const left = (this.position.left ? this.position.left : 0) - deltaxDiff;
         this.previousDelta.x = event.deltaX;
-    
-        if ((left <= 0) && (left >= -this.rightLimit)) {
+
+        if (left <= 0 && left >= -this.rightLimit) {
           this.position.left = left;
           target.style.left = `${left}px`;
         }
       }
 
       if (deltayDiff !== 0) {
-        const top = (this.position.top ? this.position.top : 0) - (deltayDiff);
+        const top = (this.position.top ? this.position.top : 0) - deltayDiff;
         this.previousDelta.y = event.deltaY;
-  
-        if ((top <= 0) && (top >= -this.bottomLimit)) {
+
+        if (top <= 0 && top >= -this.bottomLimit) {
           this.position.top = top;
           target.style.top = `${top}px`;
         }
       }
-
     }
   }
 
@@ -195,21 +197,16 @@ export class ViewerComponent {
   }
 
   pinchEnd(event: any) {
-    if (this.position.left && (this.position.left <= -this.dimensions.width)) {
+    if (this.position.left && this.position.left <= -this.dimensions.width) {
       this.position.left = -this.rightLimit;
       this.photoElement.nativeElement.style.left = this.position.left + 'px';
     }
   }
 
   pinchMove(event: any) {
-    if ((event.scale > 1) && (event.scale < 5)) {
+    if (event.scale > 1 && event.scale < 5) {
       this.magnify(event.scale);
       this.updatePosition();
-    }
-    else if (event.scale <= 1) this.resetView();
-  }
-
-  closeEvent() {
-    this.close.emit();
+    } else if (event.scale <= 1) this.resetView();
   }
 }

@@ -4,7 +4,7 @@ import {
   EventEmitter,
   Input,
   numberAttribute,
-  Output
+  Output,
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { TranslateModule } from '@ngx-translate/core';
@@ -14,19 +14,14 @@ import { ShortFilenamePipe } from '@pipes/short-filename/short-filename.pipe';
 @Component({
   standalone: true,
   selector: 'ltm-file-uploader',
-  imports: [
-    CommonModule,
-    ShortFilenamePipe,
-    TranslateModule,
-    MatButtonModule
-  ],
+  imports: [CommonModule, ShortFilenamePipe, TranslateModule, MatButtonModule],
   templateUrl: './file-uploader.component.html',
-  styleUrls: ['./file-uploader.component.scss']
+  styleUrls: ['./file-uploader.component.scss'],
 })
 export class FileUploaderComponent {
   /**
-  * Max amount of files the user can select. By default, 1.
-  */
+   * Max amount of files the user can select. By default, 1.
+   */
   @Input({ transform: numberAttribute }) maxAmount: number = 1;
 
   /**
@@ -51,19 +46,19 @@ export class FileUploaderComponent {
 
   /**
    * Mouse is dragging a file over the component.
-   * 
+   *
    * @param {DragEvent} event  The drag and drop event.
    */
   dragEnter(event: DragEvent): void {
     event.stopPropagation();
     event.preventDefault();
 
-    if (!this.dragOver && (this.availableSlots() > 0)) this.dragOver = true;
+    if (!this.dragOver && this.availableSlots() > 0) this.dragOver = true;
   }
 
   /**
    * Mouse left the component.
-   * 
+   *
    * @param {DragEvent} event  The drag and drop event.
    */
   dragLeave(event: DragEvent): void {
@@ -75,7 +70,7 @@ export class FileUploaderComponent {
 
   /**
    * A file was dropped over the component, containing one or more files.
-   * 
+   *
    * @param {DragEvent} event  The drag and drop event.
    */
   dropFile(event: DragEvent): void {
@@ -91,7 +86,7 @@ export class FileUploaderComponent {
 
   /**
    * One or more files have been manually selected by the user.
-   * 
+   *
    * @param {Event} event  The input event.
    */
   fileInputChange(event: Event): void {
@@ -103,18 +98,18 @@ export class FileUploaderComponent {
   /**
    * The number of files that can still be added, depending on the max amount
    * of files allowed.
-   * 
+   *
    * @returns {number} The difference between maxAmount and the number of files
    * already selected.
    */
   availableSlots(): number {
-    return (this.maxAmount - this.files.length);
+    return this.maxAmount - this.files.length;
   }
 
   /**
    * Add files to the current selection. Called when the user drags and drop
    * or selects more files.
-   * 
+   *
    * @param {FileList} list  The list of files to be added.
    */
   addFiles(list: FileList): void {
@@ -137,7 +132,7 @@ export class FileUploaderComponent {
 
   /**
    * Removes a file from the current selection.
-   * 
+   *
    * @param {number} index  The index of the file to be removed.
    */
   removeFile(index: number): void {
@@ -148,11 +143,10 @@ export class FileUploaderComponent {
   /**
    * Revokes an URL object to free memory after the thumbnail for the preview
    * has been rendered.
-   * 
-   * @param url 
+   *
+   * @param url
    */
   revokeUrl(url: string) {
     URL.revokeObjectURL(url);
   }
-
 }

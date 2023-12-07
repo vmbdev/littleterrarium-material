@@ -12,9 +12,9 @@ import { TranslateModule } from '@ngx-translate/core';
     CommonModule,
     ReactiveFormsModule,
     MatCheckboxModule,
-    TranslateModule
+    TranslateModule,
   ],
-  templateUrl: './form-privacy.component.html'
+  templateUrl: './form-privacy.component.html',
 })
 export class FormPrivacyComponent implements FormBaseComponent {
   @Input() currentPrivacy: boolean = true;
@@ -23,6 +23,6 @@ export class FormPrivacyComponent implements FormBaseComponent {
   constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
-    this.form.patchValue({ public: this.currentPrivacy })
+    this.form.patchValue({ public: this.currentPrivacy });
   }
 }

@@ -17,7 +17,7 @@ import { FormBaseComponent } from '@components/form-base/form-base.component';
     MatInputModule,
     MatDatepickerModule,
   ],
-  templateUrl: './photo-form-date.component.html'
+  templateUrl: './photo-form-date.component.html',
 })
 export class PhotoFormDateComponent implements FormBaseComponent {
   @Input() currentTakenAt?: Date | null;
@@ -27,6 +27,6 @@ export class PhotoFormDateComponent implements FormBaseComponent {
   constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
-    this.form.patchValue({ takenAt: this.currentTakenAt })
+    this.form.patchValue({ takenAt: this.currentTakenAt });
   }
 }

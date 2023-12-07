@@ -4,6 +4,7 @@ import { ReactiveFormsModule, FormBuilder } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+
 import { FormBaseComponent } from '@components/form-base/form-base.component';
 
 @Component({
@@ -14,9 +15,9 @@ import { FormBaseComponent } from '@components/form-base/form-base.component';
     ReactiveFormsModule,
     TranslateModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
   ],
-  templateUrl: './plant-form-description.component.html'
+  templateUrl: './plant-form-description.component.html',
 })
 export class PlantFormDescriptionComponent implements FormBaseComponent {
   @Input() currentDescription: string | null = '';
@@ -25,6 +26,6 @@ export class PlantFormDescriptionComponent implements FormBaseComponent {
   constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
-    this.form.patchValue({ description: this.currentDescription })
+    this.form.patchValue({ description: this.currentDescription });
   }
 }

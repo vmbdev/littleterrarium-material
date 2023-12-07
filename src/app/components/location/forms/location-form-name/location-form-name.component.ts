@@ -4,6 +4,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { TranslateModule } from '@ngx-translate/core';
+
 import { FormBaseComponent } from '@components/form-base/form-base.component';
 
 @Component({
@@ -14,18 +15,17 @@ import { FormBaseComponent } from '@components/form-base/form-base.component';
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
-    TranslateModule
+    TranslateModule,
   ],
-  templateUrl: './location-form-name.component.html'
+  templateUrl: './location-form-name.component.html',
 })
 export class LocationFormNameComponent implements FormBaseComponent {
   @Input() currentName?: string | null;
   public form = this.fb.group({ name: ['', Validators.required] });
 
-  constructor (private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
-    this.form.patchValue({ name: this.currentName })
+    this.form.patchValue({ name: this.currentName });
   }
-
 }

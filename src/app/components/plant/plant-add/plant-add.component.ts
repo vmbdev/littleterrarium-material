@@ -56,13 +56,14 @@ import { Photo } from '@models/photo.model';
 
     PlantFormNameComponent,
     PlantFormSpecieComponent,
-    FormPrivacyComponent
+    FormPrivacyComponent,
   ],
-  templateUrl: './plant-add.component.html'
+  templateUrl: './plant-add.component.html',
 })
 export class PlantAddComponent {
   @ViewChild(PlantFormNameComponent) nameComponent!: PlantFormNameComponent;
-  @ViewChild(PlantFormSpecieComponent) specieComponent!: PlantFormSpecieComponent;
+  @ViewChild(PlantFormSpecieComponent)
+  specieComponent!: PlantFormSpecieComponent;
   @ViewChild(FormPrivacyComponent) privacyComponent!: FormPrivacyComponent;
 
   locationId?: number;
@@ -76,7 +77,7 @@ export class PlantAddComponent {
     private router: Router,
     private plantService: PlantService,
     private photoService: PhotoService,
-    private errorHandler: ErrorHandlerService,
+    private errorHandler: ErrorHandlerService
   ) {}
 
   ngOnInit(): void {
@@ -87,7 +88,7 @@ export class PlantAddComponent {
         error: () => {
           this.errorHandler.push(this.translate.instant('plant-add.location'));
           this.router.navigateByUrl('/');
-        }
+        },
       });
     }
   }
@@ -106,24 +107,24 @@ export class PlantAddComponent {
     return forms.every((form) => form.valid);
   }
 
-  openUploadDialog(): MatDialogRef<WaitDialogComponent, any>  {
+  openUploadDialog(): MatDialogRef<WaitDialogComponent, any> {
     return this.dialog.open(WaitDialogComponent, {
       disableClose: true,
       data: {
         message: this.translate.instant('progress-bar.uploading'),
         progressBar: true,
         progressValue: 0,
-        finalMessage: this.translate.instant('general.afterUpload')
+        finalMessage: this.translate.instant('general.afterUpload'),
       },
     });
   }
-  
+
   getPlantFromForm(): Plant {
     return {
       ...this.nameComponent.form.value,
       ...this.specieComponent.form.value,
       ...this.privacyComponent.form.value,
-      locationId: this.locationId
+      locationId: this.locationId,
     } as Plant;
   }
 
@@ -132,63 +133,70 @@ export class PlantAddComponent {
       this.errorHandler.push(this.translate.instant('general.formErrors'));
       return;
     }
-    
-    const plant: Plant = this.getPlantFromForm();    
+
+    const plant: Plant = this.getPlantFromForm();
     const ud = this.openUploadDialog();
     const obs = this.plantService.create(plant);
-    
+
     if (this.photos.length > 0) {
-      obs.pipe(
-        switchMap((plant: Plant) => {
-          const photos = {
-            plantId: plant.id,
-            public: plant.public,
-            pictureFiles: this.photos
-          } as Photo;
-  
-          return this.photoService.create(photos, true).pipe(
-            catchError(() => {
-              // Plant is created even though photo upload may have failed
-              // we redirect to Plant
-              this.router.navigate(['/plant', plant.id]);
-      
-              return EMPTY;
-            }))
-        }),
-        finalize(() => { ud.close() }),
-      ).subscribe((event) => {
-        switch (event.type) {
-          case HttpEventType.UploadProgress: {
-            const eventTotal = event.total ? event.total : 0;
-            const progressVal = Math.round(event.loaded / eventTotal * 100);
-            ud.componentInstance.data.progressValue = progressVal;
+      obs
+        .pipe(
+          switchMap((plant: Plant) => {
+            const photos = {
+              plantId: plant.id,
+              public: plant.public,
+              pictureFiles: this.photos,
+            } as Photo;
 
-            break;
-          }
-          case HttpEventType.Response: {
-            if (event.body?.data?.plantId) {
-              this.router.navigate(
-                ['/plant', event.body.data.plantId],
-                { replaceUrl: true }
-              );
+            return this.photoService.create(photos, true).pipe(
+              catchError(() => {
+                // Plant is created even though photo upload may have failed
+                // we redirect to Plant
+                this.router.navigate(['/plant', plant.id]);
+
+                return EMPTY;
+              })
+            );
+          }),
+          finalize(() => {
+            ud.close();
+          })
+        )
+        .subscribe((event) => {
+          switch (event.type) {
+            case HttpEventType.UploadProgress: {
+              const eventTotal = event.total ? event.total : 0;
+              const progressVal = Math.round((event.loaded / eventTotal) * 100);
+              ud.componentInstance.data.progressValue = progressVal;
+
+              break;
             }
+            case HttpEventType.Response: {
+              if (event.body?.data?.plantId) {
+                this.router.navigate(['/plant', event.body.data.plantId], {
+                  replaceUrl: true,
+                });
+              }
 
-            break;
+              break;
+            }
           }
-        }
-      });
-    }
-    else {
-      obs.pipe(
-        finalize(() => { ud.close() }),
-      ).subscribe({
-        next: (plant: Plant) => {
-          this.router.navigate(['/plant', plant.id], { replaceUrl: true });
-        },
-        error: () => {
-          this.errorHandler.push(this.translate.instant('plant-add.create'));
-        }
-      })
+        });
+    } else {
+      obs
+        .pipe(
+          finalize(() => {
+            ud.close();
+          })
+        )
+        .subscribe({
+          next: (plant: Plant) => {
+            this.router.navigate(['/plant', plant.id], { replaceUrl: true });
+          },
+          error: () => {
+            this.errorHandler.push(this.translate.instant('plant-add.create'));
+          },
+        });
     }
   }
 }

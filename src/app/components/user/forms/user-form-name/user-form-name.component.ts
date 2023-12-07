@@ -15,24 +15,24 @@ import { FormBaseComponent } from '@components/form-base/form-base.component';
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
-    TranslateModule
+    TranslateModule,
   ],
-  templateUrl: './user-form-name.component.html'
+  templateUrl: './user-form-name.component.html',
 })
 export class UserFormNameComponent implements FormBaseComponent {
   @Input() currentFirstname: string | null = '';
   @Input() currentLastname: string | null = '';
   public form = this.fb.group({
     firstname: [''],
-    lastname: ['']
+    lastname: [''],
   });
 
-  constructor (private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
     this.form.patchValue({
       firstname: this.currentFirstname,
-      lastname: this.currentLastname
-    })
+      lastname: this.currentLastname,
+    });
   }
 }

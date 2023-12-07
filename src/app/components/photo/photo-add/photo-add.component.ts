@@ -49,9 +49,9 @@ import { Photo } from '@models/photo.model';
     TranslateModule,
     StepperNavigationComponent,
     FileUploaderComponent,
-    FormPrivacyComponent
+    FormPrivacyComponent,
   ],
-  templateUrl: './photo-add.component.html'
+  templateUrl: './photo-add.component.html',
 })
 export class PhotoAddComponent {
   @ViewChild(FormPrivacyComponent) privacyComponent!: FormPrivacyComponent;
@@ -76,7 +76,7 @@ export class PhotoAddComponent {
         error: () => {
           this.errorHandler.push(this.translate.instant('plant.invalid'));
           this.router.navigateByUrl('/');
-        }
+        },
       });
     }
   }
@@ -86,29 +86,27 @@ export class PhotoAddComponent {
   }
 
   checkFormValidity(): boolean {
-    const forms = [
-      this.privacyComponent.form,
-    ];
+    const forms = [this.privacyComponent.form];
 
-    return forms.every((form) => form.valid) && (this.pictures.length > 0);
+    return forms.every((form) => form.valid) && this.pictures.length > 0;
   }
 
   getPhotoFromForm(): Photo {
     return {
       ...this.privacyComponent.form.value,
       pictureFiles: this.pictures,
-      plantId: this.plantId
+      plantId: this.plantId,
     } as Photo;
   }
 
-  openUploadDialog(): MatDialogRef<WaitDialogComponent, any>  {
+  openUploadDialog(): MatDialogRef<WaitDialogComponent, any> {
     return this.dialog.open(WaitDialogComponent, {
       disableClose: true,
       data: {
         message: this.translate.instant('progress-bar.uploading'),
         progressBar: true,
         progressValue: 0,
-        finalMessage: this.translate.instant('general.afterUpload')
+        finalMessage: this.translate.instant('general.afterUpload'),
       },
     });
   }
@@ -126,24 +124,27 @@ export class PhotoAddComponent {
 
     newPhoto.plantId = this.plantId;
 
-    this.photoService.create(newPhoto)
-    .pipe(
-      finalize(() => { ud.close() })
-    ).subscribe((event) => {
-      switch (event.type) {
-        case HttpEventType.UploadProgress: {
-          const eventTotal = event.total ? event.total : 0;
-          const progressVal = Math.round(event.loaded / eventTotal * 100);
+    this.photoService
+      .create(newPhoto)
+      .pipe(
+        finalize(() => {
+          ud.close();
+        })
+      )
+      .subscribe((event) => {
+        switch (event.type) {
+          case HttpEventType.UploadProgress: {
+            const eventTotal = event.total ? event.total : 0;
+            const progressVal = Math.round((event.loaded / eventTotal) * 100);
 
-          ud.componentInstance.data.progressValue = progressVal;
-          break;
+            ud.componentInstance.data.progressValue = progressVal;
+            break;
+          }
+          case HttpEventType.Response: {
+            this.router.navigate(['plant', this.plantId], { replaceUrl: true });
+            break;
+          }
         }
-        case HttpEventType.Response: {
-          this.router.navigate(['plant', this.plantId], { replaceUrl: true })
-          break;
-        }
-
-      }
-    });
+      });
   }
 }

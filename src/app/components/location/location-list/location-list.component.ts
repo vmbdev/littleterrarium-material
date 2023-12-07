@@ -45,10 +45,10 @@ import { Location } from '@models/location.model';
     MatIconModule,
     TranslateModule,
     FabComponent,
-    WaitDialogComponent
+    WaitDialogComponent,
   ],
   templateUrl: './location-list.component.html',
-  styleUrls: ['./location-list.component.scss']
+  styleUrls: ['./location-list.component.scss'],
 })
 export class LocationListComponent {
   @Input() user?: User;
@@ -64,7 +64,7 @@ export class LocationListComponent {
     private translate: TranslateService,
     private dialog: MatDialog,
     private bottomSheet: MatBottomSheet
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     if (this.user?.id) {
@@ -79,19 +79,23 @@ export class LocationListComponent {
 
     const options: LocationGetConfig = {
       plantCount: true,
-      userId: this.user?.id
-    }
+      userId: this.user?.id,
+    };
 
     const obs = this.locationService.getMany(options).pipe(
-      finalize(() => { wd.close(); })
+      finalize(() => {
+        wd.close();
+      })
     );
 
-    obs.subscribe((res) => { this.locations$.next(res) })
+    obs.subscribe((res) => {
+      this.locations$.next(res);
+    });
   }
 
   openEdit(id: number): void {
     const bsRef = this.bottomSheet.open(LocationEditComponent, {
-      data: { id }
+      data: { id },
     });
 
     bsRef.afterDismissed().subscribe((updatedLocation: Location) => {
@@ -121,7 +125,9 @@ export class LocationListComponent {
       data: {
         title: name,
         question: [this.translate.instant('location.remove')],
-        accept: () => { this.delete(id) }
+        accept: () => {
+          this.delete(id);
+        },
       },
     });
   }
@@ -136,7 +142,6 @@ export class LocationListComponent {
     });
   }
 
-
   delete(id: number) {
     this.locationService.delete(id).subscribe({
       next: () => {
@@ -146,9 +151,9 @@ export class LocationListComponent {
         if (err.msg === 'LOCATION_NOT_VALID') {
           this.translate.get('location.invalid').subscribe((res: string) => {
             this.errorHandler.push(res);
-          })
+          });
         }
-      }
+      },
     });
   }
 }

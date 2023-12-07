@@ -7,13 +7,13 @@ import {
   ApiService,
   LocationGetConfig,
   LocationUpsertConfig,
-  PlantGetConfig
+  PlantGetConfig,
 } from '@services/api.service';
 import { AuthService } from '@services/auth.service';
 import { PlantService } from '@services/plant.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class LocationService {
   private location = new BehaviorSubject<Location | null>(null);
@@ -23,8 +23,8 @@ export class LocationService {
   constructor(
     private api: ApiService,
     private auth: AuthService,
-    private plantService: PlantService,
-  ) { }
+    private plantService: PlantService
+  ) {}
 
   create(location: Location): Observable<Location> {
     this.location.next(null);
@@ -35,7 +35,7 @@ export class LocationService {
 
         return location;
       })
-    )
+    );
   }
 
   get(id: number, options?: LocationGetConfig): Observable<Location> {
@@ -43,7 +43,7 @@ export class LocationService {
 
     return this.api.getLocation(id, options).pipe(
       map((location: Location) => {
-        this.owned = (this.auth.getUser()?.id === location.ownerId);
+        this.owned = this.auth.getUser()?.id === location.ownerId;
 
         this.location.next(location);
 
@@ -56,7 +56,7 @@ export class LocationService {
     return this.api.getLocationList(options);
   }
 
-  getPlants(id:number, options?: PlantGetConfig): Observable<Plant[]> {
+  getPlants(id: number, options?: PlantGetConfig): Observable<Plant[]> {
     return this.api.getLocationPlants(id, options).pipe(
       map((plants: Plant[]) => {
         for (const plant of plants) {
@@ -78,7 +78,7 @@ export class LocationService {
 
         return location;
       })
-    )
+    );
   }
 
   delete(id: number): Observable<any> {
@@ -88,7 +88,7 @@ export class LocationService {
 
         return EMPTY;
       })
-    )
+    );
   }
 
   current(): Location | null {
@@ -105,11 +105,11 @@ export class LocationService {
     switch (light) {
       case 'FULLSUN': {
         desc = 'light.fullsunDesc';
-        break;      
+        break;
       }
       case 'PARTIALSUN': {
         desc = 'light.partialsunDesc';
-        break;      
+        break;
       }
       default:
       case 'SHADE': {
@@ -127,11 +127,11 @@ export class LocationService {
     switch (light) {
       case 'FULLSUN': {
         desc = 'light.fullsunVerbose';
-        break;      
+        break;
       }
       case 'PARTIALSUN': {
         desc = 'light.partialsunVerbose';
-        break;      
+        break;
       }
       default:
       case 'SHADE': {

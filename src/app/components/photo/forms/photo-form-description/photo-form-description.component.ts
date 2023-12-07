@@ -13,9 +13,9 @@ import { FormBaseComponent } from '@components/form-base/form-base.component';
     TranslateModule,
     ReactiveFormsModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
   ],
-  templateUrl: './photo-form-description.component.html'
+  templateUrl: './photo-form-description.component.html',
 })
 export class PhotoFormDescriptionComponent implements FormBaseComponent {
   @Input() currentDescription: string | null = '';
@@ -24,6 +24,6 @@ export class PhotoFormDescriptionComponent implements FormBaseComponent {
   constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
-    this.form.patchValue({ description: this.currentDescription })
+    this.form.patchValue({ description: this.currentDescription });
   }
 }

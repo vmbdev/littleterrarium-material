@@ -34,6 +34,8 @@ import {
   BottomScrollDetectorService
 } from '@services/bottom-scroll-detector.service';
 import { TaskService } from '@services/task.service';
+import { ThemeService } from '@services/theme.service';
+import { ThemeSwitcherComponent } from '../theme-switcher/theme-switcher.component';
 
 @Component({
   selector: 'ltm-navigation',
@@ -52,27 +54,29 @@ import { TaskService } from '@services/task.service';
     TranslateModule,
     BottomToolbarComponent,
     LangSwitcherComponent,
+    ThemeSwitcherComponent,
     MainToolbarComponent,
     SearchComponent,
-    UserBoxComponent
+    UserBoxComponent,
   ],
   templateUrl: './navigation.component.html',
-  styleUrls: ['./navigation.component.scss']
+  styleUrls: ['./navigation.component.scss'],
 })
 export class NavigationComponent {
   @ViewChild('content') contentElement!: ElementRef;
-  isHandset$: Observable<boolean> =
-    this.breakpointObserver.observe(Breakpoints.Handset)
-      .pipe(
-        map(result => result.matches),
-        shareReplay()
-      );
+  isHandset$: Observable<boolean> = this.breakpointObserver
+    .observe(Breakpoints.Handset)
+    .pipe(
+      map((result) => result.matches),
+      shareReplay()
+    );
 
   constructor(
     private breakpointObserver: BreakpointObserver,
     public auth: AuthService,
     private bottomScrollDetector: BottomScrollDetectorService,
-    public taskService: TaskService
+    public taskService: TaskService,
+    public readonly themeService: ThemeService
   ) {}
 
   // FIXME: use HostListener instead of this
@@ -82,14 +86,15 @@ export class NavigationComponent {
         this.contentElement.nativeElement,
         'scroll'
       );
-      
+
       scroll$.subscribe((element: Event) => {
         const target = element.target as HTMLElement;
+        const gotBottom =
+          target.scrollHeight - target.scrollTop - target.clientHeight;
 
-        if (target.scrollHeight - target.scrollTop - target.clientHeight <= 1.0) {
+        if (gotBottom <= 1.0) {
           this.bottomScrollDetector.set();
-        }
-        else this.bottomScrollDetector.clear();
+        } else this.bottomScrollDetector.clear();
       });
     }
   }

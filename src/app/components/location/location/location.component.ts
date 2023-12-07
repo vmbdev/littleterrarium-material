@@ -6,7 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import {
   MatBottomSheet,
-  MatBottomSheetModule
+  MatBottomSheetModule,
 } from '@angular/material/bottom-sheet';
 import { catchError, EMPTY } from 'rxjs';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -43,9 +43,9 @@ import { Light, Location } from '@models/location.model';
     PlantListComponent,
     PropertyComponent,
     InfoBoxComponent,
-    FabComponent
+    FabComponent,
   ],
-  templateUrl: './location.component.html'
+  templateUrl: './location.component.html',
 })
 export class LocationComponent {
   private id?: number;
@@ -62,59 +62,71 @@ export class LocationComponent {
     private dialog: MatDialog
   ) {
     this.locationService.location$
-    .pipe(takeUntilDestroyed())
-    .subscribe((location: Location | null) => {
-      if (location) this.processLocation(location);
-    });
+      .pipe(takeUntilDestroyed())
+      .subscribe((location: Location | null) => {
+        if (location) this.processLocation(location);
+      });
   }
 
   ngOnInit(): void {
     const paramId = this.route.snapshot.paramMap.get('locationId');
     this.id = paramId ? +paramId : NaN;
-    
+
     if (this.id) {
       this.getLocation();
     }
   }
 
-
   getLocation(): void {
     if (!this.id) return;
 
-    this.locationService.get(this.id, { plantCount: true }).pipe(
-      catchError((err: HttpErrorResponse) => {
-        let msg: string;
+    this.locationService
+      .get(this.id, { plantCount: true })
+      .pipe(
+        catchError((err: HttpErrorResponse) => {
+          let msg: string;
 
-        if (err.error?.msg === 'LOCATION_NOT_FOUND') msg = 'location.invalid';
-        else msg = 'errors.server';
+          if (err.error?.msg === 'LOCATION_NOT_FOUND') {
+            msg = 'location.invalid';
+          }
+          else msg = 'errors.server';
 
-        this.translate.get(msg).subscribe((res: string) => {
-          this.errorHandler.push(res);
-        });
-        
-        this.router.navigateByUrl('/');
-        
-        return EMPTY;
-      })
-    ).subscribe((location: Location) => {
-      // this.processLocation(location);
-    })
+          this.translate.get(msg).subscribe((res: string) => {
+            this.errorHandler.push(res);
+          });
+
+          this.router.navigateByUrl('/');
+
+          return EMPTY;
+        })
+      )
+      .subscribe((location: Location) => {
+        // this.processLocation(location);
+      });
   }
 
   processLocation(location: Location): void {
     this.mt.setName(location.name);
     this.mt.setButtons([]);
     this.mt.setMenu([
-      [{
-        icon: 'edit',
-        tooltip: 'general.edit',
-        click: () => { this.openBottomSheet() }
-      }],
-      [{
-        icon: 'delete',
-        tooltip: 'general.delete',
-        click: () => { this.openRemoveDialog(location.id)}
-      }],
+      [
+        {
+          icon: 'edit',
+          tooltip: 'general.edit',
+          click: () => {
+            this.openBottomSheet();
+          },
+        },
+      ],
+      [
+        {
+          icon: 'delete',
+          tooltip: 'general.delete',
+          click: () => {
+            this.openRemoveDialog(location.id);
+          },
+        },
+      ],
     ]);
   }
 
@@ -123,7 +135,9 @@ export class LocationComponent {
       data: {
         title: this.translate.instant('general.delete'),
         question: [this.translate.instant('location.remove')],
-        accept: () => { this.delete(id) }
+        accept: () => {
+          this.delete(id);
+        },
       },
     });
   }
@@ -137,16 +151,16 @@ export class LocationComponent {
         if (err.msg === 'LOCATION_NOT_VALID') {
           this.translate.get('location.invalid').subscribe((res: string) => {
             this.errorHandler.push(res);
-          })
+          });
         }
-      }
+      },
     });
   }
 
   openBottomSheet(): void {
     if (this.id) {
       this.bottomSheet.open(LocationEditComponent, {
-        data: { id: this.id }
+        data: { id: this.id },
       });
     }
   }

@@ -13,11 +13,7 @@ import { SortPipe } from "@pipes/sort/sort.pipe";
   standalone: true,
   templateUrl: './photo-list.component.html',
   styleUrls: ['./photo-list.component.scss'],
-  imports: [
-    CommonModule,
-    RouterModule,
-    SortPipe
-  ]
+  imports: [CommonModule, RouterModule, SortPipe],
 })
 export class PhotoListComponent {
   @Input({ required: true }) plantId?: number;

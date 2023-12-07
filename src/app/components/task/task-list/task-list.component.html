@@ -1,39 +1,38 @@
-@if (taskService.tasks$ | async; as tasks) {
-  <p>{{ 'tasks.msg' | translate }}</p>
-  <mat-list>
+<p>{{ 'tasks.msg' | translate }}</p>
+<mat-list>
 
-    @for (task of tasks; track task.id) {
-      <mat-list-item matRipple>
-        <img
-          matListItemAvatar
-          [src]="plantService.coverPhoto(task)"
-          [routerLink]="['/plant', task.id]"
+  @for (task of taskService.tasks$ | async; track task.id) {
+    <mat-list-item matRipple>
+      <img
+        matListItemAvatar
+        [src]="plantService.coverPhoto(task)"
+        [routerLink]="['/plant', task.id]"
+      >
+
+      <span matListItemTitle [routerLink]="['/plant', task.id]">
+        {{ plantService.getVisibleName(task) }}
+      </span>
+
+      <div matListItemIcon class="tasks__buttons">
+        <ltm-plant-button-water
+          [id]="task.id"
+          [disabled]="!!(!task.waterNext)"
+          (done)="taskService.loadTasks()"
         >
+        </ltm-plant-button-water>
 
-        <span matListItemTitle [routerLink]="['/plant', task.id]">
-          {{ plantService.getVisibleName(task) }}
-        </span>
+        <ltm-plant-button-fertilize
+          [id]="task.id"
+          [disabled]="!!(!task.fertNext)"
+          (done)="taskService.loadTasks()"
+        >
+        </ltm-plant-button-fertilize>
+      </div>
+    </mat-list-item>
+  } @empty {
+    <mat-list-item class="centered">
+      <p>{{ 'tasks.noTasks' | translate }}</p>
+    </mat-list-item>
+  }
 
-        <div matListItemIcon class="tasks__buttons">
-          <ltm-plant-button-water
-            [id]="task.id"
-            [disabled]="!!(!task.waterNext)"
-            (done)="taskService.loadTasks()"
-          >
-          </ltm-plant-button-water>
-
-          <ltm-plant-button-fertilize
-            [id]="task.id"
-            [disabled]="!!(!task.fertNext)"
-            (done)="taskService.loadTasks()"
-          >
-          </ltm-plant-button-fertilize>
-        </div>
-      </mat-list-item>
-    }
-
-  </mat-list>
-
-} @else {
-  <p>{{ 'tasks.noTask' }}
-}
+</mat-list>

@@ -23,14 +23,14 @@ import { Location } from '@models/location.model';
     ReactiveFormsModule,
     TranslateModule,
     MatFormFieldModule,
-    MatSelectModule
+    MatSelectModule,
   ],
-  templateUrl: './plant-form-location.component.html'
+  templateUrl: './plant-form-location.component.html',
 })
 export class PlantFormLocationComponent implements FormBaseComponent {
   @Input() currentLocation?: number;
   form = this.fb.group({
-    locationId: new FormControl<number | null>(null, [ Validators.required ])
+    locationId: new FormControl<number | null>(null, [Validators.required]),
   });
   locations$?: Observable<Location[]>;
 
@@ -45,6 +45,5 @@ export class PlantFormLocationComponent implements FormBaseComponent {
     }
 
     this.locations$ = this.locationService.getMany();
-
   }
 }

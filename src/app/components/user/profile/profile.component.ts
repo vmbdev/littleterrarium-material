@@ -11,17 +11,14 @@ import { User } from '@models/user.model';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.scss']
+  styleUrls: ['./profile.component.scss'],
 })
 export class ProfileComponent {
   @Input() user?: User;
   @Input() small: boolean = false;
   user$ = new BehaviorSubject<User | null>(null);
 
-  constructor(
-    public auth: AuthService,
-    private imagePath: ImagePathService
-  ) {}
+  constructor(public auth: AuthService, private imagePath: ImagePathService) {}
 
   ngOnInit(): void {
     if (this.user) this.user$.next(this.user);
@@ -36,12 +33,11 @@ export class ProfileComponent {
 
   getFullName(): string | null {
     const user = this.user$.getValue();
-    
+
     if (user) {
       const firstname = user.firstname ? user.firstname + ' ' : '';
 
       return `${firstname}${user.lastname}`;
-    }
-    else return null;
+    } else return null;
   }
 }

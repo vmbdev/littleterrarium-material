@@ -1,36 +1,36 @@
-import { Photo } from "@models/photo.model"
-import { Specie } from "@models/specie.model"
+import { Photo } from '@models/photo.model';
+import { Specie } from '@models/specie.model';
 
 export interface Plant {
-  id: number
-  specieId: number | null
-  customName: string | null
-  description: string | null
-  condition: Condition | null
-  waterFreq: number | null
-  waterLast: Date | null
-  waterNext: Date | null
-  fertFreq: number | null
-  fertLast: Date | null
-  fertType: string | null
-  fertNext: Date | null
-  potType: string | null
-  potSize: number | null
-  soil: string | null
-  public: boolean
-  coverId?: number
-  locationId: number
-  ownerId: number
-  createdAt: Date
-  updatedAt: Date
-  cover?: Photo
-  photos?: Photo[]
-  specie?: Specie
-  visibleName?: string
+  id: number;
+  specieId: number | null;
+  customName: string | null;
+  description: string | null;
+  condition: Condition | null;
+  waterFreq: number | null;
+  waterLast: Date | null;
+  waterNext: Date | null;
+  fertFreq: number | null;
+  fertLast: Date | null;
+  fertType: string | null;
+  fertNext: Date | null;
+  potType: string | null;
+  potSize: number | null;
+  soil: string | null;
+  public: boolean;
+  coverId?: number;
+  locationId: number;
+  ownerId: number;
+  createdAt: Date;
+  updatedAt: Date;
+  cover?: Photo;
+  photos?: Photo[];
+  specie?: Specie;
+  visibleName?: string;
 }
 
 export interface CoverPhoto {
-  coverId: number | null
+  coverId: number | null;
 }
 
 export const Condition: { [key: string]: string } = {
@@ -39,13 +39,13 @@ export const Condition: { [key: string]: string } = {
   GOOD: 'Looks good', // grey
   GREAT: 'Looks great', // light green
   EXCELLENT: 'Prime example of its specie', // vibrant green
-}
+};
 export type Condition = (typeof Condition)[keyof typeof Condition];
 
 export type Pot = {
-  name: string,
-  image: string
-}
+  name: string;
+  image: string;
+};
 // client-side only
 export const potChoices: { [key: string]: Pot } = {
   LT_POT_TERRACOTTA: { name: 'Terracotta', image: 'assets/pot-terracotta.jpg' },

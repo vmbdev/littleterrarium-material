@@ -13,14 +13,9 @@ import { TranslateModule } from '@ngx-translate/core';
 @Component({
   selector: 'ltm-stepper-navigation',
   standalone: true,
-  imports: [
-    CommonModule,
-    MatButtonModule,
-    MatStepperModule,
-    TranslateModule
-  ],
+  imports: [CommonModule, MatButtonModule, MatStepperModule, TranslateModule],
   templateUrl: './stepper-navigation.component.html',
-  styleUrls: ['./stepper-navigation.component.scss']
+  styleUrls: ['./stepper-navigation.component.scss'],
 })
 export class StepperNavigationComponent {
   @Input({ transform: booleanAttribute }) backButton: boolean = true;

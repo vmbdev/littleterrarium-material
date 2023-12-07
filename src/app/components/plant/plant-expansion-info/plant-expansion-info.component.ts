@@ -23,8 +23,8 @@ import {
     PlantWaterWidgetComponent,
     PlantFertiliseWidgetComponent,
     PlantSoilWidgetComponent,
-    TranslateModule
+    TranslateModule,
   ],
-  templateUrl: './plant-expansion-info.component.html'
+  templateUrl: './plant-expansion-info.component.html',
 })
-export class PlantExpansionInfoComponent { }
+export class PlantExpansionInfoComponent {}

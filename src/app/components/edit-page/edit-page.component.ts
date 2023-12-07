@@ -13,10 +13,10 @@ import { TranslateModule } from '@ngx-translate/core';
     MatToolbarModule,
     MatButtonModule,
     MatIconModule,
-    TranslateModule
+    TranslateModule,
   ],
   templateUrl: './edit-page.component.html',
-  styleUrls: ['./edit-page.component.scss']
+  styleUrls: ['./edit-page.component.scss'],
 })
 export class EditPageComponent {
   @Input({ required: true }) title?: string;
@@ -25,5 +25,4 @@ export class EditPageComponent {
   acceptChanges(): void {
     this.accept.emit();
   }
-
 }

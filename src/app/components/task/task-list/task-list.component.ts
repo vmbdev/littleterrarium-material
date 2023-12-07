@@ -28,7 +28,7 @@ import { TaskService } from '@services/task.service';
     PlantButtonFertilizeComponent,
   ],
   templateUrl: './task-list.component.html',
-  styleUrls: ['./task-list.component.scss']
+  styleUrls: ['./task-list.component.scss'],
 })
 export class TaskListComponent {
   constructor(
@@ -36,7 +36,7 @@ export class TaskListComponent {
     public taskService: TaskService,
     private mt: MainToolbarService,
     private translate: TranslateService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.mt.setName(this.translate.instant('general.tasks'));

@@ -2,17 +2,17 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 interface MainToolbarButton {
-  icon: string,
-  tooltip?: string,
-  route?: any,
-  click?: any
-  selected?: BehaviorSubject<boolean>
+  icon: string;
+  tooltip?: string;
+  route?: any;
+  click?: any;
+  selected?: BehaviorSubject<boolean>;
 }
 
 type MainToolbarButtonCollection = MainToolbarButton[];
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MainToolbarService {
   name$ = new BehaviorSubject<string>('');
@@ -46,7 +46,6 @@ export class MainToolbarService {
 
     this.setMenu([...curr, ...menu]);
   }
-
 
   hide() {
     this.buttons$.next([]);

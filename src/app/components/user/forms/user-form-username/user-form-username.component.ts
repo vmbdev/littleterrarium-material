@@ -15,17 +15,15 @@ import { FormBaseComponent } from '@components/form-base/form-base.component';
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
-    TranslateModule
+    TranslateModule,
   ],
-  templateUrl: './user-form-username.component.html'
+  templateUrl: './user-form-username.component.html',
 })
 export class UserFormUsernameComponent implements FormBaseComponent {
   @Input() currentUsername?: string;
   public form = this.fb.group({ username: ['', Validators.required] });
 
-  constructor (
-    private fb: FormBuilder
-  ) {}
+  constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
     if (this.currentUsername) {
@@ -35,11 +33,11 @@ export class UserFormUsernameComponent implements FormBaseComponent {
 
   isTaken(): boolean {
     const errors = this.form.get('username')?.errors;
-    return (errors && errors['taken']);
+    return errors && errors['taken'];
   }
 
   isInvalid(): boolean {
     const errors = this.form.get('username')?.errors;
-    return (errors && errors['invalid']);
+    return errors && errors['invalid'];
   }
 }

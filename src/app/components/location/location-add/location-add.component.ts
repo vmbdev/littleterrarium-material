@@ -27,7 +27,6 @@ import {
   FormPrivacyComponent
 } from '@components/form-privacy/form-privacy.component';
 import { Location } from '@models/location.model';
-;
 
 @Component({
   selector: 'ltm-location-add',
@@ -49,18 +48,15 @@ import { Location } from '@models/location.model';
 
     LocationFormNameComponent,
     LocationFormLightComponent,
-    FormPrivacyComponent
-  ]
+    FormPrivacyComponent,
+  ],
 })
 export class LocationAddComponent extends LocationUpsertBaseComponent {
   removePicture: boolean = false;
 
-  constructor(
-    private injector: Injector,
-    private router: Router,
-  ) {
+  constructor(private injector: Injector, private router: Router) {
     super(injector);
-   }
+  }
 
   submit(): void {
     if (!this.checkFormValidity()) {
@@ -71,17 +67,22 @@ export class LocationAddComponent extends LocationUpsertBaseComponent {
     const location: Location = this.getLocationFromForm();
     const ud = this.openUploadDialog();
 
-    this.locationService.create(location).pipe(
-      catchError((error: HttpErrorResponse) => {
-        if (error.error?.msg === 'IMG_NOT_VALID') {
-          this.errorHandler.push(this.translate.instant('errors.invalidImg'));
-        }
+    this.locationService
+      .create(location)
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          if (error.error?.msg === 'IMG_NOT_VALID') {
+            this.errorHandler.push(this.translate.instant('errors.invalidImg'));
+          }
 
-        return EMPTY;
-      }),
-      finalize(() => { ud.close() })
-    ).subscribe((location: Location) => {
-      this.router.navigate([`location/${location.id}`], { replaceUrl: true });
-    });
+          return EMPTY;
+        }),
+        finalize(() => {
+          ud.close();
+        })
+      )
+      .subscribe((location: Location) => {
+        this.router.navigate([`location/${location.id}`], { replaceUrl: true });
+      });
   }
 }

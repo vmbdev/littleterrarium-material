@@ -29,10 +29,9 @@ import { SearchService } from '@services/search.service';
     SearchComponent,
   ],
   templateUrl: './main-toolbar.component.html',
-  styleUrls: ['./main-toolbar.component.scss']
+  styleUrls: ['./main-toolbar.component.scss'],
 })
 export class MainToolbarComponent {
-
   constructor(
     public mt: MainToolbarService,
     public search: SearchService,

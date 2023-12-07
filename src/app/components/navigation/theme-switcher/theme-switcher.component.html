@@ -1,0 +1,16 @@
+@if (themeService.getAvailableThemes(); as themes) {
+  <mat-form-field appearance="fill" class="theme-switcher">
+    <mat-label>{{ 'general.language' | translate }}</mat-label>
+    <mat-select
+      #select
+      (selectionChange)="setTheme(select.value)"
+      [(value)]="currentTheme"
+    >
+      @for (theme of themes; track theme) {
+        <mat-option [value]="theme">
+          {{ theme | capitalize }}
+        </mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+}

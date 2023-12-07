@@ -31,7 +31,7 @@ import { AuthService } from '@services/auth.service';
     ProfileComponent,
   ],
   templateUrl: './user-main.component.html',
-  styleUrls: ['./user-main.component.scss']
+  styleUrls: ['./user-main.component.scss'],
 })
 export class UserMainComponent {
   constructor(
@@ -47,5 +47,4 @@ export class UserMainComponent {
   openEdit(): void {
     this.bottomSheet.open(UserEditComponent);
   }
-
 }

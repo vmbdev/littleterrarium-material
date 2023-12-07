@@ -36,12 +36,11 @@ import { AuthService } from '@services/auth.service';
     WaitDialogComponent,
   ],
   templateUrl: './signin.component.html',
-  styleUrls: ['./signin.component.scss']
 })
 export class SigninComponent {
   signinForm: FormGroup = this.fb.group({
     username: ['', Validators.required],
-    password: ['', Validators.required]
+    password: ['', Validators.required],
   });
   hidePassword: boolean = true;
   authInvalid: boolean = false;
@@ -57,7 +56,7 @@ export class SigninComponent {
   ngOnInit(): void {
     this.auth.signedIn$.subscribe((val: boolean) => {
       if (val) this.router.navigateByUrl('/');
-    })
+    });
   }
 
   openWaitDialog() {
@@ -77,24 +76,26 @@ export class SigninComponent {
     const wd = this.openWaitDialog();
     this.authInvalid = false;
 
-
-    this.auth.signIn(username, password)
-    .pipe(
-      finalize(() => { wd.close() })
-    ).subscribe({
-      next: () => {
-        this.router.navigateByUrl('/');
-      },
-      error: (err: any) => {
-        if (err.msg && (err.msg === 'USER_DATA_INCORRECT')) {
-          this.authInvalid = true;
-        }
-      }
-    });
+    this.auth
+      .signIn(username, password)
+      .pipe(
+        finalize(() => {
+          wd.close();
+        })
+      )
+      .subscribe({
+        next: () => {
+          this.router.navigateByUrl('/');
+        },
+        error: (err: any) => {
+          if (err.msg && err.msg === 'USER_DATA_INCORRECT') {
+            this.authInvalid = true;
+          }
+        },
+      });
   }
 
   toggleHidePassword(): void {
     this.hidePassword = !this.hidePassword;
   }
-
 }

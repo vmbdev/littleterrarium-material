@@ -17,8 +17,8 @@ import {
     MatButtonModule,
     MatIconModule,
     MatMenuModule,
-    TranslateModule
+    TranslateModule,
   ],
-  templateUrl: './plant-menu-water.component.html'
+  templateUrl: './plant-menu-water.component.html',
 })
-export class PlantMenuWaterComponent extends PlantBaseActionComponent { }
+export class PlantMenuWaterComponent extends PlantBaseActionComponent {}

@@ -32,7 +32,7 @@ import { DaysAgoPipe } from '@pipes/days-ago/days-ago.pipe';
     MatDialogModule,
     TranslateModule,
     DaysAgoPipe,
-  ]
+  ],
 })
 export class PlantWaterWidgetComponent {
   constructor(
@@ -52,9 +52,9 @@ export class PlantWaterWidgetComponent {
         title: this.translate.instant('general.watering'),
         question: [
           this.translate.instant('plant-widget-water.confirm'),
-          this.translate.instant('plant-widget-water.warning')
+          this.translate.instant('plant-widget-water.warning'),
         ],
-        accept: () => this.plantService.water().subscribe()
+        accept: () => this.plantService.water().subscribe(),
       },
     });
   }

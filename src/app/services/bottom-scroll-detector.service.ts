@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class BottomScrollDetectorService {
   // for local count; not to stream if not necessary
@@ -10,7 +10,7 @@ export class BottomScrollDetectorService {
   detected = new Subject<boolean>();
   detected$ = this.detected.asObservable();
 
-  constructor() { }
+  constructor() {}
 
   set(): void {
     if (!this.currentValue) this.detected.next(true);

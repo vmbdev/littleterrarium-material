@@ -14,19 +14,15 @@
     {{ 'photo.cover' | translate }}
   </ltm-toggle-option>
   
-  @if (imagePath.get(photo.images, 'full'); as image) {
+  @if (currentImageFull) {
     <div class="photo">
       <img
-        [src]="image"
+        [src]="currentImageFull"
         draggable="false"
         (swiperight)="loadPrevPhoto()"
         (swipeleft)="loadNextPhoto()"
         (click)="toggleViewer()"
       >
     </div>
-
-    @if (showViewer) {
-      <ltm-viewer (close)="toggleViewer()" [imageSrc]="image" />
-    }
   }
 }

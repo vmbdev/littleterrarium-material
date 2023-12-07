@@ -20,34 +20,34 @@ import { FormBaseComponent } from '@components/form-base/form-base.component';
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
-    TranslateModule
+    TranslateModule,
   ],
-  templateUrl: './user-form-email.component.html'
+  templateUrl: './user-form-email.component.html',
 })
 export class UserFormEmailComponent implements FormBaseComponent {
   @Input() currentEmail?: string;
   @Input() errorServerInvalid: boolean = false;
   @Input() errorServerTaken: boolean = false;
   public form = this.fb.group({
-    email: new FormControl<string>('admin@admin.com' ,[
+    email: new FormControl<string>('', [
       Validators.required,
-      Validators.pattern(/^\S+@\S+\.\S+$/i)
-    ])
+      Validators.pattern(/^\S+@\S+\.\S+$/i),
+    ]),
   });
 
-  constructor (private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
-    if (this.currentEmail) this.form.patchValue({ email: this.currentEmail })
+    if (this.currentEmail) this.form.patchValue({ email: this.currentEmail });
   }
 
   isTaken(): boolean {
     const errors = this.form.get('email')?.errors;
-    return (errors && errors['taken']);
+    return errors && errors['taken'];
   }
 
   isInvalid(): boolean {
     const errors = this.form.get('email')?.errors;
-    return (errors && errors['invalid']);
+    return errors && errors['invalid'];
   }
 }

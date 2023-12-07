@@ -33,9 +33,9 @@
                 [routerLink]="item[0].route ? item[0].route : null"
               >
                 <mat-icon>{{ item[0].icon }}</mat-icon>
-                <span *ngIf="item[0].tooltip as tooltip">
-                  {{ tooltip | translate }}
-                </span>
+                @if (item[0].tooltip; as tooltip) {
+                  <span>{{ tooltip | translate }}</span>
+                }
               </button>
             } @else {
               <mat-divider></mat-divider>

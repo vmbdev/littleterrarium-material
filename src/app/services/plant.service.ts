@@ -1,22 +1,22 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, EMPTY, map, Observable } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
 
 import {
   ApiService,
   PlantGetConfig,
-  PlantUpdateConfig
+  PlantUpdateConfig,
 } from '@services/api.service';
 import { AuthService } from '@services/auth.service';
 import { ImagePathService } from '@services/image-path.service';
 import { Photo } from '@models/photo.model';
 import { Condition, Plant } from '@models/plant.model';
-import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PlantService {
-  plant: BehaviorSubject<Plant | null> = new BehaviorSubject<Plant | null>(null);
+  plant = new BehaviorSubject<Plant | null>(null);
   plant$ = this.plant.asObservable();
   owned: boolean = false;
 
@@ -25,7 +25,7 @@ export class PlantService {
     private auth: AuthService,
     private imagePath: ImagePathService,
     private translate: TranslateService
-  ) { }
+  ) {}
 
   create(plant: Plant): Observable<Plant> {
     return this.api.createPlant(plant);
@@ -36,7 +36,7 @@ export class PlantService {
 
     return this.api.getPlant(id, options).pipe(
       map((plant: Plant) => {
-        this.owned = (this.auth.getUser()?.id === plant.ownerId);
+        this.owned = this.auth.getUser()?.id === plant.ownerId;
         plant.visibleName = this.getVisibleName(plant);
 
         this.plant.next(plant);
@@ -71,16 +71,21 @@ export class PlantService {
 
     if (plant.customName) name = plant.customName;
     else if (plant.specie?.name) {
-      name = plant.specie.name.slice(0,1).toUpperCase() + plant.specie.name.slice(1);
+      name =
+        plant.specie.name.slice(0, 1).toUpperCase() +
+        plant.specie.name.slice(1);
+    } else {
+      name = this.translate.instant('general.unnamedPlant', {
+        plantId: plant.id,
+      });
     }
-    else name = this.translate.instant('general.unnamedPlant', { plantId: plant.id });
 
     return name;
   }
 
   update(plant: Plant, options: PlantUpdateConfig = {}): Observable<Plant> {
     if (plant.specieId === null) options.removeSpecie = true;
-    
+
     return this.api.updatePlant(plant, options).pipe(
       map((plant: Plant) => {
         const current = this.plant.getValue();
@@ -102,9 +107,7 @@ export class PlantService {
     if (id) {
       this.plant.next(null);
       return this.api.deletePlant(id);
-    }
-
-    else return EMPTY;
+    } else return EMPTY;
   }
 
   fertilize(id?: number): Observable<any> {
@@ -116,7 +119,7 @@ export class PlantService {
     if (plantId) {
       const updatedPlant = {
         id: plantId,
-        fertLast: new Date()
+        fertLast: new Date(),
       } as Plant;
 
       return this.update(updatedPlant);
@@ -134,7 +137,7 @@ export class PlantService {
     if (plantId) {
       const updatedPlant = {
         id: plantId,
-        waterLast: new Date()
+        waterLast: new Date(),
       } as Plant;
 
       return this.update(updatedPlant);
@@ -158,25 +161,22 @@ export class PlantService {
 
       if (workingPlant.cover) {
         image = this.imagePath.get(workingPlant.cover.images, 'thumb');
-      }
-      else if (
-        workingPlant.photos
-        && workingPlant.photos[0]
-        && workingPlant.photos[0].images
+      } else if (
+        workingPlant.photos &&
+        workingPlant.photos[0] &&
+        workingPlant.photos[0].images
       ) {
         image = this.imagePath.get(workingPlant.photos[0].images, 'thumb');
-      }
-      else image = 'assets/nopic.png';
+      } else image = 'assets/nopic.png';
 
       return image;
-    }
-    else return 'assets/nopic.png';
+    } else return 'assets/nopic.png';
   }
 
   getConditionColor(condition: Condition): string {
     let color: string;
 
-    switch(condition) {
+    switch (condition) {
       case 'BAD': {
         color = 'red';
         break;

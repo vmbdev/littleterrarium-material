@@ -34,7 +34,7 @@ import { User } from '@models/user.model';
     StepperNavigationComponent,
     UserFormPasswordComponent,
     UserFormUsernameComponent,
-    UserFormEmailComponent
+    UserFormEmailComponent,
   ],
   templateUrl: './register.component.html',
   providers: [
@@ -45,16 +45,15 @@ import { User } from '@models/user.model';
   ],
 })
 export class RegisterComponent {
-  @ViewChild(UserFormPasswordComponent) passwordComponent!: UserFormPasswordComponent;
-  @ViewChild(UserFormUsernameComponent) usernameComponent!: UserFormUsernameComponent;
+  @ViewChild(UserFormPasswordComponent)
+  passwordComponent!: UserFormPasswordComponent;
+  @ViewChild(UserFormUsernameComponent)
+  usernameComponent!: UserFormUsernameComponent;
   @ViewChild(UserFormEmailComponent) emailComponent!: UserFormEmailComponent;
 
   stepperIndex: number | null = null;
-  
-  constructor(
-    public auth: AuthService,
-    private router: Router
-  ) { }
+
+  constructor(public auth: AuthService, private router: Router) {}
 
   checkFormValidity(): boolean {
     const forms = [
@@ -70,9 +69,7 @@ export class RegisterComponent {
     return {
       ...this.emailComponent.form.value,
       ...this.usernameComponent.form.value,
-      password: this.passwordComponent.form
-        .get('passwordCheck')
-        ?.get('password')?.value
+      password: this.passwordComponent.form.get('password')?.value,
     } as User;
   }
 
@@ -87,51 +84,50 @@ export class RegisterComponent {
 
     const user = this.getUserFromForm();
 
-    this.auth.checkPassword(user.password).pipe(
-      switchMap(() => {
-        return this.auth.register(user);
-      }),
-      catchError((err: HttpErrorResponse) => {
-        const error = err.error;
+    this.auth
+      .checkPassword(user.password)
+      .pipe(
+        switchMap(() => {
+          return this.auth.register(user);
+        }),
+        catchError((err: HttpErrorResponse) => {
+          const error = err.error;
 
-        if (error.msg === 'USER_FIELD_EXISTS') {
-          if (error.errorData.field === 'username') {
-            this.usernameComponent.form
-              .get('username')
-              ?.setErrors({ taken: true });
+          if (error.msg === 'USER_FIELD_EXISTS') {
+            if (error.errorData.field === 'username') {
+              this.usernameComponent.form
+                .get('username')
+                ?.setErrors({ taken: true });
 
-            this.stepperMoveTo(0);
+              this.stepperMoveTo(0);
+            } else if (error.errorData.field === 'email') {
+              this.emailComponent.form
+                .get('email')
+                ?.setErrors({ taken: true });
+
+              this.stepperMoveTo(1);
+            }
+          } else if (error.msg === 'USER_FIELD_INVALID') {
+            if (error.errorData.field === 'username') {
+              this.usernameComponent.form
+                .get('username')
+                ?.setErrors({ invalid: true });
+
+              this.stepperMoveTo(0);
+            } else if (error.errorData.field === 'email') {
+              this.emailComponent.form
+                .get('email')
+                ?.setErrors({ invalid: true });
+
+              this.stepperMoveTo(1);
+            }
           }
-          else if (error.errorData.field === 'email') {
-            this.emailComponent.form
-              .get('email')
-              ?.setErrors({ taken: true });
 
-            this.stepperMoveTo(1);
-          }
-        }
-
-        else if (error.msg === 'USER_FIELD_INVALID') {
-          if (error.errorData.field === 'username') {
-            this.usernameComponent.form
-              .get('username')
-              ?.setErrors({ invalid: true });
-
-            this.stepperMoveTo(0);
-          }
-          else if (error.errorData.field === 'email') {
-            this.emailComponent.form
-              .get('email')
-              ?.setErrors({ invalid: true });
-
-            this.stepperMoveTo(1);
-          }
-        }
-
-        return EMPTY;
-      })
-    ).subscribe(() => {
-      this.router.navigateByUrl('/')
-    });
+          return EMPTY;
+        })
+      )
+      .subscribe(() => {
+        this.router.navigateByUrl('/');
+      });
   }
 }

@@ -20,17 +20,14 @@ import { User } from '@models/user.model';
     CommonModule,
     ProfileComponent,
     LocationListComponent,
-    PlantListComponent
+    PlantListComponent,
   ],
-  templateUrl: './terrarium.component.html'
+  templateUrl: './terrarium.component.html',
 })
 export class TerrariumComponent {
   user$?: Observable<User>;
 
-  constructor(
-    private route: ActivatedRoute,
-    private api: ApiService
-  ) {}
+  constructor(private route: ActivatedRoute, private api: ApiService) {}
 
   ngOnInit(): void {
     const username = this.route.snapshot.paramMap.get('username');
@@ -38,7 +35,5 @@ export class TerrariumComponent {
     if (username) {
       this.user$ = this.api.getUserByName(username);
     }
-
   }
-
 }

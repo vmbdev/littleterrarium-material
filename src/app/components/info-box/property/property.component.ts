@@ -5,12 +5,9 @@ import { MatIconModule } from '@angular/material/icon';
 @Component({
   selector: 'ltm-property',
   standalone: true,
-  imports: [
-    CommonModule,
-    MatIconModule
-  ],
+  imports: [CommonModule, MatIconModule],
   templateUrl: './property.component.html',
-  styleUrls: ['./property.component.scss']
+  styleUrls: ['./property.component.scss'],
 })
 export class PropertyComponent {
   @Input() icon: string = 'info';

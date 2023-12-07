@@ -44,8 +44,8 @@ import { Plant } from '@models/plant.model';
 import { Location } from '@models/location.model';
 
 interface PlantEditConfig {
-  id: number,
-  config: PlantGetConfig
+  id: number;
+  config: PlantGetConfig;
 }
 
 @Component({
@@ -65,17 +65,23 @@ interface PlantEditConfig {
     PlantFormConditionComponent,
     PlantFormLocationComponent,
     FormPrivacyComponent,
-    EditPageComponent
+    EditPageComponent,
   ],
-  templateUrl: './plant-edit.component.html'
+  templateUrl: './plant-edit.component.html',
 })
 export class PlantEditComponent {
-  @ViewChild(PlantFormNameComponent) nameComponent!: PlantFormNameComponent;
-  @ViewChild(PlantFormSpecieComponent) specieComponent!: PlantFormSpecieComponent;
-  @ViewChild(FormPrivacyComponent) privacyComponent!: FormPrivacyComponent;
-  @ViewChild(PlantFormDescriptionComponent) descriptionComponent!: PlantFormDescriptionComponent;
-  @ViewChild(PlantFormConditionComponent) conditionComponent!: PlantFormConditionComponent;
-  @ViewChild(PlantFormLocationComponent) locationComponent!: PlantFormLocationComponent;
+  @ViewChild(PlantFormNameComponent)
+  nameComponent!: PlantFormNameComponent;
+  @ViewChild(PlantFormSpecieComponent)
+  specieComponent!: PlantFormSpecieComponent;
+  @ViewChild(FormPrivacyComponent)
+  privacyComponent!: FormPrivacyComponent;
+  @ViewChild(PlantFormDescriptionComponent)
+  descriptionComponent!: PlantFormDescriptionComponent;
+  @ViewChild(PlantFormConditionComponent)
+  conditionComponent!: PlantFormConditionComponent;
+  @ViewChild(PlantFormLocationComponent)
+  locationComponent!: PlantFormLocationComponent;
 
   locations: Location[] = [];
   returnedPlant?: Plant;
@@ -90,7 +96,7 @@ export class PlantEditComponent {
     private errorHandler: ErrorHandlerService,
     @Optional() private bottomSheetRef: MatBottomSheetRef,
     @Optional() @Inject(MAT_BOTTOM_SHEET_DATA) public editPlant: PlantEditConfig
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.plant$ = this.plantService.get(
@@ -98,7 +104,7 @@ export class PlantEditComponent {
       this.editPlant.config
     );
   }
-  
+
   openWaitDialog() {
     return this.dialog.open(WaitDialogComponent, {
       disableClose: true,
@@ -116,7 +122,7 @@ export class PlantEditComponent {
       this.privacyComponent.form,
       this.descriptionComponent.form,
       this.conditionComponent.form,
-      this.locationComponent.form
+      this.locationComponent.form,
     ];
   }
 
@@ -126,8 +132,8 @@ export class PlantEditComponent {
     if (this.forms.length === 0) this.createFormList();
 
     return {
-      ...Object.assign({}, ...(this.forms.map(i => i.value))),
-      id: this.editPlant.id
+      ...Object.assign({}, ...this.forms.map((i) => i.value)),
+      id: this.editPlant.id,
     } as Plant;
   }
 
@@ -144,21 +150,24 @@ export class PlantEditComponent {
       this.errorHandler.push(this.translate.instant('general.formErrors'));
       return;
     }
-    
+
     const plant: Plant = this.getPlantFromForm();
     const wd = this.openWaitDialog();
 
-    this.plantService.update(plant).pipe(
-      finalize(() => { wd.close() })
-    ).subscribe((updatedPlant: Plant) => {
-      const currentPlant = this.plantService.current();
+    this.plantService
+      .update(plant)
+      .pipe(
+        finalize(() => {
+          wd.close();
+        })
+      )
+      .subscribe((updatedPlant: Plant) => {
+        const currentPlant = this.plantService.current();
 
-      if (this.editPlant && this.bottomSheetRef) {
-        this.returnedPlant = { ...currentPlant, ...updatedPlant };
-        this.bottomSheetRef.dismiss(this.returnedPlant);
-      }
-    });
-
+        if (this.editPlant && this.bottomSheetRef) {
+          this.returnedPlant = { ...currentPlant, ...updatedPlant };
+          this.bottomSheetRef.dismiss(this.returnedPlant);
+        }
+      });
   }
-
 }

@@ -18,10 +18,9 @@ import { MainToolbarService } from '@services/main-toolbar.service';
     LocationListComponent,
     SigninComponent,
   ],
-  templateUrl: './home.component.html'
+  templateUrl: './home.component.html',
 })
 export class HomeComponent {
-
   constructor(
     public auth: AuthService,
     private mt: MainToolbarService,
@@ -36,9 +35,7 @@ export class HomeComponent {
         });
         this.mt.setButtons([]);
         this.mt.setMenu([]);
-      }
-      else this.mt.hide();
-    })
+      } else this.mt.hide();
+    });
   }
-
 }

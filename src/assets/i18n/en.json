@@ -186,7 +186,7 @@
   "signin.forgottenPassword": "Forgot my password",
   "signin.homepageMsg": "We are really happy to have you here. <b>Sign in</b> or <b>sign up</b> and start taking care of your plants!",
   "signin.homepageTitle": "Welcome to Little Terrarium!",
-  "signin.identification": "Username or email",
+  "general.identification": "Username or email",
   "signin.invalidCredentials": "Sorry, the credentials are not valid.",
   "signin.progress": "Signing in...",
   "signin.welcomeBack": "Welcome back!",
@@ -229,5 +229,13 @@
   "user-register.usernameTaken": "Sorry, your username already exists. Please choose another.",
   "userbox.profile": "Edit profile",
   "userbox.terrarium": "Your Terrarium",
-  "userbox.username": "Hi <b>{$INTERPOLATION}</b>"
+  "userbox.username": "Hi <b>{$INTERPOLATION}</b>",
+  "password-recovery.title": "Recover your password",
+  "password-recovery.error": "Sorry, we couldn't find the username or email provided.",
+  "password-recovery.info": "Please, provide your username or your email and we'll send you a link to recover your password.",
+  "password-recovery.success": "We've sent you an email with a link to recover your password. Just in case, check your spam folder!",
+  "password-reset.desc": "Please set a new password below.",
+  "password-reset.invalidPassword": "Password is invalid. Please follow the rules above.",
+  "password-reset.invalidToken": "The link has expired or is invalid. Please, request the password recovery again.",
+  "password-reset.passwordChanged": "The password has changed. Please, sign in again with the new password."
 }

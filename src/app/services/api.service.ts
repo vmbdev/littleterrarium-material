@@ -8,58 +8,62 @@ import { Location } from '@models/location.model';
 import { Photo, NavigationData } from '@models/photo.model';
 import { CoverPhoto, Plant } from '@models/plant.model';
 import { Specie } from '@models/specie.model';
-import { PasswordRequirements, User, UsernameRequirements } from '@models/user.model';
+import {
+  PasswordRequirements,
+  User,
+  UsernameRequirements,
+} from '@models/user.model';
 import { BackendResponse } from '@models/backend-response.model';
 import { SortColumn, SortOrder } from '@models/sort-options.model';
 
 export interface LocationGetConfig {
-  plantCount?: boolean
-  userId?: number | null
-  limit?: number
+  plantCount?: boolean;
+  userId?: number | null;
+  limit?: number;
 }
 
 export interface LocationUpsertConfig {
-  update?: boolean
-  removePicture?: boolean
+  update?: boolean;
+  removePicture?: boolean;
 }
 
 export interface PlantGetConfig {
-  userId?: number
-  locationId?: number
-  photos?: boolean
-  cover?: boolean
-  limit?: number
-  filter?: string
-  cursor?: number
-  sort?: SortColumn
-  order?: SortOrder
+  userId?: number;
+  locationId?: number;
+  photos?: boolean;
+  cover?: boolean;
+  limit?: number;
+  filter?: string;
+  cursor?: number;
+  sort?: SortColumn;
+  order?: SortOrder;
 }
 
 export interface PlantUpdateConfig {
-  removeSpecie?: boolean
-  removeCover?: boolean
+  removeSpecie?: boolean;
+  removeCover?: boolean;
 }
 
 export interface PhotoGetConfig {
-  navigation?: boolean
-  cover?: boolean
+  navigation?: boolean;
+  cover?: boolean;
 }
 
 export interface AngularLocales {
-  locales: string[]
-  default: string
+  locales: string[];
+  default: string;
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ApiService {
   constructor(
     private http: HttpClient,
     @Inject(BACKEND_URL) public backendUrl: string
-  ) { }
+  ) {}
 
-  endpoint = (path: string) => {
+  endpoint(path: string): string {
     return `${this.backendUrl}${endpoint}/${path}`;
   }
 
@@ -72,7 +76,7 @@ export class ApiService {
    */
 
   getCurrentUser(): Observable<User> {
-    return this.http.get<User>(this.endpoint('users'))
+    return this.http.get<User>(this.endpoint('users'));
   }
 
   getUser(id: number): Observable<User> {
@@ -85,12 +89,36 @@ export class ApiService {
 
   signIn(username: string, password: string): Observable<User> {
     return this.http.post<User>(this.endpoint('users/signin'), {
-      username, password
+      username,
+      password,
     });
   }
 
   logOut(): Observable<any> {
     return this.http.post<any>(this.endpoint('users/logout'), null);
+  }
+
+  forgotPassword(userRef: string): Observable<any> {
+    return this.http.post<any>(this.endpoint('users/forgotten'), { userRef });
+  }
+
+  recoverPassword(
+    token: string,
+    password: string,
+    userId: number
+  ): Observable<any> {
+    return this.http.post<any>(this.endpoint('users/restore'), {
+      token,
+      password,
+      userId,
+    });
+  }
+
+  verifyToken(token: string, userId: number): Observable<any> {
+    return this.http.post<any>(this.endpoint('users/verifyToken'), {
+      token,
+      userId,
+    });
   }
 
   getPasswordRequirements(): Observable<PasswordRequirements> {
@@ -107,7 +135,8 @@ export class ApiService {
 
   checkPassword(password: string): Observable<BackendResponse> {
     return this.http.post<BackendResponse>(
-      this.endpoint('users/password/check'), { password }
+      this.endpoint('users/password/check'),
+      { password }
     );
   }
 
@@ -160,10 +189,7 @@ export class ApiService {
     return this.http.get<Location[]>(this.endpoint(url));
   }
 
-  getLocationPlants(
-    id: number,
-    options?: PlantGetConfig
-  ): Observable<Plant[]> {
+  getLocationPlants(id: number, options?: PlantGetConfig): Observable<Plant[]> {
     return this.getPlants({ ...options, locationId: id });
   }
 
@@ -194,14 +220,10 @@ export class ApiService {
       form.append('id', location.id.toString());
     }
 
-    if (options.update) observable = this.http.put<Location>(
-      this.endpoint('locations'),
-      form
-    );
-    else observable = this.http.post<Location>(
-      this.endpoint('locations'),
-      form
-    );
+    if (options.update)
+      observable = this.http.put<Location>(this.endpoint('locations'), form);
+    else
+      observable = this.http.post<Location>(this.endpoint('locations'), form);
 
     return observable;
   }
@@ -255,8 +277,8 @@ export class ApiService {
   getPlant(id: number, options?: PlantGetConfig): Observable<Plant> {
     let url = `plants/${id}`;
 
-    if (options && (options.photos || options.cover)) {
-      url += `?photos=${options.photos ? true : false}&cover=${options.cover ? true : false}`;
+    if ((options?.photos || options?.cover)) {
+      url += `?photos=${!!options.photos}&cover=${!!options.cover}`;
     }
 
     return this.http.get<Plant>(this.endpoint(url));
@@ -277,10 +299,8 @@ export class ApiService {
   updatePlant(plant: Plant, options?: PlantUpdateConfig): Observable<Plant> {
     const data = plant as any;
 
-    if (options) {
-      if (options.removeSpecie) data.removeSpecie = true;
-      if (options.removeCover) data.removeCover = true;
-    }
+      if (options?.removeSpecie) data.removeSpecie = true;
+      if (options?.removeCover) data.removeCover = true;
 
     return this.http.put<Plant>(this.endpoint('plants'), data);
   }
@@ -300,7 +320,7 @@ export class ApiService {
     if (options) {
       url += '?';
       if (options.navigation) {
-        url += `navigation=${options.navigation ? 'true' : 'false' }&`;
+        url += `navigation=${options.navigation ? 'true' : 'false'}&`;
       }
       if (options.cover) url += `cover=${options.cover ? 'true' : 'false'}&`;
     }
@@ -323,11 +343,10 @@ export class ApiService {
       form.append('photo', photo);
     });
 
-    return this.http.post<BackendResponse>(
-      this.endpoint('photos'),
-      form,
-      { reportProgress: true, observe: 'events' }
-    );
+    return this.http.post<BackendResponse>(this.endpoint('photos'), form, {
+      reportProgress: true,
+      observe: 'events',
+    });
   }
 
   updatePhoto(photo: Photo): Observable<Photo> {

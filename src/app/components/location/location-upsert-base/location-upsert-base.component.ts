@@ -23,15 +23,17 @@ import { Location } from '@models/location.model';
   selector: 'ltm-location-upsert-base',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './location-upsert-base.component.html'
+  templateUrl: './location-upsert-base.component.html',
 })
 export class LocationUpsertBaseComponent {
-  @ViewChild(LocationFormNameComponent) nameComponent!: LocationFormNameComponent;
-  @ViewChild(LocationFormLightComponent) lightComponent!: LocationFormLightComponent;
+  @ViewChild(LocationFormNameComponent)
+  nameComponent!: LocationFormNameComponent;
+  @ViewChild(LocationFormLightComponent)
+  lightComponent!: LocationFormLightComponent;
   @ViewChild(FormPrivacyComponent) privacyComponent!: FormPrivacyComponent;
 
   picture?: File;
-  
+
   protected translate: TranslateService;
   protected dialog: MatDialog;
   protected locationService: LocationService;
@@ -46,7 +48,7 @@ export class LocationUpsertBaseComponent {
 
   fileChange(files: File[]) {
     if (files.length > 0) {
-      this.picture = files[0]
+      this.picture = files[0];
     }
   }
 
@@ -65,7 +67,7 @@ export class LocationUpsertBaseComponent {
       ...this.nameComponent.form.value,
       ...this.lightComponent.form.value,
       ...this.privacyComponent.form.value,
-      pictureFile: this.picture
+      pictureFile: this.picture,
     } as Location;
   }
 
@@ -76,7 +78,7 @@ export class LocationUpsertBaseComponent {
         message: this.translate.instant('progress-bar.uploading'),
         progressBar: true,
         progressValue: 100,
-        finalMessage: this.translate.instant('general.afterUpload')
+        finalMessage: this.translate.instant('general.afterUpload'),
       },
     });
   }

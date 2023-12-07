@@ -1,13 +1,13 @@
 <form [formGroup]="signinForm" (ngSubmit)="submit()">
-  <div class="signin">
+  <div class="user-form">
     <h1>{{ 'signin.homepageTitle' | translate }}</h1>
     <p [innerHTML]="'signin.homepageMsg' | translate"></p>
 
     <mat-form-field>
-      <mat-label>{{ 'signin.identification' | translate }}</mat-label>
+      <mat-label>{{ 'general.identification' | translate }}</mat-label>
       <input type="text" matInput formControlName="username">
     </mat-form-field>
-    
+
     <mat-form-field>
       <mat-label>{{ 'general.password' | translate }}</mat-label>
       <input
@@ -19,7 +19,7 @@
         mat-icon-button
         matSuffix
         (click)="toggleHidePassword()"
-        [attr.aria-label]="'Hide password'"
+        aria-label="Hide password"
         [attr.aria-pressed]="hidePassword"
       >
         <mat-icon>
@@ -28,13 +28,24 @@
       </button>
     </mat-form-field>
 
-    <div *ngIf="authInvalid" class="signin__error">
-      {{ 'signin.invalidCredentials' | translate }}
-    </div>
+    @if (authInvalid) {
+      <div class="user-form__error">
+        {{ 'signin.invalidCredentials' | translate }}
+      </div>
+    }
 
     <button type="submit" mat-raised-button color="primary">
       {{ 'general.signin' | translate }}
     </button>
+
+    <button
+      mat-button
+      color="link"
+      routerLink="/user/recover"
+      [innerHTML]="'signin.forgottenPassword' | translate"
+    >
+    </button>
+
     <button
       mat-button
       color="link"

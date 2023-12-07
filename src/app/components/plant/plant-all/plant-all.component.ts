@@ -9,11 +9,8 @@ import { MainToolbarService } from '@services/main-toolbar.service';
 @Component({
   selector: 'ltm-plant-all',
   standalone: true,
-  imports: [
-    PlantListComponent,
-    TranslateModule
-  ],
-  templateUrl: './plant-all.component.html'
+  imports: [PlantListComponent, TranslateModule],
+  templateUrl: './plant-all.component.html',
 })
 export class PlantAllComponent {
   constructor(

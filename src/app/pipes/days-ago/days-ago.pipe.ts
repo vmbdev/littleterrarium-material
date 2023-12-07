@@ -3,10 +3,9 @@ import { DateTime } from 'luxon';
 
 @Pipe({
   name: 'daysAgo',
-  standalone: true
+  standalone: true,
 })
 export class DaysAgoPipe implements PipeTransform {
-
   transform(value: string | Date, abs: boolean = true): number {
     let parsedValue;
 
@@ -20,5 +19,4 @@ export class DaysAgoPipe implements PipeTransform {
 
     return Math.ceil(numberOfDays);
   }
-
 }

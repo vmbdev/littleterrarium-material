@@ -4,28 +4,24 @@ import { MatSelectModule } from '@angular/material/select';
 import {
   LangChangeEvent,
   TranslateModule,
-  TranslateService
+  TranslateService,
 } from '@ngx-translate/core';
 
 @Component({
   selector: 'ltm-lang-switcher',
   standalone: true,
-  imports: [
-    MatFormFieldModule,
-    MatSelectModule,
-    TranslateModule
-  ],
+  imports: [MatFormFieldModule, MatSelectModule, TranslateModule],
   templateUrl: './lang-switcher.component.html',
-  styleUrls: ['./lang-switcher.component.scss']
+  styleUrls: ['./lang-switcher.component.scss'],
 })
 export class LangSwitcherComponent {
   storedLanguage = localStorage.getItem('LT_lang');
   languages = [
     { value: 'en', name: 'English' },
     { value: 'es', name: 'Español' },
-  ]
+  ];
 
-  constructor(private translate: TranslateService) {
+  constructor(private readonly translate: TranslateService) {
     translate.setDefaultLang('en');
 
     if (this.storedLanguage) translate.use(this.storedLanguage);

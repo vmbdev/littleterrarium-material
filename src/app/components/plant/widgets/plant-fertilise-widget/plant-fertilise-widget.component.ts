@@ -32,7 +32,7 @@ import { DaysAgoPipe } from '@pipes/days-ago/days-ago.pipe';
     TranslateModule,
     DaysAgoPipe,
   ],
-  templateUrl: './plant-fertilise-widget.component.html'
+  templateUrl: './plant-fertilise-widget.component.html',
 })
 export class PlantFertiliseWidgetComponent {
   constructor(
@@ -50,10 +50,8 @@ export class PlantFertiliseWidgetComponent {
     this.dialog.open(ConfirmDialogComponent, {
       data: {
         title: this.translate.instant('general.fertilizer'),
-        question: [
-          this.translate.instant('plant-widget-fertilizer.confirm')
-        ],
-        accept: () => this.plantService.fertilize().subscribe()
+        question: [this.translate.instant('plant-widget-fertilizer.confirm')],
+        accept: () => this.plantService.fertilize().subscribe(),
       },
     });
   }

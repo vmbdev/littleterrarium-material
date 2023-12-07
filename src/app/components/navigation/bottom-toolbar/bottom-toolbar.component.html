@@ -14,7 +14,13 @@
     <mat-icon>forest</mat-icon>
   </button>
   <button type="button" routerLink="/tasks" mat-icon-button>
-    <mat-icon [matBadge]="getTaskCount()" matBadgeColor="warn">task</mat-icon>
+    <mat-icon
+      [matBadge]="getTaskCount()"
+      matBadgeColor="warn"
+      aria-hidden="false"
+    >
+      task
+    </mat-icon>
   </button>
   <button type="button" routerLink="/user" mat-icon-button>
     <ltm-user-box />

@@ -17,9 +17,9 @@ import { AuthService } from '@services/auth.service';
     CommonModule,
     WaitDialogComponent,
     TranslateModule,
-    MatDialogModule
+    MatDialogModule,
   ],
-  templateUrl: './logout.component.html'
+  templateUrl: './logout.component.html',
 })
 export class LogoutComponent {
   constructor(
@@ -27,16 +27,23 @@ export class LogoutComponent {
     private router: Router,
     private dialog: MatDialog,
     private translate: TranslateService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     const wd = this.openWaitDialog();
 
-    this.auth.logOut().pipe(
-      finalize(() => { wd.close() } )
-    ).subscribe({
-      complete: () => { this.router.navigate(['/']) }
-    });
+    this.auth
+      .logOut()
+      .pipe(
+        finalize(() => {
+          wd.close();
+        })
+      )
+      .subscribe({
+        complete: () => {
+          this.router.navigate(['/']);
+        },
+      });
   }
 
   openWaitDialog() {

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, InjectionToken, Injector } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ActivatedRoute, Params, Router, RouterModule } from '@angular/router';
@@ -25,7 +25,7 @@ import {
 import {
   PhotoEditComponent
 } from '@components/photo/photo-edit/photo-edit.component';
-import { ViewerComponent } from '@components/photo/viewer/viewer.component';
+import { ViewerComponent } from '@components/viewer/viewer.component';
 import {
   WaitDialogComponent
 } from '@components/dialogs/wait-dialog/wait-dialog.component';
@@ -40,6 +40,7 @@ import { ImagePathService } from '@services/image-path.service';
 import { Plant } from '@models/plant.model';
 import { NavigationData, Photo } from '@models/photo.model';
 import { DaysAgoPipe } from "@pipes/days-ago/days-ago.pipe";
+import { ViewerService } from '@services/viewer.service';
 
 @Component({
   selector: 'ltm-photo',
@@ -58,8 +59,8 @@ import { DaysAgoPipe } from "@pipes/days-ago/days-ago.pipe";
     PropertyComponent,
     ToggleOptionComponent,
     ViewerComponent,
-    DaysAgoPipe
-  ]
+    DaysAgoPipe,
+  ],
 })
 export class PhotoComponent {
   id?: number;
@@ -67,10 +68,9 @@ export class PhotoComponent {
   enablePhotoEditing: boolean = false;
   navigation: NavigationData = {};
   plantCoverId?: number;
+  currentImageFull?: string | null;
   coverChecked: boolean = false;
   touchEvents: any;
-
-  showViewer: boolean = false;
 
   routeDetect$?: Subscription;
 
@@ -84,8 +84,9 @@ export class PhotoComponent {
     private translate: TranslateService,
     private mt: MainToolbarService,
     private dialog: MatDialog,
-    private bottomSheet: MatBottomSheet
-  ) { }
+    private bottomSheet: MatBottomSheet,
+    private viewer: ViewerService,
+  ) {}
 
   ngOnInit(): void {
     // Angular doesn't update a component when the route only changes its
@@ -93,25 +94,22 @@ export class PhotoComponent {
     this.routeDetect$ = this.route.params.subscribe((param: Params) => {
       this.id = param['photoId'];
       this.loadPhoto();
-    })
+    });
   }
-
 
   loadNextPhoto() {
     if (this.navigation.next) {
-      this.router.navigate(
-        ['/photo', this.navigation.next.id],
-        { replaceUrl: true }
-      );
+      this.router.navigate(['/photo', this.navigation.next.id], {
+        replaceUrl: true,
+      });
     }
   }
 
   loadPrevPhoto() {
     if (this.navigation.prev) {
-      this.router.navigate(
-        ['/photo', this.navigation.prev.id],
-        { replaceUrl: true }
-      );
+      this.router.navigate(['/photo', this.navigation.prev.id], {
+        replaceUrl: true,
+      });
     }
   }
 
@@ -125,55 +123,72 @@ export class PhotoComponent {
 
       this.navigation = {};
 
-      this.photoService.get(this.id, { navigation: true, cover: true }).pipe(
-        finalize(() => { wd.close() }),
-        catchError((err: HttpErrorResponse) => {
-          let msg: string;
+      this.photoService
+        .get(this.id, { navigation: true, cover: true })
+        .pipe(
+          finalize(() => {
+            wd.close();
+          }),
+          catchError((err: HttpErrorResponse) => {
+            let msg: string;
 
-          if (err.error?.msg === 'PHOTO_NOT_FOUND') msg = 'photo.invalid';
-          else msg = 'errors.server';
+            if (err.error?.msg === 'PHOTO_NOT_FOUND') msg = 'photo.invalid';
+            else msg = 'errors.server';
 
-          this.translate.get(msg).subscribe((res: string) => {
-            this.errorHandler.push(res);
-          });
+            this.translate.get(msg).subscribe((res: string) => {
+              this.errorHandler.push(res);
+            });
 
-          this.router.navigateByUrl('/');
+            this.router.navigateByUrl('/');
 
-          return EMPTY;
-        }),
-        switchMap((photo: Photo) => {
-          this.mt.setName(this.getDateTitle(photo.takenAt));
-          this.mt.setMenu([
-            [{
-              icon: 'edit',
-              tooltip: 'general.edit',
-              click: () => { this.openEdit() }
-            }],
-            [{
-              icon: 'delete',
-              tooltip: 'general.delete',
-              click: () => { this.openRemoveDialog() }
-            }]
-          ]);
-          this.mt.setButtons([]);
+            return EMPTY;
+          }),
+          switchMap((photo: Photo) => {
+            this.currentImageFull = this.imagePath.get(photo.images, 'full');
+            this.mt.setName(this.getDateTitle(photo.takenAt));
+            this.mt.setMenu([
+              [
+                {
+                  icon: 'edit',
+                  tooltip: 'general.edit',
+                  click: () => {
+                    this.openEdit();
+                  },
+                },
+              ],
+              [
+                {
+                  icon: 'delete',
+                  tooltip: 'general.delete',
+                  click: () => {
+                    this.openRemoveDialog();
+                  },
+                },
+              ],
+            ]);
+            this.mt.setButtons([]);
 
-          return this.photoService.getNavigation(photo.id);
-        }),
-        switchMap((navigation: NavigationData) => {
-          this.navigation = navigation;
-          const photo = this.photoService.photo$.getValue();
+            return this.photoService.getNavigation(photo.id);
+          }),
+          switchMap((navigation: NavigationData) => {
+            this.navigation = navigation;
+            const photo = this.photoService.photo$.getValue();
 
-          if (photo?.plantId) return this.plantService.getCover(photo.plantId);
-          else return EMPTY;
-        })
-      ).subscribe((cover: any) => {
-        this.plantCoverId = cover.coverId;
-      });
+            if (photo?.plantId) {
+              return this.plantService.getCover(photo.plantId);
+            } else return EMPTY;
+          })
+        )
+        .subscribe((cover: any) => {
+          this.plantCoverId = cover.coverId;
+        });
     }
   }
 
   toggleViewer() {
-    this.showViewer = !this.showViewer;
+    if (this.currentImageFull) {
+      this.viewer.create(this.currentImageFull);
+    }
   }
 
   openRemoveDialog() {
@@ -181,7 +196,9 @@ export class PhotoComponent {
       data: {
         title: this.translate.instant('general.delete'),
         question: [this.translate.instant('photo.remove')],
-        accept: () => { this.delete() }
+        accept: () => {
+          this.delete();
+        },
       },
     });
   }
@@ -191,7 +208,7 @@ export class PhotoComponent {
     if (photo) {
       this.photoService.delete(photo.id).subscribe(() => {
         this.router.navigate(['/plant', photo.plantId]);
-      })
+      });
     }
   }
 
@@ -218,14 +235,14 @@ export class PhotoComponent {
       const ref = this.bottomSheet.open(PhotoEditComponent, {
         data: {
           id: this.id,
-        }
+        },
       });
 
       ref.afterDismissed().subscribe((photo: Photo) => {
         if (photo) {
           this.mt.setName(this.getDateTitle(photo.takenAt));
         }
-      })
+      });
     }
   }
 
@@ -233,13 +250,12 @@ export class PhotoComponent {
     const photo = this.photoService.photo$.getValue();
 
     if (photo) {
-      if (!setCover && (photo.id === this.plantCoverId)) {
+      if (!setCover && photo.id === this.plantCoverId) {
         const plant: Plant = { id: photo.plantId } as Plant;
         this.plantService.update(plant, { removeCover: true }).subscribe(() => {
           this.plantCoverId = undefined;
         });
-      }
-      else if (setCover) {
+      } else if (setCover) {
         const plant: Plant = { id: photo.plantId, coverId: photo.id } as Plant;
         this.plantService.update(plant).subscribe(() => {
           this.plantCoverId = photo.id;
@@ -247,5 +263,4 @@ export class PhotoComponent {
       }
     }
   }
-
 }

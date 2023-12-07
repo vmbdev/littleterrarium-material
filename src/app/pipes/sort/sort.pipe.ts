@@ -3,10 +3,9 @@ import { SortOrder } from '@models/sort-options.model';
 
 @Pipe({
   name: 'sort',
-  standalone: true
+  standalone: true,
 })
 export class SortPipe implements PipeTransform {
-
   transform(
     value: any[] | null,
     param: string,
@@ -31,8 +30,8 @@ export class SortPipe implements PipeTransform {
         bParam = (bParam as string).toLowerCase();
       }
 
-      if (order === 'asc') return ((aParam < bParam) ? -1 : 1);
-      else return ((aParam > bParam) ? -1 : 1);
+      if (order === 'asc') return aParam < bParam ? -1 : 1;
+      else return aParam > bParam ? -1 : 1;
     });
   }
 }

@@ -1,8 +1,7 @@
-@if (auth.user$ | async; as user) {
+@if ((auth.user$ | async)?.avatar; as avatar) {
   <div
-    *ngIf="user && user.avatar"
     class="userbox"
-    [ngStyle]="{ 'background-image': 'url(' + this.imagePath.get(user.avatar, 'thumb') +')' }"
+    [ngStyle]="{ 'background-image': 'url(' + this.imagePath.get(avatar, 'thumb') +')' }"
   >
   </div>
 } @else {

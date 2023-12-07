@@ -26,19 +26,16 @@ import { SearchService } from '@services/search.service';
     MatInputModule,
     MatButtonModule,
     ReactiveFormsModule,
-    TranslateModule
+    TranslateModule,
   ],
   templateUrl: './search.component.html',
-  styleUrls: ['./search.component.scss']
+  styleUrls: ['./search.component.scss'],
 })
 export class SearchComponent {
   @ViewChild('searchInput') searchElement!: ElementRef<MatInput>;
 
-  constructor(
-    private search: SearchService,
-    private cdr: ChangeDetectorRef
-  ) {}
-    
+  constructor(private search: SearchService, private cdr: ChangeDetectorRef) {}
+
   ngAfterViewInit() {
     this.searchElement.nativeElement.focus();
     this.cdr.detectChanges();

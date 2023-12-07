@@ -11,11 +11,8 @@ import { PlantService } from '@services/plant.service';
 @Component({
   selector: 'ltm-plant-base-action',
   standalone: true,
-  imports: [
-    CommonModule,
-    MatDialogModule
-  ],
-  templateUrl: './plant-base-action.component.html'
+  imports: [CommonModule, MatDialogModule],
+  templateUrl: './plant-base-action.component.html',
 })
 export class PlantBaseActionComponent {
   @Input({ required: true }) id?: number;
@@ -34,11 +31,13 @@ export class PlantBaseActionComponent {
           title: this.translate.instant('general.watering'),
           question: [
             this.translate.instant('plant-widget-water.confirm'),
-            this.translate.instant('plant-widget-water.warning')
+            this.translate.instant('plant-widget-water.warning'),
           ],
-          accept: () => this.plantService.water(this.id).subscribe(() => {
-            this.done.emit()
-          })
+          accept: () => {
+            this.plantService.water(this.id).subscribe(() => {
+              this.done.emit();
+            })
+          },
         },
       });
     }
@@ -49,12 +48,12 @@ export class PlantBaseActionComponent {
       this.dialog.open(ConfirmDialogComponent, {
         data: {
           title: this.translate.instant('general.fertilize'),
-          question: [
-            this.translate.instant('plant-widget-fertilizer.confirm')
-          ],
-          accept: () => this.plantService.fertilize(this.id).subscribe(() => {
-            this.done.emit()
-          })
+          question: [this.translate.instant('plant-widget-fertilizer.confirm')],
+          accept: () => {
+            this.plantService.fertilize(this.id).subscribe(() => {
+              this.done.emit();
+            })
+          },
         },
       });
     }

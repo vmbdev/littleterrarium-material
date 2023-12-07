@@ -8,7 +8,7 @@ export const AuthGuard = () => {
   const router = inject(Router);
 
   return auth.checked$.pipe(
-    skipWhile(isChecked => isChecked === false),
+    skipWhile((isChecked) => isChecked === false),
     map(() => {
       const isSignedIn = !!auth.getUser();
 
@@ -17,4 +17,4 @@ export const AuthGuard = () => {
       return isSignedIn;
     })
   );
-}
+};

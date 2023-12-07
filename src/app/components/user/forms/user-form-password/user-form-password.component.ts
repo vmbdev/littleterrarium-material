@@ -13,6 +13,9 @@ import { TranslateModule } from '@ngx-translate/core';
 
 import { FormBaseComponent } from '@components/form-base/form-base.component';
 import { ApiService } from '@services/api.service';
+import { PasswordRequirements } from '@models/user.model';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'ltm-user-form-password',
@@ -22,39 +25,38 @@ import { ApiService } from '@services/api.service';
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
-    TranslateModule
+    MatButtonModule,
+    MatIconModule,
+    TranslateModule,
   ],
   templateUrl: './user-form-password.component.html',
-  styleUrls: ['./user-form-password.component.scss']
+  styleUrls: ['./user-form-password.component.scss'],
 })
 export class UserFormPasswordComponent implements FormBaseComponent {
   @Input() currentFirstname: string | null = '';
   @Input() currentLastname: string | null = '';
-  public form = this.fb.group({
-    passwordCheck: this.fb.group(
-      {
-        password: ['', [Validators.required]],
-        password2: ['', Validators.required]
-      },
-      {
-        validators: [
-          this.checkPasswordStrength.bind(this),
-          this.checkPasswordsEqual
-        ]
-      }
-    )
-  });
-  pwdReq: any = null;
-  nonAlphaNumChars: string = '!@#$%^&*()_+-=[]{};\':"\|,.\<>/?';
+  public form = this.fb.group(
+    {
+      password: ['', [Validators.required]],
+      password2: ['', Validators.required],
+    },
+    {
+      validators: [
+        this.checkPasswordStrength.bind(this),
+        this.checkPasswordsEqual,
+      ],
+    }
+  );
+  pwdReq?: PasswordRequirements;
+  hidePassword: boolean = true;
+  hidePassword2: boolean = true;
+  nonAlphaNumChars: string = '!@#$%^&*()_+-=[]{};\':"|,.<>/?';
 
-  constructor (
-    private fb: FormBuilder,
-    private api: ApiService
-  ) {}
+  constructor(private fb: FormBuilder, private api: ApiService) {}
 
   ngOnInit(): void {
     this.api.getPasswordRequirements().subscribe((requirements: any) => {
-      this.pwdReq = requirements
+      this.pwdReq = requirements;
     });
   }
 
@@ -63,22 +65,24 @@ export class UserFormPasswordComponent implements FormBaseComponent {
     const errorObj: ValidationErrors = {};
 
     if (this.pwdReq) {
-      if (value.length < this.pwdReq.minLength) errorObj['minLength'] = true;
-      if (this.pwdReq.requireUppercase && !(/.*([A-Z]).*/).test(value)) {
+      if (value.length < this.pwdReq.minLength) {
+        errorObj['minLength'] = true;
+      }
+      if (this.pwdReq.requireUppercase && !/.*([A-Z]).*/.test(value)) {
         errorObj['missingUppercase'] = true;
       }
-      if (this.pwdReq.requireNumber && !(/.*(\d).*/).test(value)) {
+      if (this.pwdReq.requireNumber && !/.*(\d).*/.test(value)) {
         errorObj['missingNumber'] = true;
       }
       if (
-        this.pwdReq.requireNonAlphanumeric
-        && !(/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/).test(value)
+        this.pwdReq.requireNonAlphanumeric &&
+        !/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/.test(value)
       ) {
         errorObj['missingNonAlphanumeric'] = true;
       }
     }
 
-    return (Object.keys(errorObj).length > 0) ? errorObj : null;
+    return Object.keys(errorObj).length > 0 ? errorObj : null;
   }
 
   checkPasswordsEqual(group: AbstractControl): ValidationErrors | null {
@@ -92,17 +96,19 @@ export class UserFormPasswordComponent implements FormBaseComponent {
 
   hasPasswordConditions(): boolean {
     return !!(
-      this.pwdReq
-      && (
-        this.pwdReq.requireNumber
-        || this.pwdReq.requireUppercase
-        || this.pwdReq.requireNonAlphanumeric
-        )
+      this.pwdReq &&
+      (this.pwdReq.requireNumber ||
+        this.pwdReq.requireUppercase ||
+        this.pwdReq.requireNonAlphanumeric)
     );
   }
 
   hasPasswordError(control: string): boolean | undefined {
-    return this.form.get('passwordCheck')?.hasError(control);
+    return this.form.hasError(control);
   }
-  
+
+  toggleHidePassword(field: number = 1): void {
+    if (field === 1) this.hidePassword = !this.hidePassword;
+    else if (field === 2) this.hidePassword2 = !this.hidePassword2;
+  }
 }

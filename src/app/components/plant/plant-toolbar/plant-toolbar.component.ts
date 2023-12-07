@@ -18,10 +18,10 @@ import {
     MatIconModule,
     MatButtonModule,
     PlantButtonWaterComponent,
-    PlantButtonFertilizeComponent
+    PlantButtonFertilizeComponent,
   ],
   templateUrl: './plant-toolbar.component.html',
-  styleUrls: ['./plant-toolbar.component.scss']
+  styleUrls: ['./plant-toolbar.component.scss'],
 })
 export class PlantToolbarComponent {
   @Input({ required: true }) id?: number;

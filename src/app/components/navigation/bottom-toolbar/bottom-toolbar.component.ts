@@ -21,10 +21,10 @@ import { TaskService } from '@services/task.service';
     MatBadgeModule,
     MatButtonModule,
     RouterModule,
-    UserBoxComponent
+    UserBoxComponent,
   ],
   templateUrl: './bottom-toolbar.component.html',
-  styleUrls: ['./bottom-toolbar.component.scss']
+  styleUrls: ['./bottom-toolbar.component.scss'],
 })
 export class BottomToolbarComponent {
   @Output() toggleSidenav = new EventEmitter();
@@ -33,14 +33,14 @@ export class BottomToolbarComponent {
     public auth: AuthService,
     public imagePath: ImagePathService,
     public taskService: TaskService
-  ) { }
+  ) {}
 
   emitToggleSidenav() {
     this.toggleSidenav.emit();
   }
 
   getTaskCount(): number | null {
-    const count = this.taskService.getCount()
+    const count = this.taskService.getCount();
 
     return count > 0 ? count : null;
   }

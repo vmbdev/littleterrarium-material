@@ -29,15 +29,15 @@ import { Plant } from '@models/plant.model';
     MatButtonModule,
     MatDividerModule,
     MatCardModule,
-    TranslateModule
+    TranslateModule,
   ],
-  templateUrl: './plant-edit-fertilizer.component.html'
+  templateUrl: './plant-edit-fertilizer.component.html',
 })
 export class PlantEditFertilizerComponent {
   fertForm = this.fb.group({
     fertFreq: new FormControl<number | null>(null),
     fertLast: new FormControl<Date | null>(null),
-    fertType: new FormControl<string | null>(null)
+    fertType: new FormControl<string | null>(null),
   });
   id?: number;
   today = new Date();
@@ -45,11 +45,10 @@ export class PlantEditFertilizerComponent {
   constructor(
     public plantService: PlantService,
     private fb: FormBuilder,
-    @Optional() private bottomSheetRef: MatBottomSheetRef,
+    @Optional() private bottomSheetRef: MatBottomSheetRef
   ) {}
 
   ngOnInit(): void {
-    // TODO: shall it get a new one, or use the current one?
     const plant = this.plantService.current();
 
     if (plant) {
@@ -57,8 +56,8 @@ export class PlantEditFertilizerComponent {
       this.fertForm.patchValue({
         fertFreq: plant.fertFreq,
         fertLast: plant.fertLast,
-        fertType: plant.fertType
-      })
+        fertType: plant.fertType,
+      });
     }
   }
 

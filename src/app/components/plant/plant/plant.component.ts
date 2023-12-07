@@ -41,24 +41,24 @@ import { Condition, Plant } from '@models/plant.model';
 import { CapitalizePipe } from '@pipes/capitalize/capitalize.pipe';
 
 @Component({
-    selector: 'ltm-plant',
-    standalone: true,
-    imports: [
-        CommonModule,
-        TranslateModule,
-        MatDialogModule,
-        MatBottomSheetModule,
-        MatCardModule,
-        MatIconModule,
-        PhotoListComponent,
-        WaitDialogComponent,
-        InfoBoxComponent,
-        PropertyComponent,
-        FabComponent,
-        CapitalizePipe,
-        PlantExpansionInfoComponent
-    ],
-    templateUrl: './plant.component.html'
+  selector: 'ltm-plant',
+  standalone: true,
+  imports: [
+    CommonModule,
+    TranslateModule,
+    MatDialogModule,
+    MatBottomSheetModule,
+    MatCardModule,
+    MatIconModule,
+    PhotoListComponent,
+    WaitDialogComponent,
+    InfoBoxComponent,
+    PropertyComponent,
+    FabComponent,
+    CapitalizePipe,
+    PlantExpansionInfoComponent,
+  ],
+  templateUrl: './plant.component.html',
 })
 export class PlantComponent {
   id?: number;
@@ -98,61 +98,75 @@ export class PlantComponent {
 
     const wd = this.openWaitDialog();
 
-    this.plantService.get(this.id, { photos: true }).pipe(
-      finalize(() => { wd.close() }),
-      catchError((err: HttpErrorResponse) => {
-        let msg;
+    this.plantService
+      .get(this.id, { photos: true })
+      .pipe(
+        finalize(() => {
+          wd.close();
+        }),
+        catchError((err: HttpErrorResponse) => {
+          let msg;
 
-        if (err.error?.msg === 'PLANT_NOT_FOUND') msg = 'plant.invalid';
-        else msg = 'errors.server';
+          if (err.error?.msg === 'PLANT_NOT_FOUND') msg = 'plant.invalid';
+          else msg = 'errors.server';
 
-        this.translate.get(msg).subscribe((res: string) => {
-          this.errorHandler.push(res);
-        });
+          this.translate.get(msg).subscribe((res: string) => {
+            this.errorHandler.push(res);
+          });
 
-        this.router.navigateByUrl('/');
+          this.router.navigateByUrl('/');
 
-        return EMPTY;
-      })
-    ).subscribe((plant: Plant) => {
-      this.processPlant(plant);
-    });
-
+          return EMPTY;
+        })
+      )
+      .subscribe((plant: Plant) => {
+        this.processPlant(plant);
+      });
   }
 
   processPlant(plant: Plant) {
     this.mt.setName(
-      plant.visibleName ?
-      plant.visibleName :
-      this.plantService.getVisibleName(plant)
+      plant.visibleName
+        ? plant.visibleName
+        : this.plantService.getVisibleName(plant)
     );
     this.mt.setMenu([
-      [{
-        icon: 'edit',
-        tooltip: 'general.edit',
-        click: () => { this.openEdit() }
-      }],
-      [{
-        icon: 'delete',
-        tooltip: 'general.delete',
-        click: () => { this.openRemoveDialog() }
-      }]
+      [
+        {
+          icon: 'edit',
+          tooltip: 'general.edit',
+          click: () => {
+            this.openEdit();
+          },
+        },
+      ],
+      [
+        {
+          icon: 'delete',
+          tooltip: 'general.delete',
+          click: () => {
+            this.openRemoveDialog();
+          },
+        },
+      ],
     ]);
   }
 
   openRemoveDialog() {
     forkJoin({
       title: this.translate.get('general.delete'),
-      question: this.translate.get('plant.remove')
+      question: this.translate.get('plant.remove'),
     }).subscribe(({ title, question }) => {
       this.dialog.open(ConfirmDialogComponent, {
         data: {
           title,
           question: [question],
-          accept: () => { this.delete() }
+          accept: () => {
+            this.delete();
+          },
         },
       });
-    })
+    });
   }
 
   delete(): void {
@@ -161,7 +175,7 @@ export class PlantComponent {
     if (plant) {
       this.plantService.delete(plant.id).subscribe(() => {
         this.router.navigate(['/location', plant.locationId]);
-      })
+      });
     }
   }
 
@@ -170,20 +184,19 @@ export class PlantComponent {
       const ref = this.bottomSheet.open(PlantEditComponent, {
         data: {
           id: this.id,
-          config: { photos: true }
-        }
+          config: { photos: true },
+        },
       });
 
       ref.afterDismissed().subscribe((plant: Plant) => {
         if (plant) {
-          const newName =
-            plant.visibleName
+          const newName = plant.visibleName
             ? plant.visibleName
             : this.plantService.getVisibleName(plant);
 
           this.mt.setName(newName);
         }
-      })
+      });
     }
   }
 }

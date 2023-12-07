@@ -17,18 +17,18 @@ import { potChoices } from '@models/plant.model';
 import { UnitPipe } from "@pipes/unit/unit.pipe";
 
 @Component({
-    selector: 'ltm-plant-soil-widget',
-    standalone: true,
-    imports: [
-      CommonModule,
-      MatExpansionModule,
-      MatIconModule,
-      MatButtonModule,
-      MatBottomSheetModule,
-      TranslateModule,
-      UnitPipe
-    ],
-    templateUrl: './plant-soil-widget.component.html',
+  selector: 'ltm-plant-soil-widget',
+  standalone: true,
+  imports: [
+    CommonModule,
+    MatExpansionModule,
+    MatIconModule,
+    MatButtonModule,
+    MatBottomSheetModule,
+    TranslateModule,
+    UnitPipe,
+  ],
+  templateUrl: './plant-soil-widget.component.html',
 })
 export class PlantSoilWidgetComponent {
   constructor(
@@ -44,10 +44,8 @@ export class PlantSoilWidgetComponent {
     if (potType) {
       if (potChoices.hasOwnProperty(potType)) {
         potName = potChoices[potType].name;
-      }
-      else potName = potType;
-    }
-    else potName = this.translate.instant('general.unknown:Unknown');
+      } else potName = potType;
+    } else potName = this.translate.instant('general.unknown:Unknown');
 
     return potName;
   }

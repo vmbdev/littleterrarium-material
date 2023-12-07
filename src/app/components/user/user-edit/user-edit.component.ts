@@ -49,6 +49,7 @@ import { AuthService } from '@services/auth.service';
 import { ErrorHandlerService } from '@services/error-handler.service';
 import { User } from '@models/user.model';
 
+// TODO: remove photo
 @Component({
   selector: 'ltm-user-edit',
   standalone: true,

@@ -17,8 +17,8 @@ import {
     MatButtonModule,
     MatIconModule,
     MatMenuModule,
-    TranslateModule
+    TranslateModule,
   ],
-  templateUrl: './plant-menu-fert.component.html'
+  templateUrl: './plant-menu-fert.component.html',
 })
-export class PlantMenuFertComponent extends PlantBaseActionComponent { }
+export class PlantMenuFertComponent extends PlantBaseActionComponent {}

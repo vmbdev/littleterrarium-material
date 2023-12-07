@@ -1,5 +1,5 @@
 export interface BreadcrumbLink {
-  selector: string,
-  name: string,
-  link: string | any[]
+  selector: string;
+  name: string;
+  link: string | any[];
 }

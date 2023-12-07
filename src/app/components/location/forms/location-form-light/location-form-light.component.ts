@@ -17,9 +17,9 @@ import { FormBaseComponent } from '@components/form-base/form-base.component';
     ReactiveFormsModule,
     MatButtonToggleModule,
     MatIconModule,
-    TranslateModule
+    TranslateModule,
   ],
-  templateUrl: './location-form-light.component.html'
+  templateUrl: './location-form-light.component.html',
 })
 export class LocationFormLightComponent implements FormBaseComponent {
   @Input() currentLight?: Light | null;
@@ -32,6 +32,6 @@ export class LocationFormLightComponent implements FormBaseComponent {
   ) {}
 
   ngOnInit(): void {
-    this.form.patchValue({ light: this.currentLight })
+    this.form.patchValue({ light: this.currentLight });
   }
 }

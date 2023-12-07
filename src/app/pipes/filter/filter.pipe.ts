@@ -2,10 +2,9 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
   name: 'filter',
-  standalone: true
+  standalone: true,
 })
 export class FilterPipe implements PipeTransform {
-
   transform(items: any[], field?: string, text?: string): any[] {
     if (!field || !text) return items;
 
@@ -13,5 +12,4 @@ export class FilterPipe implements PipeTransform {
       item[field].toLowerCase().includes(text.toLowerCase())
     );
   }
-
 }

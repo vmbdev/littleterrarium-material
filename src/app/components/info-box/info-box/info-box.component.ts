@@ -3,7 +3,7 @@ import {
   Component,
   ContentChildren,
   Input,
-  QueryList
+  QueryList,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
@@ -23,10 +23,10 @@ import {
     MatButtonModule,
     MatIconModule,
     MatCardModule,
-    MatDividerModule
+    MatDividerModule,
   ],
   templateUrl: './info-box.component.html',
-  styleUrls: ['./info-box.component.scss']
+  styleUrls: ['./info-box.component.scss'],
 })
 export class InfoBoxComponent {
   @Input() description?: string | null = null;
@@ -37,5 +37,4 @@ export class InfoBoxComponent {
   ngAfterViewInit() {
     this.cdr.detectChanges();
   }
-
 }

@@ -69,8 +69,8 @@ import { CapitalizePipe } from "@pipes/capitalize/capitalize.pipe";
     PlantToolbarComponent,
     PlantMenuWaterComponent,
     PlantMenuFertComponent,
-    CapitalizePipe
-  ]
+    CapitalizePipe,
+  ],
 })
 export class PlantListComponent {
   @Input() list?: Plant[];
@@ -105,7 +105,7 @@ export class PlantListComponent {
     private mt: MainToolbarService,
     private bottomScrollDetector: BottomScrollDetectorService
   ) {
-    this.smallView = (localStorage.getItem('LT_plantListView') === 'true');
+    this.smallView = localStorage.getItem('LT_plantListView') === 'true';
     this.listView$ = new BehaviorSubject<boolean>(this.smallView);
     this.cardView$ = new BehaviorSubject<boolean>(!this.smallView);
 
@@ -119,8 +119,7 @@ export class PlantListComponent {
       this.sort = sort;
       this.nameSelected$ = new BehaviorSubject<boolean>(true);
       this.dateSelected$ = new BehaviorSubject<boolean>(false);
-    }
-    else {
+    } else {
       this.sort = 'date';
       this.nameSelected$ = new BehaviorSubject<boolean>(false);
       this.dateSelected$ = new BehaviorSubject<boolean>(true);
@@ -142,7 +141,7 @@ export class PlantListComponent {
     this.search$ = this.search.text$.subscribe((res: SearchReceipt) => {
       if (res.mode !== 'Begin') {
         this.filter = res.value;
-        this.fetchPlants()
+        this.fetchPlants();
       }
     });
   }
@@ -153,32 +152,34 @@ export class PlantListComponent {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['locationId'] && changes['locationId'].previousValue) {
-      if (changes['locationId'].previousValue !== changes['locationId'].currentValue) {
+      if (
+        changes['locationId'].previousValue !==
+        changes['locationId'].currentValue
+      ) {
         this.fetchPlants();
       }
     }
   }
-  
+
   fetchPlants(scroll: boolean = false): void {
     let obs: Observable<Plant[]>;
     let options: PlantGetConfig = {
       cursor: scroll && this.cursor ? this.cursor : undefined,
       filter: this.filter ? this.filter : '',
       sort: this.sort,
-      order: this.order
-    }
+      order: this.order,
+    };
 
     // in case of multiple bottom reached signals, we avoid asking twice
     if (this.cursor) this.lastCursor = this.cursor;
 
     if (this.locationId) {
       obs = this.locationService.getPlants(this.locationId, options);
-    }
-    else {
+    } else {
       options = {
         ...options,
         userId: this.user?.id,
-        cover: true
+        cover: true,
       };
 
       obs = this.plantService.getMany(options);
@@ -193,8 +194,7 @@ export class PlantListComponent {
         const currentList = this.list$.getValue();
 
         this.list$.next([...currentList, ...plants]);
-      }
-      else this.list$.next(plants);
+      } else this.list$.next(plants);
     });
   }
 
@@ -203,7 +203,9 @@ export class PlantListComponent {
       {
         icon: 'search',
         tooltip: 'general.search',
-        click: () => { this.search.toggle() }
+        click: () => {
+          this.search.toggle();
+        },
       },
     ]);
     this.mt.addButtonsToMenu([
@@ -211,41 +213,49 @@ export class PlantListComponent {
         {
           icon: 'view_list',
           tooltip: 'general.viewList',
-          click: () => { this.setSmallView(true) },
-          selected: this.listView$
+          click: () => {
+            this.setSmallView(true);
+          },
+          selected: this.listView$,
         },
         {
           icon: 'grid_view',
           tooltip: 'general.viewCards',
-          click: () => { this.setSmallView(false) },
-          selected: this.cardView$
-        }
+          click: () => {
+            this.setSmallView(false);
+          },
+          selected: this.cardView$,
+        },
       ],
       [
         {
           icon: 'sort_by_alpha',
           tooltip: 'sort.alphabetically',
-          click: () => { this.toggleSortColumn('name') },
-          selected: this.nameSelected$
+          click: () => {
+            this.toggleSortColumn('name');
+          },
+          selected: this.nameSelected$,
         },
         {
           icon: 'history',
           tooltip: 'sort.date',
-          click: () => { this.toggleSortColumn('date') },
-          selected: this.dateSelected$
+          click: () => {
+            this.toggleSortColumn('date');
+          },
+          selected: this.dateSelected$,
         },
       ],
-    ])
+    ]);
   }
 
   detectBottomReached(): void {
     this.bottomScrollDetector.detected$
-    .pipe(takeUntilDestroyed())
-    .subscribe((reachedBottom: boolean) => {
-      if (reachedBottom && (this.cursor !== this.lastCursor)) {
-        this.fetchPlants(true);
-      }
-    })
+      .pipe(takeUntilDestroyed())
+      .subscribe((reachedBottom: boolean) => {
+        if (reachedBottom && this.cursor !== this.lastCursor) {
+          this.fetchPlants(true);
+        }
+      });
   }
 
   toggleSortColumn(column: SortColumn) {
@@ -253,8 +263,7 @@ export class PlantListComponent {
       this.sort = column;
       // when a new sortable column is chosen, we order 'asc' by default
       this.order = 'asc';
-    }
-    else this.toggleSortOrder();
+    } else this.toggleSortOrder();
 
     this.nameSelected$.next(column === 'name');
     this.dateSelected$.next(column === 'date');
@@ -264,7 +273,7 @@ export class PlantListComponent {
   }
 
   toggleSortOrder() {
-    this.order = (this.order === 'asc') ? 'desc' : 'asc';
+    this.order = this.order === 'asc' ? 'desc' : 'asc';
   }
 
   storeSortOptions() {
@@ -293,7 +302,9 @@ export class PlantListComponent {
       data: {
         title: name,
         question: [this.translate.instant('plant.remove')],
-        accept: () => { this.delete(id) }
+        accept: () => {
+          this.delete(id);
+        },
       },
     });
   }
@@ -302,8 +313,8 @@ export class PlantListComponent {
     const bsRef = this.bottomSheet.open(PlantEditComponent, {
       data: {
         id,
-        config: { cover: true }
-      }
+        config: { cover: true },
+      },
     });
 
     bsRef.afterDismissed().subscribe((updatedPlant: Plant) => {
@@ -312,14 +323,12 @@ export class PlantListComponent {
         const index = list.findIndex((plant) => plant.id === updatedPlant.id);
 
         // we moved the plant, hence we remove it from the list
-        if (this.locationId && (updatedPlant.locationId !== this.locationId)) {
+        if (this.locationId && updatedPlant.locationId !== this.locationId) {
           list.splice(index, 1);
-        }
-        else list[index] = updatedPlant;
+        } else list[index] = updatedPlant;
 
         this.list$.next(list);
       }
-
     });
   }
 
@@ -330,6 +339,6 @@ export class PlantListComponent {
         .filter((plant: Plant) => plant.id !== id);
 
       this.list$.next(newList);
-    })
+    });
   }
 }

@@ -4,14 +4,15 @@ import {
   HttpHandler,
   HttpEvent,
   HttpInterceptor,
-  HttpErrorResponse
+  HttpErrorResponse,
 } from '@angular/common/http';
 import { catchError, EMPTY, Observable, throwError } from 'rxjs';
+
 import { ErrorHandlerService } from '@services/error-handler.service';
 
+// FIXME: translate
 @Injectable()
 export class ErrorHandlerInterceptor implements HttpInterceptor {
-
   constructor(private errorHandler: ErrorHandlerService) {}
 
   intercept(
@@ -26,9 +27,10 @@ export class ErrorHandlerInterceptor implements HttpInterceptor {
           switch (res.error.msg) {
             case 'INCORRECT_FIELD': {
               errorMsg = `Incorrect field (${res.error.errorData.field}).`;
-      
+
               if (res.error.errorData.values) {
-                errorMsg += `Possible values are ${res.error.errorData.values.join(',')}`;
+                errorMsg +=
+                  `Possible values are ${res.error.errorData.values.join(',')}`;
               }
               break;
             }
@@ -37,16 +39,13 @@ export class ErrorHandlerInterceptor implements HttpInterceptor {
               break;
             }
           }
-        }
-        else if (res.status === 500) errorMsg = 'Server error';
+        } else if (res.status === 500) errorMsg = 'Server error';
 
         if (errorMsg) {
           this.errorHandler.push(errorMsg);
 
           return EMPTY;
-        }
-        else return throwError(() => res);
-
+        } else return throwError(() => res);
       })
     );
   }

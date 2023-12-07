@@ -10,21 +10,23 @@
     </mat-expansion-panel-header>
 
     @if (plant.potType || plant.soil) {
-      <p *ngIf="plant.potType">
-        <span
-          [innerHTML]="'plant-widget-soil.pot' | translate:{ material: getPotName() }">
-        </span>
-
-        @if (plant.potSize) {
-          ,
+      @if (plant.potType) {
+        <p>
           <span
-            [innerHTML]="'plant-widget-soil.potSize' | translate: { size: plant.potSize | unit:'cm' }"
-          >
+            [innerHTML]="'plant-widget-soil.pot' | translate:{ material: getPotName() }">
           </span>
 
-        }
+          @if (plant.potSize) {
+            ,
+            <span
+              [innerHTML]="'plant-widget-soil.potSize' | translate: { size: plant.potSize | unit:'cm' }"
+            >
+            </span>
 
-      </p>
+          }
+
+        </p>
+      }
 
       @if (plant.soil) {
         <p

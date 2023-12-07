@@ -29,6 +29,7 @@ import {
 } from '@components/form-privacy/form-privacy.component';
 import { Location } from '@models/location.model';
 
+// TODO: remove location photo
 @Component({
   selector: 'ltm-location-edit',
   standalone: true,
@@ -39,13 +40,12 @@ import { Location } from '@models/location.model';
     MatCardModule,
     MatIconModule,
     FileUploaderComponent,
-
     LocationFormNameComponent,
     LocationFormLightComponent,
     FormPrivacyComponent,
-    EditPageComponent
+    EditPageComponent,
   ],
-  templateUrl: './location-edit.component.html'
+  templateUrl: './location-edit.component.html',
 })
 export class LocationEditComponent extends LocationUpsertBaseComponent {
   removePicture: boolean = false;
@@ -56,7 +56,9 @@ export class LocationEditComponent extends LocationUpsertBaseComponent {
   constructor(
     private injector: Injector,
     @Optional() private bottomSheetRef: MatBottomSheetRef,
-    @Optional() @Inject(MAT_BOTTOM_SHEET_DATA) public editLocation: { id: number }
+    @Optional()
+    @Inject(MAT_BOTTOM_SHEET_DATA)
+    public editLocation: { id: number }
   ) {
     super(injector);
   }
@@ -79,21 +81,25 @@ export class LocationEditComponent extends LocationUpsertBaseComponent {
     if (this.editLocation.id) {
       data.id = this.editLocation.id;
 
-      this.locationService.update(
-        data,
-        { removePicture: this.removePicture }
-      ).pipe(
-        catchError((error: HttpErrorResponse) => {
-          if (error.error?.msg === 'IMG_NOT_VALID') {
-            this.errorHandler.push(this.translate.instant('errors.invalidImg'));
-          }
+      this.locationService
+        .update(data, { removePicture: this.removePicture })
+        .pipe(
+          catchError((error: HttpErrorResponse) => {
+            if (error.error?.msg === 'IMG_NOT_VALID') {
+              this.errorHandler.push(
+                this.translate.instant('errors.invalidImg')
+              );
+            }
 
-          return EMPTY;
-        }),
-        finalize(() => { ud.close() })
-      ).subscribe(() => {
-        if (this.bottomSheetRef) this.bottomSheetRef.dismiss();
-      });
+            return EMPTY;
+          }),
+          finalize(() => {
+            ud.close();
+          })
+        )
+        .subscribe((location: Location) => {
+          if (this.bottomSheetRef) this.bottomSheetRef.dismiss(location);
+        });
     }
   }
 }

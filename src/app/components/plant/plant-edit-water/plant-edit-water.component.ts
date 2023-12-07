@@ -29,9 +29,9 @@ import { Plant } from '@models/plant.model';
     MatButtonModule,
     MatDividerModule,
     MatCardModule,
-    TranslateModule
+    TranslateModule,
   ],
-  templateUrl: './plant-edit-water.component.html'
+  templateUrl: './plant-edit-water.component.html',
 })
 export class PlantEditWaterComponent {
   waterForm = this.fb.group({
@@ -44,19 +44,18 @@ export class PlantEditWaterComponent {
   constructor(
     public plantService: PlantService,
     private fb: FormBuilder,
-    @Optional() private bottomSheetRef: MatBottomSheetRef,
+    @Optional() private bottomSheetRef: MatBottomSheetRef
   ) {}
 
   ngOnInit(): void {
-    // TODO: shall it get a new one, or use the current one?
     const plant = this.plantService.current();
 
     if (plant) {
       this.id = plant.id;
       this.waterForm.patchValue({
         waterFreq: plant.waterFreq,
-        waterLast: plant.waterLast
-      })
+        waterLast: plant.waterLast,
+      });
     }
   }
 
