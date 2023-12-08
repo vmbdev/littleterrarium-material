@@ -29,7 +29,9 @@ export class PlantFormConditionComponent implements FormBaseComponent {
   constructor(private fb: FormBuilder, public plantService: PlantService) {}
 
   ngOnInit(): void {
-    this.form.patchValue({ condition: this.currentCondition });
+    if (this.currentCondition) {
+      this.form.patchValue({ condition: this.currentCondition });
+    }
   }
 
   getFormConditionDesc(): string | null {

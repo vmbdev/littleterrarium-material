@@ -29,7 +29,6 @@ import {
 } from '@components/form-privacy/form-privacy.component';
 import { Location } from '@models/location.model';
 
-// TODO: remove location photo
 @Component({
   selector: 'ltm-location-edit',
   standalone: true,
@@ -48,8 +47,6 @@ import { Location } from '@models/location.model';
   templateUrl: './location-edit.component.html',
 })
 export class LocationEditComponent extends LocationUpsertBaseComponent {
-  removePicture: boolean = false;
-
   location$?: Observable<Location>;
   returnedLocation?: Location;
 
@@ -79,10 +76,13 @@ export class LocationEditComponent extends LocationUpsertBaseComponent {
     const ud = this.openUploadDialog();
 
     if (this.editLocation.id) {
+      const removePicture =
+        !!this.fileUploaderComponent.form.get('remove')?.value;
+
       data.id = this.editLocation.id;
 
       this.locationService
-        .update(data, { removePicture: this.removePicture })
+        .update(data, { removePicture: removePicture })
         .pipe(
           catchError((error: HttpErrorResponse) => {
             if (error.error?.msg === 'IMG_NOT_VALID') {

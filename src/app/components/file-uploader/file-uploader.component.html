@@ -32,7 +32,6 @@
       }
     </div>
   }
-
   <input
     #fileInput
     type="file"
@@ -43,7 +42,7 @@
     capture
     hidden
   >
-
+  
   <button
     type="button"
     mat-raised-button
@@ -53,4 +52,12 @@
   >
     {{ 'fileUploader.selectButton' | translate }}
   </button>
+
+  <form [formGroup]="form">
+    @if (removable) {
+      <mat-checkbox formControlName="remove">
+        {{ 'fileUploader.removeCurrent' | translate }}
+      </mat-checkbox>
+    }
+  </form>
 </div>

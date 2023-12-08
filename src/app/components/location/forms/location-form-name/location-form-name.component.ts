@@ -20,12 +20,12 @@ import { FormBaseComponent } from '@components/form-base/form-base.component';
   templateUrl: './location-form-name.component.html',
 })
 export class LocationFormNameComponent implements FormBaseComponent {
-  @Input() currentName?: string | null;
+  @Input() currentName?: string;
   public form = this.fb.group({ name: ['', Validators.required] });
 
   constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
-    this.form.patchValue({ name: this.currentName });
+    if (this.currentName) this.form.patchValue({ name: this.currentName });
   }
 }

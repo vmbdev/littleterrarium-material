@@ -1,5 +1,26 @@
 # Changelog
 
+## [1.0.1] - 2023-12-08
+
+### Added
+
+- Location and User pictures can now be removed rather than just replaced.
+
+### Changes
+
+- Updated translations.
+- FileUploader now has an optional checkbox to mark if the previous photo
+should be removed.
+- NGX-Translate now uses HttpBackend as loader to avoid clashing with the
+interceptors that need translations.
+
+### Fixed
+
+- Adjusted the EditPage and FileUploader components and the settings-card style
+class to work properly with the dark theme.
+- Improved detection of current values through inputs in form components,
+to avoid sending bogus data (such as 'undefined').
+
 ## [1.0.0] - 2023-12-01
 
 ### Added

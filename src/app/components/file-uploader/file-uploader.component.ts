@@ -1,12 +1,17 @@
 import { CommonModule } from '@angular/common';
 import {
+  booleanAttribute,
   Component,
   EventEmitter,
   Input,
   numberAttribute,
   Output,
 } from '@angular/core';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { FormBaseComponent } from '@components/form-base/form-base.component';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { ShortFilenamePipe } from '@pipes/short-filename/short-filename.pipe';
@@ -14,20 +19,35 @@ import { ShortFilenamePipe } from '@pipes/short-filename/short-filename.pipe';
 @Component({
   standalone: true,
   selector: 'ltm-file-uploader',
-  imports: [CommonModule, ShortFilenamePipe, TranslateModule, MatButtonModule],
+  imports: [
+    CommonModule,
+    TranslateModule,
+    ReactiveFormsModule,
+    MatButtonModule,
+    MatCheckboxModule,
+    MatFormFieldModule,
+    ShortFilenamePipe,
+  ],
   templateUrl: './file-uploader.component.html',
   styleUrls: ['./file-uploader.component.scss'],
 })
-export class FileUploaderComponent {
+export class FileUploaderComponent implements FormBaseComponent {
   /**
    * Max amount of files the user can select. By default, 1.
    */
   @Input({ transform: numberAttribute }) maxAmount: number = 1;
 
   /**
+   * Whether the uploader will show a "remove current photo" checkbox
+   */
+  @Input({ transform: booleanAttribute }) removable: boolean = false;
+
+  /**
    * Emitted when the files selected in the component have changed.
    */
   @Output() fileChange: EventEmitter<File[]> = new EventEmitter<File[]>();
+
+  form = this.fb.group({ remove: [this.removable] });
 
   /**
    * Files currently selected in the component.
@@ -43,6 +63,9 @@ export class FileUploaderComponent {
    * Mouse is over the component containing a file.
    */
   dragOver: boolean = false;
+
+
+  constructor(private readonly fb: FormBuilder) {}
 
   /**
    * Mouse is dragging a file over the component.

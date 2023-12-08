@@ -33,7 +33,12 @@
       <mat-card-content>
         <p [innerHTML]="'user-edit.avatarDesc' | translate"></p>
 
-        <ltm-file-uploader maxAmount="1" (fileChange)="fileChange($event)" />
+        <ltm-file-uploader
+          #fileUploader
+          maxAmount="1"
+          (fileChange)="fileChange($event)"
+          [removable]="!!user.avatar"
+        />
       </mat-card-content>
     </mat-card>
 

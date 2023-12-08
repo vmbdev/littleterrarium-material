@@ -15,6 +15,9 @@ import {
 import {
   FormPrivacyComponent
 } from '@components/form-privacy/form-privacy.component';
+import {
+  FileUploaderComponent
+} from '@components/file-uploader/file-uploader.component';
 import { LocationService } from '@services/location.service';
 import { ErrorHandlerService } from '@services/error-handler.service';
 import { Location } from '@models/location.model';
@@ -30,7 +33,10 @@ export class LocationUpsertBaseComponent {
   nameComponent!: LocationFormNameComponent;
   @ViewChild(LocationFormLightComponent)
   lightComponent!: LocationFormLightComponent;
-  @ViewChild(FormPrivacyComponent) privacyComponent!: FormPrivacyComponent;
+  @ViewChild(FormPrivacyComponent)
+  privacyComponent!: FormPrivacyComponent;
+  @ViewChild(FileUploaderComponent)
+  fileUploaderComponent!: FileUploaderComponent;
 
   picture?: File;
 

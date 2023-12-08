@@ -27,6 +27,8 @@ export class PhotoFormDateComponent implements FormBaseComponent {
   constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
-    this.form.patchValue({ takenAt: this.currentTakenAt });
+    if (this.currentTakenAt) {
+      this.form.patchValue({ takenAt: this.currentTakenAt });
+    }
   }
 }

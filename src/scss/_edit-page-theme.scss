@@ -1,0 +1,32 @@
+@use '@angular/material' as mat;
+
+@mixin color-light($theme) {
+  .edit-page {
+    border-bottom: 1px solid mat.get-theme-color($theme, primary, 100);
+
+    &__check {
+      color: mat.get-theme-color($theme, accent, 50);
+    }
+  }
+}
+@mixin color-dark($theme) {
+  .edit-page {
+    border-bottom: 1px solid mat.get-theme-color($theme, primary, 600);
+
+    &__check {
+      color: mat.get-theme-color($theme, accent, 50);
+    }
+  }
+}
+
+@mixin theme-light($theme) {
+  @if (mat.theme-has($theme, color)) {
+    @include color-light($theme);
+  }
+}
+
+@mixin theme-dark($theme) {
+  @if (mat.theme-has($theme, color)) {
+    @include color-dark($theme);
+  }
+}

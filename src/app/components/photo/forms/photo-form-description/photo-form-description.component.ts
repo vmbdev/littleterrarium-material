@@ -18,12 +18,14 @@ import { FormBaseComponent } from '@components/form-base/form-base.component';
   templateUrl: './photo-form-description.component.html',
 })
 export class PhotoFormDescriptionComponent implements FormBaseComponent {
-  @Input() currentDescription: string | null = '';
+  @Input() currentDescription?: string | null;
   form = this.fb.group({ description: [''] });
 
   constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
-    this.form.patchValue({ description: this.currentDescription });
+    if (this.currentDescription) {
+      this.form.patchValue({ description: this.currentDescription });
+    }
   }
 }

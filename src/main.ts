@@ -1,14 +1,15 @@
 import {
+  HttpBackend,
   HttpClient,
   HTTP_INTERCEPTORS,
   provideHttpClient,
-  withInterceptorsFromDi
+  withInterceptorsFromDi,
 } from '@angular/common/http';
 import { importProvidersFrom, isDevMode } from '@angular/core';
 import {
   bootstrapApplication,
   HammerModule,
-  HAMMER_GESTURE_CONFIG
+  HAMMER_GESTURE_CONFIG,
 } from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
@@ -26,8 +27,12 @@ import { baseUrlDevelopment, baseUrlProduction } from '@config';
 import { BACKEND_URL } from './tokens';
 import { LTHammerConfig } from './config.hammerjs';
 
-export function httpLoaderFactory(httpClient: HttpClient) {
-  return new TranslateHttpLoader(httpClient, './assets/i18n/', '.json');
+export function httpLoaderFactory(handler: HttpBackend) {
+  return new TranslateHttpLoader(
+    new HttpClient(handler),
+    './assets/i18n/',
+    '.json'
+  );
 }
 
 bootstrapApplication(AppComponent, {
@@ -54,7 +59,7 @@ bootstrapApplication(AppComponent, {
         loader: {
           provide: TranslateLoader,
           useFactory: httpLoaderFactory,
-          deps: [HttpClient],
+          deps: [HttpBackend],
         },
       })
     ),

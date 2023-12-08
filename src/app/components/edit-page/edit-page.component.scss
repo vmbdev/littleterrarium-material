@@ -1,15 +1,8 @@
 .edit-page {
-  &__toolbar {
-    position: sticky;
-    top: -16px;
-    z-index: 10000;
-    margin-top: -15px;
-    margin-left: -16px;
-    width: 100vw;
-    border-bottom: 1px solid #b4b4b4;
-  }
-
-  &__spacer {
-    margin-bottom: 64px;
-  }
+  position: sticky;
+  top: -16px;
+  z-index: 10000;
+  margin-top: -15px;
+  margin-left: -16px;
+  width: 100vw;
 }

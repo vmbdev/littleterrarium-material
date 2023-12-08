@@ -20,12 +20,14 @@ import { FormBaseComponent } from '@components/form-base/form-base.component';
   templateUrl: './user-form-bio.component.html',
 })
 export class UserFormBioComponent implements FormBaseComponent {
-  @Input() currentBio: string | null = '';
+  @Input() currentBio?: string | null;
   public form = this.fb.group({ bio: [''] });
 
   constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
-    this.form.patchValue({ bio: this.currentBio });
+    if (this.currentBio) {
+      this.form.patchValue({ bio: this.currentBio });
+    }
   }
 }

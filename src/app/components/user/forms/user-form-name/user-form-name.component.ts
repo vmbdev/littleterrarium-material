@@ -20,8 +20,8 @@ import { FormBaseComponent } from '@components/form-base/form-base.component';
   templateUrl: './user-form-name.component.html',
 })
 export class UserFormNameComponent implements FormBaseComponent {
-  @Input() currentFirstname: string | null = '';
-  @Input() currentLastname: string | null = '';
+  @Input() currentFirstname?: string | null;
+  @Input() currentLastname?: string | null;
   public form = this.fb.group({
     firstname: [''],
     lastname: [''],
@@ -30,9 +30,11 @@ export class UserFormNameComponent implements FormBaseComponent {
   constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
-    this.form.patchValue({
-      firstname: this.currentFirstname,
-      lastname: this.currentLastname,
-    });
+    if (this.currentFirstname) {
+      this.form.patchValue({ firstname: this.currentFirstname});
+    }
+    if (this.currentLastname) {
+      this.form.patchValue({ lastname: this.currentLastname});
+    }
   }
 }

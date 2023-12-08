@@ -1,4 +1,5 @@
 import {
+  booleanAttribute,
   Component,
   EventEmitter,
   Input,
@@ -25,7 +26,7 @@ import { MatDividerModule } from '@angular/material/divider';
   styleUrls: ['./toggle-option.component.scss'],
 })
 export class ToggleOptionComponent {
-  @Input() checked: boolean = false;
+  @Input({ transform: booleanAttribute }) checked: boolean = false;
   @Output() change = new EventEmitter<boolean>();
   currentlyChecked: boolean = false;
 

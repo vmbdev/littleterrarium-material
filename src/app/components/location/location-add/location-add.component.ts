@@ -45,7 +45,6 @@ import { Location } from '@models/location.model';
     TranslateModule,
     StepperNavigationComponent,
     FileUploaderComponent,
-
     LocationFormNameComponent,
     LocationFormLightComponent,
     FormPrivacyComponent,

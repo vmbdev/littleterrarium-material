@@ -1,0 +1,47 @@
+@use '@angular/material' as mat;
+
+@mixin color-light($theme) {
+  .file-uploader {
+    background-color: mat.get-theme-color($theme, primary, 50);
+
+    &__over {
+      background-color: mat.get-theme-color($theme, accent, 400);
+    }
+  }
+}
+@mixin color-dark($theme) {
+  .file-uploader {
+    background-color: #f5f5f5;
+    color: mat.get-theme-color($theme, primary, 900);
+
+    &__over {
+      background-color: mat.get-theme-color($theme, accent, 400);
+    }
+
+    mat-checkbox {
+      .mdc-checkbox {
+        &__background {
+          border-color: mat.get-theme-color($theme, primary, 700) !important;
+        }
+      }
+
+      .mdc-label {
+        color: mat.get-theme-color($theme, primary, 700);
+      }
+    }
+
+  }
+  
+}
+
+@mixin theme-light($theme) {
+  @if (mat.theme-has($theme, color)) {
+    @include color-light($theme);
+  }
+}
+
+@mixin theme-dark($theme) {
+  @if (mat.theme-has($theme, color)) {
+    @include color-dark($theme);
+  }
+}

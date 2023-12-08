@@ -33,8 +33,6 @@ import { MatIconModule } from '@angular/material/icon';
   styleUrls: ['./user-form-password.component.scss'],
 })
 export class UserFormPasswordComponent implements FormBaseComponent {
-  @Input() currentFirstname: string | null = '';
-  @Input() currentLastname: string | null = '';
   public form = this.fb.group(
     {
       password: ['', [Validators.required]],

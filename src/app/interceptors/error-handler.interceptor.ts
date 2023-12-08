@@ -7,13 +7,16 @@ import {
   HttpErrorResponse,
 } from '@angular/common/http';
 import { catchError, EMPTY, Observable, throwError } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
 
 import { ErrorHandlerService } from '@services/error-handler.service';
 
-// FIXME: translate
 @Injectable()
 export class ErrorHandlerInterceptor implements HttpInterceptor {
-  constructor(private errorHandler: ErrorHandlerService) {}
+  constructor(
+    private readonly errorHandler: ErrorHandlerService,
+    private readonly translate: TranslateService
+  ) {}
 
   intercept(
     request: HttpRequest<any>,
@@ -24,22 +27,30 @@ export class ErrorHandlerInterceptor implements HttpInterceptor {
         let errorMsg: string | undefined;
 
         if (res.status === 400) {
+          const errorData = res.error.errorData;
+
           switch (res.error.msg) {
             case 'INCORRECT_FIELD': {
-              errorMsg = `Incorrect field (${res.error.errorData.field}).`;
+              errorMsg = this.translate.instant('errors.field', {
+                field: errorData.field,
+              });
 
-              if (res.error.errorData.values) {
-                errorMsg +=
-                  `Possible values are ${res.error.errorData.values.join(',')}`;
+              if (errorData.values) {
+                errorMsg += this.translate.instant('errors.fieldValues', {
+                  values: errorData.values.join(','),
+                });
               }
               break;
             }
             case 'MISSING_FIELD': {
-              errorMsg = `Missing field (${res.error.errorData.field})`;
+              errorMsg = this.translate.instant('errors.missingField', {
+                field: errorData.field,
+              });
               break;
             }
           }
-        } else if (res.status === 500) errorMsg = 'Server error';
+        } else if (res.status === 500)
+          errorMsg = this.translate.instant('errors.server');
 
         if (errorMsg) {
           this.errorHandler.push(errorMsg);

@@ -1,5 +1,7 @@
 @use '@angular/material' as mat;
 @use 'settings-card-theme.scss' as settings-card;
+@use 'file-uploader-theme.scss' as file-uploader;
+@use 'edit-page-theme.scss' as edit-page;
 
 @include mat.core();
 
@@ -16,7 +18,9 @@ $light-theme: mat.define-light-theme((
 ));
 
 @include mat.all-component-themes($light-theme);
-@include settings-card.theme($light-theme);
+@include settings-card.theme-light($light-theme);
+@include file-uploader.theme-light($light-theme);
+@include edit-page.theme-light($light-theme);
 
 // dark theme
 
@@ -32,7 +36,9 @@ $dark-theme: mat.define-dark-theme((
 
 .dark-theme {
   @include mat.all-component-colors($dark-theme);
-  @include settings-card.theme($dark-theme);
+  @include settings-card.theme-dark($dark-theme);
+  @include file-uploader.theme-dark($dark-theme);
+  @include edit-page.theme-dark($dark-theme);
 }
 
 mat-card {

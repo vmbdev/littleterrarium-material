@@ -20,12 +20,14 @@ import { FormBaseComponent } from '@components/form-base/form-base.component';
   templateUrl: './plant-form-name.component.html',
 })
 export class PlantFormNameComponent implements FormBaseComponent {
-  @Input() currentCustomName: string | null = '';
+  @Input() currentCustomName?: string | null;
   public form = this.fb.group({ customName: [''] });
 
   constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
-    this.form.patchValue({ customName: this.currentCustomName });
+    if (this.currentCustomName) {
+      this.form.patchValue({ customName: this.currentCustomName });
+    }
   }
 }

@@ -22,7 +22,7 @@ import { FormBaseComponent } from '@components/form-base/form-base.component';
   templateUrl: './location-form-light.component.html',
 })
 export class LocationFormLightComponent implements FormBaseComponent {
-  @Input() currentLight?: Light | null;
+  @Input() currentLight: Light = 'FULLSUN';
   form = this.fb.group({ light: ['FULLSUN', Validators.required] });
   lightOptions = Light;
 

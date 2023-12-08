@@ -19,7 +19,11 @@
       <mat-card-content>
         <p [innerHTML]="'location-add-edit.choose' | translate"></p>
         <p [innerHTML]="'location-add-edit.ornot' | translate"></p>
-        <ltm-file-uploader maxAmount="1" (fileChange)="fileChange($event)" />
+        <ltm-file-uploader
+          maxAmount="1"
+          (fileChange)="fileChange($event)"
+          [removable]="!!location.pictures"
+        />
       </mat-card-content>
     </mat-card>
 
