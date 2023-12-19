@@ -12,7 +12,7 @@ import { AuthService } from '@services/auth.service';
 import { ApiService } from '@services/api.service';
 
 @Component({
-  selector: 'app-password-reset',
+  selector: 'ltm-password-reset',
   standalone: true,
   imports: [TranslateModule, MatButtonModule, UserFormPasswordComponent],
   templateUrl: './password-reset.component.html',

@@ -49,6 +49,10 @@ export interface PhotoGetConfig {
   cover?: boolean;
 }
 
+export interface UserEditConfig {
+  removeAvatar?: boolean;
+}
+
 export interface AngularLocales {
   locales: string[];
   default: string;
@@ -144,7 +148,7 @@ export class ApiService {
     return this.http.post<User>(this.endpoint('users'), user);
   }
 
-  editUser(user: User, removeAvatar?: boolean): Observable<User> {
+  editUser(user: User, options: UserEditConfig = {}): Observable<User> {
     const form = new FormData();
 
     form.append('username', user.username);
@@ -155,7 +159,7 @@ export class ApiService {
     if (user.lastname) form.append('lastname', user.lastname);
     if (user.bio) form.append('bio', user.bio);
 
-    if (removeAvatar) form.append('removeAvatar', 'true');
+    if (options.removeAvatar) form.append('removeAvatar', 'true');
     else if (user.avatarFile) form.append('avatar', user.avatarFile);
 
     return this.http.put<User>(this.endpoint('users'), form);
@@ -182,7 +186,6 @@ export class ApiService {
 
     if (options) {
       if (options.userId && +options.userId) url += `/user/${+options.userId}`;
-
       if (options.plantCount) url += '?plantcount=true';
     }
 
@@ -220,10 +223,11 @@ export class ApiService {
       form.append('id', location.id.toString());
     }
 
-    if (options.update)
+    if (options.update) {
       observable = this.http.put<Location>(this.endpoint('locations'), form);
-    else
+    } else {
       observable = this.http.post<Location>(this.endpoint('locations'), form);
+    }
 
     return observable;
   }
@@ -251,24 +255,20 @@ export class ApiService {
     let url = 'plants/';
 
     if (options) {
-      // for location's plants it's location/:id/plants
-      if (options.locationId) {
-        url = `locations/${options.locationId}/${url}`;
-      }
-      // for plants of user it's plants/user/:id
-      else if (options.userId) {
-        url += `user/${options.userId}`;
-      }
+      const urlParams = new URLSearchParams();
 
-      url += '?';
+      // for plants of location: location/:id/plants
+      if (options.locationId) url = `locations/${options.locationId}/${url}`;
+      // for plants of user: plants/user/:id
+      else if (options.userId) url += `user/${options.userId}`;
 
-      if (options.cover) {
-        url += `cover=${options.cover ? true : false}&`;
-      }
-      if (options.cursor) url += `cursor=${options.cursor}&`;
-      if (options.filter) url += `filter=${options.filter}&`;
-      if (options.sort) url += `sort=${options.sort}&`;
-      if (options.order) url += `order=${options.order}&`;
+      if (options.cover) urlParams.append('cover', options.cover.toString());
+      if (options.cursor) urlParams.append('cursor', options.cursor.toString());
+      if (options.filter) urlParams.append('filter', options.filter.toString());
+      if (options.sort) urlParams.append('sort', options.sort);
+      if (options.order) urlParams.append('order', options.order);
+
+      url += `?${urlParams.toString()}`;
     }
 
     return this.http.get<Plant[]>(this.endpoint(url));
@@ -277,7 +277,7 @@ export class ApiService {
   getPlant(id: number, options?: PlantGetConfig): Observable<Plant> {
     let url = `plants/${id}`;
 
-    if ((options?.photos || options?.cover)) {
+    if (options?.photos || options?.cover) {
       url += `?photos=${!!options.photos}&cover=${!!options.cover}`;
     }
 
@@ -299,8 +299,8 @@ export class ApiService {
   updatePlant(plant: Plant, options?: PlantUpdateConfig): Observable<Plant> {
     const data = plant as any;
 
-      if (options?.removeSpecie) data.removeSpecie = true;
-      if (options?.removeCover) data.removeCover = true;
+    if (options?.removeSpecie) data.removeSpecie = true;
+    if (options?.removeCover) data.removeCover = true;
 
     return this.http.put<Plant>(this.endpoint('plants'), data);
   }
@@ -316,13 +316,16 @@ export class ApiService {
   getPhoto(id: number, options?: PhotoGetConfig): Observable<Photo> {
     let url = `photos/${id}`;
 
-    // TODO: create proper API to do this
     if (options) {
-      url += '?';
+      const urlParams = new URLSearchParams();
+
+      
       if (options.navigation) {
-        url += `navigation=${options.navigation ? 'true' : 'false'}&`;
+        urlParams.append('navigation', options.navigation.toString());
       }
-      if (options.cover) url += `cover=${options.cover ? 'true' : 'false'}&`;
+      if (options.cover) urlParams.append('cover', options.cover.toString());
+
+      url += `?${urlParams.toString()}`;
     }
 
     return this.http.get<Photo>(this.endpoint(url));

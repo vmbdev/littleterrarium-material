@@ -16,7 +16,7 @@ export class ViewerService {
       hasBackdrop: true,
       backdropClass: 'overlay-backdrop'
     });
-    const userProfilePortal = new ComponentPortal(
+    const portal = new ComponentPortal(
       ViewerComponent,
       null,
       Injector.create({
@@ -34,6 +34,6 @@ export class ViewerService {
       })
     );
 
-    overlayRef.attach(userProfilePortal);
+    overlayRef.attach(portal);
   }
 }

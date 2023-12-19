@@ -37,10 +37,10 @@ import { PlantService } from '@services/plant.service';
 import { MainToolbarService } from '@services/main-toolbar.service';
 import { ErrorHandlerService } from '@services/error-handler.service';
 import { ImagePathService } from '@services/image-path.service';
+import { ViewerService } from '@services/viewer.service';
 import { Plant } from '@models/plant.model';
 import { NavigationData, Photo } from '@models/photo.model';
 import { DaysAgoPipe } from "@pipes/days-ago/days-ago.pipe";
-import { ViewerService } from '@services/viewer.service';
 
 @Component({
   selector: 'ltm-photo',

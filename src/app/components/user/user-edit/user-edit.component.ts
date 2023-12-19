@@ -153,7 +153,7 @@ export class UserEditComponent {
       const removePicture =
         !!this.fileUploaderComponent.form.get('remove')?.value;
 
-      this.api.editUser(user, removePicture).pipe(
+      this.api.editUser(user, { removeAvatar: removePicture }).pipe(
         finalize(() => { wd.close() }),
         catchError((err: HttpErrorResponse) => {
           const error = err.error;
