@@ -1,6 +1,4 @@
 import {
-  HttpBackend,
-  HttpClient,
   HTTP_INTERCEPTORS,
   provideHttpClient,
   withInterceptorsFromDi,
@@ -14,26 +12,23 @@ import {
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { DateAdapter, NativeDateAdapter } from '@angular/material/core';
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { provideTransloco } from '@ngneat/transloco';
 import { ToastrModule } from 'ngx-toastr';
 import 'hammerjs';
 
+import { TranslocoHttpLoader } from './transloco-loader';
 import { AuthInterceptor } from '@interceptors/auth.interceptor';
 import { ErrorHandlerInterceptor } from '@interceptors/error-handler.interceptor';
 import { AppComponent } from './app/app.component';
 import { routes } from './app/routes';
-import { baseUrlDevelopment, baseUrlProduction } from '@config';
 import { BACKEND_URL } from './tokens';
 import { LTHammerConfig } from './config.hammerjs';
-
-export function httpLoaderFactory(handler: HttpBackend) {
-  return new TranslateHttpLoader(
-    new HttpClient(handler),
-    './assets/i18n/',
-    '.json'
-  );
-}
+import {
+  baseUrlDevelopment,
+  baseUrlProduction,
+  availableLangs,
+  defaultLang,
+} from '@config';
 
 bootstrapApplication(AppComponent, {
   providers: [
@@ -53,16 +48,15 @@ bootstrapApplication(AppComponent, {
     importProvidersFrom(HammerModule),
     { provide: HAMMER_GESTURE_CONFIG, useClass: LTHammerConfig },
     importProvidersFrom(RouterModule.forRoot(routes)),
-    importProvidersFrom(
-      TranslateModule.forRoot({
-        defaultLanguage: 'en',
-        loader: {
-          provide: TranslateLoader,
-          useFactory: httpLoaderFactory,
-          deps: [HttpBackend],
-        },
-      })
-    ),
     importProvidersFrom(ToastrModule.forRoot()),
+    provideTransloco({
+      config: {
+        availableLangs,
+        defaultLang,
+        reRenderOnLangChange: true,
+        prodMode: !isDevMode(),
+      },
+      loader: TranslocoHttpLoader,
+    }),
   ],
 }).catch((err) => console.error(err));

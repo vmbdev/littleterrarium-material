@@ -1,11 +1,10 @@
 import { MockBuilder } from 'ng-mocks';
-import { CoreModule } from '../core.module';
 
 import { MainToolbarComponent } from './main-toolbar.component';
 
 describe('MainToolbarComponent', () => {
   beforeEach(() => {
-    return MockBuilder(MainToolbarComponent, CoreModule);
+    return MockBuilder(MainToolbarComponent);
   });
 
   it('should create', () => {

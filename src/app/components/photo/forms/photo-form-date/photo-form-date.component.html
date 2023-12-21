@@ -1,8 +1,8 @@
-<p>{{ 'photo-edit.takenAt' | translate }}></p>
+<p>{{ 'photo-edit.takenAt' | transloco }}></p>
 
 <form [formGroup]="form">
   <mat-form-field appearance="fill" class="full-width">
-    <mat-label>{{ 'general.date' | translate }}</mat-label>
+    <mat-label>{{ 'general.date' | transloco }}</mat-label>
     <input
       formControlName="takenAt"
       [max]="today"

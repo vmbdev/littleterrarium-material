@@ -1,8 +1,8 @@
 @if (auth.checked$ | async) {
     @if (auth.signedIn$ | async) {
       <div class="section-header">
-        <p [innerHTML]="'home.locations' | translate"></p>
-        <p [innerHTML]="'home.locationsNote' | translate"></p>
+        <p [innerHTML]="'home.locations' | transloco"></p>
+        <p [innerHTML]="'home.locationsNote' | transloco"></p>
       </div>
       <ltm-location-list />
     } @else {

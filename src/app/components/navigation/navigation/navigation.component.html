@@ -7,19 +7,19 @@
     <mat-nav-list>
       <mat-list-item routerLink="/">
         <mat-icon matListItemIcon>home</mat-icon>
-        <h1 matListItemTitle>{{ 'general.locations' | translate }}</h1>
+        <h1 matListItemTitle>{{ 'general.locations' | transloco }}</h1>
       </mat-list-item>
 
       <mat-list-item routerLink="/plant/all">
         <mat-icon matListItemIcon>forest</mat-icon>
-        <h1 matListItemTitle>{{ 'general.plants' | translate }}</h1>
+        <h1 matListItemTitle>{{ 'general.plants' | transloco }}</h1>
       </mat-list-item>
 
       <mat-list-item routerLink="/tasks">
         <mat-icon matListItemIcon>task</mat-icon>
-        <h1 matListItemTitle>{{ 'general.tasks' | translate }}</h1>
+        <h1 matListItemTitle>{{ 'general.tasks' | transloco }}</h1>
         <h2 matListItemLine>
-          {{ 'tasks.remaining' | translate:{ taskNumber: taskService.getCount() } }}
+          {{ 'tasks.remaining' | transloco:{ taskNumber: taskService.getCount() } }}
         </h2>
       </mat-list-item>
 
@@ -31,7 +31,7 @@
           @if (auth.user$ | async; as user) {
             {{ user.username }}
           } @else {
-            {{ 'general.signin' | translate }}
+            {{ 'general.signin' | transloco }}
           }
         </h1>
       </mat-list-item>

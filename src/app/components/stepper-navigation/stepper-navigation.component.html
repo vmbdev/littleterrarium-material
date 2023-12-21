@@ -6,7 +6,7 @@
       mat-raised-button
       matStepperPrevious
     >
-      {{ 'general.previous' | translate }}
+      {{ 'general.previous' | transloco }}
     </button>
   }
 
@@ -16,7 +16,7 @@
       mat-raised-button
       (click)="emitFinish()"
     >
-      {{ 'general.finish' | translate }}
+      {{ 'general.finish' | transloco }}
     </button>
   } @else {
     <button
@@ -25,7 +25,7 @@
       mat-raised-button
       matStepperNext
     >
-      {{ 'general.next' | translate }}
+      {{ 'general.next' | transloco }}
     </button>
   }
 </div>

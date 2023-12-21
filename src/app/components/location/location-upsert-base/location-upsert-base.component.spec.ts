@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslocoService } from '@ngneat/transloco';
 import { ApiService } from '@services/api.service';
 import { ErrorHandlerService } from '@services/error-handler.service';
 import { LocationService } from '@services/location.service';
@@ -17,7 +17,7 @@ describe('LocationUpsertBaseComponent', () => {
       imports: [ LocationUpsertBaseComponent ],
       providers: [
         ...MockProviders(
-          TranslateService,
+          TranslocoService,
           MatDialog,
           ApiService,
           LocationService,

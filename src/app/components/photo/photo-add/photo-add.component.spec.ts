@@ -1,7 +1,7 @@
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslocoService } from '@ngneat/transloco';
 import { MockBuilder, MockInstance, MockRender } from 'ng-mocks';
 
 import { PhotoAddComponent } from './photo-add.component';
@@ -13,7 +13,7 @@ describe('PhotoAddComponent', () => {
     return MockBuilder(PhotoAddComponent)
       .keep(FormBuilder)
       .keep(RouterTestingModule)
-      .mock(TranslateService)
+      .mock(TranslocoService)
   });
 
   it('should create', () => {

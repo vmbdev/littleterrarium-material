@@ -1,5 +1,5 @@
 import { FormBuilder } from '@angular/forms';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslocoService } from '@ngneat/transloco';
 import { MockBuilder } from 'ng-mocks';
 
 import { PlantFormDescriptionComponent } from './plant-form-description.component';
@@ -7,7 +7,7 @@ import { PlantFormDescriptionComponent } from './plant-form-description.componen
 describe('PlantFormDescriptionComponent', () => {
   beforeEach( () => {
     return MockBuilder(PlantFormDescriptionComponent)
-      .mock(TranslateService)
+      .mock(TranslocoService)
       .keep(FormBuilder)
   });
 

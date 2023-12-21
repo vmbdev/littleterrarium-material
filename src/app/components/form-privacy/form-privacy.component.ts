@@ -1,9 +1,10 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { FormBaseComponent } from '@components/form-base/form-base.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslocoModule } from '@ngneat/transloco';
+
+import { FormBaseComponent } from '@components/form-base/form-base.component';
 
 @Component({
   selector: 'ltm-form-privacy',
@@ -12,7 +13,7 @@ import { TranslateModule } from '@ngx-translate/core';
     CommonModule,
     ReactiveFormsModule,
     MatCheckboxModule,
-    TranslateModule,
+    TranslocoModule,
   ],
   templateUrl: './form-privacy.component.html',
 })

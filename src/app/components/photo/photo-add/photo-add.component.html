@@ -1,7 +1,7 @@
 <mat-stepper labelPosition="bottom" linear="false" animationDuration="300">
-  <mat-step [label]="'general.picture' | translate">
-    <p [innerHTML]="'photo-add.addMsg' | translate"></p>
-    <p [innerHTML]="'photo-add.addMsgLimit' | translate"></p>
+  <mat-step [label]="'general.picture' | transloco">
+    <p [innerHTML]="'photo-add.addMsg' | transloco"></p>
+    <p [innerHTML]="'photo-add.addMsgLimit' | transloco"></p>
 
     <ltm-file-uploader maxAmount="10" (fileChange)="fileChange($event)" />
 
@@ -11,11 +11,11 @@
   
   <mat-step
     [stepControl]="formPrivacy.form"
-    [label]="'general.privacy' | translate"
+    [label]="'general.privacy' | transloco"
   >
     <ltm-form-privacy #formPrivacy>
-      <p [innerHtml]="'photo-add.visibility' | translate"></p>
-      <p [innerHtml]="'photo-add.visibilityNote' | translate"></p>
+      <p [innerHtml]="'photo-add.visibility' | transloco"></p>
+      <p [innerHtml]="'photo-add.visibilityNote' | transloco"></p>
     </ltm-form-privacy>
     <ltm-stepper-navigation finishButton="true" (finish)="submit()" />
   </mat-step>

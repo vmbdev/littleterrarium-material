@@ -10,7 +10,7 @@ import {
   MAT_BOTTOM_SHEET_DATA
 } from '@angular/material/bottom-sheet';
 import { finalize, Observable } from 'rxjs';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslocoService, TranslocoModule } from '@ngneat/transloco';
 
 import {
   WaitDialogComponent
@@ -53,7 +53,7 @@ interface PlantEditConfig {
   standalone: true,
   imports: [
     CommonModule,
-    TranslateModule,
+    TranslocoModule,
     MatCardModule,
     MatIconModule,
     MatButtonModule,
@@ -91,7 +91,7 @@ export class PlantEditComponent {
 
   constructor(
     private dialog: MatDialog,
-    private translate: TranslateService,
+    private translate: TranslocoService,
     public plantService: PlantService,
     private errorHandler: ErrorHandlerService,
     @Optional() private bottomSheetRef: MatBottomSheetRef,
@@ -109,7 +109,7 @@ export class PlantEditComponent {
     return this.dialog.open(WaitDialogComponent, {
       disableClose: true,
       data: {
-        message: this.translate.instant('general.loading'),
+        message: this.translate.translate('general.loading'),
         progressBar: false,
       },
     });
@@ -147,7 +147,7 @@ export class PlantEditComponent {
 
   submit(): void {
     if (!this.checkFormValidity()) {
-      this.errorHandler.push(this.translate.instant('general.formErrors'));
+      this.errorHandler.push(this.translate.translate('general.formErrors'));
       return;
     }
 

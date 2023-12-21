@@ -9,7 +9,7 @@ import {
   MatBottomSheetModule,
 } from '@angular/material/bottom-sheet';
 import { catchError, EMPTY } from 'rxjs';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslocoService, TranslocoModule } from '@ngneat/transloco';
 
 import {
   PlantListComponent
@@ -39,7 +39,7 @@ import { Light, Location } from '@models/location.model';
     CommonModule,
     MatBottomSheetModule,
     MatDialogModule,
-    TranslateModule,
+    TranslocoModule,
     PlantListComponent,
     PropertyComponent,
     InfoBoxComponent,
@@ -57,7 +57,7 @@ export class LocationComponent {
     private router: Router,
     private mt: MainToolbarService,
     private errorHandler: ErrorHandlerService,
-    private translate: TranslateService,
+    private translate: TranslocoService,
     private bottomSheet: MatBottomSheet,
     private dialog: MatDialog
   ) {
@@ -91,7 +91,7 @@ export class LocationComponent {
           }
           else msg = 'errors.server';
 
-          this.translate.get(msg).subscribe((res: string) => {
+          this.translate.selectTranslate(msg).subscribe((res: string) => {
             this.errorHandler.push(res);
           });
 
@@ -133,8 +133,8 @@ export class LocationComponent {
   openRemoveDialog(id: number) {
     this.dialog.open(ConfirmDialogComponent, {
       data: {
-        title: this.translate.instant('general.delete'),
-        question: [this.translate.instant('location.remove')],
+        title: this.translate.translate('general.delete'),
+        question: [this.translate.translate('location.remove')],
         accept: () => {
           this.delete(id);
         },
@@ -149,7 +149,7 @@ export class LocationComponent {
       },
       error: (err) => {
         if (err.msg === 'LOCATION_NOT_VALID') {
-          this.translate.get('location.invalid').subscribe((res: string) => {
+          this.translate.selectTranslate('location.invalid').subscribe((res: string) => {
             this.errorHandler.push(res);
           });
         }

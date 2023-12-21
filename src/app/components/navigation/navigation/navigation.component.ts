@@ -10,9 +10,8 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { fromEvent, Observable } from 'rxjs';
-import { map, shareReplay } from 'rxjs/operators';
-import { TranslateModule } from '@ngx-translate/core';
+import { fromEvent, Observable, map, shareReplay } from 'rxjs';
+import { TranslocoModule } from '@ngneat/transloco';
 
 import {
   BottomToolbarComponent
@@ -51,7 +50,7 @@ import { ThemeSwitcherComponent } from '../theme-switcher/theme-switcher.compone
     MatSelectModule,
     MatDividerModule,
     MatSidenavModule,
-    TranslateModule,
+    TranslocoModule,
     BottomToolbarComponent,
     LangSwitcherComponent,
     ThemeSwitcherComponent,

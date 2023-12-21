@@ -15,7 +15,7 @@ import {
   MatBottomSheetModule
 } from '@angular/material/bottom-sheet';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslocoService, TranslocoModule } from '@ngneat/transloco';
 
 import { FabComponent } from '@components/fab/fab.component';
 import {
@@ -64,7 +64,7 @@ import { CapitalizePipe } from "@pipes/capitalize/capitalize.pipe";
     MatBottomSheetModule,
     MatGridListModule,
     MatListModule,
-    TranslateModule,
+    TranslocoModule,
     FabComponent,
     PlantToolbarComponent,
     PlantMenuWaterComponent,
@@ -99,7 +99,7 @@ export class PlantListComponent {
     private plantService: PlantService,
     private locationService: LocationService,
     private dialog: MatDialog,
-    private translate: TranslateService,
+    private translate: TranslocoService,
     private bottomSheet: MatBottomSheet,
     private search: SearchService,
     private mt: MainToolbarService,
@@ -301,7 +301,7 @@ export class PlantListComponent {
     this.dialog.open(ConfirmDialogComponent, {
       data: {
         title: name,
-        question: [this.translate.instant('plant.remove')],
+        question: [this.translate.translate('plant.remove')],
         accept: () => {
           this.delete(id);
         },

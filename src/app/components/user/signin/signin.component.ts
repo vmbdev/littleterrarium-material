@@ -12,7 +12,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslocoService, TranslocoModule } from '@ngneat/transloco';
 import { finalize } from 'rxjs';
 
 import {
@@ -32,7 +32,7 @@ import { AuthService } from '@services/auth.service';
     MatIconModule,
     MatButtonModule,
     MatDialogModule,
-    TranslateModule,
+    TranslocoModule,
     WaitDialogComponent,
   ],
   templateUrl: './signin.component.html',
@@ -50,7 +50,7 @@ export class SigninComponent {
     private auth: AuthService,
     private router: Router,
     private dialog: MatDialog,
-    private translate: TranslateService
+    private translate: TranslocoService
   ) {}
 
   ngOnInit(): void {
@@ -63,7 +63,7 @@ export class SigninComponent {
     return this.dialog.open(WaitDialogComponent, {
       disableClose: true,
       data: {
-        message: this.translate.instant('signin.progress'),
+        message: this.translate.translate('signin.progress'),
         progressBar: false,
       },
     });

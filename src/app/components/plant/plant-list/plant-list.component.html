@@ -59,11 +59,11 @@
     <ltm-plant-menu-fert [id]="plant.id" />
     <button mat-menu-item (click)="openEdit(plant.id)">
       <mat-icon>edit_square</mat-icon>
-      <span>{{ 'general.edit' | translate }}</span>
+      <span>{{ 'general.edit' | transloco }}</span>
     </button>
     <button mat-menu-item (click)="openRemoveDialog(getName(plant), plant.id)">
       <mat-icon>delete</mat-icon>
-      <span>{{ 'general.delete' | translate }}</span>
+      <span>{{ 'general.delete' | transloco }}</span>
     </button>
   </mat-menu>
 </ng-template>

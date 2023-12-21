@@ -2,17 +2,17 @@
   <form [formGroup]="waterForm" method="post" (submit)="submit()">
     <mat-card>
       <mat-card-content>
-        <p [innerHTML]="'plant-edit-watering.warning' | translate"></p>
-        <p [innerHTML]="'plant-edit-watering.sensitive' | translate"></p>
-        <p [innerHTML]="'plant-edit-watering.reminder' | translate"></p>
+        <p [innerHTML]="'plant-edit-watering.warning' | transloco"></p>
+        <p [innerHTML]="'plant-edit-watering.sensitive' | transloco"></p>
+        <p [innerHTML]="'plant-edit-watering.reminder' | transloco"></p>
       </mat-card-content>
     </mat-card>
     
     <div>
-      <p [innerHTML]="'plant-edit-watering.lastTime' | translate"></p>
+      <p [innerHTML]="'plant-edit-watering.lastTime' | transloco"></p>
 
       <mat-form-field appearance="fill" class="full-width">
-        <mat-label>{{ 'general.date' | translate }}</mat-label>
+        <mat-label>{{ 'general.date' | transloco }}</mat-label>
         <input
           formControlName="waterLast"
           [max]="today"
@@ -28,7 +28,7 @@
     <mat-divider />
 
     <div>
-      <p [innerHTML]="'plant-edit-watering.nextTime' | translate"></p>
+      <p [innerHTML]="'plant-edit-watering.nextTime' | transloco"></p>
       <mat-form-field class="full-width">
         <input matInput type="number" formControlName="waterFreq">
       </mat-form-field>
@@ -36,7 +36,7 @@
 
     <div class="tab-navigation">
       <button mat-raised-button color="primary">
-        {{ 'general.update' | translate }}
+        {{ 'general.update' | transloco }}
       </button>
     </div>
   </form>

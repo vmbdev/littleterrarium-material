@@ -11,7 +11,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatCardModule } from '@angular/material/card';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslocoModule } from '@ngneat/transloco';
 
 import { PlantService } from '@services/plant.service';
 import { Plant } from '@models/plant.model';
@@ -29,7 +29,7 @@ import { Plant } from '@models/plant.model';
     MatButtonModule,
     MatDividerModule,
     MatCardModule,
-    TranslateModule,
+    TranslocoModule,
   ],
   templateUrl: './plant-edit-water.component.html',
 })

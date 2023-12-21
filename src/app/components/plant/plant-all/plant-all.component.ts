@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslocoService, TranslocoModule } from '@ngneat/transloco';
 
 import {
   PlantListComponent
@@ -9,17 +9,17 @@ import { MainToolbarService } from '@services/main-toolbar.service';
 @Component({
   selector: 'ltm-plant-all',
   standalone: true,
-  imports: [PlantListComponent, TranslateModule],
+  imports: [PlantListComponent, TranslocoModule],
   templateUrl: './plant-all.component.html',
 })
 export class PlantAllComponent {
   constructor(
     private mt: MainToolbarService,
-    private translate: TranslateService
+    private translate: TranslocoService
   ) {}
 
   ngOnInit(): void {
-    this.translate.get('general.plants').subscribe((res: string) => {
+    this.translate.selectTranslate('general.plants').subscribe((res: string) => {
       this.mt.setName(res);
     });
     this.mt.setButtons([]);

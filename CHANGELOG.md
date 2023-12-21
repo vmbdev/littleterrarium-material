@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.0.2] - 2023-12-20
+
+### Changes
+
+- Migrated from NGX-Translate to Transloco.
+
 ## [1.0.1] - 2023-12-08
 
 ### Added

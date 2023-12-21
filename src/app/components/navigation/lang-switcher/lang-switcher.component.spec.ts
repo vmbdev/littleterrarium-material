@@ -1,11 +1,10 @@
 import { MockBuilder } from 'ng-mocks';
-import { CoreModule } from '../core.module';
 
 import { LangSwitcherComponent } from './lang-switcher.component';
 
 describe('LangSwitcherComponent', () => {
   beforeEach(() => {
-    return MockBuilder(LangSwitcherComponent, CoreModule);
+    return MockBuilder(LangSwitcherComponent);
   });
 
   it('should create', () => {

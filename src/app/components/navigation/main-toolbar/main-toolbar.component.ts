@@ -6,7 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterModule } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslocoModule } from '@ngneat/transloco';
 
 import {
   SearchComponent
@@ -24,7 +24,7 @@ import { SearchService } from '@services/search.service';
     MatDividerModule,
     MatMenuModule,
     MatButtonModule,
-    TranslateModule,
+    TranslocoModule,
     RouterModule,
     SearchComponent,
   ],

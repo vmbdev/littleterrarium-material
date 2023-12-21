@@ -2,36 +2,31 @@ import { Component } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import {
-  LangChangeEvent,
-  TranslateModule,
-  TranslateService,
-} from '@ngx-translate/core';
+  TranslocoService,
+  TranslocoModule,
+  LangDefinition,
+} from '@ngneat/transloco';
 
 @Component({
   selector: 'ltm-lang-switcher',
   standalone: true,
-  imports: [MatFormFieldModule, MatSelectModule, TranslateModule],
+  imports: [MatFormFieldModule, MatSelectModule, TranslocoModule],
   templateUrl: './lang-switcher.component.html',
   styleUrls: ['./lang-switcher.component.scss'],
 })
 export class LangSwitcherComponent {
   storedLanguage = localStorage.getItem('LT_lang');
-  languages = [
-    { value: 'en', name: 'English' },
-    { value: 'es', name: 'Español' },
-  ];
+  languages = this.translate.getAvailableLangs() as LangDefinition[];
 
-  constructor(private readonly translate: TranslateService) {
-    translate.setDefaultLang('en');
+  constructor(private readonly translate: TranslocoService) {
+    if (this.storedLanguage) translate.setActiveLang(this.storedLanguage);
 
-    if (this.storedLanguage) translate.use(this.storedLanguage);
-
-    translate.onLangChange.subscribe((event: LangChangeEvent) => {
-      localStorage.setItem('LT_lang', event.lang);
+    translate.langChanges$.subscribe((lang: string) => {
+      localStorage.setItem('LT_lang', lang);
     });
   }
 
   setLang(lang: string) {
-    this.translate.use(lang);
+    this.translate.setActiveLang(lang);
   }
 }

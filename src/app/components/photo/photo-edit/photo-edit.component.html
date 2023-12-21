@@ -1,11 +1,11 @@
 @if (photoService.photo$ | async; as photo) {
   <ltm-edit-page 
-    [title]="'photo-edit.header' | translate"
+    [title]="'photo-edit.header' | transloco"
     (accept)="submit()"
   >
     <mat-card class="settings-card">
       <mat-card-header>
-        <mat-card-title>{{ 'general.description' | translate }}</mat-card-title>
+        <mat-card-title>{{ 'general.description' | transloco }}</mat-card-title>
       </mat-card-header>
       <mat-card-content>
         <ltm-photo-form-description [currentDescription]="photo.description" />
@@ -14,7 +14,7 @@
 
     <mat-card class="settings-card">
       <mat-card-header>
-        <mat-card-title>{{ 'general.date' | translate }}</mat-card-title>
+        <mat-card-title>{{ 'general.date' | transloco }}</mat-card-title>
       </mat-card-header>
       <mat-card-content>
         <ltm-photo-form-date [currentTakenAt]="photo.takenAt" />
@@ -23,12 +23,12 @@
 
     <mat-card class="settings-card">
       <mat-card-header>
-        <mat-card-title>{{ 'general.privacy' | translate }}</mat-card-title>
+        <mat-card-title>{{ 'general.privacy' | transloco }}</mat-card-title>
       </mat-card-header>
       <mat-card-content>
         <ltm-form-privacy [currentPrivacy]="photo.public">
-          <p [innerHtml]="'photo-add.visibility' | translate"></p>
-          <p [innerHtml]="'photo-add.visibilityNote' | translate"></p>
+          <p [innerHtml]="'photo-add.visibility' | transloco"></p>
+          <p [innerHtml]="'photo-add.visibilityNote' | transloco"></p>
         </ltm-form-privacy>
       </mat-card-content>
     </mat-card>

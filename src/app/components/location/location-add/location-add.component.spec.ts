@@ -1,6 +1,6 @@
 import { RouterTestingModule } from '@angular/router/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslocoService } from '@ngneat/transloco';
 import { MockComponents, MockProvider, MockProviders } from 'ng-mocks';
 import { ApiService } from '@services/api.service';
 
@@ -35,7 +35,7 @@ describe('LocationAddComponent', () => {
           AuthService,
           LocationService,
           ErrorHandlerService,
-          TranslateService
+          TranslocoService
         ),
       ]
     })

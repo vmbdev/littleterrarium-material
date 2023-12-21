@@ -2,15 +2,15 @@
   <form [formGroup]="fertForm" method="post" (submit)="submit()">
     <mat-card>
       <mat-card-content>
-        <p [innerHTML]="'plant-edit-fertilizer.header' | translate"></p>
+        <p [innerHTML]="'plant-edit-fertilizer.header' | transloco"></p>
       </mat-card-content>
     </mat-card>
     
     <div>
-      <p [innerHTML]="'plant-edit-fertilizer.lastTime' | translate"></p>
+      <p [innerHTML]="'plant-edit-fertilizer.lastTime' | transloco"></p>
 
       <mat-form-field appearance="fill" class="full-width">
-        <mat-label>{{ 'general.date' | translate }}</mat-label>
+        <mat-label>{{ 'general.date' | transloco }}</mat-label>
         <input
           formControlName="fertLast"
           [max]="today"
@@ -26,7 +26,7 @@
     <mat-divider />
 
     <div>
-      <p [innerHTML]="'plant-edit-fertilizer.nextTime' | translate"></p>
+      <p [innerHTML]="'plant-edit-fertilizer.nextTime' | transloco"></p>
       <mat-form-field class="full-width">
         <input matInput type="number" formControlName="fertFreq">
       </mat-form-field>
@@ -35,7 +35,7 @@
     <mat-divider />
 
     <div>
-      <p [innerHTML]="'plant-edit-fertilizer.type' | translate"></p>
+      <p [innerHTML]="'plant-edit-fertilizer.type' | transloco"></p>
       <mat-form-field class="full-width">
         <input matInput type="text" formControlName="fertType">
       </mat-form-field>
@@ -43,7 +43,7 @@
 
     <div class="tab-navigation">
       <button mat-raised-button color="primary">
-        {{ 'general.update' | translate }}
+        {{ 'general.update' | transloco }}
       </button>
     </div>
   </form>

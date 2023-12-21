@@ -6,7 +6,7 @@ import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatStepperModule } from '@angular/material/stepper';
 import { catchError, EMPTY, finalize } from 'rxjs';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslocoModule } from '@ngneat/transloco';
 
 import {
   StepperNavigationComponent
@@ -42,7 +42,7 @@ import { Location } from '@models/location.model';
     CommonModule,
     MatStepperModule,
     MatDialogModule,
-    TranslateModule,
+    TranslocoModule,
     StepperNavigationComponent,
     FileUploaderComponent,
     LocationFormNameComponent,
@@ -59,7 +59,7 @@ export class LocationAddComponent extends LocationUpsertBaseComponent {
 
   submit(): void {
     if (!this.checkFormValidity()) {
-      this.errorHandler.push(this.translate.instant('general.formErrors'));
+      this.errorHandler.push(this.translate.translate('general.formErrors'));
       return;
     }
 
@@ -71,7 +71,7 @@ export class LocationAddComponent extends LocationUpsertBaseComponent {
       .pipe(
         catchError((error: HttpErrorResponse) => {
           if (error.error?.msg === 'IMG_NOT_VALID') {
-            this.errorHandler.push(this.translate.instant('errors.invalidImg'));
+            this.errorHandler.push(this.translate.translate('errors.invalidImg'));
           }
 
           return EMPTY;

@@ -1,5 +1,5 @@
 import { RouterTestingModule } from '@angular/router/testing';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslocoService } from '@ngneat/transloco';
 import { MockBuilder } from 'ng-mocks';
 
 import { PhotoComponent } from './photo.component';
@@ -8,7 +8,7 @@ describe('PhotoComponent', () => {
   beforeEach(() => {
     return MockBuilder(PhotoComponent)
       .keep(RouterTestingModule)
-      .mock(TranslateService)
+      .mock(TranslocoService)
   });
 
   it('should create', () => {

@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatStepperModule } from '@angular/material/stepper';
 import { AuthService } from '@services/auth.service';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslocoModule } from '@ngneat/transloco';
 import { HttpErrorResponse } from '@angular/common/http';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { catchError, EMPTY, switchMap } from 'rxjs';
@@ -30,7 +30,7 @@ import { User } from '@models/user.model';
     CommonModule,
     ReactiveFormsModule,
     MatStepperModule,
-    TranslateModule,
+    TranslocoModule,
     StepperNavigationComponent,
     UserFormPasswordComponent,
     UserFormUsernameComponent,

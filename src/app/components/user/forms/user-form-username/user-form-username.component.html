@@ -1,16 +1,16 @@
 <form [formGroup]="form">
-  <p [innerHTML]="'user-edit.usernameDesc' | translate"></p>
+  <p [innerHTML]="'user-edit.usernameDesc' | transloco"></p>
 
   <mat-form-field class="full-width">
-    <mat-label>{{ 'general.username' | translate }}</mat-label>
+    <mat-label>{{ 'general.username' | transloco }}</mat-label>
     <input matInput type="text" formControlName="username">
 
     @if (isTaken()) {
-      <mat-error>{{ 'user-register.usernameTaken' | translate }}</mat-error>
+      <mat-error>{{ 'user-register.usernameTaken' | transloco }}</mat-error>
     }
     
     @if (isInvalid()) {
-      <mat-error>{{ 'user-register.usernameInvalid' | translate }}</mat-error>
+      <mat-error>{{ 'user-register.usernameInvalid' | transloco }}</mat-error>
     }
 
   </mat-form-field>

@@ -7,7 +7,7 @@
   >
     <mat-step
       [stepControl]="formUsername.form"
-      [label]="'general.username' | translate"
+      [label]="'general.username' | transloco"
     >
       <ltm-user-form-username #formUsername />
       <ltm-stepper-navigation backButton="false" />
@@ -15,7 +15,7 @@
 
     <mat-step
       [stepControl]="formEmail.form"
-      [label]="'general.email' | translate"
+      [label]="'general.email' | transloco"
     >
       <ltm-user-form-email #formEmail />
       <ltm-stepper-navigation />
@@ -23,7 +23,7 @@
 
     <mat-step
       [stepControl]="formPassword.form"
-      [label]="'general.password' | translate"
+      [label]="'general.password' | transloco"
     >
       <ltm-user-form-password #formPassword />
       <ltm-stepper-navigation finishButton="true" (finish)="submit()" />

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslocoModule } from '@ngneat/transloco';
 
 import { LocationFormNameComponent } from './location-form-name.component';
 
@@ -12,7 +12,7 @@ describe('LocationFormNameComponent', () => {
     await TestBed.configureTestingModule({
       imports: [
         LocationFormNameComponent,
-        TranslateModule.forRoot(),
+        TranslocoModule,
         BrowserAnimationsModule
       ]
     })

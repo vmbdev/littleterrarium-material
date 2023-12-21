@@ -1,5 +1,5 @@
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslocoService } from '@ngneat/transloco';
 import { MockBuilder, MockRender } from 'ng-mocks';
 
 import { ConfirmDialogComponent } from './confirm-dialog.component';
@@ -18,7 +18,7 @@ describe('ConfirmDialogComponent', () => {
           }
         }
       })
-      .mock(TranslateService)
+      .mock(TranslocoService)
   });
 
   it('should create', () => {

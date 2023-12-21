@@ -2,7 +2,7 @@
   <mat-expansion-panel>
     <mat-expansion-panel-header>
       <mat-panel-title>
-        {{ 'general.fertilizer' | translate }}
+        {{ 'general.fertilizer' | transloco }}
       </mat-panel-title>
       <mat-panel-description class="expansion-panel-icon-right">
         <mat-icon>local_pizza</mat-icon>
@@ -12,19 +12,19 @@
     @if (plant.fertFreq || plant.fertLast) {
       @if (plant.fertLast) {
         <p>
-          <b>{{ 'general.lastTime' | translate }}</b> {{ plant.fertLast | date }}
+          <b>{{ 'general.lastTime' | transloco }}</b> {{ plant.fertLast | date }}
         </p>
       }
 
       @if (plant.fertType) {
         <p>
-          <b>{{ 'plant-widget-fertilizer.type' | translate }}:</b> {{ plant.fertType }}
+          <b>{{ 'plant-widget-fertilizer.type' | transloco }}:</b> {{ plant.fertType }}
         </p>
       }
 
       @if (plant.fertFreq) {
         <p
-          [innerHTML]="'plant-widget-fertilizer.freq' | translate:{ days: plant.fertFreq }"
+          [innerHTML]="'plant-widget-fertilizer.freq' | transloco:{ days: plant.fertFreq }"
         >
         </p>
       }
@@ -32,29 +32,29 @@
       @if (plant.fertNext) {
         <p>
           @if (plant.fertNext | daysAgo:false; as days) {
-            <b>{{ 'general.nextTime' | translate }}</b>
+            <b>{{ 'general.nextTime' | transloco }}</b>
             
             @if (days < 0) {
               <span [ngStyle]="{ 'color': 'red' }">
-                {{ 'general.daysAgo' | translate:{ days: (plant.fertNext | daysAgo) } }}
+                {{ 'general.daysAgo' | transloco:{ days: (plant.fertNext | daysAgo) } }}
               </span>
             } @else {
-              {{ 'general.daysCount' | translate:{ days: (plant.fertNext | daysAgo) } }}
+              {{ 'general.daysCount' | transloco:{ days: (plant.fertNext | daysAgo) } }}
             }
           }
         </p>
       }
     } @else {
-      <p>{{ 'plant-widget-fert.noData' | translate }}</p>
+      <p>{{ 'plant-widget-fert.noData' | transloco }}</p>
     }
 
     @if (plantService.owned) {
       <mat-action-row>
         <button mat-button color="primary" (click)="openFertDialog()">
-          {{ 'plant-widget-fert.now' | translate }}
+          {{ 'plant-widget-fert.now' | transloco }}
         </button>
         <button mat-button color="primary" (click)="openEdit()">
-          {{ 'general.edit' | translate }}
+          {{ 'general.edit' | transloco }}
         </button>
       </mat-action-row>
     }

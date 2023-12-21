@@ -16,9 +16,9 @@
             <mat-card-title>{{ item.name }}</mat-card-title>
             <mat-card-subtitle>
               @if (item._count && item._count.plants > 0) {
-                {{ 'location-list.amount' | translate:{ plantCount: item._count.plants } }}
+                {{ 'location-list.amount' | transloco:{ plantCount: item._count.plants } }}
               } @else {
-                {{ 'location.noPlants' | translate }}
+                {{ 'location.noPlants' | transloco }}
               }
             </mat-card-subtitle>
           </mat-card-title-group>

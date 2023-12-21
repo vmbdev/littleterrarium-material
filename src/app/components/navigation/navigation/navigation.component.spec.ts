@@ -1,10 +1,9 @@
 import { NavigationComponent } from './navigation.component';
 import { MockBuilder } from 'ng-mocks';
-import { CoreModule } from '../core.module';
 
 describe('NavigationComponent', () => {
   beforeEach(() => {
-    return MockBuilder(NavigationComponent, CoreModule);
+    return MockBuilder(NavigationComponent);
   });
 
   it('should compile', () => {

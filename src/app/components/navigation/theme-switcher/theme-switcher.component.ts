@@ -2,9 +2,10 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
-import { TranslateModule } from '@ngx-translate/core';
-import { CapitalizePipe } from '@pipes/capitalize/capitalize.pipe';
+import { TranslocoModule } from '@ngneat/transloco';
+
 import { ThemeService } from '@services/theme.service';
+import { CapitalizePipe } from '@pipes/capitalize/capitalize.pipe';
 
 @Component({
   selector: 'ltm-theme-switcher',
@@ -13,20 +14,16 @@ import { ThemeService } from '@services/theme.service';
     CommonModule,
     MatFormFieldModule,
     MatSelectModule,
-    TranslateModule,
+    TranslocoModule,
     CapitalizePipe
   ],
   templateUrl: './theme-switcher.component.html',
   styleUrl: './theme-switcher.component.scss'
 })
 export class ThemeSwitcherComponent {
-  currentTheme = this.themeService.getTheme();
-
   constructor(public readonly themeService: ThemeService) {}
 
   setTheme(theme: string) {
-    const res = this.themeService.switchTheme(theme);
-
-    if (res) this.currentTheme = theme;
+    this.themeService.switchTheme(theme);
   }
 }

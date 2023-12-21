@@ -8,7 +8,7 @@ import {
   MatBottomSheet,
   MatBottomSheetModule
 } from '@angular/material/bottom-sheet';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslocoModule } from '@ngneat/transloco';
 
 import {
   UserEditComponent
@@ -27,7 +27,7 @@ import { AuthService } from '@services/auth.service';
     MatRippleModule,
     MatBottomSheetModule,
     MatIconModule,
-    TranslateModule,
+    TranslocoModule,
     ProfileComponent,
   ],
   templateUrl: './user-main.component.html',

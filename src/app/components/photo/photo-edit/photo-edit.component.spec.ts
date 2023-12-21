@@ -1,5 +1,5 @@
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslocoService } from '@ngneat/transloco';
 import { MockBuilder } from 'ng-mocks';
 
 import { PhotoEditComponent } from './photo-edit.component';
@@ -7,7 +7,7 @@ import { PhotoEditComponent } from './photo-edit.component';
 describe('PhotoEditComponent', () => {
   beforeEach(() => {
     return MockBuilder(PhotoEditComponent)
-      .mock(TranslateService)
+      .mock(TranslocoService)
       .mock(MAT_DIALOG_DATA, { id: 100 })
 
   });

@@ -8,7 +8,7 @@ import {
 } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslocoModule } from '@ngneat/transloco';
 
 import { FormBaseComponent } from '@components/form-base/form-base.component';
 
@@ -20,7 +20,7 @@ import { FormBaseComponent } from '@components/form-base/form-base.component';
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
-    TranslateModule,
+    TranslocoModule,
   ],
   templateUrl: './user-form-email.component.html',
 })

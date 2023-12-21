@@ -1,14 +1,14 @@
-<p [innerHTML]="'plant-add.specieDesc' | translate"></p>
+<p [innerHTML]="'plant-add.specieDesc' | transloco"></p>
 
 <form [formGroup]="form">
   <mat-form-field appearance="fill" class="full-width">
-    <mat-label>{{ 'general.search' | translate }}</mat-label>
+    <mat-label>{{ 'general.search' | transloco }}</mat-label>
     <input
       #specieInput
       type="text"
       matInput
       [matAutocomplete]="auto"
-      [placeholder]="'specieFinder.inputPlaceholder' | translate"
+      [placeholder]="'specieFinder.inputPlaceholder' | transloco"
       (keyup)="keyPress(specieInput.value)"
       [value]="currentSpecieName ? currentSpecieName : null"
     >

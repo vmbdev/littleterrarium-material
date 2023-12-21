@@ -1,9 +1,9 @@
 import { Component, Input } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormControl } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
+import { TranslocoModule } from '@ngneat/transloco';
 
 import { FormBaseComponent } from '@components/form-base/form-base.component';
 
@@ -11,7 +11,7 @@ import { FormBaseComponent } from '@components/form-base/form-base.component';
   selector: 'ltm-photo-form-date',
   standalone: true,
   imports: [
-    TranslateModule,
+    TranslocoModule,
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,

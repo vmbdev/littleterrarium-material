@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslocoService, TranslocoModule } from '@ngneat/transloco';
 
 import {
   LocationListComponent
@@ -14,7 +14,7 @@ import { MainToolbarService } from '@services/main-toolbar.service';
   standalone: true,
   imports: [
     CommonModule,
-    TranslateModule,
+    TranslocoModule,
     LocationListComponent,
     SigninComponent,
   ],
@@ -24,13 +24,13 @@ export class HomeComponent {
   constructor(
     public auth: AuthService,
     private mt: MainToolbarService,
-    private translate: TranslateService
+    private translate: TranslocoService
   ) {}
 
   ngOnInit(): void {
     this.auth.signedIn$.subscribe((isSigned: boolean) => {
       if (isSigned) {
-        this.translate.get('general.locations').subscribe((res: string) => {
+        this.translate.selectTranslate('general.locations').subscribe((res: string) => {
           this.mt.setName(res);
         });
         this.mt.setButtons([]);

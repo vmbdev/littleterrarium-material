@@ -3,7 +3,7 @@
     <mat-step
       [stepControl]="formName.form"
       optional="true"
-      [label]="'general.name' | translate"
+      [label]="'general.name' | transloco"
     >
       <ltm-plant-form-name #formName />
       <ltm-stepper-navigation backButton="false" />
@@ -12,15 +12,15 @@
     <mat-step
       [stepControl]="formSpecie.form"
       optional="true"
-      [label]="'general.specie' | translate"
+      [label]="'general.specie' | transloco"
     >
       <ltm-plant-form-specie #formSpecie />
       <ltm-stepper-navigation />
     </mat-step>
 
-    <mat-step optional="true" [label]="'general.picture' | translate">
-      <p [innerHTML]="'photo-add.addMsg' | translate"></p>
-      <p [innerHTML]="'photo-add.addMsgLimit' | translate"></p>
+    <mat-step optional="true" [label]="'general.picture' | transloco">
+      <p [innerHTML]="'photo-add.addMsg' | transloco"></p>
+      <p [innerHTML]="'photo-add.addMsgLimit' | transloco"></p>
 
       <ltm-file-uploader maxAmount="10" (fileChange)="fileChange($event)" />
 
@@ -30,11 +30,11 @@
 
     <mat-step
       [stepControl]="formPrivacy.form"
-      [label]="'general.privacy' | translate"
+      [label]="'general.privacy' | transloco"
     >
       <ltm-form-privacy #formPrivacy>
-        <p [innerHtml]="'plant-add.privacy' | translate"></p>
-        <p [innerHtml]="'plant-add.privacyTip' | translate"></p>
+        <p [innerHtml]="'plant-add.privacy' | transloco"></p>
+        <p [innerHtml]="'plant-add.privacyTip' | transloco"></p>
       </ltm-form-privacy>
 
       <ltm-stepper-navigation finishButton="true" (finish)="submit()" />

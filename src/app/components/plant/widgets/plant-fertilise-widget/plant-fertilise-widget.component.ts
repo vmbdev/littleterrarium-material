@@ -8,7 +8,7 @@ import {
 } from '@angular/material/bottom-sheet';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule, MatDialog } from '@angular/material/dialog';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslocoService, TranslocoModule } from '@ngneat/transloco';
 
 import {
   ConfirmDialogComponent
@@ -29,7 +29,7 @@ import { DaysAgoPipe } from '@pipes/days-ago/days-ago.pipe';
     MatButtonModule,
     MatBottomSheetModule,
     MatDialogModule,
-    TranslateModule,
+    TranslocoModule,
     DaysAgoPipe,
   ],
   templateUrl: './plant-fertilise-widget.component.html',
@@ -39,7 +39,7 @@ export class PlantFertiliseWidgetComponent {
     public plantService: PlantService,
     private bottomSheet: MatBottomSheet,
     private dialog: MatDialog,
-    private translate: TranslateService
+    private translate: TranslocoService
   ) {}
 
   openEdit(): void {
@@ -49,8 +49,8 @@ export class PlantFertiliseWidgetComponent {
   openFertDialog() {
     this.dialog.open(ConfirmDialogComponent, {
       data: {
-        title: this.translate.instant('general.fertilizer'),
-        question: [this.translate.instant('plant-widget-fertilizer.confirm')],
+        title: this.translate.translate('general.fertilizer'),
+        question: [this.translate.translate('plant-widget-fertilizer.confirm')],
         accept: () => this.plantService.fertilize().subscribe(),
       },
     });

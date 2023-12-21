@@ -1,4 +1,4 @@
-import { TranslateService } from '@ngx-translate/core';
+import { TranslocoService } from '@ngneat/transloco';
 import { MockBuilder } from 'ng-mocks';
 
 import { PlantButtonWaterComponent } from './plant-button-water.component';
@@ -6,7 +6,7 @@ import { PlantButtonWaterComponent } from './plant-button-water.component';
 describe('PlantButtonWaterComponent', () => {
   beforeEach(() => {
     return MockBuilder(PlantButtonWaterComponent)
-      .mock(TranslateService)
+      .mock(TranslocoService)
   });
 
   it('should create', () => {

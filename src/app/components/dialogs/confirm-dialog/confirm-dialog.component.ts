@@ -2,7 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatDialogModule, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslocoModule } from '@ngneat/transloco';
 
 interface ConfirmDataConfig {
   title: string;
@@ -13,7 +13,7 @@ interface ConfirmDataConfig {
 @Component({
   selector: 'ltm-confirm-dialog',
   standalone: true,
-  imports: [CommonModule, TranslateModule, MatDialogModule, MatButtonModule],
+  imports: [CommonModule, TranslocoModule, MatDialogModule, MatButtonModule],
   templateUrl: './confirm-dialog.component.html',
 })
 export class ConfirmDialogComponent {

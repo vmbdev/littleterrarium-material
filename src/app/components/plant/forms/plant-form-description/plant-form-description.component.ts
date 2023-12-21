@@ -1,9 +1,9 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { TranslocoModule } from '@ngneat/transloco';
 
 import { FormBaseComponent } from '@components/form-base/form-base.component';
 
@@ -13,7 +13,7 @@ import { FormBaseComponent } from '@components/form-base/form-base.component';
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    TranslateModule,
+    TranslocoModule,
     MatFormFieldModule,
     MatInputModule,
   ],

@@ -1,8 +1,8 @@
 <form [formGroup]="form">
-  <p>{{ 'plant-edit.moved' | translate }}</p>
+  <p>{{ 'plant-edit.moved' | transloco }}</p>
 
     <mat-form-field appearance="fill">
-      <mat-label>{{ 'general.location' | translate }}</mat-label>
+      <mat-label>{{ 'general.location' | transloco }}</mat-label>
       <mat-select formControlName="locationId" [value]="currentLocation">
 
         @for (location of locations$ | async; track location.id) {

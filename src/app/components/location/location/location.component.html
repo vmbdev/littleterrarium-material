@@ -5,23 +5,23 @@
     }
     <ltm-info-box>
       <ltm-property [icon]="locationService.getLightAsset(location.light)">
-        {{ locationService.getLightName(location.light) | translate }}
+        {{ locationService.getLightName(location.light) | transloco }}
       </ltm-property>
 
       <ltm-property [icon]="location.public ? 'visibility' : 'visibility_off'">
-        {{ (location.public ? 'general.public' : 'general.private') | translate }}
+        {{ (location.public ? 'general.public' : 'general.private') | transloco }}
       </ltm-property>
 
       <ltm-property icon="forest">
         @if (location._count?.plants; as count) {
-          {{ 'location.plants' | translate:{ plantCount: count } }}
+          {{ 'location.plants' | transloco:{ plantCount: count } }}
         } @else {
-          {{ 'location.noPlants' | translate }}
+          {{ 'location.noPlants' | transloco }}
         }
       </ltm-property>
     </ltm-info-box>
 
-    <h1 class="centered">{{ 'general.plants' | translate }}</h1>
+    <h1 class="centered">{{ 'general.plants' | transloco }}</h1>
 
     <ltm-plant-list [locationId]="location.id" />
   </div>

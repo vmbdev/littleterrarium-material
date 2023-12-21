@@ -11,7 +11,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { catchError, EMPTY } from 'rxjs';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslocoModule } from '@ngneat/transloco';
 
 import { AuthService } from '@services/auth.service';
 
@@ -24,7 +24,7 @@ import { AuthService } from '@services/auth.service';
     MatIconModule,
     MatButtonModule,
     MatInputModule,
-    TranslateModule,
+    TranslocoModule,
   ],
   templateUrl: './password-recovery.component.html',
 })

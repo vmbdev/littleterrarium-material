@@ -1,5 +1,5 @@
 import { FormBuilder } from '@angular/forms';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslocoService } from '@ngneat/transloco';
 import { MockBuilder, MockRender } from 'ng-mocks';
 
 import { PhotoFormDescriptionComponent } from './photo-form-description.component';
@@ -8,7 +8,7 @@ describe('PhotoFormDescriptionComponent', () => {
   beforeEach(() => {
     return MockBuilder(PhotoFormDescriptionComponent)
       .keep(FormBuilder)
-      .mock(TranslateService)
+      .mock(TranslocoService)
   });
 
   it('should create', () => {

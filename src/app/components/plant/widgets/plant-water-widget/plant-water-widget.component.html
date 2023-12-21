@@ -2,7 +2,7 @@
   <mat-expansion-panel>
     <mat-expansion-panel-header>
       <mat-panel-title>
-        {{ 'general.watering' | translate }}
+        {{ 'general.watering' | transloco }}
       </mat-panel-title>
       <mat-panel-description class="expansion-panel-icon-right">
         <mat-icon>water_drop</mat-icon>
@@ -12,13 +12,13 @@
     @if (plant.waterFreq || plant.waterLast) {
       @if (plant.waterLast) {
         <p>
-          <b>{{ 'general.lastTime' | translate }}</b> {{ plant.waterLast | date }}
+          <b>{{ 'general.lastTime' | transloco }}</b> {{ plant.waterLast | date }}
         </p>
       }
 
       @if (plant.waterFreq) {
         <p
-          [innerHTML]="'plant-widget-water.freq' | translate:{ days: plant.waterFreq }"
+          [innerHTML]="'plant-widget-water.freq' | transloco:{ days: plant.waterFreq }"
         >
       </p>
       }
@@ -26,29 +26,29 @@
       @if (plant.waterNext) {
         <p>
           @if (plant.waterNext | daysAgo:false; as days) {
-            <b>{{ 'general.nextTime' | translate }}</b>
+            <b>{{ 'general.nextTime' | transloco }}</b>
             
             @if (days < 0) {
               <span [ngStyle]="{ 'color': 'red' }">
-                {{ 'general.daysAgo' | translate:{ days: (plant.waterNext | daysAgo) } }}
+                {{ 'general.daysAgo' | transloco:{ days: (plant.waterNext | daysAgo) } }}
               </span>
             } @else {
-              {{ 'general.daysCount' | translate:{ days: (plant.waterNext | daysAgo) } }}
+              {{ 'general.daysCount' | transloco:{ days: (plant.waterNext | daysAgo) } }}
             }
           }
         </p>
       }
     } @else {
-      <p>{{ 'plant-widget-water.noData' | translate }}</p>
+      <p>{{ 'plant-widget-water.noData' | transloco }}</p>
     }
   
     @if (plantService.owned) {
       <mat-action-row>
         <button mat-button color="primary" (click)="openWaterDialog()">
-          {{ 'plant-widget-water.now' | translate }}
+          {{ 'plant-widget-water.now' | transloco }}
         </button>
         <button mat-button color="primary" (click)="openEdit()">
-          {{ 'general.edit' | translate }}
+          {{ 'general.edit' | transloco }}
         </button>
       </mat-action-row>
     }

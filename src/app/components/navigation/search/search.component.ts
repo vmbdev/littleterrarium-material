@@ -11,7 +11,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatInput, MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslocoModule } from '@ngneat/transloco';
 
 import { SearchService } from '@services/search.service';
 
@@ -26,7 +26,7 @@ import { SearchService } from '@services/search.service';
     MatInputModule,
     MatButtonModule,
     ReactiveFormsModule,
-    TranslateModule,
+    TranslocoModule,
   ],
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss'],

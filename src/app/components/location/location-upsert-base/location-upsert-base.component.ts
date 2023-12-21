@@ -1,7 +1,7 @@
 import { Component, Injector, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslocoService } from '@ngneat/transloco';
 
 import {
   LocationFormLightComponent
@@ -40,13 +40,13 @@ export class LocationUpsertBaseComponent {
 
   picture?: File;
 
-  protected translate: TranslateService;
+  protected translate: TranslocoService;
   protected dialog: MatDialog;
   protected locationService: LocationService;
   protected errorHandler: ErrorHandlerService;
 
   constructor(injector: Injector) {
-    this.translate = injector.get(TranslateService);
+    this.translate = injector.get(TranslocoService);
     this.dialog = injector.get(MatDialog);
     this.locationService = injector.get(LocationService);
     this.errorHandler = injector.get(ErrorHandlerService);
@@ -81,10 +81,10 @@ export class LocationUpsertBaseComponent {
   openUploadDialog(): MatDialogRef<WaitDialogComponent, any> {
     return this.dialog.open(WaitDialogComponent, {
       data: {
-        message: this.translate.instant('progress-bar.uploading'),
+        message: this.translate.translate('progress-bar.uploading'),
         progressBar: true,
         progressValue: 100,
-        finalMessage: this.translate.instant('general.afterUpload'),
+        finalMessage: this.translate.translate('general.afterUpload'),
       },
     });
   }

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslocoModule } from '@ngneat/transloco';
 
 import { FormBaseComponent } from '@components/form-base/form-base.component';
 import { PlantService } from '@services/plant.service';
@@ -14,7 +14,7 @@ import { Condition } from '@models/plant.model';
   standalone: true,
   imports: [
     CommonModule,
-    TranslateModule,
+    TranslocoModule,
     MatButtonToggleModule,
     MatIconModule,
     ReactiveFormsModule,

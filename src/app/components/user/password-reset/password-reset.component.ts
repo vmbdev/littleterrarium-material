@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MatButtonModule } from '@angular/material/button';
 import { catchError, EMPTY } from 'rxjs';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslocoService, TranslocoModule } from '@ngneat/transloco';
 
 import {
   UserFormPasswordComponent
@@ -14,7 +14,7 @@ import { ApiService } from '@services/api.service';
 @Component({
   selector: 'ltm-password-reset',
   standalone: true,
-  imports: [TranslateModule, MatButtonModule, UserFormPasswordComponent],
+  imports: [TranslocoModule, MatButtonModule, UserFormPasswordComponent],
   templateUrl: './password-reset.component.html',
 })
 export class PasswordResetComponent {
@@ -29,7 +29,7 @@ export class PasswordResetComponent {
 
   constructor(
     private route: ActivatedRoute,
-    public translate: TranslateService,
+    public translate: TranslocoService,
     private auth: AuthService,
     private api: ApiService
   ) {}

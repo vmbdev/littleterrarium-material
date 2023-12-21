@@ -1,5 +1,5 @@
 import { FormBuilder } from '@angular/forms';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslocoService } from '@ngneat/transloco';
 import { MockBuilder, MockRender } from 'ng-mocks';
 
 import { PhotoFormDateComponent } from './photo-form-date.component';
@@ -7,7 +7,7 @@ import { PhotoFormDateComponent } from './photo-form-date.component';
 describe('PhotoFormDateComponent', () => {
   beforeEach(() => {
     return MockBuilder(PhotoFormDateComponent)
-      .mock(TranslateService)
+      .mock(TranslocoService)
       .keep(FormBuilder)
   });
 

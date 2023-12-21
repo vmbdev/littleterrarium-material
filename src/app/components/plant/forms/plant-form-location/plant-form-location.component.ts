@@ -9,7 +9,7 @@ import {
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { Observable } from 'rxjs';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslocoModule } from '@ngneat/transloco';
 
 import { FormBaseComponent } from '@components/form-base/form-base.component';
 import { LocationService } from '@services/location.service';
@@ -21,7 +21,7 @@ import { Location } from '@models/location.model';
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    TranslateModule,
+    TranslocoModule,
     MatFormFieldModule,
     MatSelectModule,
   ],

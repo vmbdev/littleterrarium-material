@@ -1,10 +1,10 @@
 <form [formGroup]="form">
-  <p [innerHTML]="'plant-add.nameDesc' | translate"></p>
+  <p [innerHTML]="'plant-add.nameDesc' | transloco"></p>
   <mat-form-field class="full-width">
     <input
       formControlName="customName"
       matInput
-      [placeholder]="'plant-add.namePlaceholder' | translate"
+      [placeholder]="'plant-add.namePlaceholder' | transloco"
       [value]="currentCustomName"
     >
   </mat-form-field>

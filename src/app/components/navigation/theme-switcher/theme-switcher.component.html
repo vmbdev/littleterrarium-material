@@ -1,14 +1,14 @@
 @if (themeService.getAvailableThemes(); as themes) {
   <mat-form-field appearance="fill" class="theme-switcher">
-    <mat-label>{{ 'themes.title' | translate }}</mat-label>
+    <mat-label>{{ 'themes.title' | transloco }}</mat-label>
     <mat-select
       #select
       (selectionChange)="setTheme(select.value)"
-      [(value)]="currentTheme"
+      [value]="themeService.theme$ | async"
     >
       @for (theme of themes; track theme) {
         <mat-option [value]="theme">
-          {{ 'themes.' + theme | translate }}
+          {{ 'themes.' + theme | transloco }}
         </mat-option>
       }
     </mat-select>

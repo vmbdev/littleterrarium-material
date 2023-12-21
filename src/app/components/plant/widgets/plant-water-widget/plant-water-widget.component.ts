@@ -8,7 +8,7 @@ import {
   MatBottomSheetModule
 } from '@angular/material/bottom-sheet';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslocoService, TranslocoModule } from '@ngneat/transloco';
 
 import {
   PlantEditWaterComponent
@@ -30,7 +30,7 @@ import { DaysAgoPipe } from '@pipes/days-ago/days-ago.pipe';
     MatButtonModule,
     MatBottomSheetModule,
     MatDialogModule,
-    TranslateModule,
+    TranslocoModule,
     DaysAgoPipe,
   ],
 })
@@ -39,7 +39,7 @@ export class PlantWaterWidgetComponent {
     public plantService: PlantService,
     private bottomSheet: MatBottomSheet,
     private dialog: MatDialog,
-    private translate: TranslateService
+    private translate: TranslocoService
   ) {}
 
   openEdit(): void {
@@ -49,10 +49,10 @@ export class PlantWaterWidgetComponent {
   openWaterDialog() {
     this.dialog.open(ConfirmDialogComponent, {
       data: {
-        title: this.translate.instant('general.watering'),
+        title: this.translate.translate('general.watering'),
         question: [
-          this.translate.instant('plant-widget-water.confirm'),
-          this.translate.instant('plant-widget-water.warning'),
+          this.translate.translate('plant-widget-water.confirm'),
+          this.translate.translate('plant-widget-water.warning'),
         ],
         accept: () => this.plantService.water().subscribe(),
       },

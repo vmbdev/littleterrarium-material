@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslocoService } from '@ngneat/transloco';
 
 import {
   ConfirmDialogComponent
@@ -21,17 +21,17 @@ export class PlantBaseActionComponent {
   constructor(
     private plantService: PlantService,
     private dialog: MatDialog,
-    private translate: TranslateService
+    private translate: TranslocoService
   ) {}
 
   openWaterDialog() {
     if (this.id) {
       this.dialog.open(ConfirmDialogComponent, {
         data: {
-          title: this.translate.instant('general.watering'),
+          title: this.translate.translate('general.watering'),
           question: [
-            this.translate.instant('plant-widget-water.confirm'),
-            this.translate.instant('plant-widget-water.warning'),
+            this.translate.translate('plant-widget-water.confirm'),
+            this.translate.translate('plant-widget-water.warning'),
           ],
           accept: () => {
             this.plantService.water(this.id).subscribe(() => {
@@ -47,8 +47,8 @@ export class PlantBaseActionComponent {
     if (this.id) {
       this.dialog.open(ConfirmDialogComponent, {
         data: {
-          title: this.translate.instant('general.fertilize'),
-          question: [this.translate.instant('plant-widget-fertilizer.confirm')],
+          title: this.translate.translate('general.fertilize'),
+          question: [this.translate.translate('plant-widget-fertilizer.confirm')],
           accept: () => {
             this.plantService.fertilize(this.id).subscribe(() => {
               this.done.emit();

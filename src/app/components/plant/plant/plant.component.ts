@@ -10,7 +10,7 @@ import {
   MatBottomSheetModule
 } from '@angular/material/bottom-sheet';
 import { catchError, EMPTY, finalize, forkJoin } from 'rxjs';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslocoService, TranslocoModule } from '@ngneat/transloco';
 
 import {
   WaitDialogComponent
@@ -45,7 +45,7 @@ import { CapitalizePipe } from '@pipes/capitalize/capitalize.pipe';
   standalone: true,
   imports: [
     CommonModule,
-    TranslateModule,
+    TranslocoModule,
     MatDialogModule,
     MatBottomSheetModule,
     MatCardModule,
@@ -70,7 +70,7 @@ export class PlantComponent {
     private errorHandler: ErrorHandlerService,
     private mt: MainToolbarService,
     public plantService: PlantService,
-    private translate: TranslateService,
+    private translate: TranslocoService,
     private dialog: MatDialog,
     private bottomSheet: MatBottomSheet
   ) {}
@@ -87,7 +87,7 @@ export class PlantComponent {
     return this.dialog.open(WaitDialogComponent, {
       disableClose: true,
       data: {
-        message: this.translate.instant('general.loading'),
+        message: this.translate.translate('general.loading'),
         progressBar: false,
       },
     });
@@ -110,7 +110,7 @@ export class PlantComponent {
           if (err.error?.msg === 'PLANT_NOT_FOUND') msg = 'plant.invalid';
           else msg = 'errors.server';
 
-          this.translate.get(msg).subscribe((res: string) => {
+          this.translate.selectTranslate(msg).subscribe((res: string) => {
             this.errorHandler.push(res);
           });
 
@@ -154,8 +154,8 @@ export class PlantComponent {
 
   openRemoveDialog() {
     forkJoin({
-      title: this.translate.get('general.delete'),
-      question: this.translate.get('plant.remove'),
+      title: this.translate.selectTranslate('general.delete'),
+      question: this.translate.selectTranslate('plant.remove'),
     }).subscribe(({ title, question }) => {
       this.dialog.open(ConfirmDialogComponent, {
         data: {

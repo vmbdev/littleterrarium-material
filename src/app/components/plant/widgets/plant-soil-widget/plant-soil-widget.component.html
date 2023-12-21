@@ -2,7 +2,7 @@
   <mat-expansion-panel>
     <mat-expansion-panel-header>
       <mat-panel-title>
-        {{ 'plant-widget-soil.title' | translate }}
+        {{ 'plant-widget-soil.title' | transloco }}
       </mat-panel-title>
       <mat-panel-description class="expansion-panel-icon-right">
         <mat-icon>yard</mat-icon>
@@ -13,13 +13,13 @@
       @if (plant.potType) {
         <p>
           <span
-            [innerHTML]="'plant-widget-soil.pot' | translate:{ material: getPotName() }">
+            [innerHTML]="'plant-widget-soil.pot' | transloco:{ material: getPotName() }">
           </span>
 
           @if (plant.potSize) {
             ,
             <span
-              [innerHTML]="'plant-widget-soil.potSize' | translate: { size: plant.potSize | unit:'cm' }"
+              [innerHTML]="'plant-widget-soil.potSize' | transloco: { size: plant.potSize | unit:'cm' }"
             >
             </span>
 
@@ -30,17 +30,17 @@
 
       @if (plant.soil) {
         <p
-          [innerHTML]="'plant-widget-soil.composition' | translate: { soil: plant.soil }">
+          [innerHTML]="'plant-widget-soil.composition' | transloco: { soil: plant.soil }">
         </p>
       }
     } @else {
-      <p>{{ 'plant-widget-soil.noData' | translate }}</p>
+      <p>{{ 'plant-widget-soil.noData' | transloco }}</p>
     }
 
     @if (plantService.owned) {
       <mat-action-row>
         <button mat-button color="primary" (click)="openEdit()">
-          {{ 'general.edit' | translate }}
+          {{ 'general.edit' | transloco }}
         </button>
       </mat-action-row>
     }

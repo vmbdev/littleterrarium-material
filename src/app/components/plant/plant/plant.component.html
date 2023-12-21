@@ -20,13 +20,13 @@
     }
 
     <ltm-property [icon]="plant.public ? 'visibility' : 'visibility_off'">
-      {{ (plant.public ? 'general.public' : 'general.private') | translate }}
+      {{ (plant.public ? 'general.public' : 'general.private') | transloco }}
     </ltm-property>
   </ltm-info-box>
 
   <ltm-plant-expansion-info />
 
-  <h1 class="centered">{{ 'general.pictures' | translate }}</h1>
+  <h1 class="centered">{{ 'general.pictures' | transloco }}</h1>
 
   <ltm-photo-list [owned]="this.plantService.owned" [plantId]="this.id" />
 }

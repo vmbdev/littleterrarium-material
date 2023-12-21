@@ -1,6 +1,6 @@
 <form [formGroup]="form">
-  <p [innerHTML]="'location-add-edit.lightInfo' | translate"></p>
-  <p>{{ 'location-add-edit.lightAmount' | translate }}</p>
+  <p [innerHTML]="'location-add-edit.lightInfo' | transloco"></p>
+  <p>{{ 'location-add-edit.lightAmount' | transloco }}</p>
 
   <mat-button-toggle-group formControlName="light" class="icon-button-toggle">
 
@@ -11,7 +11,7 @@
         >
         <div class="icon-button-toggle__option">
           <mat-icon>{{ locationService.getLightAsset(option.key) }}</mat-icon>
-          <div>{{ locationService.getLightName(option.key) | translate }}</div>
+          <div>{{ locationService.getLightName(option.key) | transloco }}</div>
         </div>
       </mat-button-toggle>
     }
@@ -20,7 +20,7 @@
 
   @if (form.get('light')?.value; as light) {
     <div class="icon-button-toggle__selection">
-      {{ locationService.getLightVerbose(light) | translate }}
+      {{ locationService.getLightVerbose(light) | transloco }}
     </div>
   }
 

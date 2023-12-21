@@ -34,7 +34,7 @@
               >
                 <mat-icon>{{ item[0].icon }}</mat-icon>
                 @if (item[0].tooltip; as tooltip) {
-                  <span>{{ tooltip | translate }}</span>
+                  <span>{{ tooltip | transloco }}</span>
                 }
               </button>
             } @else {

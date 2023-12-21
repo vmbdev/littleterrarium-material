@@ -1,12 +1,12 @@
 @if (plant$ | async; as plant) {
   <ltm-edit-page 
-    [title]="'plant-edit.header' | translate:{ plantName: plant.visibleName }"
+    [title]="'plant-edit.header' | transloco:{ plantName: plant.visibleName }"
     (accept)="submit()"
   >
     <mat-card class="settings-card">
       <mat-card-header>
         <mat-card-title>
-          {{ 'general.name' | translate }}
+          {{ 'general.name' | transloco }}
         </mat-card-title>
       </mat-card-header>
       <mat-card-content>
@@ -17,7 +17,7 @@
     <mat-card class="settings-card">
       <mat-card-header>
         <mat-card-title>
-          {{ 'general.description' | translate }}
+          {{ 'general.description' | transloco }}
         </mat-card-title>
       </mat-card-header>
       <mat-card-content>
@@ -28,7 +28,7 @@
     <mat-card class="settings-card">
       <mat-card-header>
         <mat-card-title>
-          {{ 'general.specie' | translate }}
+          {{ 'general.specie' | transloco }}
         </mat-card-title>
       </mat-card-header>
       <mat-card-content>
@@ -39,7 +39,7 @@
     <mat-card class="settings-card">
       <mat-card-header>
         <mat-card-title>
-          {{ 'plant-edit.condition' | translate }}
+          {{ 'plant-edit.condition' | transloco }}
         </mat-card-title>
       </mat-card-header>
       <mat-card-content>
@@ -50,7 +50,7 @@
     <mat-card class="settings-card">
       <mat-card-header>
         <mat-card-title>
-          {{ 'general.location' | translate }}
+          {{ 'general.location' | transloco }}
         </mat-card-title>
       </mat-card-header>
       <mat-card-content>
@@ -61,13 +61,13 @@
     <mat-card class="settings-card">
       <mat-card-header>
         <mat-card-title>
-          {{ 'general.privacy' | translate }}
+          {{ 'general.privacy' | transloco }}
         </mat-card-title>
       </mat-card-header>
       <mat-card-content>
         <ltm-form-privacy [currentPrivacy]="plant.public">
-          <p [innerHtml]="'plant-add.privacy' | translate"></p>
-          <p [innerHtml]="'plant-add.privacyTip' | translate"></p>
+          <p [innerHtml]="'plant-add.privacy' | transloco"></p>
+          <p [innerHtml]="'plant-add.privacyTip' | transloco"></p>
         </ltm-form-privacy>
       </mat-card-content>
     </mat-card>

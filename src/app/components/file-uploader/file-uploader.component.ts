@@ -12,7 +12,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormBaseComponent } from '@components/form-base/form-base.component';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslocoModule } from '@ngneat/transloco';
 
 import { ShortFilenamePipe } from '@pipes/short-filename/short-filename.pipe';
 
@@ -21,7 +21,7 @@ import { ShortFilenamePipe } from '@pipes/short-filename/short-filename.pipe';
   selector: 'ltm-file-uploader',
   imports: [
     CommonModule,
-    TranslateModule,
+    TranslocoModule,
     ReactiveFormsModule,
     MatButtonModule,
     MatCheckboxModule,

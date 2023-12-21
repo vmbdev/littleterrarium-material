@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, EMPTY, map, Observable } from 'rxjs';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslocoService } from '@ngneat/transloco';
 
 import {
   ApiService,
@@ -24,7 +24,7 @@ export class PlantService {
     private api: ApiService,
     private auth: AuthService,
     private imagePath: ImagePathService,
-    private translate: TranslateService
+    private translate: TranslocoService
   ) {}
 
   create(plant: Plant): Observable<Plant> {
@@ -75,7 +75,7 @@ export class PlantService {
         plant.specie.name.slice(0, 1).toUpperCase() +
         plant.specie.name.slice(1);
     } else {
-      name = this.translate.instant('general.unnamedPlant', {
+      name = this.translate.translate('general.unnamedPlant', {
         plantId: plant.id,
       });
     }

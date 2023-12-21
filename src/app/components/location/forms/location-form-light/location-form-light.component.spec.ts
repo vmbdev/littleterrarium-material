@@ -1,6 +1,6 @@
 import { EventEmitter } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { TranslocoService } from '@ngneat/transloco';
 import { LocationService } from '@services/location.service';
 import { MockPipe, MockProvider, MockProviders } from 'ng-mocks';
 import { of } from 'rxjs';
@@ -15,10 +15,10 @@ describe('LocationFormLightComponent', () => {
     await TestBed.configureTestingModule({
       imports: [
         LocationFormLightComponent,
-        // MockPipe(TranslatePipe, value => value)
+        // MockPipe(TranslocoService, value => value)
       ],
       providers: [
-        ...MockProviders(LocationService,TranslateService),
+        ...MockProviders(LocationService,TranslocoService),
       ],
       declarations: [
       ]

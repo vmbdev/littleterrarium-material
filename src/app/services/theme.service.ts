@@ -43,18 +43,14 @@ export class ThemeService {
     return this.theme$.getValue();
   }
 
-  switchTheme(newTheme: string): boolean {
+  switchTheme(newTheme: string) {
     if (this.availableThemes.includes(newTheme)) {
       const prevTheme = this.getTheme();
       this.setOverlayTheme(newTheme, prevTheme);
       this.theme$.next(newTheme);
 
       localStorage.setItem('LT_theme', newTheme);
-
-      return true;
     }
-
-    return false;
   }
 
   setOverlayTheme(newTheme: string, prevTheme?: string): void {

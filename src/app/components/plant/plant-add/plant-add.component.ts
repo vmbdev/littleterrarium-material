@@ -9,7 +9,7 @@ import {
   MatDialogRef
 } from '@angular/material/dialog';
 import { MatStepperModule } from '@angular/material/stepper';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslocoService, TranslocoModule } from '@ngneat/transloco';
 import { catchError, EMPTY, finalize, switchMap } from 'rxjs';
 
 import {
@@ -50,7 +50,7 @@ import { Photo } from '@models/photo.model';
     CommonModule,
     MatStepperModule,
     MatDialogModule,
-    TranslateModule,
+    TranslocoModule,
     StepperNavigationComponent,
     FileUploaderComponent,
 
@@ -73,7 +73,7 @@ export class PlantAddComponent {
     private locationService: LocationService,
     private dialog: MatDialog,
     private route: ActivatedRoute,
-    private translate: TranslateService,
+    private translate: TranslocoService,
     private router: Router,
     private plantService: PlantService,
     private photoService: PhotoService,
@@ -86,7 +86,7 @@ export class PlantAddComponent {
     if (this.locationId) {
       this.locationService.get(this.locationId).subscribe({
         error: () => {
-          this.errorHandler.push(this.translate.instant('plant-add.location'));
+          this.errorHandler.push(this.translate.translate('plant-add.location'));
           this.router.navigateByUrl('/');
         },
       });
@@ -111,10 +111,10 @@ export class PlantAddComponent {
     return this.dialog.open(WaitDialogComponent, {
       disableClose: true,
       data: {
-        message: this.translate.instant('progress-bar.uploading'),
+        message: this.translate.translate('progress-bar.uploading'),
         progressBar: true,
         progressValue: 0,
-        finalMessage: this.translate.instant('general.afterUpload'),
+        finalMessage: this.translate.translate('general.afterUpload'),
       },
     });
   }
@@ -130,7 +130,7 @@ export class PlantAddComponent {
 
   submit(): void {
     if (!this.checkFormValidity()) {
-      this.errorHandler.push(this.translate.instant('general.formErrors'));
+      this.errorHandler.push(this.translate.translate('general.formErrors'));
       return;
     }
 
@@ -194,7 +194,7 @@ export class PlantAddComponent {
             this.router.navigate(['/plant', plant.id], { replaceUrl: true });
           },
           error: () => {
-            this.errorHandler.push(this.translate.instant('plant-add.create'));
+            this.errorHandler.push(this.translate.translate('plant-add.create'));
           },
         });
     }

@@ -9,7 +9,7 @@ import {
   MatBottomSheetRef,
   MAT_BOTTOM_SHEET_DATA
 } from '@angular/material/bottom-sheet';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslocoModule } from '@ngneat/transloco';
 
 import {
   FileUploaderComponent
@@ -34,7 +34,7 @@ import { Location } from '@models/location.model';
   standalone: true,
   imports: [
     CommonModule,
-    TranslateModule,
+    TranslocoModule,
     MatButtonModule,
     MatCardModule,
     MatIconModule,
@@ -68,7 +68,7 @@ export class LocationEditComponent extends LocationUpsertBaseComponent {
 
   submit(): void {
     if (!this.checkFormValidity()) {
-      this.errorHandler.push(this.translate.instant('general.formErrors'));
+      this.errorHandler.push(this.translate.translate('general.formErrors'));
       return;
     }
 
@@ -87,7 +87,7 @@ export class LocationEditComponent extends LocationUpsertBaseComponent {
           catchError((error: HttpErrorResponse) => {
             if (error.error?.msg === 'IMG_NOT_VALID') {
               this.errorHandler.push(
-                this.translate.instant('errors.invalidImg')
+                this.translate.translate('errors.invalidImg')
               );
             }
 

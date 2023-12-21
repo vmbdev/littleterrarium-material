@@ -3,11 +3,11 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatIconModule } from '@angular/material/icon';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslocoModule } from '@ngneat/transloco';
 
+import { FormBaseComponent } from '@components/form-base/form-base.component';
 import { Light } from '@models/location.model';
 import { LocationService } from '@services/location.service';
-import { FormBaseComponent } from '@components/form-base/form-base.component';
 
 @Component({
   selector: 'ltm-location-form-light',
@@ -17,7 +17,7 @@ import { FormBaseComponent } from '@components/form-base/form-base.component';
     ReactiveFormsModule,
     MatButtonToggleModule,
     MatIconModule,
-    TranslateModule,
+    TranslocoModule,
   ],
   templateUrl: './location-form-light.component.html',
 })

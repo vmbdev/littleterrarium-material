@@ -7,7 +7,7 @@ import {
   MatBottomSheet
 } from '@angular/material/bottom-sheet';
 import { MatButtonModule } from '@angular/material/button';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslocoService, TranslocoModule } from '@ngneat/transloco';
 
 import {
   PlantEditSoilComponent
@@ -25,7 +25,7 @@ import { UnitPipe } from "@pipes/unit/unit.pipe";
     MatIconModule,
     MatButtonModule,
     MatBottomSheetModule,
-    TranslateModule,
+    TranslocoModule,
     UnitPipe,
   ],
   templateUrl: './plant-soil-widget.component.html',
@@ -34,7 +34,7 @@ export class PlantSoilWidgetComponent {
   constructor(
     public plantService: PlantService,
     private bottomSheet: MatBottomSheet,
-    private translate: TranslateService
+    private translate: TranslocoService
   ) {}
 
   getPotName(): string {
@@ -45,7 +45,7 @@ export class PlantSoilWidgetComponent {
       if (potChoices.hasOwnProperty(potType)) {
         potName = potChoices[potType].name;
       } else potName = potType;
-    } else potName = this.translate.instant('general.unknown:Unknown');
+    } else potName = this.translate.translate('general.unknown:Unknown');
 
     return potName;
   }

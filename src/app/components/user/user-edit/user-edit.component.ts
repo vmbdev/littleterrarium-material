@@ -18,7 +18,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { skipWhile, catchError, EMPTY, finalize } from 'rxjs';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslocoService, TranslocoModule } from '@ngneat/transloco';
 
 import {
   UserFormBioComponent
@@ -57,7 +57,7 @@ import { User } from '@models/user.model';
     MatButtonModule,
     MatDialogModule,
     MatCardModule,
-    TranslateModule,
+    TranslocoModule,
     FileUploaderComponent,
     UserFormBioComponent,
     UserFormEmailComponent,
@@ -91,7 +91,7 @@ export class UserEditComponent {
     public auth: AuthService,
     private errorHandler: ErrorHandlerService,
     private mt: MainToolbarService,
-    private translate: TranslateService,
+    private translate: TranslocoService,
     private dialog: MatDialog,
     @Optional() private bottomSheetRef: MatBottomSheetRef,
   ) { }
@@ -109,7 +109,7 @@ export class UserEditComponent {
     return this.dialog.open(WaitDialogComponent, {
       disableClose: true,
       data: {
-        message: this.translate.instant('general.loading'),
+        message: this.translate.translate('general.loading'),
         progressBar: false,
       },
     });
@@ -143,7 +143,7 @@ export class UserEditComponent {
 
   submit(): void {
     if (!this.checkFormValidity()) {
-      this.errorHandler.push(this.translate.instant('general.formErrors'));
+      this.errorHandler.push(this.translate.translate('general.formErrors'));
       return;
     }
     const user = this.getUserFromForm();
@@ -159,7 +159,7 @@ export class UserEditComponent {
           const error = err.error;
 
           if (error.msg === 'IMG_NOT_VALID') {
-            this.errorHandler.push(this.translate.instant('errors.invalidImg'));
+            this.errorHandler.push(this.translate.translate('errors.invalidImg'));
           }
           else if (error.msg === 'USER_FIELD_EXISTS') {
             if (error.errorData.field === 'username') {

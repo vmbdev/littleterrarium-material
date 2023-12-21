@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { PlantListComponent } from '@components/plant/plant-list/plant-list.component';
 import { Location } from '@models/location.model';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslocoService } from '@ngneat/transloco';
 import { AuthService } from '@services/auth.service';
 import { ErrorHandlerService } from '@services/error-handler.service';
 import { LocationService } from '@services/location.service';
@@ -39,7 +39,7 @@ describe('LocationComponent', () => {
         }),
         ...MockProviders(
           ErrorHandlerService,
-          TranslateService,
+          TranslocoService,
           MatBottomSheet,
           MatDialog
         )

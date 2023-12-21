@@ -12,7 +12,7 @@ import {
   MatDialogRef
 } from '@angular/material/dialog';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslocoService, TranslocoModule } from '@ngneat/transloco';
 
 import {
   StepperNavigationComponent
@@ -46,7 +46,7 @@ import { Photo } from '@models/photo.model';
     MatCheckboxModule,
     MatDialogModule,
     ReactiveFormsModule,
-    TranslateModule,
+    TranslocoModule,
     StepperNavigationComponent,
     FileUploaderComponent,
     FormPrivacyComponent,
@@ -61,7 +61,7 @@ export class PhotoAddComponent {
   constructor(
     private plantService: PlantService,
     private photoService: PhotoService,
-    private translate: TranslateService,
+    private translate: TranslocoService,
     private route: ActivatedRoute,
     private router: Router,
     private errorHandler: ErrorHandlerService,
@@ -74,7 +74,7 @@ export class PhotoAddComponent {
     if (this.plantId) {
       this.plantService.get(this.plantId).subscribe({
         error: () => {
-          this.errorHandler.push(this.translate.instant('plant.invalid'));
+          this.errorHandler.push(this.translate.translate('plant.invalid'));
           this.router.navigateByUrl('/');
         },
       });
@@ -103,10 +103,10 @@ export class PhotoAddComponent {
     return this.dialog.open(WaitDialogComponent, {
       disableClose: true,
       data: {
-        message: this.translate.instant('progress-bar.uploading'),
+        message: this.translate.translate('progress-bar.uploading'),
         progressBar: true,
         progressValue: 0,
-        finalMessage: this.translate.instant('general.afterUpload'),
+        finalMessage: this.translate.translate('general.afterUpload'),
       },
     });
   }
@@ -115,7 +115,7 @@ export class PhotoAddComponent {
     if (!this.plantId) return;
 
     if (!this.checkFormValidity()) {
-      this.errorHandler.push(this.translate.instant('general.formErrors'));
+      this.errorHandler.push(this.translate.translate('general.formErrors'));
       return;
     }
 

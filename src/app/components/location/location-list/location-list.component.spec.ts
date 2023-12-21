@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogModule } from '@angular/material/dialog';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslocoService } from '@ngneat/transloco';
 import { of } from 'rxjs';
 import { MockComponents, MockProvider, MockProviders } from 'ng-mocks';
 
@@ -32,7 +32,7 @@ describe('LocationListComponent', () => {
           AuthService,
           ImagePathService,
           ErrorHandlerService,
-          TranslateService
+          TranslocoService
         ),
       ]
     })

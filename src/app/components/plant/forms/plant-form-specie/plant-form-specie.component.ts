@@ -6,8 +6,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { TranslocoModule } from '@ngneat/transloco';
 import { BehaviorSubject } from 'rxjs';
-import { TranslateModule } from '@ngx-translate/core';
 
 import { FormBaseComponent } from '@components/form-base/form-base.component';
 import { ApiService } from '@services/api.service';
@@ -22,7 +22,7 @@ import { Specie } from '@models/specie.model';
     MatFormFieldModule,
     MatInputModule,
     ReactiveFormsModule,
-    TranslateModule,
+    TranslocoModule,
     MatIconModule,
     MatButtonModule,
   ],

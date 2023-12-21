@@ -11,7 +11,7 @@ import {
   MatBottomSheetModule
 } from '@angular/material/bottom-sheet';
 import { MatIconModule } from '@angular/material/icon';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslocoService, TranslocoModule } from '@ngneat/transloco';
 
 import { FabComponent } from '@components/fab/fab.component';
 import {
@@ -43,7 +43,7 @@ import { Location } from '@models/location.model';
     MatDialogModule,
     MatBottomSheetModule,
     MatIconModule,
-    TranslateModule,
+    TranslocoModule,
     FabComponent,
     WaitDialogComponent,
   ],
@@ -61,7 +61,7 @@ export class LocationListComponent {
     private imagePath: ImagePathService,
     private router: Router,
     private errorHandler: ErrorHandlerService,
-    private translate: TranslateService,
+    private translate: TranslocoService,
     private dialog: MatDialog,
     private bottomSheet: MatBottomSheet
   ) {}
@@ -124,7 +124,7 @@ export class LocationListComponent {
     this.dialog.open(ConfirmDialogComponent, {
       data: {
         title: name,
-        question: [this.translate.instant('location.remove')],
+        question: [this.translate.translate('location.remove')],
         accept: () => {
           this.delete(id);
         },
@@ -136,7 +136,7 @@ export class LocationListComponent {
     return this.dialog.open(WaitDialogComponent, {
       disableClose: true,
       data: {
-        message: this.translate.instant('general.loading'),
+        message: this.translate.translate('general.loading'),
         progressBar: false,
       },
     });
@@ -149,7 +149,7 @@ export class LocationListComponent {
       },
       error: (err) => {
         if (err.msg === 'LOCATION_NOT_VALID') {
-          this.translate.get('location.invalid').subscribe((res: string) => {
+          this.translate.selectTranslate('location.invalid').subscribe((res: string) => {
             this.errorHandler.push(res);
           });
         }

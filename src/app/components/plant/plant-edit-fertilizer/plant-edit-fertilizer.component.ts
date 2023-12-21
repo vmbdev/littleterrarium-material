@@ -10,7 +10,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDividerModule } from '@angular/material/divider';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslocoModule } from '@ngneat/transloco';
 
 import { MatCardModule } from '@angular/material/card';
 import { PlantService } from '@services/plant.service';
@@ -29,7 +29,7 @@ import { Plant } from '@models/plant.model';
     MatButtonModule,
     MatDividerModule,
     MatCardModule,
-    TranslateModule,
+    TranslocoModule,
   ],
   templateUrl: './plant-edit-fertilizer.component.html',
 })

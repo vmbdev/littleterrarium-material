@@ -1,7 +1,7 @@
 <form [formGroup]="form">
-  <p [innerHTML]="'user-edit.fullnameDesc' | translate"></p>
+  <p [innerHTML]="'user-edit.fullnameDesc' | transloco"></p>
   <mat-form-field class="full-width">
-    <mat-label>{{ 'general.firstname' | translate }}</mat-label>
+    <mat-label>{{ 'general.firstname' | transloco }}</mat-label>
     <input
       matInput
       type="text"
@@ -11,7 +11,7 @@
   </mat-form-field>
 
   <mat-form-field class="full-width">
-    <mat-label>{{ 'general.lastname' | translate }}</mat-label>
+    <mat-label>{{ 'general.lastname' | transloco }}</mat-label>
     <input
       matInput
       type="text"

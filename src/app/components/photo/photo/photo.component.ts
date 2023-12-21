@@ -1,4 +1,4 @@
-import { Component, InjectionToken, Injector } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ActivatedRoute, Params, Router, RouterModule } from '@angular/router';
@@ -10,7 +10,7 @@ import {
   MatBottomSheetModule
 } from '@angular/material/bottom-sheet';
 import { catchError, EMPTY, finalize, Subscription, switchMap } from 'rxjs';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslocoService, TranslocoModule } from '@ngneat/transloco';
 import { DateTime } from 'luxon';
 
 import {
@@ -54,7 +54,7 @@ import { DaysAgoPipe } from "@pipes/days-ago/days-ago.pipe";
     MatBottomSheetModule,
     MatCardModule,
     MatIconModule,
-    TranslateModule,
+    TranslocoModule,
     InfoBoxComponent,
     PropertyComponent,
     ToggleOptionComponent,
@@ -81,7 +81,7 @@ export class PhotoComponent {
     private plantService: PlantService,
     private errorHandler: ErrorHandlerService,
     public imagePath: ImagePathService,
-    private translate: TranslateService,
+    private translate: TranslocoService,
     private mt: MainToolbarService,
     private dialog: MatDialog,
     private bottomSheet: MatBottomSheet,
@@ -135,7 +135,7 @@ export class PhotoComponent {
             if (err.error?.msg === 'PHOTO_NOT_FOUND') msg = 'photo.invalid';
             else msg = 'errors.server';
 
-            this.translate.get(msg).subscribe((res: string) => {
+            this.translate.selectTranslate(msg).subscribe((res: string) => {
               this.errorHandler.push(res);
             });
 
@@ -194,8 +194,8 @@ export class PhotoComponent {
   openRemoveDialog() {
     this.dialog.open(ConfirmDialogComponent, {
       data: {
-        title: this.translate.instant('general.delete'),
-        question: [this.translate.instant('photo.remove')],
+        title: this.translate.translate('general.delete'),
+        question: [this.translate.translate('photo.remove')],
         accept: () => {
           this.delete();
         },
@@ -217,14 +217,14 @@ export class PhotoComponent {
     const dateDiff = DateTime.fromISO(d).diffNow('days').days;
     const numberOfDays = Math.abs(Math.ceil(dateDiff)).toString();
 
-    return this.translate.instant('general.daysAgo', { days: numberOfDays });
+    return this.translate.translate('general.daysAgo', { days: numberOfDays });
   }
 
   openWaitDialog() {
     return this.dialog.open(WaitDialogComponent, {
       disableClose: true,
       data: {
-        message: this.translate.instant('general.loading'),
+        message: this.translate.translate('general.loading'),
         progressBar: false,
       },
     });

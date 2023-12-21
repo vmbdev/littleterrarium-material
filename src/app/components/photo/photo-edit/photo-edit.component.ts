@@ -10,7 +10,7 @@ import {
 import { MatDialog } from '@angular/material/dialog';
 import { FormGroup } from '@angular/forms';
 import { BehaviorSubject, finalize } from 'rxjs';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslocoService, TranslocoModule } from '@ngneat/transloco';
 
 import {
   PhotoFormDescriptionComponent
@@ -39,7 +39,7 @@ interface PhotoEditConfig {
   standalone: true,
   imports: [
     CommonModule,
-    TranslateModule,
+    TranslocoModule,
     MatButtonModule,
     MatCardModule,
     MatIconModule,
@@ -63,7 +63,7 @@ export class PhotoEditComponent {
 
   constructor(
     private dialog: MatDialog,
-    private translate: TranslateService,
+    private translate: TranslocoService,
     public plantService: PlantService,
     public photoService: PhotoService,
     private errorHandler: ErrorHandlerService,
@@ -81,7 +81,7 @@ export class PhotoEditComponent {
     return this.dialog.open(WaitDialogComponent, {
       disableClose: true,
       data: {
-        message: this.translate.instant('general.loading'),
+        message: this.translate.translate('general.loading'),
         progressBar: false,
       },
     });
@@ -116,7 +116,7 @@ export class PhotoEditComponent {
 
   submit(): void {
     if (!this.checkFormValidity()) {
-      this.errorHandler.push(this.translate.instant('general.formErrors'));
+      this.errorHandler.push(this.translate.translate('general.formErrors'));
       return;
     }
 

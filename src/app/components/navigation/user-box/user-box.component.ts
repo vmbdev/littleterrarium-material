@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
+
 import { AuthService } from '@services/auth.service';
 import { ImagePathService } from '@services/image-path.service';
 

@@ -1,15 +1,15 @@
 <form [formGroup]="signinForm" (ngSubmit)="submit()">
   <div class="user-form">
-    <h1>{{ 'signin.homepageTitle' | translate }}</h1>
-    <p [innerHTML]="'signin.homepageMsg' | translate"></p>
+    <h1>{{ 'signin.homepageTitle' | transloco }}</h1>
+    <p [innerHTML]="'signin.homepageMsg' | transloco"></p>
 
     <mat-form-field>
-      <mat-label>{{ 'general.identification' | translate }}</mat-label>
+      <mat-label>{{ 'general.identification' | transloco }}</mat-label>
       <input type="text" matInput formControlName="username">
     </mat-form-field>
 
     <mat-form-field>
-      <mat-label>{{ 'general.password' | translate }}</mat-label>
+      <mat-label>{{ 'general.password' | transloco }}</mat-label>
       <input
         [type]="hidePassword ? 'password' : 'text'"
         matInput
@@ -30,19 +30,19 @@
 
     @if (authInvalid) {
       <div class="user-form__error">
-        {{ 'signin.invalidCredentials' | translate }}
+        {{ 'signin.invalidCredentials' | transloco }}
       </div>
     }
 
     <button type="submit" mat-raised-button color="primary">
-      {{ 'general.signin' | translate }}
+      {{ 'general.signin' | transloco }}
     </button>
 
     <button
       mat-button
       color="link"
       routerLink="/user/recover"
-      [innerHTML]="'signin.forgottenPassword' | translate"
+      [innerHTML]="'signin.forgottenPassword' | transloco"
     >
     </button>
 
@@ -50,7 +50,7 @@
       mat-button
       color="link"
       routerLink="/register"
-      [innerHTML]="'signin.createAccount' | translate"
+      [innerHTML]="'signin.createAccount' | transloco"
     >
     </button>
   </div>

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MatRippleModule } from '@angular/material/core';
 import { MatListModule } from '@angular/material/list';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslocoService, TranslocoModule } from '@ngneat/transloco';
 
 import {
   PlantButtonWaterComponent
@@ -23,7 +23,7 @@ import { TaskService } from '@services/task.service';
     RouterModule,
     MatRippleModule,
     MatListModule,
-    TranslateModule,
+    TranslocoModule,
     PlantButtonWaterComponent,
     PlantButtonFertilizeComponent,
   ],
@@ -35,11 +35,11 @@ export class TaskListComponent {
     public plantService: PlantService,
     public taskService: TaskService,
     private mt: MainToolbarService,
-    private translate: TranslateService
+    private translate: TranslocoService
   ) {}
 
   ngOnInit(): void {
-    this.mt.setName(this.translate.instant('general.tasks'));
+    this.mt.setName(this.translate.translate('general.tasks'));
     this.mt.setMenu([]);
     this.mt.setButtons([]);
 

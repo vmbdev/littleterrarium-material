@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslocoModule } from '@ngneat/transloco';
 
 @Component({
   selector: 'ltm-edit-page',
@@ -13,7 +13,7 @@ import { TranslateModule } from '@ngx-translate/core';
     MatToolbarModule,
     MatButtonModule,
     MatIconModule,
-    TranslateModule,
+    TranslocoModule,
   ],
   templateUrl: './edit-page.component.html',
   styleUrls: ['./edit-page.component.scss'],

@@ -10,7 +10,7 @@
 
   @if (files.length === 0) {
     <div>
-      <b>{{ 'fileUploader.select' | translate }}</b>
+      <b>{{ 'fileUploader.select' | transloco }}</b>
     </div>
   }
 
@@ -50,13 +50,13 @@
     (click)="fileInput.click()"
     [disabled]="availableSlots() === 0"
   >
-    {{ 'fileUploader.selectButton' | translate }}
+    {{ 'fileUploader.selectButton' | transloco }}
   </button>
 
   <form [formGroup]="form">
     @if (removable) {
       <mat-checkbox formControlName="remove">
-        {{ 'fileUploader.removeCurrent' | translate }}
+        {{ 'fileUploader.removeCurrent' | transloco }}
       </mat-checkbox>
     }
   </form>

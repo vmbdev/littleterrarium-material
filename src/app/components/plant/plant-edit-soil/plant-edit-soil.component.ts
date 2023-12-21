@@ -13,7 +13,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatInputModule } from '@angular/material/input';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatCardModule } from '@angular/material/card';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslocoModule } from '@ngneat/transloco';
 
 import { PlantService } from '@services/plant.service';
 import { Plant, potChoices } from '@models/plant.model';
@@ -30,7 +30,7 @@ import { Plant, potChoices } from '@models/plant.model';
     MatFormFieldModule,
     MatDividerModule,
     MatCardModule,
-    TranslateModule,
+    TranslocoModule,
     ReactiveFormsModule,
   ],
   templateUrl: './plant-edit-soil.component.html',

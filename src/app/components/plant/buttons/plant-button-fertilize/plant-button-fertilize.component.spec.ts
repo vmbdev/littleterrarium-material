@@ -1,4 +1,4 @@
-import { TranslateService } from '@ngx-translate/core';
+import { TranslocoService } from '@ngneat/transloco';
 import { MockBuilder } from 'ng-mocks';
 
 import { PlantButtonFertilizeComponent } from './plant-button-fertilize.component';
@@ -6,7 +6,7 @@ import { PlantButtonFertilizeComponent } from './plant-button-fertilize.componen
 describe('PlantButtonFertilizeComponent', () => {
   beforeEach(() => {
     return MockBuilder(PlantButtonFertilizeComponent)
-      .mock(TranslateService)
+      .mock(TranslocoService)
   });
 
   it('should create', () => {

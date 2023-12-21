@@ -1,4 +1,4 @@
-<p>{{ 'tasks.msg' | translate }}</p>
+<p>{{ 'tasks.msg' | transloco }}</p>
 <mat-list>
 
   @for (task of taskService.tasks$ | async; track task.id) {
@@ -31,7 +31,7 @@
     </mat-list-item>
   } @empty {
     <mat-list-item class="centered">
-      <p>{{ 'tasks.noTasks' | translate }}</p>
+      <p>{{ 'tasks.noTasks' | transloco }}</p>
     </mat-list-item>
   }
 

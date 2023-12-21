@@ -1,11 +1,11 @@
 <form [formGroup]="form">
-  <p [innerHTML]="'location-add-edit.name' | translate"></p>
-  <p [innerHTML]="'location-add-edit.nameTip' | translate"></p>
+  <p [innerHTML]="'location-add-edit.name' | transloco"></p>
+  <p [innerHTML]="'location-add-edit.nameTip' | transloco"></p>
   <mat-form-field class="full-width">
     <input
       formControlName="name"
       matInput
-      [placeholder]="'location-add-edit.namePlaceholder' | translate"
+      [placeholder]="'location-add-edit.namePlaceholder' | transloco"
       [value]="currentName"
     >
   </mat-form-field>

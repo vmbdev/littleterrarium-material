@@ -1,16 +1,16 @@
 <mat-stepper labelPosition="bottom" linear="true" animationDuration="300">
   <mat-step
     [stepControl]="formName.form"
-    [errorMessage]="'general.required' | translate"
-    [label]="'general.name' | translate"
+    [errorMessage]="'general.required' | transloco"
+    [label]="'general.name' | transloco"
   >
     <ltm-location-form-name #formName />
     <ltm-stepper-navigation backButton="false" />
   </mat-step>
 
-  <mat-step optional="true" [label]="'general.picture' | translate">
-    <p [innerHTML]="'location-add-edit.choose' | translate"></p>
-    <p [innerHTML]="'location-add-edit.ornot' | translate"></p>
+  <mat-step optional="true" [label]="'general.picture' | transloco">
+    <p [innerHTML]="'location-add-edit.choose' | transloco"></p>
+    <p [innerHTML]="'location-add-edit.ornot' | transloco"></p>
 
     <ltm-file-uploader maxAmount="1" (fileChange)="fileChange($event)" />
 
@@ -19,7 +19,7 @@
 
   <mat-step
     [stepControl]="formLight.form"
-    [label]="'general.light' | translate"
+    [label]="'general.light' | transloco"
   >
     <ltm-location-form-light #formLight />
     <ltm-stepper-navigation />
@@ -27,11 +27,11 @@
 
   <mat-step
     [stepControl]="formPrivacy.form"
-    [label]="'general.privacy' | translate"
+    [label]="'general.privacy' | transloco"
   >
     <ltm-form-privacy #formPrivacy>
-      <p [innerHtml]="'location-add-edit.visibility' | translate"></p>
-      <p [innerHtml]="'location-add-edit.visibilityNote' | translate"></p>
+      <p [innerHtml]="'location-add-edit.visibility' | transloco"></p>
+      <p [innerHtml]="'location-add-edit.visibilityNote' | transloco"></p>
     </ltm-form-privacy>
 
     <ltm-stepper-navigation finishButton="true" (finish)="submit()" />

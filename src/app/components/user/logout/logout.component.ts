@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslocoService, TranslocoModule } from '@ngneat/transloco';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { finalize } from 'rxjs';
 
@@ -16,7 +16,7 @@ import { AuthService } from '@services/auth.service';
   imports: [
     CommonModule,
     WaitDialogComponent,
-    TranslateModule,
+    TranslocoModule,
     MatDialogModule,
   ],
   templateUrl: './logout.component.html',
@@ -26,7 +26,7 @@ export class LogoutComponent {
     private auth: AuthService,
     private router: Router,
     private dialog: MatDialog,
-    private translate: TranslateService
+    private translate: TranslocoService
   ) {}
 
   ngOnInit(): void {
@@ -50,7 +50,7 @@ export class LogoutComponent {
     return this.dialog.open(WaitDialogComponent, {
       disableClose: true,
       data: {
-        message: this.translate.instant('user-logout.msg'),
+        message: this.translate.translate('user-logout.msg'),
         progressBar: false,
       },
     });
