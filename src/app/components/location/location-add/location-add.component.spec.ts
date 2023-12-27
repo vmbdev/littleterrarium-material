@@ -1,7 +1,6 @@
 import { RouterTestingModule } from '@angular/router/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslocoService } from '@ngneat/transloco';
-import { MockComponents, MockProvider, MockProviders } from 'ng-mocks';
+import { MockComponents, MockProviders } from 'ng-mocks';
 import { ApiService } from '@services/api.service';
 
 import { LocationAddComponent } from './location-add.component';
@@ -12,6 +11,8 @@ import { StepperNavigationComponent } from '@components/stepper-navigation/stepp
 import { AuthService } from '@services/auth.service';
 import { LocationService } from '@services/location.service';
 import { ErrorHandlerService } from '@services/error-handler.service';
+import { getTranslocoModule } from 'src/app/tests/transloco.module';
+
 
 describe('LocationAddComponent', () => {
   let component: LocationAddComponent;
@@ -22,6 +23,7 @@ describe('LocationAddComponent', () => {
       imports: [
         LocationAddComponent,
         RouterTestingModule,
+        getTranslocoModule(),
         ...MockComponents(
           FileUploaderComponent,
           LocationFormNameComponent,
@@ -35,7 +37,7 @@ describe('LocationAddComponent', () => {
           AuthService,
           LocationService,
           ErrorHandlerService,
-          TranslocoService
+          // TranslocoService
         ),
       ]
     })

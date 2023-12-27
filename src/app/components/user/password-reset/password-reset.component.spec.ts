@@ -1,23 +1,13 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { MockBuilder } from 'ng-mocks';
 import { PasswordResetComponent } from './password-reset.component';
 
 describe('PasswordResetComponent', () => {
-  let component: PasswordResetComponent;
-  let fixture: ComponentFixture<PasswordResetComponent>;
-
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [PasswordResetComponent]
-    })
-    .compileComponents();
-    
-    fixture = TestBed.createComponent(PasswordResetComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    return MockBuilder(PasswordResetComponent)
   });
 
   it('should create', () => {
+    const component = PasswordResetComponent;
     expect(component).toBeTruthy();
   });
 });

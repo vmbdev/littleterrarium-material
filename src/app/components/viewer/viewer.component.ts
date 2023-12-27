@@ -1,10 +1,4 @@
-import {
-  Component,
-  ElementRef,
-  Input,
-  ViewChild,
-  Inject
-} from '@angular/core';
+import { Component, ElementRef, ViewChild, Inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';

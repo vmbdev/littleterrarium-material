@@ -1,23 +1,17 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { PasswordRecoveryComponent } from './password-recovery.component';
+import { MockBuilder } from 'ng-mocks';
+import { getTranslocoModule } from 'src/app/tests/transloco.module';
+import { AuthService } from '@services/auth.service';
 
 describe('PasswordRecoveryComponent', () => {
-  let component: PasswordRecoveryComponent;
-  let fixture: ComponentFixture<PasswordRecoveryComponent>;
-
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [PasswordRecoveryComponent]
-    })
-    .compileComponents();
-    
-    fixture = TestBed.createComponent(PasswordRecoveryComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    return MockBuilder(PasswordRecoveryComponent)
+      .keep(getTranslocoModule())
+      .mock(AuthService)
   });
 
   it('should create', () => {
+    const component = PasswordRecoveryComponent;
     expect(component).toBeTruthy();
   });
 });

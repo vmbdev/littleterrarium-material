@@ -1,21 +1,22 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { ViewerComponent } from './viewer.component';
+import { MockBuilder } from 'ng-mocks';
+import { VIEWER_DATA } from 'src/tokens';
 
 describe('ViewerComponent', () => {
-  let component: ViewerComponent;
-  let fixture: ComponentFixture<ViewerComponent>;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [ViewerComponent]
-    });
-    fixture = TestBed.createComponent(ViewerComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    return MockBuilder(ViewerComponent)
+      .provide({
+        provide: VIEWER_DATA,
+        useValue: {
+          src: 'test',
+          close: () => {},
+        }
+      })
   });
 
   it('should create', () => {
+    const component = ViewerComponent;
     expect(component).toBeTruthy();
   });
 });

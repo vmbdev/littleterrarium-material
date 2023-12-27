@@ -1,21 +1,17 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { MockBuilder } from 'ng-mocks';
 import { FormPrivacyComponent } from './form-privacy.component';
+import { TranslocoTestingModule } from '@ngneat/transloco';
 
 describe('FormPrivacyComponent', () => {
-  let component: FormPrivacyComponent;
-  let fixture: ComponentFixture<FormPrivacyComponent>;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [FormPrivacyComponent]
-    });
-    fixture = TestBed.createComponent(FormPrivacyComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    return MockBuilder(FormPrivacyComponent)
+    .keep(TranslocoTestingModule)
+
   });
 
   it('should create', () => {
+    const component = FormPrivacyComponent;
     expect(component).toBeTruthy();
   });
 });

@@ -32,7 +32,7 @@ export class InfoBoxComponent {
   @Input() description?: string | null = null;
   @ContentChildren(PropertyComponent) properties!: QueryList<PropertyComponent>;
 
-  constructor(private cdr: ChangeDetectorRef) {}
+  constructor(private readonly cdr: ChangeDetectorRef) {}
 
   ngAfterViewInit() {
     this.cdr.detectChanges();

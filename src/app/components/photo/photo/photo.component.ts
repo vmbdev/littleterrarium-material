@@ -41,6 +41,7 @@ import { ViewerService } from '@services/viewer.service';
 import { Plant } from '@models/plant.model';
 import { NavigationData, Photo } from '@models/photo.model';
 import { DaysAgoPipe } from "@pipes/days-ago/days-ago.pipe";
+import { ShareService } from '@services/share.service';
 
 @Component({
   selector: 'ltm-photo',
@@ -75,20 +76,23 @@ export class PhotoComponent {
   routeDetect$?: Subscription;
 
   constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    public photoService: PhotoService,
-    private plantService: PlantService,
-    private errorHandler: ErrorHandlerService,
-    public imagePath: ImagePathService,
-    private translate: TranslocoService,
-    private mt: MainToolbarService,
-    private dialog: MatDialog,
-    private bottomSheet: MatBottomSheet,
-    private viewer: ViewerService,
+    private readonly route: ActivatedRoute,
+    private readonly router: Router,
+    public readonly photoService: PhotoService,
+    private readonly plantService: PlantService,
+    private readonly errorHandler: ErrorHandlerService,
+    public readonly imagePath: ImagePathService,
+    private readonly translate: TranslocoService,
+    private readonly mt: MainToolbarService,
+    private readonly dialog: MatDialog,
+    private readonly bottomSheet: MatBottomSheet,
+    private readonly viewer: ViewerService,
+    private readonly share: ShareService,
   ) {}
 
   ngOnInit(): void {
+    this.setMtMenus();
+
     // Angular doesn't update a component when the route only changes its
     // parameters, so we need to do it when navigating the previous/next photo
     this.routeDetect$ = this.route.params.subscribe((param: Params) => {
@@ -146,27 +150,6 @@ export class PhotoComponent {
           switchMap((photo: Photo) => {
             this.currentImageFull = this.imagePath.get(photo.images, 'full');
             this.mt.setName(this.getDateTitle(photo.takenAt));
-            this.mt.setMenu([
-              [
-                {
-                  icon: 'edit',
-                  tooltip: 'general.edit',
-                  click: () => {
-                    this.openEdit();
-                  },
-                },
-              ],
-              [
-                {
-                  icon: 'delete',
-                  tooltip: 'general.delete',
-                  click: () => {
-                    this.openRemoveDialog();
-                  },
-                },
-              ],
-            ]);
-            this.mt.setButtons([]);
 
             return this.photoService.getNavigation(photo.id);
           }),
@@ -182,6 +165,45 @@ export class PhotoComponent {
         .subscribe((cover: any) => {
           this.plantCoverId = cover.coverId;
         });
+    }
+  }
+
+  setMtMenus(): void {
+    this.mt.setMenu([
+      [
+        {
+          icon: 'share',
+          tooltip: 'general.share',
+          click: () => {
+            this.sharePhoto();
+          },
+        },
+      ],
+      [
+        {
+          icon: 'edit',
+          tooltip: 'general.edit',
+          click: () => {
+            this.openEdit();
+          },
+        },
+      ],
+      [
+        {
+          icon: 'delete',
+          tooltip: 'general.delete',
+          click: () => {
+            this.openRemoveDialog();
+          },
+        },
+      ],
+    ]);
+    this.mt.setButtons([]);
+  }
+
+  async sharePhoto() {
+    if (this.currentImageFull) {
+      this.share.shareImageFromURL(this.currentImageFull).subscribe();
     }
   }
 

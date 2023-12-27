@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.3] - 2023-12-23
+
+### Added
+
+- README.md file.
+- New ShareService that allows the user to share photos to another apps.
+- Transloco support for unit testing.
+
 ## [1.0.2] - 2023-12-20
 
 ### Changes

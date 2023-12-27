@@ -1,21 +1,14 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { PlantMenuFertComponent } from './plant-menu-fert.component';
+import { MockBuilder } from 'ng-mocks';
 
 describe('PlantMenuFertComponent', () => {
-  let component: PlantMenuFertComponent;
-  let fixture: ComponentFixture<PlantMenuFertComponent>;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [PlantMenuFertComponent]
-    });
-    fixture = TestBed.createComponent(PlantMenuFertComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    return MockBuilder(PlantMenuFertComponent);
   });
 
   it('should create', () => {
+    const component = PlantMenuFertComponent;
     expect(component).toBeTruthy();
   });
 });
