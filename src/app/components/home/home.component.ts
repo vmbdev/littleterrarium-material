@@ -30,9 +30,11 @@ export class HomeComponent {
   ngOnInit(): void {
     this.auth.signedIn$.subscribe((isSigned: boolean) => {
       if (isSigned) {
-        this.translate.selectTranslate('general.locations').subscribe((res: string) => {
-          this.mt.setName(res);
-        });
+        this.translate
+          .selectTranslate('general.locations')
+          .subscribe((res: string) => {
+            this.mt.setName(res);
+          });
         this.mt.setButtons([]);
         this.mt.setMenu([]);
       } else this.mt.hide();

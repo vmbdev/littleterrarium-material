@@ -1,24 +1,62 @@
-import { fakeAsync } from '@angular/core/testing';
-import { RouterModule, RouterOutlet } from '@angular/router';
+import { fakeAsync, tick } from '@angular/core/testing';
+import { Location } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { MockBuilder, MockRender, NG_MOCKS_ROOT_PROVIDERS } from 'ng-mocks';
+import {
+  MockBuilder,
+  MockRender,
+  MockedComponentFixture,
+  NG_MOCKS_ROOT_PROVIDERS,
+  ngMocks,
+} from 'ng-mocks';
 
 import { FabComponent } from './fab.component';
 
+class MockedComponent {}
+
 describe('FabComponent', () => {
+  let component: FabComponent;
+  let fixture: MockedComponentFixture;
+
+  beforeEach(() =>
+    MockBuilder([
+      FabComponent,
+      RouterModule,
+      RouterTestingModule.withRoutes([
+        {
+          path: 'test',
+          component: MockedComponent,
+        },
+      ]),
+      NG_MOCKS_ROOT_PROVIDERS,
+    ])
+  );
+
   beforeEach(() => {
-    return MockBuilder(FabComponent)
-      .keep(RouterModule)
-      .keep(RouterTestingModule.withRoutes([]))
-      .keep(NG_MOCKS_ROOT_PROVIDERS)
+    fixture = MockRender(FabComponent, {
+      link: '/test',
+      text: '*',
+    });
+    component = fixture.point.componentInstance;
   });
 
   it('should create', () => {
-    const component = FabComponent;
     expect(component).toBeTruthy();
   });
 
-  it('renders /1 with Target1Component', fakeAsync(() => {
-    const fixture = MockRender(RouterOutlet, {});
+  it('should render the FAB button with the desired name', () => {
+    const el = ngMocks.find(fixture, 'button.fab');
+
+    expect(el).toBeTruthy();
+    expect(el.nativeNode.innerText).toBe('*');
+  });
+
+  it('should navigate on click', fakeAsync(() => {
+    const location: Location = fixture.point.injector.get(Location);
+    const el = ngMocks.find(fixture, 'button.fab');
+    ngMocks.click(el);
+    tick();
+
+    expect(location.path()).toBe('/test');
   }));
 });

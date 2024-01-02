@@ -1,6 +1,8 @@
+import { ImagePath } from "@services/image-path.service";
+
 export interface Photo {
   id: number;
-  images: any;
+  images: ImagePath;
   description: string | null;
   public: boolean;
   takenAt: Date;

@@ -8,7 +8,8 @@ import { Plant } from '@models/plant.model';
   providedIn: 'root',
 })
 export class TaskService {
-  tasks$ = new BehaviorSubject<Plant[]>([]);
+  tasks = new BehaviorSubject<Plant[]>([]);
+  tasks$ = this.tasks.asObservable();
   count: number = 0;
 
   constructor(private api: ApiService) {
@@ -18,7 +19,7 @@ export class TaskService {
   loadTasks(): void {
     this.api.getTasks().subscribe((plants: Plant[]) => {
       this.countTasks(plants);
-      this.tasks$.next(plants);
+      this.tasks.next(plants);
     });
   }
 

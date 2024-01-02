@@ -20,7 +20,7 @@ import { TranslocoModule } from '@ngneat/transloco';
 })
 export class EditPageComponent {
   @Input({ required: true }) title?: string;
-  @Output() accept = new EventEmitter();
+  @Output() accept: EventEmitter<void> = new EventEmitter();
 
   acceptChanges(): void {
     this.accept.emit();

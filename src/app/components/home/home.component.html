@@ -1,11 +1,11 @@
 @if (auth.checked$ | async) {
-    @if (auth.signedIn$ | async) {
-      <div class="section-header">
-        <p [innerHTML]="'home.locations' | transloco"></p>
-        <p [innerHTML]="'home.locationsNote' | transloco"></p>
-      </div>
-      <ltm-location-list />
-    } @else {
-      <ltm-signin />
-    }
+  @if (auth.signedIn$ | async) {
+    <div class="section-header">
+      <p [innerHTML]="'home.locations' | transloco"></p>
+      <p [innerHTML]="'home.locationsNote' | transloco"></p>
+    </div>
+    <ltm-location-list />
+  } @else {
+    <ltm-signin />
+  }
 }

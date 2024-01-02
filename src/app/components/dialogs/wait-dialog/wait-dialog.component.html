@@ -1,15 +1,16 @@
 <h1 mat-dialog-title>{{ data.message }}</h1>
 
 <div mat-dialog-content>
-  @if (!data.progressBar) {
-    <mat-spinner class="wait-dialog__spinner" />
-  } @else {
+  @if (data.progressBar) {
     <mat-progress-bar mode="determinate" [value]="data.progressValue" />
+
+    @if (data.finalMessage && data.progressValue === 100) {
+      <div class="wait-dialog__finalmsg">
+        {{ data.finalMessage }}
+      </div>
+    }
+  } @else {
+    <mat-spinner class="wait-dialog__spinner" />
   }
 
-  @if (data.finalMessage && data.progressValue === 100) {
-    <div>
-      {{ data.finalMessage }}
-    </div>
-  }
 </div>
