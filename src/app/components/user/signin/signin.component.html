@@ -5,7 +5,7 @@
 
     <mat-form-field>
       <mat-label>{{ 'general.identification' | transloco }}</mat-label>
-      <input type="text" matInput formControlName="username">
+      <input type="text" matInput formControlName="username" />
     </mat-form-field>
 
     <mat-form-field>
@@ -14,8 +14,9 @@
         [type]="hidePassword ? 'password' : 'text'"
         matInput
         formControlName="password"
-      >
+      />
       <button
+        type="button"
         mat-icon-button
         matSuffix
         (click)="toggleHidePassword()"
@@ -37,21 +38,21 @@
     <button type="submit" mat-raised-button color="primary">
       {{ 'general.signin' | transloco }}
     </button>
-
+    
     <button
+      type="button"
       mat-button
       color="link"
       routerLink="/user/recover"
       [innerHTML]="'signin.forgottenPassword' | transloco"
-    >
-    </button>
+    ></button>
 
     <button
+      type="button"
       mat-button
       color="link"
       routerLink="/register"
       [innerHTML]="'signin.createAccount' | transloco"
-    >
-    </button>
+    ></button>
   </div>
 </form>

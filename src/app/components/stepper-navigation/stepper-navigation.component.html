@@ -1,6 +1,7 @@
 <div class="stepper-navigation">
   @if (backButton) {
     <button
+      data-testid="prevbutton"
       type="button"
       color="primary"
       mat-raised-button
@@ -12,6 +13,7 @@
 
   @if (finishButton) {
     <button
+      data-testid="finishbutton"
       color="primary"
       mat-raised-button
       (click)="emitFinish()"
@@ -20,6 +22,7 @@
     </button>
   } @else {
     <button
+      data-testid="nextbutton"
       type="button"
       color="primary"
       mat-raised-button

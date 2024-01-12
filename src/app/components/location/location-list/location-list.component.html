@@ -4,19 +4,23 @@
 
 @if (locations$ | async; as locations) {
   <div class="location-list">
-
     @for (item of locations; track item.id) {
       <mat-card class="location-list__item" matRipple>
         <mat-card-header (click)="selectLocation(item.id)">
           <mat-card-title-group>
             <img
               mat-card-sm-image
-              [src]="(item.pictures ? getHeaderPic(item.pictures) : 'assets/nopic.png')"
-            >
+              [src]="
+                item.pictures ? getHeaderPic(item.pictures) : 'assets/nopic.png'
+              "
+            />
             <mat-card-title>{{ item.name }}</mat-card-title>
             <mat-card-subtitle>
               @if (item._count && item._count.plants > 0) {
-                {{ 'location-list.amount' | transloco:{ plantCount: item._count.plants } }}
+                {{
+                  'location-list.amount'
+                    | transloco: { plantCount: item._count.plants }
+                }}
               } @else {
                 {{ 'location.noPlants' | transloco }}
               }

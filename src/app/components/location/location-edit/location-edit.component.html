@@ -1,6 +1,8 @@
 @if (location$ | async; as location) {
-  <ltm-edit-page 
-    [title]="'location-add-edit.header' | transloco:{ location: location.name }"
+  <ltm-edit-page
+    [title]="
+      'location-add-edit.header' | transloco: { location: location.name }
+    "
     (accept)="submit()"
   >
     <mat-card class="settings-card">
@@ -26,7 +28,6 @@
         />
       </mat-card-content>
     </mat-card>
-
 
     <mat-card class="settings-card">
       <mat-card-header>

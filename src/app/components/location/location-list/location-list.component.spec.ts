@@ -1,46 +1,47 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatDialogModule } from '@angular/material/dialog';
-import { TranslocoService } from '@ngneat/transloco';
-import { of } from 'rxjs';
-import { MockComponents, MockProvider, MockProviders } from 'ng-mocks';
+import { MockBuilder, MockRender, MockedComponentFixture } from 'ng-mocks';
+import { TranslocoModule } from '@ngneat/transloco';
+import { EMPTY, of } from 'rxjs';
 
-import { AuthService } from '@services/auth.service';
+import { LocationListComponent } from '@components/location/location-list/location-list.component';
+import { Location } from '@models/location.model';
+import { getTranslocoModule } from 'src/app/tests/transloco.module';
 import { ErrorHandlerService } from '@services/error-handler.service';
-import { ImagePathService } from '@services/image-path.service';
 import { LocationService } from '@services/location.service';
-import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog.component';
-import { FabComponent } from '@components/fab/fab.component';
 
-import { LocationListComponent } from './location-list.component';
-
-describe('LocationListComponent', () => {
+fdescribe('LocationListComponent', () => {
   let component: LocationListComponent;
-  let fixture: ComponentFixture<LocationListComponent>;
+  let fixture: MockedComponentFixture;
+  const locations: Location[] = [
+    {
+      id: 0,
+      name: 'Test location',
+      light: 'SHADE',
+      public: true,
+      ownerId: 0,
+      _count: { plants: 5 },
+    } as Location, {
+      id: 1,
+      name: 'Test location 2',
+      light: 'FULLSUN',
+      public: false,
+      ownerId: 0,
+      _count: { plants: 0 },
+    } as Location,
+  ]
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [
-        LocationListComponent,
-        MatDialogModule,
-        ...MockComponents(FabComponent, WaitDialogComponent)
-      ],
-      providers: [
-        MockProvider(LocationService, {
-          getMany: () => of([])
-        }),
-        ...MockProviders(
-          AuthService,
-          ImagePathService,
-          ErrorHandlerService,
-          TranslocoService
-        ),
-      ]
-    })
-    .compileComponents();
+  beforeEach(() =>
+    MockBuilder([LocationListComponent, TranslocoModule])
+      .mock(ErrorHandlerService)
+      .provide(getTranslocoModule().providers ?? [])
+      .mock(LocationService, {
+        getMany: () => of(locations),
+        delete: () => of(EMPTY)
+      })
+  );
 
-    fixture = TestBed.createComponent(LocationListComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+  beforeEach(() => {
+    fixture = MockRender(LocationListComponent);
+    component = fixture.point.componentInstance;
   });
 
   it('should create', () => {

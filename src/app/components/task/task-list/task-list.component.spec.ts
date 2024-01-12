@@ -54,11 +54,11 @@ describe('TaskListComponent', () => {
         signedIn$: of(true),
         checked$: of(true),
       })
-      .mock<PlantService>(PlantService, {
-        coverPhoto: (plant?: Plant) => testPlant.cover!.images.path.thumb,
-        getVisibleName: (plant: Plant): string => testPlant.customName!,
+      .mock(PlantService, {
+        coverPhoto: () => testPlant.cover!.images.path.thumb,
+        getVisibleName: () => testPlant.customName!,
       })
-      .mock<TaskService>(TaskService, {
+      .mock(TaskService, {
         count: 1,
         tasks: new BehaviorSubject<Plant[]>([testPlant]),
         tasks$: of([testPlant]),

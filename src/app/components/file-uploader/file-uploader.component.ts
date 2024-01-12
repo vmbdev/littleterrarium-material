@@ -2,19 +2,23 @@ import { CommonModule } from '@angular/common';
 import {
   booleanAttribute,
   Component,
+  ElementRef,
   EventEmitter,
   Input,
   numberAttribute,
   Output,
+  ViewChild,
 } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { FormBaseComponent } from '@components/form-base/form-base.component';
+import { MatIconModule } from '@angular/material/icon';
 import { TranslocoModule } from '@ngneat/transloco';
 
 import { ShortFilenamePipe } from '@pipes/short-filename/short-filename.pipe';
+import { FormBaseComponent } from '@components/form-base/form-base.component';
+import { CameraService } from '@services/camera.service';
 
 @Component({
   standalone: true,
@@ -26,6 +30,7 @@ import { ShortFilenamePipe } from '@pipes/short-filename/short-filename.pipe';
     MatButtonModule,
     MatCheckboxModule,
     MatFormFieldModule,
+    MatIconModule,
     ShortFilenamePipe,
   ],
   templateUrl: './file-uploader.component.html',
@@ -47,6 +52,8 @@ export class FileUploaderComponent implements FormBaseComponent {
    */
   @Output() fileChange: EventEmitter<File[]> = new EventEmitter<File[]>();
 
+  @ViewChild('fileInput') fileInput!: ElementRef;
+
   form = this.fb.group({ remove: [this.removable] });
 
   /**
@@ -65,7 +72,10 @@ export class FileUploaderComponent implements FormBaseComponent {
   dragOver: boolean = false;
 
 
-  constructor(private readonly fb: FormBuilder) {}
+  constructor(
+    private readonly fb: FormBuilder,
+    private readonly camera: CameraService
+  ) {}
 
   /**
    * Mouse is dragging a file over the component.
@@ -133,9 +143,9 @@ export class FileUploaderComponent implements FormBaseComponent {
    * Add files to the current selection. Called when the user drags and drop
    * or selects more files.
    *
-   * @param {FileList} list  The list of files to be added.
+   * @param {FileList | File[]} list  The list of files to be added.
    */
-  addFiles(list: FileList): void {
+  addFiles(list: FileList | File[]): void {
     const slots = this.availableSlots();
 
     if (slots > 0) {
@@ -151,6 +161,18 @@ export class FileUploaderComponent implements FormBaseComponent {
 
       this.fileChange.emit(this.files);
     }
+  }
+
+  captureFromCamera() {
+    this.camera.capture().subscribe((file: File) => {
+      this.addFiles([file]);
+    })
+  }
+
+  pickFromGallery() {
+    this.camera.pickFromGallery().subscribe((files: File[]) => {
+      this.addFiles(files);
+    })
   }
 
   /**

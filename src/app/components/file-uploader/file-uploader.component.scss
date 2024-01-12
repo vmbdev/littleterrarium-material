@@ -15,6 +15,12 @@
     }
   }
 
+  &__buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+  }
+
   &__removelink {
     font-weight: 600;
     color: #ffffff;

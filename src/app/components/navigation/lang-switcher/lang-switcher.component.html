@@ -1,14 +1,16 @@
-<mat-form-field appearance="fill" class="lang-switcher">
-  <mat-label>{{ 'general.language' | transloco }}</mat-label>
-  <mat-select
-    #select
-    (selectionChange)="setLang(select.value)"
-    [(value)]="storedLanguage"
-  >
-    @for (lang of languages; track lang.id) {
-      <mat-option [value]="lang.id">
-        {{ lang.label }}
-      </mat-option>
-    }
-  </mat-select>
-</mat-form-field>
+@if (languages.length > 1) {
+  <mat-form-field appearance="fill" class="lang-switcher">
+    <mat-label>{{ 'general.language' | transloco }}</mat-label>
+    <mat-select
+      #select
+      (selectionChange)="setLang(select.value)"
+      [value]="storedLanguage"
+    >
+      @for (lang of languages; track lang.id) {
+        <mat-option [value]="lang.id">
+          {{ lang.label }}
+        </mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+}

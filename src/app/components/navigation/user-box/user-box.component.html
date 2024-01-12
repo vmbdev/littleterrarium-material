@@ -1,9 +1,10 @@
 @if ((auth.user$ | async)?.avatar; as avatar) {
   <div
     class="userbox"
-    [ngStyle]="{ 'background-image': 'url(' + this.imagePath.get(avatar, 'thumb') +')' }"
-  >
-  </div>
+    [ngStyle]="{
+      'background-image': 'url(' + this.imagePath.get(avatar, 'thumb') + ')'
+    }"
+  ></div>
 } @else {
   <mat-icon>account_circle</mat-icon>
 }

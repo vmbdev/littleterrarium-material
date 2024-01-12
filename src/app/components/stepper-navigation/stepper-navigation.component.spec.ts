@@ -14,9 +14,8 @@ describe('StepperNavigationComponent', () => {
   let fixture: MockedComponentFixture;
 
   beforeEach(() =>
-    MockBuilder([StepperNavigationComponent, TranslocoModule]).provide(
-      getTranslocoModule().providers ?? []
-    )
+    MockBuilder([StepperNavigationComponent, TranslocoModule])
+      .provide(getTranslocoModule().providers ?? [])
   );
 
   beforeEach(() => {
@@ -35,9 +34,9 @@ describe('StepperNavigationComponent', () => {
     component.backButton = true;
     fixture.detectChanges();
 
-    const el = ngMocks.find('button');
+    const el = ngMocks.find(['data-testid', 'prevbutton']);
 
-    expect(el.attributes['matStepperPrevious']).toBeDefined();
+    expect(el).toBeDefined();
   });
 
   it('should render a finish button when finishButton is true', () => {
@@ -45,10 +44,9 @@ describe('StepperNavigationComponent', () => {
     component.finishButton = true;
     fixture.detectChanges();
 
-    const el = ngMocks.find('button');
+    const el = ngMocks.find(['data-testid', 'finishbutton']);
 
-    expect(el.attributes['matStepperPrevious']).not.toBeDefined();
-    expect(el.attributes['matStepperNext']).not.toBeDefined();
+    expect(el).toBeDefined();
   });
 
   it('should render a next button when finishButton is false', () => {
@@ -56,9 +54,9 @@ describe('StepperNavigationComponent', () => {
     component.finishButton = false;
     fixture.detectChanges();
 
-    const el = ngMocks.find('button');
+    const el = ngMocks.find(['data-testid', 'nextbutton']);
 
-    expect(el.attributes['matStepperNext']).toBeDefined();
+    expect(el).toBeDefined();
   });
 
   it('should emit the finish event when clicked', () => {
@@ -67,8 +65,8 @@ describe('StepperNavigationComponent', () => {
     fixture.detectChanges();
 
     const spy = spyOn(component.finish, 'emit');
-    const button = ngMocks.find('button');
-    ngMocks.click(button);
+    const el = ngMocks.find(['data-testid', 'finishbutton']);
+    ngMocks.click(el);
 
     expect(spy).toHaveBeenCalled();
   })

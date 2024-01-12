@@ -1,8 +1,15 @@
-<mat-sidenav-container class="sidenav-container" [ngClass]="(themeService.theme$ | async) + '-theme'">
-  <mat-sidenav #drawer class="sidenav" fixedInViewport
-      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-      [mode]="(isHandset$ | async) ? 'over' : 'side'"
-      opened="false">
+<mat-sidenav-container
+  class="sidenav-container"
+  [ngClass]="(themeService.theme$ | async) + '-theme'"
+>
+  <mat-sidenav
+    #drawer
+    class="sidenav"
+    fixedInViewport
+    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset$ | async) ? 'over' : 'side'"
+    opened="false"
+  >
     <mat-toolbar>Little Terrarium</mat-toolbar>
     <mat-nav-list>
       <mat-list-item routerLink="/">
@@ -19,7 +26,10 @@
         <mat-icon matListItemIcon>task</mat-icon>
         <h1 matListItemTitle>{{ 'general.tasks' | transloco }}</h1>
         <h2 matListItemLine>
-          {{ 'tasks.remaining' | transloco:{ taskNumber: taskService.getCount() } }}
+          {{
+            'tasks.remaining'
+              | transloco: { taskNumber: taskService.getCount() }
+          }}
         </h2>
       </mat-list-item>
 
@@ -35,7 +45,6 @@
           }
         </h1>
       </mat-list-item>
-
     </mat-nav-list>
     <ltm-lang-switcher />
     <ltm-theme-switcher />

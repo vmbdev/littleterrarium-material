@@ -3,19 +3,17 @@
   <p>{{ 'location-add-edit.lightAmount' | transloco }}</p>
 
   <mat-button-toggle-group formControlName="light" class="icon-button-toggle">
-
     @for (option of lightOptions | keyvalue; track option.key) {
       <mat-button-toggle
         [value]="option.key"
         [checked]="option.key === currentLight"
-        >
+      >
         <div class="icon-button-toggle__option">
           <mat-icon>{{ locationService.getLightAsset(option.key) }}</mat-icon>
           <div>{{ locationService.getLightName(option.key) | transloco }}</div>
         </div>
       </mat-button-toggle>
     }
-
   </mat-button-toggle-group>
 
   @if (form.get('light')?.value; as light) {
@@ -23,5 +21,4 @@
       {{ locationService.getLightVerbose(light) | transloco }}
     </div>
   }
-
 </form>

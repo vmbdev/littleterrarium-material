@@ -5,12 +5,11 @@
     <mat-progress-bar mode="determinate" [value]="data.progressValue" />
 
     @if (data.finalMessage && data.progressValue === 100) {
-      <div class="wait-dialog__finalmsg">
+      <div class="wait-dialog__finalmsg" data-testid="finalmsg">
         {{ data.finalMessage }}
       </div>
     }
   } @else {
     <mat-spinner class="wait-dialog__spinner" />
   }
-
 </div>

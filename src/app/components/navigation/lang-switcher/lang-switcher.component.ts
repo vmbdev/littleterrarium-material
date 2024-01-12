@@ -18,11 +18,12 @@ export class LangSwitcherComponent {
   storedLanguage = localStorage.getItem('LT_lang');
   languages = this.translate.getAvailableLangs() as LangDefinition[];
 
-  constructor(private readonly translate: TranslocoService) {
+  constructor(public readonly translate: TranslocoService) {
     if (this.storedLanguage) translate.setActiveLang(this.storedLanguage);
 
     translate.langChanges$.subscribe((lang: string) => {
       localStorage.setItem('LT_lang', lang);
+      this.storedLanguage = lang;
     });
   }
 

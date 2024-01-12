@@ -1,5 +1,27 @@
 # Changelog
 
+## [1.0.4] - next
+
+### Added
+
+- New Camera Service to capture photos and pick them from the gallery.
+- New Filesystem Service to manage the files created by the Camera and Share
+services.
+
+### Fixes
+
+- Fixed a bug in ThemeSwitcher in which Transloco prevented the initial
+selection of the theme.
+- Fixed a bug in LangSwitcher in which no default language was selected if it
+wasn't stored previously.
+- Fixed a bug in SigninComponent where any button would submit the form.
+- Fixed a lost translation in PasswordRecoveryComponent.
+
+### Changes
+
+- Visual update.
+- Updated tests.
+
 ## [1.0.3] - 2023-12-23
 
 ### Added

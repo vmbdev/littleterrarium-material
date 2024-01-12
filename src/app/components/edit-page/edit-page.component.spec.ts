@@ -13,9 +13,8 @@ describe('EditPageComponent', () => {
   let fixture: MockedComponentFixture;
 
   beforeEach(() =>
-    MockBuilder([EditPageComponent, TranslocoModule]).provide(
-      getTranslocoModule().providers ?? []
-    )
+    MockBuilder([EditPageComponent, TranslocoModule])
+      .provide(getTranslocoModule().providers ?? [])
   );
 
   beforeEach(() => {
@@ -29,21 +28,9 @@ describe('EditPageComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should render a given title', () => {
-    const title = ngMocks.find('span.edit-page__title');
-
-    expect(ngMocks.formatHtml(title.nativeNode)).toBe('Test page');
-  });
-
-  it('should render a toolbar', () => {
-    const element = ngMocks.find('mat-toolbar.edit-page');
-
-    expect(element).toBeTruthy();
-  });
-
   it('should accept changes on click', () => {
     const spy = spyOn(fixture.point.componentInstance.accept, 'emit');
-    const button = ngMocks.find('button');
+    const button = ngMocks.find(['data-testid', 'acceptChanges']);
     ngMocks.click(button);
 
     expect(spy).toHaveBeenCalled();

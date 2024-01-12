@@ -1,16 +1,18 @@
-@if (themeService.getAvailableThemes(); as themes) {
-  <mat-form-field appearance="fill" class="theme-switcher">
-    <mat-label>{{ 'themes.title' | transloco }}</mat-label>
-    <mat-select
-      #select
-      (selectionChange)="setTheme(select.value)"
-      [value]="themeService.theme$ | async"
-    >
-      @for (theme of themes; track theme) {
-        <mat-option [value]="theme">
-          {{ 'themes.' + theme | transloco }}
-        </mat-option>
-      }
-    </mat-select>
-  </mat-form-field>
+@if (themeService.availableThemes && themeService.availableThemes.length > 1) {
+  @if (themeService.theme$ | async; as currentTheme) {
+    <mat-form-field appearance="fill" class="theme-switcher">
+      <mat-label>{{ 'themes.title' | transloco }}</mat-label>
+      <mat-select
+        #select
+        (selectionChange)="setTheme(select.value)"
+        [value]="currentTheme"
+      >
+        @for (theme of themeService.availableThemes; track theme) {
+          <mat-option [value]="theme" *transloco="let t">
+            {{ t('themes.' + theme) }}
+          </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  }
 }

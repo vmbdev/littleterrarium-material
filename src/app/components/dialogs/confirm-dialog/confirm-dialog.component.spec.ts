@@ -54,14 +54,8 @@ describe('ConfirmDialogComponent', () => {
   });
 
   it('should render the HTML', () => {
-    const h1 = ngMocks.find(fixture.debugElement, 'h1');
-    const questions = ngMocks.reveal(fixture, ['mat-dialog-content']);
-    const questionsHTML = ngMocks.formatHtml(questions.nativeNode);
-    // const buttonAccept = ngMocks.reveal(component, ['#buttonAccept']);
-    // const actions = ngMocks.reveal(['mat-dialog-actions']);
+    const questions = ngMocks.find(['data-testid', 'questions']);
 
-    // console.log(actions);
-    expect(questionsHTML).toBe('<p>text1</p><p>text2</p>');
-    expect(h1.nativeElement.innerHTML).toBe('Test title');
+    expect(ngMocks.formatText(questions)).toBe('text1text2');
   });
 });

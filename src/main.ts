@@ -16,9 +16,9 @@ import { provideTransloco } from '@ngneat/transloco';
 import { ToastrModule } from 'ngx-toastr';
 import 'hammerjs';
 
-import { TranslocoHttpLoader } from './transloco-loader';
 import { AuthInterceptor } from '@interceptors/auth.interceptor';
 import { ErrorHandlerInterceptor } from '@interceptors/error-handler.interceptor';
+import { TranslocoHttpLoader } from './transloco-loader';
 import { AppComponent } from './app/app.component';
 import { routes } from './app/routes';
 import { BACKEND_URL } from './tokens';

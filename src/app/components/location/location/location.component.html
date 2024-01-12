@@ -9,12 +9,14 @@
       </ltm-property>
 
       <ltm-property [icon]="location.public ? 'visibility' : 'visibility_off'">
-        {{ (location.public ? 'general.public' : 'general.private') | transloco }}
+        {{
+          (location.public ? 'general.public' : 'general.private') | transloco
+        }}
       </ltm-property>
 
-      <ltm-property icon="forest">
+      <ltm-property icon="forest" data-testid="countProperty">
         @if (location._count?.plants; as count) {
-          {{ 'location.plants' | transloco:{ plantCount: count } }}
+          {{ 'location.plants' | transloco: { plantCount: count } }}
         } @else {
           {{ 'location.noPlants' | transloco }}
         }

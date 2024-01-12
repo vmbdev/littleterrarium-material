@@ -50,23 +50,18 @@ describe('WaitDialogComponent', () => {
     fixture.componentInstance.data.progressBar = false;
     fixture.detectChanges();
 
-    const spinner = ngMocks.find(
-      fixture.debugElement,
-      'mat-spinner.wait-dialog__spinner'
-    );
+    const spinner = ngMocks.find('mat-spinner');
 
     expect(spinner).toBeTruthy();
   });
 
   it('should render a final message on completion', () => {
     fixture.componentInstance.data.progressValue = 100;
+    fixture.componentInstance.data.progressBar = true;
     fixture.detectChanges();
 
-    const msg = ngMocks.find(
-      fixture.debugElement,
-      'div.wait-dialog__finalmsg'
-    );
+    const msg = ngMocks.find(['data-testid', 'finalmsg']);
 
-    expect(msg.nativeNode.innerText).toBe('Test ended');
+    expect(ngMocks.formatText(msg)).toBe('Test ended');
   });
 });

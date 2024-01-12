@@ -8,8 +8,6 @@ import { RouterModule } from '@angular/router';
 import {
   UserBoxComponent
 } from '@components/navigation/user-box/user-box.component';
-import { AuthService } from '@services/auth.service';
-import { ImagePathService } from '@services/image-path.service';
 import { TaskService } from '@services/task.service';
 
 @Component({
@@ -29,11 +27,7 @@ import { TaskService } from '@services/task.service';
 export class BottomToolbarComponent {
   @Output() toggleSidenav = new EventEmitter();
 
-  constructor(
-    public auth: AuthService,
-    public imagePath: ImagePathService,
-    public taskService: TaskService
-  ) {}
+  constructor(public taskService: TaskService) {}
 
   emitToggleSidenav() {
     this.toggleSidenav.emit();

@@ -11,22 +11,12 @@ import {
 import { catchError, EMPTY } from 'rxjs';
 import { TranslocoService, TranslocoModule } from '@ngneat/transloco';
 
-import {
-  PlantListComponent
-} from '@components/plant/plant-list/plant-list.component';
-import {
-  PropertyComponent
-} from '@components/info-box/property/property.component';
-import {
-  InfoBoxComponent
-} from "@components/info-box/info-box/info-box.component";
+import { PlantListComponent } from '@components/plant/plant-list/plant-list.component';
+import { PropertyComponent } from '@components/info-box/property/property.component';
+import { InfoBoxComponent } from '@components/info-box/info-box/info-box.component';
 import { FabComponent } from '@components/fab/fab.component';
-import {
-  LocationEditComponent
-} from '@components/location/location-edit/location-edit.component';
-import {
-  ConfirmDialogComponent
-} from '@components/dialogs/confirm-dialog/confirm-dialog.component';
+import { LocationEditComponent } from '@components/location/location-edit/location-edit.component';
+import { ConfirmDialogComponent } from '@components/dialogs/confirm-dialog/confirm-dialog.component';
 import { MainToolbarService } from '@services/main-toolbar.service';
 import { ErrorHandlerService } from '@services/error-handler.service';
 import { LocationService } from '@services/location.service';
@@ -48,18 +38,18 @@ import { Light, Location } from '@models/location.model';
   templateUrl: './location.component.html',
 })
 export class LocationComponent {
-  private id?: number;
+  id?: number;
   light = Light;
 
   constructor(
-    public locationService: LocationService,
-    private route: ActivatedRoute,
-    private router: Router,
-    private mt: MainToolbarService,
-    private errorHandler: ErrorHandlerService,
-    private translate: TranslocoService,
-    private bottomSheet: MatBottomSheet,
-    private dialog: MatDialog
+    public readonly locationService: LocationService,
+    private readonly route: ActivatedRoute,
+    private readonly router: Router,
+    private readonly mt: MainToolbarService,
+    private readonly errorHandler: ErrorHandlerService,
+    private readonly translate: TranslocoService,
+    private readonly bottomSheet: MatBottomSheet,
+    private readonly dialog: MatDialog
   ) {
     this.locationService.location$
       .pipe(takeUntilDestroyed())
@@ -88,8 +78,7 @@ export class LocationComponent {
 
           if (err.error?.msg === 'LOCATION_NOT_FOUND') {
             msg = 'location.invalid';
-          }
-          else msg = 'errors.server';
+          } else msg = 'errors.server';
 
           this.translate.selectTranslate(msg).subscribe((res: string) => {
             this.errorHandler.push(res);
@@ -149,9 +138,11 @@ export class LocationComponent {
       },
       error: (err) => {
         if (err.msg === 'LOCATION_NOT_VALID') {
-          this.translate.selectTranslate('location.invalid').subscribe((res: string) => {
-            this.errorHandler.push(res);
-          });
+          this.translate
+            .selectTranslate('location.invalid')
+            .subscribe((res: string) => {
+              this.errorHandler.push(res);
+            });
         }
       },
     });

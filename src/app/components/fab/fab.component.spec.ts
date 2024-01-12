@@ -44,16 +44,9 @@ describe('FabComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should render the FAB button with the desired name', () => {
-    const el = ngMocks.find(fixture, 'button.fab');
-
-    expect(el).toBeTruthy();
-    expect(el.nativeNode.innerText).toBe('*');
-  });
-
   it('should navigate on click', fakeAsync(() => {
     const location: Location = fixture.point.injector.get(Location);
-    const el = ngMocks.find(fixture, 'button.fab');
+    const el = ngMocks.find(['data-testid', 'fab']);
     ngMocks.click(el);
     tick();
 

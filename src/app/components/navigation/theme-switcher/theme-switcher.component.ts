@@ -15,13 +15,14 @@ import { CapitalizePipe } from '@pipes/capitalize/capitalize.pipe';
     MatFormFieldModule,
     MatSelectModule,
     TranslocoModule,
-    CapitalizePipe
+    CapitalizePipe,
   ],
   templateUrl: './theme-switcher.component.html',
-  styleUrl: './theme-switcher.component.scss'
+  styleUrl: './theme-switcher.component.scss',
 })
 export class ThemeSwitcherComponent {
-  constructor(public readonly themeService: ThemeService) {}
+  constructor(public readonly themeService: ThemeService) {
+  }
 
   setTheme(theme: string) {
     this.themeService.switchTheme(theme);

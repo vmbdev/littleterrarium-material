@@ -1,23 +1,14 @@
 <h1 mat-dialog-title>{{ data.title }}</h1>
-<div mat-dialog-content>
+<div mat-dialog-content data-testid="questions">
   @for (q of data.question; track q) {
     <p [innerHTML]="q"></p>
   }
 </div>
 <div mat-dialog-actions align="center">
-  <button
-    mat-raised-button
-    mat-dialog-close
-    cdkFocusInitial
-  >
+  <button mat-raised-button mat-dialog-close cdkFocusInitial>
     {{ 'general.cancel' | transloco }}
   </button>
-  <button
-    mat-raised-button
-    mat-dialog-close
-    color="primary"
-    (click)="accept()"
-  >
+  <button mat-raised-button mat-dialog-close color="primary" (click)="accept()">
     {{ 'general.accept' | transloco }}
   </button>
 </div>

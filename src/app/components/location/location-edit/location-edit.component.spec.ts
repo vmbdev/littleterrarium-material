@@ -1,56 +1,32 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatDialog, MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FileUploaderComponent } from '@components/file-uploader/file-uploader.component';
-import { StepperNavigationComponent } from '@components/stepper-navigation/stepper-navigation.component';
-import { TranslocoService } from '@ngneat/transloco';
-import { MockComponents, MockProviders } from 'ng-mocks';
+import { MockBuilder, MockRender, MockedComponentFixture } from 'ng-mocks';
+import { TranslocoModule } from '@ngneat/transloco';
 
-import { ApiService } from '@services/api.service';
-import { AuthService } from '@services/auth.service';
+import { LocationEditComponent } from '@components/location/location-edit/location-edit.component';
+import { Location } from '@models/location.model';
+import { getTranslocoModule } from 'src/app/tests/transloco.module';
 import { ErrorHandlerService } from '@services/error-handler.service';
-import { LocationService } from '@services/location.service';
-import { LocationFormLightComponent } from '../forms/location-form-light/location-form-light.component';
-import { LocationFormNameComponent } from '../forms/location-form-name/location-form-name.component';
-import { LocationUpsertBaseComponent } from '../location-upsert-base/location-upsert-base.component';
-
-import { LocationEditComponent } from './location-edit.component';
 
 describe('LocationEditComponent', () => {
   let component: LocationEditComponent;
-  let fixture: ComponentFixture<LocationEditComponent>;
+  let fixture: MockedComponentFixture;
+  const testLocation = {
+    id: 0,
+    name: 'Test location',
+    light: 'SHADE',
+    public: true,
+    ownerId: 0,
+    _count: { plants: 5 },
+  } as Location;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [
-        LocationEditComponent,
-        MatDialogModule,
-        BrowserAnimationsModule,
-        ...MockComponents(
-          FileUploaderComponent,
-          LocationFormNameComponent,
-          LocationFormLightComponent,
-          StepperNavigationComponent,
-          LocationUpsertBaseComponent
-        )
-      ],
-      providers: [
-        ...MockProviders(
-          ApiService,
-          AuthService,
-          LocationService,
-          ErrorHandlerService,
-          TranslocoService
-        ),
-        { provide: MAT_DIALOG_DATA, useValue: { editLocation: { id: 1 } }},
-        { provide: MatDialogRef, useValue: {} },
-      ]
-    })
-    .compileComponents();
+  beforeEach(() =>
+    MockBuilder([LocationEditComponent, TranslocoModule])
+      .mock(ErrorHandlerService)
+      .provide(getTranslocoModule().providers ?? [])
+  );
 
-    fixture = TestBed.createComponent(LocationEditComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+  beforeEach(() => {
+    fixture = MockRender(LocationEditComponent);
+    component = fixture.point.componentInstance;
   });
 
   it('should create', () => {

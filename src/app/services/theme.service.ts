@@ -11,8 +11,8 @@ import {
   providedIn: 'root',
 })
 export class ThemeService {
-  theme$: BehaviorSubject<string>;
-  availableThemes: string[];
+  readonly theme$: BehaviorSubject<string>;
+  readonly availableThemes: string[];
 
   /**
    * Defines the theme to use.
@@ -59,9 +59,5 @@ export class ThemeService {
     if (prevTheme) classList.remove(`${prevTheme}-theme`);
 
     classList.add(`${newTheme}-theme`);
-  }
-
-  getAvailableThemes(): string[] {
-    return this.availableThemes;
   }
 }

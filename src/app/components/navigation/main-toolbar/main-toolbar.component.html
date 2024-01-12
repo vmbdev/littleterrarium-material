@@ -40,14 +40,15 @@
             } @else {
               <mat-divider></mat-divider>
               <div class="toolbar__menurow">
-
                 @for (i of item; track i) {
                   <button
                     mat-mini-fab
                     class="toolbar__menurowitem"
                     (click)="i.click ? i.click() : null"
                     [routerLink]="i.route ? i.route : null"
-                    [color]="(i.selected | async) === true ? 'primary' : 'basic'"
+                    [color]="
+                      (i.selected | async) === true ? 'primary' : 'basic'
+                    "
                   >
                     <mat-icon class="toolbar__menurowicon">
                       {{ i.icon }}
@@ -57,7 +58,6 @@
               </div>
             }
           }
-
         </mat-menu>
       }
     </mat-toolbar-row>

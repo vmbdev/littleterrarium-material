@@ -1,51 +1,32 @@
-import { RouterTestingModule } from '@angular/router/testing';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MockComponents, MockProviders } from 'ng-mocks';
-import { ApiService } from '@services/api.service';
+import { MockBuilder, MockRender, MockedComponentFixture } from 'ng-mocks';
+import { TranslocoModule } from '@ngneat/transloco';
 
-import { LocationAddComponent } from './location-add.component';
-import { LocationFormNameComponent } from '../forms/location-form-name/location-form-name.component';
-import { FileUploaderComponent } from '@components/file-uploader/file-uploader.component';
-import { LocationFormLightComponent } from '../forms/location-form-light/location-form-light.component';
-import { StepperNavigationComponent } from '@components/stepper-navigation/stepper-navigation.component';
-import { AuthService } from '@services/auth.service';
-import { LocationService } from '@services/location.service';
-import { ErrorHandlerService } from '@services/error-handler.service';
+import { LocationAddComponent } from '@components/location/location-add/location-add.component';
+import { Location } from '@models/location.model';
 import { getTranslocoModule } from 'src/app/tests/transloco.module';
-
+import { ErrorHandlerService } from '@services/error-handler.service';
 
 describe('LocationAddComponent', () => {
   let component: LocationAddComponent;
-  let fixture: ComponentFixture<LocationAddComponent>;
+  let fixture: MockedComponentFixture;
+  const testLocation = {
+    id: 0,
+    name: 'Test location',
+    light: 'SHADE',
+    public: true,
+    ownerId: 0,
+    _count: { plants: 5 },
+  } as Location;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [
-        LocationAddComponent,
-        RouterTestingModule,
-        getTranslocoModule(),
-        ...MockComponents(
-          FileUploaderComponent,
-          LocationFormNameComponent,
-          LocationFormLightComponent,
-          StepperNavigationComponent
-        )
-      ],
-      providers: [
-        ...MockProviders(
-          ApiService,
-          AuthService,
-          LocationService,
-          ErrorHandlerService,
-          // TranslocoService
-        ),
-      ]
-    })
-    .compileComponents();
+  beforeEach(() =>
+    MockBuilder([LocationAddComponent, TranslocoModule])
+      .mock(ErrorHandlerService)
+      .provide(getTranslocoModule().providers ?? [])
+  );
 
-    fixture = TestBed.createComponent(LocationAddComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+  beforeEach(() => {
+    fixture = MockRender(LocationAddComponent);
+    component = fixture.point.componentInstance;
   });
 
   it('should create', () => {

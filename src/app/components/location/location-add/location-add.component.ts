@@ -71,7 +71,9 @@ export class LocationAddComponent extends LocationUpsertBaseComponent {
       .pipe(
         catchError((error: HttpErrorResponse) => {
           if (error.error?.msg === 'IMG_NOT_VALID') {
-            this.errorHandler.push(this.translate.translate('errors.invalidImg'));
+            this.errorHandler.push(
+              this.translate.translate('errors.invalidImg')
+            );
           }
 
           return EMPTY;
