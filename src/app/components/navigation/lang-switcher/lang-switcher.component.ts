@@ -15,14 +15,14 @@ import {
   styleUrls: ['./lang-switcher.component.scss'],
 })
 export class LangSwitcherComponent {
-  storedLanguage = localStorage.getItem('LT_lang');
+  storedLanguage = localStorage.getItem('LT_locale');
   languages = this.translate.getAvailableLangs() as LangDefinition[];
 
   constructor(public readonly translate: TranslocoService) {
     if (this.storedLanguage) translate.setActiveLang(this.storedLanguage);
 
     translate.langChanges$.subscribe((lang: string) => {
-      localStorage.setItem('LT_lang', lang);
+      localStorage.setItem('LT_locale', lang);
       this.storedLanguage = lang;
     });
   }

@@ -17,7 +17,9 @@ interface ConfirmDataConfig {
   templateUrl: './confirm-dialog.component.html',
 })
 export class ConfirmDialogComponent {
-  constructor(@Inject(MAT_DIALOG_DATA) public data: ConfirmDataConfig) {}
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public readonly data: ConfirmDataConfig
+  ) {}
 
   accept(): void {
     if (this.data.accept) {

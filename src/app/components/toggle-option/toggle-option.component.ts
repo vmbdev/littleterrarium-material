@@ -28,7 +28,7 @@ import { MatDividerModule } from '@angular/material/divider';
 export class ToggleOptionComponent {
   @Input({ transform: booleanAttribute }) checked: boolean = false;
   @Output() change = new EventEmitter<boolean>();
-  currentlyChecked: boolean = false;
+  protected currentlyChecked: boolean = false;
 
   ngOnInit(): void {
     this.currentlyChecked = this.checked;

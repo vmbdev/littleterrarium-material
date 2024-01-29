@@ -5,15 +5,15 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterModule } from '@angular/router';
 
-import {
-  UserBoxComponent
-} from '@components/navigation/user-box/user-box.component';
+import { UserBoxComponent } from '@components/navigation/user-box/user-box.component';
 import { TaskService } from '@services/task.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'ltm-bottom-toolbar',
   standalone: true,
   imports: [
+    CommonModule,
     MatIconModule,
     MatToolbarModule,
     MatBadgeModule,
@@ -27,15 +27,9 @@ import { TaskService } from '@services/task.service';
 export class BottomToolbarComponent {
   @Output() toggleSidenav = new EventEmitter();
 
-  constructor(public taskService: TaskService) {}
+  constructor(public readonly taskService: TaskService) {}
 
   emitToggleSidenav() {
     this.toggleSidenav.emit();
-  }
-
-  getTaskCount(): number | null {
-    const count = this.taskService.getCount();
-
-    return count > 0 ? count : null;
   }
 }

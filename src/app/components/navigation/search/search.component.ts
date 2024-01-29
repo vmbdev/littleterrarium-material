@@ -2,7 +2,7 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
-  ViewChild
+  ViewChild,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -34,7 +34,10 @@ import { SearchService } from '@services/search.service';
 export class SearchComponent {
   @ViewChild('searchInput') searchElement!: ElementRef<MatInput>;
 
-  constructor(private search: SearchService, private cdr: ChangeDetectorRef) {}
+  constructor(
+    private readonly search: SearchService,
+    private readonly cdr: ChangeDetectorRef,
+  ) {}
 
   ngAfterViewInit() {
     this.searchElement.nativeElement.focus();

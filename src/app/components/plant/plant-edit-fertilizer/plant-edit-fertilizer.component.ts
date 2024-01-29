@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
 import {
   MatBottomSheetModule,
-  MatBottomSheetRef
+  MatBottomSheetRef,
 } from '@angular/material/bottom-sheet';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -34,18 +34,18 @@ import { Plant } from '@models/plant.model';
   templateUrl: './plant-edit-fertilizer.component.html',
 })
 export class PlantEditFertilizerComponent {
-  fertForm = this.fb.group({
+  protected readonly fertForm = this.fb.group({
     fertFreq: new FormControl<number | null>(null),
     fertLast: new FormControl<Date | null>(null),
     fertType: new FormControl<string | null>(null),
   });
-  id?: number;
-  today = new Date();
+  private id?: number;
+  protected today = new Date();
 
   constructor(
-    public plantService: PlantService,
-    private fb: FormBuilder,
-    @Optional() private bottomSheetRef: MatBottomSheetRef
+    public readonly plantService: PlantService,
+    private readonly fb: FormBuilder,
+    @Optional() private readonly bottomSheetRef: MatBottomSheetRef,
   ) {}
 
   ngOnInit(): void {
@@ -62,13 +62,12 @@ export class PlantEditFertilizerComponent {
   }
 
   submit(): void {
-    if (this.id) {
-      const plant = this.fertForm.value as Plant;
+    if (!this.id) return;
+    const plant = this.fertForm.value as Plant;
 
-      plant.id = this.id;
-      this.plantService.update(plant).subscribe(() => {
-        if (this.bottomSheetRef) this.bottomSheetRef.dismiss();
-      });
-    }
+    plant.id = this.id;
+    this.plantService.update(plant).subscribe(() => {
+      if (this.bottomSheetRef) this.bottomSheetRef.dismiss();
+    });
   }
 }

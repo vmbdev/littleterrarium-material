@@ -21,9 +21,9 @@ import { FormBaseComponent } from '@components/form-base/form-base.component';
 })
 export class PlantFormNameComponent implements FormBaseComponent {
   @Input() currentCustomName?: string | null;
-  public form = this.fb.group({ customName: [''] });
+  public readonly form = this.fb.group({ customName: [''] });
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private readonly fb: FormBuilder) {}
 
   ngOnInit(): void {
     if (this.currentCustomName) {

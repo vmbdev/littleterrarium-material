@@ -9,23 +9,15 @@ import { MatStepperModule } from '@angular/material/stepper';
 import {
   MatDialog,
   MatDialogModule,
-  MatDialogRef
+  MatDialogRef,
 } from '@angular/material/dialog';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { TranslocoService, TranslocoModule } from '@ngneat/transloco';
 
-import {
-  StepperNavigationComponent
-} from '@components/stepper-navigation/stepper-navigation.component';
-import {
-  FileUploaderComponent
-} from '@components/file-uploader/file-uploader.component';
-import {
-  WaitDialogComponent
-} from '@components/dialogs/wait-dialog/wait-dialog.component';
-import {
-  FormPrivacyComponent
-} from '@components/form-privacy/form-privacy.component';
+import { StepperNavigationComponent } from '@components/stepper-navigation/stepper-navigation.component';
+import { FileUploaderComponent } from '@components/file-uploader/file-uploader.component';
+import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog.component';
+import { FormPrivacyComponent } from '@components/form-privacy/form-privacy.component';
 import { PlantService } from '@services/plant.service';
 import { PhotoService } from '@services/photo.service';
 import { ErrorHandlerService } from '@services/error-handler.service';
@@ -55,17 +47,17 @@ import { Photo } from '@models/photo.model';
 })
 export class PhotoAddComponent {
   @ViewChild(FormPrivacyComponent) privacyComponent!: FormPrivacyComponent;
-  plantId?: number;
-  pictures: File[] = [];
+  private plantId?: number;
+  private pictures: File[] = [];
 
   constructor(
-    private plantService: PlantService,
-    private photoService: PhotoService,
-    private translate: TranslocoService,
-    private route: ActivatedRoute,
-    private router: Router,
-    private errorHandler: ErrorHandlerService,
-    private dialog: MatDialog
+    private readonly plantService: PlantService,
+    private readonly photoService: PhotoService,
+    private readonly translate: TranslocoService,
+    private readonly route: ActivatedRoute,
+    private readonly router: Router,
+    private readonly errorHandler: ErrorHandlerService,
+    private readonly dialog: MatDialog,
   ) {}
 
   ngOnInit(): void {
@@ -129,7 +121,7 @@ export class PhotoAddComponent {
       .pipe(
         finalize(() => {
           ud.close();
-        })
+        }),
       )
       .subscribe((event) => {
         switch (event.type) {

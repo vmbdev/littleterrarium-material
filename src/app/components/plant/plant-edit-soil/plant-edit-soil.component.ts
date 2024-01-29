@@ -16,7 +16,15 @@ import { MatCardModule } from '@angular/material/card';
 import { TranslocoModule } from '@ngneat/transloco';
 
 import { PlantService } from '@services/plant.service';
-import { Plant, potChoices } from '@models/plant.model';
+import { Plant, PotNames } from '@models/plant.model';
+
+type PotListItem = {
+  id: string;
+  asset: string;
+  name: string;
+};
+
+// FIXME: Use EditComponent
 
 @Component({
   selector: 'ltm-plant-edit-soil',
@@ -38,21 +46,21 @@ import { Plant, potChoices } from '@models/plant.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlantEditSoilComponent {
-  potForm = this.fb.group({
+  protected potForm = this.fb.group({
     potSize: new FormControl<number | null>(null),
     potSizeUnits: new FormControl<'cm' | 'in'>('cm', Validators.required),
     potType: new FormControl<string | null>(null),
     soil: new FormControl<string | null>(null),
   });
-  id?: number;
-  today = new Date();
-  selectedPot: string | null = null;
-  pots = this.getPots();
+  protected id?: number;
+  protected today = new Date();
+  protected selectedPot: string | null = null;
+  protected pots = this.getPots();
 
   constructor(
-    public plantService: PlantService,
-    private fb: FormBuilder,
-    @Optional() private bottomSheetRef: MatBottomSheetRef
+    public readonly plantService: PlantService,
+    private readonly fb: FormBuilder,
+    @Optional() private readonly bottomSheetRef: MatBottomSheetRef
   ) {}
 
   ngOnInit(): void {
@@ -60,7 +68,8 @@ export class PlantEditSoilComponent {
 
     if (plant) {
       this.id = plant.id;
-      this.selectPot(plant.potType);
+
+      if (plant.potType) this.selectPot(plant.potType);
 
       this.potForm.patchValue({
         potSize: plant.potSize,
@@ -70,7 +79,7 @@ export class PlantEditSoilComponent {
     }
   }
 
-  selectPot(id: any): void {
+  selectPot(id: string): void {
     // deselect
     if (id === this.selectedPot) this.selectedPot = null;
     else this.selectedPot = id;
@@ -80,9 +89,15 @@ export class PlantEditSoilComponent {
     });
   }
 
-  getPots(): any[] {
-    return Object.keys(potChoices).map((key) => {
-      return { id: key, ...potChoices[key] };
+  getPots(): PotListItem[] {
+    return Object.keys(PotNames).map((key) => {
+      const pot = this.plantService.getPotInfo(key);
+
+      return {
+        id: key,
+        asset: pot.image,
+        name: pot.name,
+      };
     });
   }
 

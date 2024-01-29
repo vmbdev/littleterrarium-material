@@ -4,18 +4,14 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
 import {
   MatBottomSheetModule,
-  MatBottomSheet
+  MatBottomSheet,
 } from '@angular/material/bottom-sheet';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { TranslocoService, TranslocoModule } from '@ngneat/transloco';
 
-import {
-  ConfirmDialogComponent
-} from '@components/dialogs/confirm-dialog/confirm-dialog.component';
-import {
-  PlantEditFertilizerComponent
-} from '@components/plant/plant-edit-fertilizer/plant-edit-fertilizer.component';
+import { ConfirmDialogComponent } from '@components/dialogs/confirm-dialog/confirm-dialog.component';
+import { PlantEditFertilizerComponent } from '@components/plant/plant-edit-fertilizer/plant-edit-fertilizer.component';
 import { PlantService } from '@services/plant.service';
 import { DaysAgoPipe } from '@pipes/days-ago/days-ago.pipe';
 
@@ -36,10 +32,10 @@ import { DaysAgoPipe } from '@pipes/days-ago/days-ago.pipe';
 })
 export class PlantFertiliseWidgetComponent {
   constructor(
-    public plantService: PlantService,
-    private bottomSheet: MatBottomSheet,
-    private dialog: MatDialog,
-    private translate: TranslocoService
+    public readonly plantService: PlantService,
+    private readonly bottomSheet: MatBottomSheet,
+    private readonly dialog: MatDialog,
+    private readonly translate: TranslocoService,
   ) {}
 
   openEdit(): void {

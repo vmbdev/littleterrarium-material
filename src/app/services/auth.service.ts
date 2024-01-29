@@ -8,9 +8,9 @@ import {
   throwError,
   BehaviorSubject,
 } from 'rxjs';
+
 import { ApiService } from '@services/api.service';
 import { User } from '@models/user.model';
-import { BackendResponse } from '@models/backend-response.model';
 
 @Injectable({
   providedIn: 'root',
@@ -19,15 +19,15 @@ export class AuthService {
   // signedIn$ exists just for convenience.
   // We can achieve the same checking if user$ is null
   private signedIn = new BehaviorSubject<boolean>(false);
-  public signedIn$ = this.signedIn.asObservable();
+  public readonly signedIn$ = this.signedIn.asObservable();
 
   private checked = new BehaviorSubject<boolean>(false);
-  public checked$ = this.checked.asObservable();
+  public readonly checked$ = this.checked.asObservable();
 
   private user = new BehaviorSubject<User | null>(null);
-  public user$ = this.user.asObservable();
+  public readonly user$ = this.user.asObservable();
 
-  constructor(private api: ApiService) {
+  constructor(private readonly api: ApiService) {
     this.api.getCurrentUser().subscribe({
       next: (user: User) => {
         this.signedIn.next(true);
@@ -79,22 +79,6 @@ export class AuthService {
 
   updateUser(user: User): void {
     this.user.next(user);
-  }
-
-  forgotPassword(userRef: string): Observable<any> {
-    return this.api.forgotPassword(userRef);
-  }
-
-  recoverPassword(
-    token: string,
-    password: string,
-    userId: number
-  ): Observable<any> {
-    return this.api.recoverPassword(token, password, userId);
-  }
-
-  checkPassword(password: string): Observable<BackendResponse> {
-    return this.api.checkPassword(password);
   }
 
   isSameUser(param: 'username' | 'id', val: string | number): boolean {

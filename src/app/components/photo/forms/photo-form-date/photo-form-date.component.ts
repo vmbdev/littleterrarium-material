@@ -21,10 +21,10 @@ import { FormBaseComponent } from '@components/form-base/form-base.component';
 })
 export class PhotoFormDateComponent implements FormBaseComponent {
   @Input() currentTakenAt?: Date | null;
-  form = this.fb.group({ takenAt: new FormControl<Date | null>(null) });
-  today = new Date();
+  public readonly form = this.fb.group({ takenAt: new FormControl<Date | null>(null) });
+  protected today = new Date();
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private readonly fb: FormBuilder) {}
 
   ngOnInit(): void {
     if (this.currentTakenAt) {

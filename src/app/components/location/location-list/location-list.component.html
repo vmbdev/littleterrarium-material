@@ -11,7 +11,7 @@
             <img
               mat-card-sm-image
               [src]="
-                item.pictures ? getHeaderPic(item.pictures) : 'assets/nopic.png'
+                item.pictures ? (item.pictures | imagePath:'thumb') : 'assets/nopic.png'
               "
             />
             <mat-card-title>{{ item.name }}</mat-card-title>

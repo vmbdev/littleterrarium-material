@@ -4,12 +4,8 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 
 import { ProfileComponent } from '@components/user/profile/profile.component';
-import {
-  LocationListComponent
-} from '@components/location/location-list/location-list.component';
-import {
-  PlantListComponent
-} from '@components/plant/plant-list/plant-list.component';
+import { LocationListComponent } from '@components/location/location-list/location-list.component';
+import { PlantListComponent } from '@components/plant/plant-list/plant-list.component';
 import { ApiService } from '@services/api.service';
 import { User } from '@models/user.model';
 
@@ -25,9 +21,12 @@ import { User } from '@models/user.model';
   templateUrl: './terrarium.component.html',
 })
 export class TerrariumComponent {
-  user$?: Observable<User>;
+  protected user$?: Observable<User>;
 
-  constructor(private route: ActivatedRoute, private api: ApiService) {}
+  constructor(
+    private readonly route: ActivatedRoute,
+    private readonly api: ApiService,
+  ) {}
 
   ngOnInit(): void {
     const username = this.route.snapshot.paramMap.get('username');

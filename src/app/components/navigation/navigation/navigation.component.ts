@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, ViewChild } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -13,28 +13,16 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { fromEvent, Observable, map, shareReplay } from 'rxjs';
 import { TranslocoModule } from '@ngneat/transloco';
 
-import {
-  BottomToolbarComponent
-} from '@components/navigation/bottom-toolbar/bottom-toolbar.component';
-import {
-  LangSwitcherComponent
-} from '@components/navigation/lang-switcher/lang-switcher.component';
-import {
-  MainToolbarComponent
-} from '@components/navigation/main-toolbar/main-toolbar.component';
-import {
-  SearchComponent
-} from '@components/navigation/search/search.component';
-import {
-  UserBoxComponent
-} from '@components/navigation/user-box/user-box.component';
+import { BottomToolbarComponent } from '@components/navigation/bottom-toolbar/bottom-toolbar.component';
+import { LangSwitcherComponent } from '@components/navigation/lang-switcher/lang-switcher.component';
+import { MainToolbarComponent } from '@components/navigation/main-toolbar/main-toolbar.component';
+import { SearchComponent } from '@components/navigation/search/search.component';
+import { UserBoxComponent } from '@components/navigation/user-box/user-box.component';
+import { ThemeSwitcherComponent } from '@components/navigation/theme-switcher/theme-switcher.component';
 import { AuthService } from '@services/auth.service';
-import {
-  BottomScrollDetectorService
-} from '@services/bottom-scroll-detector.service';
+import { BottomScrollDetectorService } from '@services/bottom-scroll-detector.service';
 import { TaskService } from '@services/task.service';
 import { ThemeService } from '@services/theme.service';
-import { ThemeSwitcherComponent } from '../theme-switcher/theme-switcher.component';
 
 @Component({
   selector: 'ltm-navigation',
@@ -63,19 +51,20 @@ import { ThemeSwitcherComponent } from '../theme-switcher/theme-switcher.compone
 })
 export class NavigationComponent {
   @ViewChild('content') contentElement!: ElementRef;
-  isHandset$: Observable<boolean> = this.breakpointObserver
+  protected isHandset$: Observable<boolean> = this.breakpointObserver
     .observe(Breakpoints.Handset)
     .pipe(
       map((result) => result.matches),
-      shareReplay()
+      shareReplay(),
     );
+  protected userLink?: string;
 
   constructor(
-    private breakpointObserver: BreakpointObserver,
-    public auth: AuthService,
-    private bottomScrollDetector: BottomScrollDetectorService,
-    public taskService: TaskService,
-    public readonly themeService: ThemeService
+    private readonly breakpointObserver: BreakpointObserver,
+    protected readonly auth: AuthService,
+    private readonly bottomScrollDetector: BottomScrollDetectorService,
+    protected readonly taskService: TaskService,
+    protected readonly themeService: ThemeService,
   ) {}
 
   // FIXME: use HostListener instead of this
@@ -83,7 +72,7 @@ export class NavigationComponent {
     if (this.contentElement) {
       const scroll$ = fromEvent<Event>(
         this.contentElement.nativeElement,
-        'scroll'
+        'scroll',
       );
 
       scroll$.subscribe((element: Event) => {
@@ -96,10 +85,5 @@ export class NavigationComponent {
         } else this.bottomScrollDetector.clear();
       });
     }
-  }
-
-  getUserLink(): string {
-    if (this.auth.getUser()) return '/user';
-    else return '/signin';
   }
 }

@@ -21,9 +21,9 @@ import { FormBaseComponent } from '@components/form-base/form-base.component';
 })
 export class UserFormUsernameComponent implements FormBaseComponent {
   @Input() currentUsername?: string;
-  public form = this.fb.group({ username: ['', Validators.required] });
+  public readonly form = this.fb.group({ username: ['', Validators.required] });
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private readonly fb: FormBuilder) {}
 
   ngOnInit(): void {
     if (this.currentUsername) {

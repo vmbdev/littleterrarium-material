@@ -45,7 +45,13 @@ import {
 import { User } from '@models/user.model';
 import { Plant } from '@models/plant.model';
 import { SortColumn, SortOrder } from '@models/sort-options.model';
-import { CapitalizePipe } from "@pipes/capitalize/capitalize.pipe";
+import { CapitalizePipe } from '@pipes/capitalize/capitalize.pipe';
+
+type PlantListItem = {
+  id: number;
+  name: string;
+  cover?: string;
+}
 
 @Component({
   selector: 'ltm-plant-list',
@@ -77,7 +83,7 @@ export class PlantListComponent {
   @Input() locationId?: number;
   @Input() user?: User;
   owned: boolean = true;
-  list$ = new BehaviorSubject<Plant[]>([]);
+  list$ = new BehaviorSubject<PlantListItem[]>([]);
   search$?: Subscription;
   smallView: boolean;
 
@@ -133,7 +139,7 @@ export class PlantListComponent {
       this.owned = this.auth.isSameUser('id', this.user.id);
     }
 
-    if (this.list) this.list$.next(this.list);
+    if (this.list) this.list$.next(this.createPlantList(this.list));
     else this.fetchPlants();
 
     this.createMainToolbarContext();
@@ -165,7 +171,7 @@ export class PlantListComponent {
     let obs: Observable<Plant[]>;
     let options: PlantGetConfig = {
       cursor: scroll && this.cursor ? this.cursor : undefined,
-      filter: this.filter ? this.filter : '',
+      filter: this.filter ?? '',
       sort: this.sort,
       order: this.order,
     };
@@ -186,16 +192,36 @@ export class PlantListComponent {
     }
 
     obs.subscribe((plants: Plant[]) => {
+      
       if (plants.length > 0) {
+        let newList = [];
+
         this.cursor = plants[plants.length - 1].id;
+        newList = this.createPlantList(plants);
+
+        if (scroll) {
+          const currentList = this.list$.getValue();
+  
+          this.list$.next([...currentList, ...newList]);
+        } else this.list$.next(newList);
       }
 
-      if (scroll) {
-        const currentList = this.list$.getValue();
 
-        this.list$.next([...currentList, ...plants]);
-      } else this.list$.next(plants);
     });
+  }
+
+  createPlantList(plants: Plant[]): PlantListItem[] {
+    let newList: PlantListItem[] = [];
+
+    for (const plant of plants) {
+      newList.push({
+        id: plant.id,
+        name: this.plantService.getVisibleName(plant),
+        cover: this.plantService.coverPhoto(plant),
+      });
+    }
+
+    return newList;
   }
 
   createMainToolbarContext(): void {
@@ -289,14 +315,6 @@ export class PlantListComponent {
     this.cardView$.next(!val);
   }
 
-  getName(plant: Plant): string {
-    return this.plantService.getVisibleName(plant);
-  }
-
-  getImgUrl(plant: Plant): string {
-    return this.plantService.coverPhoto(plant);
-  }
-
   openRemoveDialog(name: string, id: number) {
     this.dialog.open(ConfirmDialogComponent, {
       data: {
@@ -325,7 +343,11 @@ export class PlantListComponent {
         // we moved the plant, hence we remove it from the list
         if (this.locationId && updatedPlant.locationId !== this.locationId) {
           list.splice(index, 1);
-        } else list[index] = updatedPlant;
+        } else list[index] = {
+          id: updatedPlant.id,
+          name: this.plantService.getVisibleName(updatedPlant),
+          cover: this.plantService.coverPhoto(updatedPlant),
+        }
 
         this.list$.next(list);
       }
@@ -336,7 +358,7 @@ export class PlantListComponent {
     this.plantService.delete(id).subscribe(() => {
       const newList = this.list$
         .getValue()
-        .filter((plant: Plant) => plant.id !== id);
+        .filter((item: PlantListItem) => item.id !== id);
 
       this.list$.next(newList);
     });

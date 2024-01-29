@@ -5,6 +5,7 @@ import { BehaviorSubject, EMPTY, map, Observable } from 'rxjs';
 
 import {
   ApiService,
+  DataCount,
   LocationGetConfig,
   LocationUpsertConfig,
   PlantGetConfig,
@@ -17,13 +18,14 @@ import { PlantService } from '@services/plant.service';
 })
 export class LocationService {
   private location = new BehaviorSubject<Location | null>(null);
-  public location$ = this.location.asObservable();
-  private owned: boolean = false;
+  public readonly location$ = this.location.asObservable();
+  private owned = new BehaviorSubject<boolean>(false);
+  public readonly owned$ = this.owned.asObservable();
 
   constructor(
-    private api: ApiService,
-    private auth: AuthService,
-    private plantService: PlantService
+    private readonly api: ApiService,
+    private readonly auth: AuthService,
+    private readonly plantService: PlantService,
   ) {}
 
   create(location: Location): Observable<Location> {
@@ -43,7 +45,7 @@ export class LocationService {
 
     return this.api.getLocation(id, options).pipe(
       map((location: Location) => {
-        this.owned = this.auth.getUser()?.id === location.ownerId;
+        this.owned.next(this.auth.getUser()?.id === location.ownerId);
 
         this.location.next(location);
 
@@ -66,6 +68,10 @@ export class LocationService {
         return plants;
       })
     );
+  }
+
+  countPlants(id: number): Observable<DataCount> {
+    return this.api.countLocationPlants(id);
   }
 
   update(
@@ -95,11 +101,28 @@ export class LocationService {
     return this.location.getValue();
   }
 
-  isOwned(): boolean {
-    return this.owned;
+  getLightName(light: string): string {
+    let desc: string;
+
+    switch (light) {
+      case 'FULLSUN': {
+        desc = 'light.fullsun';
+        break;
+      }
+      case 'PARTIALSUN': {
+        desc = 'light.partialsun';
+        break;
+      }
+      default: {
+        desc = 'light.shade';
+        break;
+      }
+    }
+
+    return desc;
   }
 
-  getLightName(light: string): string {
+  getLightDesc(light: string): string {
     let desc: string;
 
     switch (light) {
@@ -113,27 +136,6 @@ export class LocationService {
       }
       default: {
         desc = 'light.shadeDesc';
-        break;
-      }
-    }
-
-    return desc;
-  }
-
-  getLightVerbose(light: string): string {
-    let desc: string;
-
-    switch (light) {
-      case 'FULLSUN': {
-        desc = 'light.fullsunVerbose';
-        break;
-      }
-      case 'PARTIALSUN': {
-        desc = 'light.partialsunVerbose';
-        break;
-      }
-      default: {
-        desc = 'light.shadeVerbose';
         break;
       }
     }

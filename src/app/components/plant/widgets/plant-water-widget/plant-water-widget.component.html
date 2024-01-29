@@ -42,7 +42,7 @@
       <p>{{ 'plant-widget-water.noData' | transloco }}</p>
     }
   
-    @if (plantService.owned) {
+    @if (plantService.owned$ | async) {
       <mat-action-row>
         <button mat-button color="primary" (click)="openWaterDialog()">
           {{ 'plant-widget-water.now' | transloco }}

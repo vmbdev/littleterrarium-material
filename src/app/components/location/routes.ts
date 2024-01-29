@@ -1,5 +1,6 @@
 import { Route } from '@angular/router';
-import { AuthGuard } from '@guards/auth.guard';
+
+import { SignedInGuard } from '@guards/signed-in.guard';
 
 export const LOCATION_ROUTES: Route[] = [
   {
@@ -8,7 +9,7 @@ export const LOCATION_ROUTES: Route[] = [
       import('./location-list/location-list.component').then(
         (m) => m.LocationListComponent
       ),
-    canActivate: [AuthGuard],
+    canActivate: [SignedInGuard],
   },
   {
     path: 'create',
@@ -16,7 +17,7 @@ export const LOCATION_ROUTES: Route[] = [
       import('./location-add/location-add.component').then(
         (m) => m.LocationAddComponent
       ),
-    canActivate: [AuthGuard],
+    canActivate: [SignedInGuard],
   },
   {
     path: ':locationId',

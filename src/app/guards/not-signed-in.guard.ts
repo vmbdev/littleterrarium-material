@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { map, skipWhile } from 'rxjs';
 import { AuthService } from '@services/auth.service';
 
-export const AuthGuard = () => {
+export const NotSignedInGuard = () => {
   const auth = inject(AuthService);
   const router = inject(Router);
 
@@ -12,9 +12,9 @@ export const AuthGuard = () => {
     map(() => {
       const isSignedIn = !!auth.getUser();
 
-      if (!isSignedIn) router.navigate(['/signin']);
+      if (isSignedIn) router.navigate(['/']);
 
-      return isSignedIn;
+      return !isSignedIn;
     })
   );
 };

@@ -1,28 +1,28 @@
 <p>{{ 'tasks.msg' | transloco }}</p>
 <mat-list>
 
-  @for (task of taskService.tasks$ | async; track task.id) {
+  @for (task of taskService.tasks$ | async; track task.plantId) {
     <mat-list-item matRipple>
       <img
         matListItemAvatar
-        [src]="plantService.coverPhoto(task)"
-        [routerLink]="['/plant', task.id]"
+        [src]="task.picture"
+        [routerLink]="['/plant', task.plantId]"
       >
 
-      <span matListItemTitle [routerLink]="['/plant', task.id]">
-        {{ plantService.getVisibleName(task) }}
+      <span matListItemTitle [routerLink]="['/plant', task.plantId]">
+        {{ task.plantName }}
       </span>
 
       <div matListItemIcon class="tasks__buttons">
         <ltm-plant-button-water
-          [id]="task.id"
+          [id]="task.plantId"
           [disabled]="!!(!task.waterNext)"
           (done)="taskService.loadTasks()"
         >
         </ltm-plant-button-water>
 
         <ltm-plant-button-fertilize
-          [id]="task.id"
+          [id]="task.plantId"
           [disabled]="!!(!task.fertNext)"
           (done)="taskService.loadTasks()"
         >

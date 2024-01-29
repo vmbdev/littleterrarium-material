@@ -1,10 +1,10 @@
 <div class="photo-list">
   @for (photo of (list$ | async | sort:'takenAt':'desc'); track photo.id) {
-    <div class="photo-list__box">
+    <article class="photo-list__box">
       <a [routerLink]="['/photo', photo.id]">
-        <img [src]="getThumb(photo.images)">
+        <img [src]="photo.images | imagePath:'thumb'">
       </a>
-    </div>
+    </article>
   }
 
   <!-- FIXME: hacky; proper css to prevent the gallery from hiding under the bottom toolbar -->

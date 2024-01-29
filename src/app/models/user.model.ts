@@ -1,5 +1,6 @@
 import { Photo } from '@models/photo.model';
 import { Plant } from '@models/plant.model';
+import { ImagePath } from '@models/image-path.model';
 
 export interface User {
   id: number;
@@ -7,7 +8,7 @@ export interface User {
   firstname: string | null;
   lastname: string | null;
   password: string;
-  avatar: any;
+  avatar: ImagePath;
   avatarFile: File;
   preferences: any;
   email: string;

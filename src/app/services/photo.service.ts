@@ -19,25 +19,27 @@ import { BackendResponse } from '@models/backend-response.model';
   providedIn: 'root',
 })
 export class PhotoService {
-  photo$ = new BehaviorSubject<Photo | null>(null);
-  owned: boolean = false;
+  private photo = new BehaviorSubject<Photo | null>(null);
+  public readonly photo$ = this.photo.asObservable();
+  private owned = new BehaviorSubject<boolean>(false);
+  public readonly owned$ = this.owned.asObservable();
 
   constructor(
-    private api: ApiService,
-    private auth: AuthService,
-    private errorHandler: ErrorHandlerService
+    private readonly api: ApiService,
+    private readonly auth: AuthService,
+    private readonly errorHandler: ErrorHandlerService
   ) {}
 
   get(id: number, options?: PhotoGetConfig): Observable<Photo> {
     return this.api.getPhoto(id, options).pipe(
       map((photo: Photo) => {
-        this.owned = this.auth.getUser()?.id === photo.ownerId;
-        this.photo$.next(photo);
+        this.owned.next(this.auth.getUser()?.id === photo.ownerId);
+        this.photo.next(photo);
 
         return photo;
       }),
       catchError((error: HttpErrorResponse) => {
-        this.photo$.next(null);
+        this.photo.next(null);
 
         return throwError(() => error);
       })
@@ -67,12 +69,12 @@ export class PhotoService {
   update(photo: Photo): Observable<Photo> {
     return this.api.updatePhoto(photo).pipe(
       map((updatedPhoto: Photo) => {
-        this.photo$.next(updatedPhoto);
+        this.photo.next(updatedPhoto);
 
         return updatedPhoto;
       }),
       catchError((HttpError: HttpErrorResponse) => {
-        this.photo$.next(null);
+        this.photo.next(null);
 
         return throwError(() => HttpError);
       })
@@ -80,9 +82,13 @@ export class PhotoService {
   }
 
   delete(id?: number): Observable<any> {
-    if (!id) id = this.photo$.getValue()?.id;
+    if (!id) id = this.photo.getValue()?.id;
 
     if (id) return this.api.deletePhoto(id);
     else return EMPTY;
+  }
+
+  current(): Photo | null {
+    return this.photo.getValue();
   }
 }

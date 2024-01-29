@@ -4,20 +4,25 @@
   <mat-button-toggle-group
     formControlName="condition"
     class="icon-button-toggle"
+    #group="matButtonToggleGroup"
   >
-    <mat-button-toggle
-      *ngFor="let condition of plantConditions | keyvalue: noSort"
-      [value]="condition.key"
-    >
-      <div class="icon-button-toggle__option">
-        <mat-icon [ngStyle]="{ 'color': plantService.getConditionColor(condition.key) }">
-          circle
-        </mat-icon>
-      </div>
-    </mat-button-toggle>
+    @for (condition of conditions; track condition.id) {
+      <mat-button-toggle
+        [checked]="condition.id === currentCondition"
+        [value]="condition.id"
+      >
+        <div class="icon-button-toggle__option">
+          <mat-icon [ngStyle]="{ 'color': condition.color }">
+            circle
+          </mat-icon>
+        </div>
+      </mat-button-toggle>
+    }
   </mat-button-toggle-group>
   <div class="icon-button-toggle__selection">
-    {{ getFormConditionDesc() }}
+    @if (group.value) {
+      {{ ('condition.' + group.value | lowercase ) | transloco }}
+    }
   </div>
 
 </form>

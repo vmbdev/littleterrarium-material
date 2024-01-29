@@ -56,7 +56,6 @@ export class CameraService {
     );
   }
 
-  // TODO: debug it properly, some times it fails when only 1 file selected
   pickFromGallery(options?: GalleryImageOptions): Observable<File[]> {
     // pick the photos from the gallery
     const camera$ = from(

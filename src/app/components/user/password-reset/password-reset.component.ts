@@ -5,11 +5,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { catchError, EMPTY } from 'rxjs';
 import { TranslocoService, TranslocoModule } from '@ngneat/transloco';
 
-import {
-  UserFormPasswordComponent
-} from '@components/user/forms/user-form-password/user-form-password.component';
-import { AuthService } from '@services/auth.service';
-import { ApiService } from '@services/api.service';
+import { UserFormPasswordComponent } from '@components/user/forms/user-form-password/user-form-password.component';
+import { PasswordService } from '@services/password.service';
 
 @Component({
   selector: 'ltm-password-reset',
@@ -19,19 +16,18 @@ import { ApiService } from '@services/api.service';
 })
 export class PasswordResetComponent {
   @ViewChild(UserFormPasswordComponent)
-  passwordComponent!: UserFormPasswordComponent;
-  token?: string | null;
-  userId?: number | null;
+  private passwordComponent!: UserFormPasswordComponent;
+  private token?: string | null;
+  private userId?: number | null;
 
-  errorInvalidToken: boolean = false;
-  errorInvalidPassword: boolean = false;
-  passwordChanged: boolean = false;
+  protected errorInvalidToken: boolean = false;
+  protected errorInvalidPassword: boolean = false;
+  protected passwordChanged: boolean = false;
 
   constructor(
-    private route: ActivatedRoute,
-    public translate: TranslocoService,
-    private auth: AuthService,
-    private api: ApiService
+    private readonly route: ActivatedRoute,
+    public readonly translate: TranslocoService,
+    private readonly pwd: PasswordService,
   ) {}
 
   ngOnInit(): void {
@@ -39,14 +35,14 @@ export class PasswordResetComponent {
     this.userId = +this.route.snapshot.paramMap.get('userId')!;
 
     if (this.token && this.userId) {
-      this.api
+      this.pwd
         .verifyToken(this.token, this.userId)
         .pipe(
           catchError((err: HttpErrorResponse) => {
             this.errorInvalidToken = true;
 
             return EMPTY;
-          })
+          }),
         )
         .subscribe();
     }
@@ -57,7 +53,7 @@ export class PasswordResetComponent {
 
     if (!pwd || !this.token || !this.userId) return;
 
-    this.auth
+    this.pwd
       .recoverPassword(this.token, pwd, this.userId)
       .pipe(
         catchError((err) => {
@@ -70,7 +66,7 @@ export class PasswordResetComponent {
           }
 
           return EMPTY;
-        })
+        }),
       )
       .subscribe(() => {
         this.passwordChanged = true;

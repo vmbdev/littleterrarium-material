@@ -9,5 +9,5 @@ import { FormGroup } from '@angular/forms';
   templateUrl: './form-base.component.html',
 })
 export abstract class FormBaseComponent {
-  public form!: FormGroup;
+  public readonly form!: FormGroup;
 }

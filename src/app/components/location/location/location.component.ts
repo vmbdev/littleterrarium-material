@@ -20,7 +20,7 @@ import { ConfirmDialogComponent } from '@components/dialogs/confirm-dialog/confi
 import { MainToolbarService } from '@services/main-toolbar.service';
 import { ErrorHandlerService } from '@services/error-handler.service';
 import { LocationService } from '@services/location.service';
-import { Light, Location } from '@models/location.model';
+import { Location } from '@models/location.model';
 
 @Component({
   selector: 'ltm-location',
@@ -38,8 +38,9 @@ import { Light, Location } from '@models/location.model';
   templateUrl: './location.component.html',
 })
 export class LocationComponent {
-  id?: number;
-  light = Light;
+  private id?: number;
+  protected lightAsset?: string;
+  protected lightName?: string;
 
   constructor(
     public readonly locationService: LocationService,
@@ -49,12 +50,18 @@ export class LocationComponent {
     private readonly errorHandler: ErrorHandlerService,
     private readonly translate: TranslocoService,
     private readonly bottomSheet: MatBottomSheet,
-    private readonly dialog: MatDialog
+    private readonly dialog: MatDialog,
   ) {
+    // we listen to the service for updates
+    // it's necessary if we update the location from the bottom sheet
     this.locationService.location$
       .pipe(takeUntilDestroyed())
       .subscribe((location: Location | null) => {
-        if (location) this.processLocation(location);
+        if (location) {
+          this.lightAsset = this.locationService.getLightAsset(location.light);
+          this.lightName = this.locationService.getLightName(location.light);
+          this.updateMainToolbar(location);
+        }
       });
   }
 
@@ -63,38 +70,30 @@ export class LocationComponent {
     this.id = paramId ? +paramId : NaN;
 
     if (this.id) {
-      this.getLocation();
+      this.locationService
+        .get(this.id, { plantCount: true })
+        .pipe(
+          catchError((err: HttpErrorResponse) => {
+            let msg: string;
+
+            if (err.error?.msg === 'LOCATION_NOT_FOUND') {
+              msg = 'location.invalid';
+            } else msg = 'errors.server';
+
+            this.translate.selectTranslate(msg).subscribe((res: string) => {
+              this.errorHandler.push(res);
+            });
+
+            this.router.navigateByUrl('/');
+
+            return EMPTY;
+          }),
+        )
+        .subscribe((location: Location) => {});
     }
   }
 
-  getLocation(): void {
-    if (!this.id) return;
-
-    this.locationService
-      .get(this.id, { plantCount: true })
-      .pipe(
-        catchError((err: HttpErrorResponse) => {
-          let msg: string;
-
-          if (err.error?.msg === 'LOCATION_NOT_FOUND') {
-            msg = 'location.invalid';
-          } else msg = 'errors.server';
-
-          this.translate.selectTranslate(msg).subscribe((res: string) => {
-            this.errorHandler.push(res);
-          });
-
-          this.router.navigateByUrl('/');
-
-          return EMPTY;
-        })
-      )
-      .subscribe((location: Location) => {
-        // this.processLocation(location);
-      });
-  }
-
-  processLocation(location: Location): void {
+  updateMainToolbar(location: Location): void {
     this.mt.setName(location.name);
     this.mt.setButtons([]);
     this.mt.setMenu([
@@ -103,7 +102,7 @@ export class LocationComponent {
           icon: 'edit',
           tooltip: 'general.edit',
           click: () => {
-            this.openBottomSheet();
+            this.openEdit();
           },
         },
       ],
@@ -148,7 +147,7 @@ export class LocationComponent {
     });
   }
 
-  openBottomSheet(): void {
+  openEdit(): void {
     if (this.id) {
       this.bottomSheet.open(LocationEditComponent, {
         data: { id: this.id },

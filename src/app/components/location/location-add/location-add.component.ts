@@ -8,24 +8,12 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { catchError, EMPTY, finalize } from 'rxjs';
 import { TranslocoModule } from '@ngneat/transloco';
 
-import {
-  StepperNavigationComponent
-} from '@components/stepper-navigation/stepper-navigation.component';
-import {
-  FileUploaderComponent
-} from '@components/file-uploader/file-uploader.component';
-import {
-  LocationFormNameComponent
-} from '@components/location/forms/location-form-name/location-form-name.component';
-import {
-  LocationFormLightComponent
-} from '@components/location/forms/location-form-light/location-form-light.component';
-import {
-  LocationUpsertBaseComponent
-} from '@components/location/location-upsert-base/location-upsert-base.component';
-import {
-  FormPrivacyComponent
-} from '@components/form-privacy/form-privacy.component';
+import { StepperNavigationComponent } from '@components/stepper-navigation/stepper-navigation.component';
+import { FileUploaderComponent } from '@components/file-uploader/file-uploader.component';
+import { LocationFormNameComponent } from '@components/location/forms/location-form-name/location-form-name.component';
+import { LocationFormLightComponent } from '@components/location/forms/location-form-light/location-form-light.component';
+import { LocationUpsertBaseComponent } from '@components/location/location-upsert-base/location-upsert-base.component';
+import { FormPrivacyComponent } from '@components/form-privacy/form-privacy.component';
 import { Location } from '@models/location.model';
 
 @Component({
@@ -51,9 +39,10 @@ import { Location } from '@models/location.model';
   ],
 })
 export class LocationAddComponent extends LocationUpsertBaseComponent {
-  removePicture: boolean = false;
-
-  constructor(private injector: Injector, private router: Router) {
+  constructor(
+    private readonly injector: Injector,
+    private readonly router: Router,
+  ) {
     super(injector);
   }
 
@@ -72,7 +61,7 @@ export class LocationAddComponent extends LocationUpsertBaseComponent {
         catchError((error: HttpErrorResponse) => {
           if (error.error?.msg === 'IMG_NOT_VALID') {
             this.errorHandler.push(
-              this.translate.translate('errors.invalidImg')
+              this.translate.translate('errors.invalidImg'),
             );
           }
 
@@ -80,7 +69,7 @@ export class LocationAddComponent extends LocationUpsertBaseComponent {
         }),
         finalize(() => {
           ud.close();
-        })
+        }),
       )
       .subscribe((location: Location) => {
         this.router.navigate([`location/${location.id}`], { replaceUrl: true });

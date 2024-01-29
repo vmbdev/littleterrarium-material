@@ -22,19 +22,19 @@ import { FormBaseComponent } from '@components/form-base/form-base.component';
 export class UserFormNameComponent implements FormBaseComponent {
   @Input() currentFirstname?: string | null;
   @Input() currentLastname?: string | null;
-  public form = this.fb.group({
+  public readonly form = this.fb.group({
     firstname: [''],
     lastname: [''],
   });
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private readonly fb: FormBuilder) {}
 
   ngOnInit(): void {
     if (this.currentFirstname) {
-      this.form.patchValue({ firstname: this.currentFirstname});
+      this.form.patchValue({ firstname: this.currentFirstname });
     }
     if (this.currentLastname) {
-      this.form.patchValue({ lastname: this.currentLastname});
+      this.form.patchValue({ lastname: this.currentLastname });
     }
   }
 }

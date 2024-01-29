@@ -5,26 +5,18 @@ import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import {
   MatBottomSheetRef,
-  MAT_BOTTOM_SHEET_DATA
+  MAT_BOTTOM_SHEET_DATA,
 } from '@angular/material/bottom-sheet';
 import { MatDialog } from '@angular/material/dialog';
 import { FormGroup } from '@angular/forms';
-import { BehaviorSubject, finalize } from 'rxjs';
+import { finalize } from 'rxjs';
 import { TranslocoService, TranslocoModule } from '@ngneat/transloco';
 
-import {
-  PhotoFormDescriptionComponent
-} from '@components/photo/forms/photo-form-description/photo-form-description.component';
-import {
-  PhotoFormDateComponent
-} from '@components/photo/forms/photo-form-date/photo-form-date.component';
-import {
-  WaitDialogComponent
-} from '@components/dialogs/wait-dialog/wait-dialog.component';
+import { PhotoFormDescriptionComponent } from '@components/photo/forms/photo-form-description/photo-form-description.component';
+import { PhotoFormDateComponent } from '@components/photo/forms/photo-form-date/photo-form-date.component';
+import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog.component';
 import { EditPageComponent } from '@components/edit-page/edit-page.component';
-import {
-  FormPrivacyComponent
-} from '@components/form-privacy/form-privacy.component';
+import { FormPrivacyComponent } from '@components/form-privacy/form-privacy.component';
 import { ErrorHandlerService } from '@services/error-handler.service';
 import { PlantService } from '@services/plant.service';
 import { PhotoService } from '@services/photo.service';
@@ -34,6 +26,7 @@ interface PhotoEditConfig {
   id: number;
 }
 
+// TODO: add cover edit here
 @Component({
   selector: 'ltm-photo-edit',
   standalone: true,
@@ -43,7 +36,6 @@ interface PhotoEditConfig {
     MatButtonModule,
     MatCardModule,
     MatIconModule,
-
     PhotoFormDescriptionComponent,
     PhotoFormDateComponent,
     FormPrivacyComponent,
@@ -57,25 +49,25 @@ export class PhotoEditComponent {
   @ViewChild(FormPrivacyComponent) privacyComp!: FormPrivacyComponent;
   @ViewChild(PhotoFormDateComponent) dateComp!: PhotoFormDateComponent;
 
-  photo$? = new BehaviorSubject<Photo | null>(null);
-  forms: FormGroup[] = [];
-  returnedPhoto?: Photo;
+  private forms: FormGroup[] = [];
+  private returnedPhoto?: Photo;
+
+  photo$ = this.photoService.get(this.editPhoto.id, {
+    navigation: true,
+    cover: true,
+  });
 
   constructor(
-    private dialog: MatDialog,
-    private translate: TranslocoService,
-    public plantService: PlantService,
-    public photoService: PhotoService,
-    private errorHandler: ErrorHandlerService,
-    @Optional() private bottomSheetRef: MatBottomSheetRef,
-    @Optional() @Inject(MAT_BOTTOM_SHEET_DATA) public editPhoto: PhotoEditConfig
+    private readonly dialog: MatDialog,
+    private readonly translate: TranslocoService,
+    public readonly plantService: PlantService,
+    public readonly photoService: PhotoService,
+    private readonly errorHandler: ErrorHandlerService,
+    @Optional() private readonly bottomSheetRef: MatBottomSheetRef,
+    @Optional()
+    @Inject(MAT_BOTTOM_SHEET_DATA)
+    public readonly editPhoto: PhotoEditConfig,
   ) {}
-
-  ngOnInit(): void {
-    this.photoService
-      .get(this.editPhoto.id, { navigation: true, cover: true })
-      .subscribe();
-  }
 
   openWaitDialog() {
     return this.dialog.open(WaitDialogComponent, {
@@ -128,10 +120,10 @@ export class PhotoEditComponent {
       .pipe(
         finalize(() => {
           wd.close();
-        })
+        }),
       )
       .subscribe((updatedPhoto: Photo) => {
-        const currentPhoto = this.photoService.photo$.getValue();
+        const currentPhoto = this.photoService.current();
 
         if (this.editPhoto && this.bottomSheetRef) {
           this.returnedPhoto = { ...currentPhoto, ...updatedPhoto };

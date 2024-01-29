@@ -3,7 +3,7 @@ import {
   Optional,
   QueryList,
   ViewChild,
-  ViewChildren
+  ViewChildren,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -11,7 +11,7 @@ import {
   FormGroup,
   FormBuilder,
   Validators,
-  FormControl
+  FormControl,
 } from '@angular/forms';
 import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { MatCardModule } from '@angular/material/card';
@@ -20,28 +20,14 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { skipWhile, catchError, EMPTY, finalize } from 'rxjs';
 import { TranslocoService, TranslocoModule } from '@ngneat/transloco';
 
-import {
-  UserFormBioComponent
-} from '@components/user/forms/user-form-bio/user-form-bio.component';
-import {
-  UserFormEmailComponent
-} from '@components/user/forms/user-form-email/user-form-email.component';
-import {
-  UserFormUsernameComponent
-} from '@components/user/forms/user-form-username/user-form-username.component';
-import {
-  UserFormNameComponent
-} from '@components/user/forms/user-form-name/user-form-name.component';
-import {
-  FormPrivacyComponent
-} from '@components/form-privacy/form-privacy.component';
+import { UserFormBioComponent } from '@components/user/forms/user-form-bio/user-form-bio.component';
+import { UserFormEmailComponent } from '@components/user/forms/user-form-email/user-form-email.component';
+import { UserFormUsernameComponent } from '@components/user/forms/user-form-username/user-form-username.component';
+import { UserFormNameComponent } from '@components/user/forms/user-form-name/user-form-name.component';
+import { FormPrivacyComponent } from '@components/form-privacy/form-privacy.component';
 import { FormBaseComponent } from '@components/form-base/form-base.component';
-import {
-  WaitDialogComponent
-} from '@components/dialogs/wait-dialog/wait-dialog.component';
-import {
-  FileUploaderComponent
-} from '@components/file-uploader/file-uploader.component';
+import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog.component';
+import { FileUploaderComponent } from '@components/file-uploader/file-uploader.component';
 import { EditPageComponent } from '@components/edit-page/edit-page.component';
 import { MainToolbarService } from '@services/main-toolbar.service';
 import { ApiService } from '@services/api.service';
@@ -64,9 +50,9 @@ import { User } from '@models/user.model';
     UserFormUsernameComponent,
     UserFormNameComponent,
     FormPrivacyComponent,
-    EditPageComponent
+    EditPageComponent,
   ],
-  templateUrl: './user-edit.component.html'
+  templateUrl: './user-edit.component.html',
 })
 export class UserEditComponent {
   @ViewChildren('form') formComponents!: QueryList<FormBaseComponent>;
@@ -74,7 +60,7 @@ export class UserEditComponent {
   @ViewChild('formUsername') usernameComponent!: UserFormUsernameComponent;
   @ViewChild('fileUploader') fileUploaderComponent!: FileUploaderComponent;
 
-  userForm: FormGroup = this.fb.group({
+  protected readonly userForm: FormGroup = this.fb.group({
     username: new FormControl<string>('', Validators.required),
     firstname: new FormControl<string | null>(''),
     lastname: new FormControl<string | null>(''),
@@ -83,26 +69,23 @@ export class UserEditComponent {
     avatarFile: [],
     public: new FormControl<boolean>(true),
   });
-  avatar?: File;
+  private avatar?: File;
 
   constructor(
-    private fb: FormBuilder,
-    private api: ApiService,
-    public auth: AuthService,
-    private errorHandler: ErrorHandlerService,
-    private mt: MainToolbarService,
-    private translate: TranslocoService,
-    private dialog: MatDialog,
-    @Optional() private bottomSheetRef: MatBottomSheetRef,
-  ) { }
+    private readonly fb: FormBuilder,
+    private readonly api: ApiService,
+    public readonly auth: AuthService,
+    private readonly errorHandler: ErrorHandlerService,
+    private readonly mt: MainToolbarService,
+    private readonly translate: TranslocoService,
+    private readonly dialog: MatDialog,
+    @Optional() private readonly bottomSheetRef: MatBottomSheetRef,
+  ) {}
 
   ngOnInit(): void {
     this.mt.hide();
 
-    this.auth.checked$
-    .pipe(
-      skipWhile(val => val === false)
-    ).subscribe();
+    this.auth.checked$.pipe(skipWhile((val) => val === false)).subscribe();
   }
 
   openWaitDialog() {
@@ -122,13 +105,12 @@ export class UserEditComponent {
       return {
         ...Object.assign(
           {},
-          ...(this.formComponents.toArray().map(comp => comp.form.value))
+          ...this.formComponents.toArray().map((comp) => comp.form.value),
         ),
         id: user.id,
-        avatarFile: this.avatar
+        avatarFile: this.avatar,
       } as User;
-    }
-    else return null;
+    } else return null;
   }
 
   checkFormValidity(): boolean {
@@ -137,7 +119,7 @@ export class UserEditComponent {
 
   fileChange(files: File[]) {
     if (files.length > 0) {
-      this.avatar = files[0]
+      this.avatar = files[0];
     }
   }
 
@@ -153,46 +135,48 @@ export class UserEditComponent {
       const removePicture =
         !!this.fileUploaderComponent.form.get('remove')?.value;
 
-      this.api.editUser(user, { removeAvatar: removePicture }).pipe(
-        finalize(() => { wd.close() }),
-        catchError((err: HttpErrorResponse) => {
-          const error = err.error;
+      this.api
+        .editUser(user, { removeAvatar: removePicture })
+        .pipe(
+          finalize(() => {
+            wd.close();
+          }),
+          catchError((err: HttpErrorResponse) => {
+            const error = err.error;
 
-          if (error.msg === 'IMG_NOT_VALID') {
-            this.errorHandler.push(this.translate.translate('errors.invalidImg'));
-          }
-          else if (error.msg === 'USER_FIELD_EXISTS') {
-            if (error.errorData.field === 'username') {
-              this.usernameComponent.form
-                .get('username')
-                ?.setErrors({ taken: true });
+            if (error.msg === 'IMG_NOT_VALID') {
+              this.errorHandler.push(
+                this.translate.translate('errors.invalidImg'),
+              );
+            } else if (error.msg === 'USER_FIELD_EXISTS') {
+              if (error.errorData.field === 'username') {
+                this.usernameComponent.form
+                  .get('username')
+                  ?.setErrors({ taken: true });
+              } else if (error.errorData.field === 'email') {
+                this.emailComponent.form
+                  .get('email')
+                  ?.setErrors({ taken: true });
+              }
+            } else if (error.msg === 'USER_FIELD_INVALID') {
+              if (error.errorData.field === 'username') {
+                this.usernameComponent.form
+                  .get('username')
+                  ?.setErrors({ invalid: true });
+              } else if (error.errorData.field === 'email') {
+                this.emailComponent.form
+                  .get('email')
+                  ?.setErrors({ invalid: true });
+              }
             }
-            else if (error.errorData.field === 'email') {
-              this.emailComponent.form
-                .get('email')
-                ?.setErrors({ taken: true });
-            }
-          }
-  
-          else if (error.msg === 'USER_FIELD_INVALID') {
-            if (error.errorData.field === 'username') {
-              this.usernameComponent.form
-                .get('username')
-                ?.setErrors({ invalid: true });
-            }
-            else if (error.errorData.field === 'email') {
-              this.emailComponent.form
-                .get('email')
-                ?.setErrors({ invalid: true });
-            }
-          }
 
-          return EMPTY;
-        })
-      ).subscribe((user: User) => {
-        this.auth.updateUser(user);
-        this.bottomSheetRef.dismiss();
-      });
+            return EMPTY;
+          }),
+        )
+        .subscribe((user: User) => {
+          this.auth.updateUser(user);
+          this.bottomSheetRef.dismiss();
+        });
     }
   }
 }

@@ -9,19 +9,12 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { catchError, EMPTY, switchMap } from 'rxjs';
 
-import {
-  StepperNavigationComponent
-} from '@components/stepper-navigation/stepper-navigation.component';
-import {
-  UserFormPasswordComponent
-} from '@components/user/forms/user-form-password/user-form-password.component';
-import {
-  UserFormUsernameComponent
-} from '@components/user/forms/user-form-username/user-form-username.component';
-import {
-  UserFormEmailComponent
-} from '@components/user/forms/user-form-email/user-form-email.component';
+import { StepperNavigationComponent } from '@components/stepper-navigation/stepper-navigation.component';
+import { UserFormPasswordComponent } from '@components/user/forms/user-form-password/user-form-password.component';
+import { UserFormUsernameComponent } from '@components/user/forms/user-form-username/user-form-username.component';
+import { UserFormEmailComponent } from '@components/user/forms/user-form-email/user-form-email.component';
 import { User } from '@models/user.model';
+import { PasswordService } from '@services/password.service';
 
 @Component({
   selector: 'ltm-register',
@@ -51,9 +44,13 @@ export class RegisterComponent {
   usernameComponent!: UserFormUsernameComponent;
   @ViewChild(UserFormEmailComponent) emailComponent!: UserFormEmailComponent;
 
-  stepperIndex: number | null = null;
+  protected stepperIndex: number | null = null;
 
-  constructor(public auth: AuthService, private router: Router) {}
+  constructor(
+    public readonly auth: AuthService,
+    private readonly router: Router,
+    private readonly pwd: PasswordService,
+  ) {}
 
   checkFormValidity(): boolean {
     const forms = [
@@ -84,7 +81,7 @@ export class RegisterComponent {
 
     const user = this.getUserFromForm();
 
-    this.auth
+    this.pwd
       .checkPassword(user.password)
       .pipe(
         switchMap(() => {
@@ -101,9 +98,7 @@ export class RegisterComponent {
 
               this.stepperMoveTo(0);
             } else if (error.errorData.field === 'email') {
-              this.emailComponent.form
-                .get('email')
-                ?.setErrors({ taken: true });
+              this.emailComponent.form.get('email')?.setErrors({ taken: true });
 
               this.stepperMoveTo(1);
             }

@@ -5,7 +5,7 @@ import {
   FormBuilder,
   Validators,
   AbstractControl,
-  ValidationErrors
+  ValidationErrors,
 } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -33,7 +33,7 @@ import { MatIconModule } from '@angular/material/icon';
   styleUrls: ['./user-form-password.component.scss'],
 })
 export class UserFormPasswordComponent implements FormBaseComponent {
-  public form = this.fb.group(
+  public readonly form = this.fb.group(
     {
       password: ['', [Validators.required]],
       password2: ['', Validators.required],
@@ -43,14 +43,17 @@ export class UserFormPasswordComponent implements FormBaseComponent {
         this.checkPasswordStrength.bind(this),
         this.checkPasswordsEqual,
       ],
-    }
+    },
   );
   pwdReq?: PasswordRequirements;
   hidePassword: boolean = true;
   hidePassword2: boolean = true;
   nonAlphaNumChars: string = '!@#$%^&*()_+-=[]{};\':"|,.<>/?';
 
-  constructor(private fb: FormBuilder, private api: ApiService) {}
+  constructor(
+    private readonly fb: FormBuilder,
+    private readonly api: ApiService,
+  ) {}
 
   ngOnInit(): void {
     this.api.getPasswordRequirements().subscribe((requirements: any) => {

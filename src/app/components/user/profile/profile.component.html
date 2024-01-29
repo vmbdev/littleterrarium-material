@@ -1,32 +1,34 @@
 @if (user$ | async; as user) {
-  <div class="profile">
+  <article class="profile">
     <div
       class="profile__userbox"
-      [ngClass]="{ 'profile__userbox-small': small }"
+      [ngClass]="{ 'profile__userbox--small': small }"
     >
 
       @if (user.avatar) {
         <img
           class="profile__avatar"
-          [ngClass]="{ 'profile__avatar-small': small }"
-          [src]="getAvatar()"
+          [ngClass]="{ 'profile__avatar--small': small }"
+          [src]="user.avatar | imagePath:'thumb'"
         >
       }
 
-      <h1 class="profile__username">{{ user.username }}</h1>
-  
-      @if (!small) {
-        @if (user.firstname || user.lastname) {
-          <h2 class="profile__realnames">{{ getFullName() }}</h2>
-        }
+      <section class="profile__userinfo">
+        <h1 class="profile__username">{{ user.username }}</h1>
+    
+        @if (!small) {
+          @if (user.firstname || user.lastname) {
+            <h2 class="profile__realnames">{{ fullName }}</h2>
+          }
 
-        @if (user.bio) {
-          <blockquote class="profile__bio">
-            {{ user.bio }}
-          </blockquote>
+          @if (user.bio) {
+            <blockquote class="profile__bio">
+              {{ user.bio }}
+            </blockquote>
+          }
         }
-      }
+      </section>
   
     </div>
-  </div>
+  </article>
 }

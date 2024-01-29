@@ -5,9 +5,7 @@ import { TranslocoService, TranslocoModule } from '@ngneat/transloco';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { finalize } from 'rxjs';
 
-import {
-  WaitDialogComponent
-} from '@components/dialogs/wait-dialog/wait-dialog.component';
+import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog.component';
 import { AuthService } from '@services/auth.service';
 
 @Component({
@@ -23,10 +21,10 @@ import { AuthService } from '@services/auth.service';
 })
 export class LogoutComponent {
   constructor(
-    private auth: AuthService,
-    private router: Router,
-    private dialog: MatDialog,
-    private translate: TranslocoService
+    private readonly auth: AuthService,
+    private readonly router: Router,
+    private readonly dialog: MatDialog,
+    private readonly translate: TranslocoService,
   ) {}
 
   ngOnInit(): void {
@@ -37,7 +35,7 @@ export class LogoutComponent {
       .pipe(
         finalize(() => {
           wd.close();
-        })
+        }),
       )
       .subscribe({
         complete: () => {

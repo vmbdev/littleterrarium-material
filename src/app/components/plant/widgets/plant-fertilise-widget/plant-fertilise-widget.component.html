@@ -48,7 +48,7 @@
       <p>{{ 'plant-widget-fert.noData' | transloco }}</p>
     }
 
-    @if (plantService.owned) {
+    @if (plantService.owned$ | async) {
       <mat-action-row>
         <button mat-button color="primary" (click)="openFertDialog()">
           {{ 'plant-widget-fert.now' | transloco }}

@@ -4,7 +4,7 @@ import {
   FormGroup,
   FormBuilder,
   Validators,
-  ReactiveFormsModule
+  ReactiveFormsModule,
 } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -13,7 +13,7 @@ import { MatInputModule } from '@angular/material/input';
 import { catchError, EMPTY } from 'rxjs';
 import { TranslocoModule } from '@ngneat/transloco';
 
-import { AuthService } from '@services/auth.service';
+import { PasswordService } from '@services/password.service';
 
 @Component({
   selector: 'ltm-password-recovery',
@@ -29,11 +29,14 @@ import { AuthService } from '@services/auth.service';
   templateUrl: './password-recovery.component.html',
 })
 export class PasswordRecoveryComponent {
-  userForm: FormGroup;
-  checkError: boolean = false;
-  recoveryStarted: boolean = false;
+  protected userForm: FormGroup;
+  protected checkError: boolean = false;
+  protected recoveryStarted: boolean = false;
 
-  constructor(private fb: FormBuilder, private auth: AuthService) {
+  constructor(
+    private readonly fb: FormBuilder,
+    private readonly pwd: PasswordService
+  ) {
     this.userForm = this.fb.group({
       userRef: ['', Validators.required],
     });
@@ -48,7 +51,7 @@ export class PasswordRecoveryComponent {
     const { userRef } = this.userForm.value;
 
     if (userRef) {
-      this.auth
+      this.pwd
         .forgotPassword(userRef)
         .pipe(
           catchError((err: HttpErrorResponse) => {

@@ -10,9 +10,7 @@ import {
 } from '@angular/material/bottom-sheet';
 import { TranslocoModule } from '@ngneat/transloco';
 
-import {
-  UserEditComponent
-} from '@components/user/user-edit/user-edit.component';
+import { UserEditComponent } from '@components/user/user-edit/user-edit.component';
 import { ProfileComponent } from '@components/user/profile/profile.component';
 import { MainToolbarService } from '@services/main-toolbar.service';
 import { AuthService } from '@services/auth.service';
@@ -35,9 +33,9 @@ import { AuthService } from '@services/auth.service';
 })
 export class UserMainComponent {
   constructor(
-    public auth: AuthService,
-    private mt: MainToolbarService,
-    private bottomSheet: MatBottomSheet
+    public readonly auth: AuthService,
+    private readonly mt: MainToolbarService,
+    private readonly bottomSheet: MatBottomSheet
   ) {}
 
   ngOnInit(): void {

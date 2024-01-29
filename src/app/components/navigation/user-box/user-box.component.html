@@ -2,7 +2,7 @@
   <div
     class="userbox"
     [ngStyle]="{
-      'background-image': 'url(' + this.imagePath.get(avatar, 'thumb') + ')'
+      'background-image': 'url(' + (avatar | imagePath:'thumb') + ')'
     }"
   ></div>
 } @else {

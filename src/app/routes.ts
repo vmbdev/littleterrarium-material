@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { AuthGuard } from '@guards/auth.guard';
+import { SignedInGuard } from '@guards/signed-in.guard';
 
 export const routes: Routes = [
   {
@@ -11,21 +11,21 @@ export const routes: Routes = [
     path: 'signin',
     loadComponent: () =>
       import('./components/user/signin/signin.component').then(
-        (m) => m.SigninComponent
+        (m) => m.SigninComponent,
       ),
   },
   {
     path: 'logout',
     loadComponent: () =>
       import('./components/user/logout/logout.component').then(
-        (m) => m.LogoutComponent
+        (m) => m.LogoutComponent,
       ),
   },
   {
     path: 'register',
     loadComponent: () =>
       import('./components/user/register/register.component').then(
-        (m) => m.RegisterComponent
+        (m) => m.RegisterComponent,
       ),
   },
   {
@@ -52,15 +52,15 @@ export const routes: Routes = [
     path: 'terrarium/:username',
     loadComponent: () =>
       import('./components/terrarium/terrarium/terrarium.component').then(
-        (m) => m.TerrariumComponent
+        (m) => m.TerrariumComponent,
       ),
   },
   {
     path: 'tasks',
     loadComponent: () =>
-      import('./components/task/task-list/task-list.component').then(
-        (m) => m.TaskListComponent
+      import('./components/task-list/task-list.component').then(
+        (m) => m.TaskListComponent,
       ),
-    canActivate: [AuthGuard],
+    canActivate: [SignedInGuard],
   },
 ];

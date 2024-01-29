@@ -38,7 +38,7 @@ export class LocationUpsertBaseComponent {
   @ViewChild(FileUploaderComponent)
   fileUploaderComponent!: FileUploaderComponent;
 
-  picture?: File;
+  private picture?: File;
 
   protected translate: TranslocoService;
   protected dialog: MatDialog;

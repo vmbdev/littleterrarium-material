@@ -1,4 +1,4 @@
-@if (photoService.photo$ | async; as photo) {
+@if (photo$ | async; as photo) {
   <ltm-edit-page 
     [title]="'photo-edit.header' | transloco"
     (accept)="submit()"

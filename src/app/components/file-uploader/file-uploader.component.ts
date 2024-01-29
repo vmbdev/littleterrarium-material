@@ -54,22 +54,22 @@ export class FileUploaderComponent implements FormBaseComponent {
 
   @ViewChild('fileInput') fileInput!: ElementRef;
 
-  form = this.fb.group({ remove: [this.removable] });
+  public readonly form = this.fb.group({ remove: [this.removable] });
 
   /**
    * Files currently selected in the component.
    */
-  files: File[] = [];
+  protected files: File[] = [];
 
   /**
    * Thumbnails for the current file selection, in the same order.
    */
-  previews: string[] = new Array<string>(this.maxAmount);
+  protected previews: string[] = new Array<string>(this.maxAmount);
 
   /**
    * Mouse is over the component containing a file.
    */
-  dragOver: boolean = false;
+  protected dragOver: boolean = false;
 
 
   constructor(

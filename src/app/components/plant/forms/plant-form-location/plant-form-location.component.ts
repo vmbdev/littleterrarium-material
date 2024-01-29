@@ -35,8 +35,8 @@ export class PlantFormLocationComponent implements FormBaseComponent {
   locations$?: Observable<Location[]>;
 
   constructor(
-    private fb: FormBuilder,
-    public locationService: LocationService
+    private readonly fb: FormBuilder,
+    public readonly locationService: LocationService
   ) {}
 
   ngOnInit(): void {

@@ -7,33 +7,19 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import {
   MatBottomSheet,
-  MatBottomSheetModule
+  MatBottomSheetModule,
 } from '@angular/material/bottom-sheet';
 import { catchError, EMPTY, finalize, forkJoin } from 'rxjs';
 import { TranslocoService, TranslocoModule } from '@ngneat/transloco';
 
-import {
-  WaitDialogComponent
-} from '@components/dialogs/wait-dialog/wait-dialog.component';
-import {
-  InfoBoxComponent
-} from '@components/info-box/info-box/info-box.component';
-import {
-  PropertyComponent
-} from '@components/info-box/property/property.component';
-import {
-  PhotoListComponent
-} from '@components/photo/photo-list/photo-list.component';
+import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog.component';
+import { InfoBoxComponent } from '@components/info-box/info-box/info-box.component';
+import { PropertyComponent } from '@components/info-box/property/property.component';
+import { PhotoListComponent } from '@components/photo/photo-list/photo-list.component';
 import { FabComponent } from '@components/fab/fab.component';
-import {
-  PlantEditComponent
-} from '@components/plant/plant-edit/plant-edit.component';
-import {
-  PlantExpansionInfoComponent
-} from '@components/plant/plant-expansion-info/plant-expansion-info.component';
-import {
-  ConfirmDialogComponent
-} from '@components/dialogs/confirm-dialog/confirm-dialog.component';
+import { PlantEditComponent } from '@components/plant/plant-edit/plant-edit.component';
+import { PlantExpansionInfoComponent } from '@components/plant/plant-expansion-info/plant-expansion-info.component';
+import { ConfirmDialogComponent } from '@components/dialogs/confirm-dialog/confirm-dialog.component';
 import { MainToolbarService } from '@services/main-toolbar.service';
 import { PlantService } from '@services/plant.service';
 import { ErrorHandlerService } from '@services/error-handler.service';
@@ -61,18 +47,19 @@ import { CapitalizePipe } from '@pipes/capitalize/capitalize.pipe';
   templateUrl: './plant.component.html',
 })
 export class PlantComponent {
-  id?: number;
-  plantCondition = Condition;
+  protected id?: number;
+  protected conditionColor?: string;
+  protected conditionDesc?: string;
 
   constructor(
-    private router: Router,
-    private route: ActivatedRoute,
-    private errorHandler: ErrorHandlerService,
-    private mt: MainToolbarService,
-    public plantService: PlantService,
-    private translate: TranslocoService,
-    private dialog: MatDialog,
-    private bottomSheet: MatBottomSheet
+    private readonly router: Router,
+    private readonly route: ActivatedRoute,
+    private readonly errorHandler: ErrorHandlerService,
+    private readonly mt: MainToolbarService,
+    public readonly plantService: PlantService,
+    private readonly translate: TranslocoService,
+    private readonly dialog: MatDialog,
+    private readonly bottomSheet: MatBottomSheet,
   ) {}
 
   ngOnInit(): void {
@@ -117,18 +104,25 @@ export class PlantComponent {
           this.router.navigateByUrl('/');
 
           return EMPTY;
-        })
+        }),
       )
       .subscribe((plant: Plant) => {
-        this.processPlant(plant);
+        if (plant.condition) {
+          this.conditionColor = this.plantService.getConditionColor(
+            plant.condition,
+          );
+          this.conditionDesc = this.plantService.getConditionDesc(
+            plant.condition,
+          );
+        }
+
+        this.updateMainToolbar(plant);
       });
   }
 
-  processPlant(plant: Plant) {
+  updateMainToolbar(plant: Plant) {
     this.mt.setName(
-      plant.visibleName
-        ? plant.visibleName
-        : this.plantService.getVisibleName(plant)
+      plant.visibleName ?? this.plantService.getVisibleName(plant),
     );
     this.mt.setMenu([
       [

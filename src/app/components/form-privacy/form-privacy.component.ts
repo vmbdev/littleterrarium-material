@@ -19,9 +19,9 @@ import { FormBaseComponent } from '@components/form-base/form-base.component';
 })
 export class FormPrivacyComponent implements FormBaseComponent {
   @Input() currentPrivacy: boolean = true;
-  form = this.fb.group({ public: [true] });
+  public readonly form = this.fb.group({ public: [true] });
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private readonly fb: FormBuilder) {}
 
   ngOnInit(): void {
     this.form.patchValue({ public: this.currentPrivacy });

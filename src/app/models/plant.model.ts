@@ -33,27 +33,26 @@ export interface CoverPhoto {
   coverId: number | null;
 }
 
-export const Condition: { [key: string]: string } = {
-  BAD: 'On the line', // red
-  POOR: 'Holding on to life', // yellow
-  GOOD: 'Looks good', // grey
-  GREAT: 'Looks great', // light green
-  EXCELLENT: 'Prime example of its specie', // vibrant green
-};
-export type Condition = (typeof Condition)[keyof typeof Condition];
-
 export type Pot = {
   name: string;
   image: string;
 };
-// client-side only
-export const potChoices: { [key: string]: Pot } = {
-  LT_POT_TERRACOTTA: { name: 'Terracotta', image: 'assets/pot-terracotta.jpg' },
-  LT_POT_PLASTIC: { name: 'Plastic', image: 'assets/pot-plastic.jpg' },
-  LT_POT_CERAMIC: { name: 'Ceramic', image: 'assets/pot-ceramic.jpg' },
-  LT_POT_METAL: { name: 'Metal', image: 'assets/pot-metal.jpg' },
-  LT_POT_GLASS: { name: 'Glass', image: 'assets/pot-glass.jpg' },
-  LT_POT_WOOD: { name: 'Wood', image: 'assets/pot-wood.jpg' },
-  LT_POT_CONCRETE: { name: 'Concrete', image: 'assets/pot-concrete.jpg' },
-  LT_POT_OTHER: { name: 'Other', image: 'assets/pot-other.jpg' },
-};
+
+export enum Condition {
+  BAD = 'BAD',
+  POOR = 'POOR',
+  GOOD = 'GOOD',
+  GREAT = 'GREAT',
+  EXCELLENT = 'EXCELLENT',
+}
+
+export enum PotNames {
+  LT_POT_TERRACOTTA = 'LT_POT_TERRACOTTA',
+  LT_POT_PLASTIC = 'LT_POT_PLASTIC',
+  LT_POT_CERAMIC = 'LT_POT_CERAMIC',
+  LT_POT_METAL = 'LT_POT_METAL',
+  LT_POT_GLASS = 'LT_POT_GLASS',
+  LT_POT_WOOD = 'LT_POT_WOOD',
+  LT_POT_CONCRETE = 'LT_POT_CONCRETE',
+  LT_POT_OTHER = 'LT_POT_OTHER',
+}

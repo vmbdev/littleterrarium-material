@@ -34,12 +34,12 @@ import { Plant } from '@models/plant.model';
   templateUrl: './plant-edit-water.component.html',
 })
 export class PlantEditWaterComponent {
-  waterForm = this.fb.group({
+  protected readonly waterForm = this.fb.group({
     waterFreq: new FormControl<number | null>(null),
     waterLast: new FormControl<Date | null>(null),
   });
-  id?: number;
-  today = new Date();
+  private id?: number;
+  protected today = new Date();
 
   constructor(
     public plantService: PlantService,

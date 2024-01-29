@@ -1,43 +1,48 @@
-@if (plantService.plant$ | async; as plant) {
+@if (plant$ | async; as plant) {
   <mat-expansion-panel>
     <mat-expansion-panel-header>
       <mat-panel-title>
-        {{ 'plant-widget-soil.title' | transloco }}
+        {{ "plant-widget-soil.title" | transloco }}
       </mat-panel-title>
       <mat-panel-description class="expansion-panel-icon-right">
         <mat-icon>yard</mat-icon>
       </mat-panel-description>
     </mat-expansion-panel-header>
 
-    @if (plant.potType || plant.soil) {
-      @if (plant.potType) {
-        <p>
-          <span
-            [innerHTML]="'plant-widget-soil.pot' | transloco:{ material: getPotName() }">
-          </span>
+    @if (plant.potType) {
+      @if (potName) {
+        <span
+          *transloco="let t"
+          [innerHTML]="
+            'plant-widget-soil.potMaterial'
+              | transloco: { material: t(potName) }
+          "
+        >
+        </span>
+      }
 
-          @if (plant.potSize) {
-            ,
-            <span
-              [innerHTML]="'plant-widget-soil.potSize' | transloco: { size: plant.potSize | unit:'cm' }"
-            >
-            </span>
-
-          }
-
-        </p>
+      @if (plant.potSize) {
+        <span
+          [innerHTML]="
+            'plant-widget-soil.potSize'
+              | transloco: { size: plant.potSize | unit: 'cm' }
+          "
+        >
+        </span>
       }
 
       @if (plant.soil) {
         <p
-          [innerHTML]="'plant-widget-soil.composition' | transloco: { soil: plant.soil }">
-        </p>
+          [innerHTML]="
+            'plant-widget-soil.composition' | transloco: { soil: plant.soil }
+          "
+        ></p>
       }
     } @else {
       <p>{{ 'plant-widget-soil.noData' | transloco }}</p>
     }
 
-    @if (plantService.owned) {
+    @if (plantService.owned$ | async) {
       <mat-action-row>
         <button mat-button color="primary" (click)="openEdit()">
           {{ 'general.edit' | transloco }}

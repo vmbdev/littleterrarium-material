@@ -1,5 +1,6 @@
 import { Route } from '@angular/router';
-import { AuthGuard } from '@guards/auth.guard';
+
+import { SignedInGuard } from '@guards/signed-in.guard';
 
 export const PLANT_ROUTES: Route[] = [
   {
@@ -8,7 +9,7 @@ export const PLANT_ROUTES: Route[] = [
       import('./plant-all/plant-all.component').then(
         (m) => m.PlantAllComponent
       ),
-    canActivate: [AuthGuard],
+    canActivate: [SignedInGuard],
   },
   {
     path: 'create/:locationId',
@@ -16,7 +17,7 @@ export const PLANT_ROUTES: Route[] = [
       import('./plant-add/plant-add.component').then(
         (m) => m.PlantAddComponent
       ),
-    canActivate: [AuthGuard],
+    canActivate: [SignedInGuard],
   },
   {
     path: ':plantId',

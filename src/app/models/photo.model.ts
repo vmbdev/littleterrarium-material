@@ -1,4 +1,4 @@
-import { ImagePath } from "@services/image-path.service";
+import { ImagePath } from '@models/image-path.model';
 
 export interface Photo {
   id: number;

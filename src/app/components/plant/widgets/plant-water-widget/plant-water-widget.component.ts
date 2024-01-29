@@ -36,10 +36,10 @@ import { DaysAgoPipe } from '@pipes/days-ago/days-ago.pipe';
 })
 export class PlantWaterWidgetComponent {
   constructor(
-    public plantService: PlantService,
-    private bottomSheet: MatBottomSheet,
-    private dialog: MatDialog,
-    private translate: TranslocoService
+    public readonly plantService: PlantService,
+    private readonly bottomSheet: MatBottomSheet,
+    private readonly dialog: MatDialog,
+    private readonly translate: TranslocoService
   ) {}
 
   openEdit(): void {

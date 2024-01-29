@@ -16,9 +16,8 @@ export interface Location {
   pictures?: any;
 }
 
-export const Light: { [key: string]: string } = {
-  FULLSUN: 'FULLSUN',
-  PARTIALSUN: 'PARTIALSUN',
-  SHADE: 'SHADE',
-};
-export type Light = (typeof Light)[keyof typeof Light];
+export enum Light {
+  FULLSUN = 'FULLSUN',
+  PARTIALSUN = 'PARTIALSUN',
+  SHADE = 'SHADE',
+}

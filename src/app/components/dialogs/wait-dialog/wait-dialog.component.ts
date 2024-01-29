@@ -24,5 +24,7 @@ interface WaitDialogConfig {
   styleUrls: ['./wait-dialog.component.scss'],
 })
 export class WaitDialogComponent {
-  constructor(@Inject(MAT_DIALOG_DATA) public data: WaitDialogConfig) {}
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public readonly data: WaitDialogConfig,
+  ) {}
 }

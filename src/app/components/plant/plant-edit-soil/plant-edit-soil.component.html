@@ -18,8 +18,8 @@
             'pot-selector__material-selected': selectedPot === pot.id
           }"
         >
-          <img [src]="pot.image">
-          <p>{{ pot.name }}</p>
+          <img [src]="pot.asset">
+          <p>{{ pot.name | transloco }}</p>
         </div>
       </div>
     </div>

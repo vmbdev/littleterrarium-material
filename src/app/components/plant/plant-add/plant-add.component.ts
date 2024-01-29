@@ -53,7 +53,6 @@ import { Photo } from '@models/photo.model';
     TranslocoModule,
     StepperNavigationComponent,
     FileUploaderComponent,
-
     PlantFormNameComponent,
     PlantFormSpecieComponent,
     FormPrivacyComponent,
@@ -66,18 +65,18 @@ export class PlantAddComponent {
   specieComponent!: PlantFormSpecieComponent;
   @ViewChild(FormPrivacyComponent) privacyComponent!: FormPrivacyComponent;
 
-  locationId?: number;
-  photos: File[] = [];
+  protected locationId?: number;
+  private photos: File[] = [];
 
   constructor(
-    private locationService: LocationService,
-    private dialog: MatDialog,
-    private route: ActivatedRoute,
-    private translate: TranslocoService,
-    private router: Router,
-    private plantService: PlantService,
-    private photoService: PhotoService,
-    private errorHandler: ErrorHandlerService
+    private readonly locationService: LocationService,
+    private readonly dialog: MatDialog,
+    private readonly route: ActivatedRoute,
+    private readonly translate: TranslocoService,
+    private readonly router: Router,
+    private readonly plantService: PlantService,
+    private readonly photoService: PhotoService,
+    private readonly errorHandler: ErrorHandlerService
   ) {}
 
   ngOnInit(): void {

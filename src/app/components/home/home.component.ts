@@ -22,9 +22,9 @@ import { MainToolbarService } from '@services/main-toolbar.service';
 })
 export class HomeComponent {
   constructor(
-    public auth: AuthService,
-    private mt: MainToolbarService,
-    private translate: TranslocoService
+    public readonly auth: AuthService,
+    private readonly mt: MainToolbarService,
+    private readonly translate: TranslocoService
   ) {}
 
   ngOnInit(): void {

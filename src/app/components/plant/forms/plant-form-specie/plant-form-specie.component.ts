@@ -30,11 +30,16 @@ import { Specie } from '@models/specie.model';
 })
 export class PlantFormSpecieComponent implements FormBaseComponent {
   @Input() currentSpecie?: number | null;
-  form = this.fb.group({ specieId: new FormControl<number | null>(null) });
-  results$ = new BehaviorSubject<Specie[]>([]);
-  currentSpecieName?: string;
+  public readonly form = this.fb.group({
+    specieId: new FormControl<number | null>(null),
+  });
+  protected results$ = new BehaviorSubject<Specie[]>([]);
+  protected currentSpecieName?: string;
 
-  constructor(private api: ApiService, private fb: FormBuilder) {}
+  constructor(
+    private readonly api: ApiService,
+    private readonly fb: FormBuilder,
+  ) {}
 
   ngOnInit(): void {
     if (this.currentSpecie) {

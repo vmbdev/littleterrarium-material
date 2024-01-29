@@ -7,6 +7,9 @@
 - New Camera Service to capture photos and pick them from the gallery.
 - New Filesystem Service to manage the files created by the Camera and Share
 services.
+- New PasswordService to manage API calls related to the user password.
+- WebP support detector: if the browser doesn't support WebP and the backend
+is set up to also send traditional image formats, images will use the later.
 
 ### Fixes
 
@@ -19,8 +22,16 @@ wasn't stored previously.
 
 ### Changes
 
-- Visual update.
+- Visual update, including a new logo.
 - Updated tests.
+- Updated to Angular 17.1.0.
+- Improved markup semantics.
+- Improved methods and properties protection.
+- Updated translations.
+- Reduced function calls from templates.
+- Cleanup of theme related variables.
+- Cleanup of many observables in services.
+- Cleanup of many models and enums that were wrongly placed and defined.
 
 ## [1.0.3] - 2023-12-23
 

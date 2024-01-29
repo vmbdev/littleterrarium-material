@@ -5,12 +5,8 @@ import { MatRippleModule } from '@angular/material/core';
 import { MatListModule } from '@angular/material/list';
 import { TranslocoService, TranslocoModule } from '@ngneat/transloco';
 
-import {
-  PlantButtonWaterComponent
-} from '@components/plant/buttons/plant-button-water/plant-button-water.component';
-import {
-  PlantButtonFertilizeComponent
-} from '@components/plant/buttons/plant-button-fertilize/plant-button-fertilize.component';
+import { PlantButtonWaterComponent } from '@components/plant/buttons/plant-button-water/plant-button-water.component';
+import { PlantButtonFertilizeComponent } from '@components/plant/buttons/plant-button-fertilize/plant-button-fertilize.component';
 import { PlantService } from '@services/plant.service';
 import { MainToolbarService } from '@services/main-toolbar.service';
 import { TaskService } from '@services/task.service';
@@ -32,10 +28,10 @@ import { TaskService } from '@services/task.service';
 })
 export class TaskListComponent {
   constructor(
-    public plantService: PlantService,
-    public taskService: TaskService,
-    private mt: MainToolbarService,
-    private translate: TranslocoService
+    public readonly plantService: PlantService,
+    public readonly taskService: TaskService,
+    private readonly mt: MainToolbarService,
+    private readonly translate: TranslocoService,
   ) {}
 
   ngOnInit(): void {

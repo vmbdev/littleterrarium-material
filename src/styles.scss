@@ -45,12 +45,13 @@ mat-card {
 
 .icon-button-toggle {
   width: 98%;
+  min-height: 4.5rem;
 
   &__option {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 20px 0 5px 0;
+    padding: 1.5rem 0 0.3rem 0;
   }
 
   &__selection {

@@ -1,5 +1,5 @@
 <form [formGroup]="signinForm" (ngSubmit)="submit()">
-  <div class="user-form">
+  <section class="user-form">
     <h1>{{ 'signin.homepageTitle' | transloco }}</h1>
     <p [innerHTML]="'signin.homepageMsg' | transloco"></p>
 
@@ -54,5 +54,5 @@
       routerLink="/register"
       [innerHTML]="'signin.createAccount' | transloco"
     ></button>
-  </div>
+  </section>
 </form>

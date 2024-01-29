@@ -7,31 +7,19 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import {
   MatBottomSheet,
-  MatBottomSheetModule
+  MatBottomSheetModule,
 } from '@angular/material/bottom-sheet';
 import { catchError, EMPTY, finalize, Subscription, switchMap } from 'rxjs';
 import { TranslocoService, TranslocoModule } from '@ngneat/transloco';
 import { DateTime } from 'luxon';
 
-import {
-  InfoBoxComponent
-} from "@components/info-box/info-box/info-box.component";
-import {
-  PropertyComponent
-} from "@components/info-box/property/property.component";
-import {
-  ToggleOptionComponent
-} from '@components/toggle-option/toggle-option.component';
-import {
-  PhotoEditComponent
-} from '@components/photo/photo-edit/photo-edit.component';
+import { InfoBoxComponent } from '@components/info-box/info-box/info-box.component';
+import { PropertyComponent } from '@components/info-box/property/property.component';
+import { ToggleOptionComponent } from '@components/toggle-option/toggle-option.component';
+import { PhotoEditComponent } from '@components/photo/photo-edit/photo-edit.component';
 import { ViewerComponent } from '@components/viewer/viewer.component';
-import {
-  WaitDialogComponent
-} from '@components/dialogs/wait-dialog/wait-dialog.component';
-import {
-  ConfirmDialogComponent
-} from '@components/dialogs/confirm-dialog/confirm-dialog.component';
+import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog.component';
+import { ConfirmDialogComponent } from '@components/dialogs/confirm-dialog/confirm-dialog.component';
 import { PhotoService } from '@services/photo.service';
 import { PlantService } from '@services/plant.service';
 import { MainToolbarService } from '@services/main-toolbar.service';
@@ -40,7 +28,7 @@ import { ImagePathService } from '@services/image-path.service';
 import { ViewerService } from '@services/viewer.service';
 import { Plant } from '@models/plant.model';
 import { NavigationData, Photo } from '@models/photo.model';
-import { DaysAgoPipe } from "@pipes/days-ago/days-ago.pipe";
+import { DaysAgoPipe } from '@pipes/days-ago/days-ago.pipe';
 import { ShareService } from '@services/share.service';
 
 @Component({
@@ -64,16 +52,16 @@ import { ShareService } from '@services/share.service';
   ],
 })
 export class PhotoComponent {
-  id?: number;
-  confirmDelete: boolean = false;
-  enablePhotoEditing: boolean = false;
-  navigation: NavigationData = {};
-  plantCoverId?: number;
-  currentImageFull?: string | null;
-  coverChecked: boolean = false;
-  touchEvents: any;
+  private id?: number;
+  protected confirmDelete: boolean = false;
+  protected enablePhotoEditing: boolean = false;
+  private navigation: NavigationData = {};
+  protected plantCoverId?: number;
+  protected currentImageFull?: string | null;
+  protected coverChecked: boolean = false;
+  protected touchEvents: any;
 
-  routeDetect$?: Subscription;
+  private routeDetect$?: Subscription;
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -155,12 +143,12 @@ export class PhotoComponent {
           }),
           switchMap((navigation: NavigationData) => {
             this.navigation = navigation;
-            const photo = this.photoService.photo$.getValue();
+            const photo = this.photoService.current();
 
             if (photo?.plantId) {
               return this.plantService.getCover(photo.plantId);
             } else return EMPTY;
-          })
+          }),
         )
         .subscribe((cover: any) => {
           this.plantCoverId = cover.coverId;
@@ -226,7 +214,8 @@ export class PhotoComponent {
   }
 
   delete(): void {
-    const photo = this.photoService.photo$.getValue();
+    const photo = this.photoService.current();
+
     if (photo) {
       this.photoService.delete(photo.id).subscribe(() => {
         this.router.navigate(['/plant', photo.plantId]);
@@ -269,7 +258,7 @@ export class PhotoComponent {
   }
 
   updateCoverPhoto(setCover: boolean): void {
-    const photo = this.photoService.photo$.getValue();
+    const photo = this.photoService.current();
 
     if (photo) {
       if (!setCover && photo.id === this.plantCoverId) {

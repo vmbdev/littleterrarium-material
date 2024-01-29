@@ -28,23 +28,30 @@
         <h2 matListItemLine>
           {{
             'tasks.remaining'
-              | transloco: { taskNumber: taskService.getCount() }
+              | transloco: { taskNumber: (taskService.count$ | async) }
           }}
         </h2>
       </mat-list-item>
 
-      <mat-list-item [routerLink]="getUserLink()">
-        <div matListItemIcon>
-          <ltm-user-box />
-        </div>
-        <h1 matListItemTitle>
-          @if (auth.user$ | async; as user) {
+      @if (auth.user$ | async; as user) {
+        <mat-list-item routerLink="/user">
+          <div matListItemIcon>
+            <ltm-user-box />
+          </div>
+          <h1 matListItemTitle>
             {{ user.username }}
-          } @else {
+          </h1>
+        </mat-list-item>
+      } @else {
+        <mat-list-item routerLink="/signin">
+          <div matListItemIcon>
+            <ltm-user-box />
+          </div>
+          <h1 matListItemTitle>
             {{ 'general.signin' | transloco }}
-          }
-        </h1>
-      </mat-list-item>
+          </h1>
+        </mat-list-item>
+      }
     </mat-nav-list>
     <ltm-lang-switcher />
     <ltm-theme-switcher />

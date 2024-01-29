@@ -7,26 +7,16 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import {
   MatBottomSheetRef,
-  MAT_BOTTOM_SHEET_DATA
+  MAT_BOTTOM_SHEET_DATA,
 } from '@angular/material/bottom-sheet';
 import { TranslocoModule } from '@ngneat/transloco';
 
-import {
-  FileUploaderComponent
-} from '@components/file-uploader/file-uploader.component';
-import {
-  LocationFormLightComponent
-} from '@components/location/forms/location-form-light/location-form-light.component';
-import {
-  LocationFormNameComponent
-} from '@components/location/forms/location-form-name/location-form-name.component';
-import {
-  LocationUpsertBaseComponent
-} from '@components/location/location-upsert-base/location-upsert-base.component';
+import { FileUploaderComponent } from '@components/file-uploader/file-uploader.component';
+import { LocationFormLightComponent } from '@components/location/forms/location-form-light/location-form-light.component';
+import { LocationFormNameComponent } from '@components/location/forms/location-form-name/location-form-name.component';
+import { LocationUpsertBaseComponent } from '@components/location/location-upsert-base/location-upsert-base.component';
 import { EditPageComponent } from '@components/edit-page/edit-page.component';
-import {
-  FormPrivacyComponent
-} from '@components/form-privacy/form-privacy.component';
+import { FormPrivacyComponent } from '@components/form-privacy/form-privacy.component';
 import { Location } from '@models/location.model';
 
 @Component({
@@ -47,15 +37,14 @@ import { Location } from '@models/location.model';
   templateUrl: './location-edit.component.html',
 })
 export class LocationEditComponent extends LocationUpsertBaseComponent {
-  location$?: Observable<Location>;
-  returnedLocation?: Location;
+  protected location$?: Observable<Location>;
 
   constructor(
-    private injector: Injector,
-    @Optional() private bottomSheetRef: MatBottomSheetRef,
+    private readonly injector: Injector,
+    @Optional() private readonly bottomSheetRef: MatBottomSheetRef,
     @Optional()
     @Inject(MAT_BOTTOM_SHEET_DATA)
-    public editLocation: { id: number }
+    public readonly editLocation: { id: number },
   ) {
     super(injector);
   }
@@ -87,7 +76,7 @@ export class LocationEditComponent extends LocationUpsertBaseComponent {
           catchError((error: HttpErrorResponse) => {
             if (error.error?.msg === 'IMG_NOT_VALID') {
               this.errorHandler.push(
-                this.translate.translate('errors.invalidImg')
+                this.translate.translate('errors.invalidImg'),
               );
             }
 
@@ -95,7 +84,7 @@ export class LocationEditComponent extends LocationUpsertBaseComponent {
           }),
           finalize(() => {
             ud.close();
-          })
+          }),
         )
         .subscribe((location: Location) => {
           if (this.bottomSheetRef) this.bottomSheetRef.dismiss(location);

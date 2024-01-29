@@ -1,5 +1,6 @@
 import { Route } from '@angular/router';
-import { AuthGuard } from '@guards/auth.guard';
+
+import { SignedInGuard } from '@guards/signed-in.guard';
 
 export const PHOTO_ROUTES: Route[] = [
   {
@@ -8,7 +9,7 @@ export const PHOTO_ROUTES: Route[] = [
       import('./photo-add/photo-add.component').then(
         (m) => m.PhotoAddComponent
       ),
-    canActivate: [AuthGuard],
+    canActivate: [SignedInGuard],
   },
   {
     path: ':photoId',

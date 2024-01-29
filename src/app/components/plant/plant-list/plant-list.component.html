@@ -1,20 +1,20 @@
 @if (smallView) {
   <mat-list>
-    @for (plant of list$ | async; track plant.id) {
+    @for (item of list$ | async; track item.id) {
       <mat-list-item>
         <img
           matListItemAvatar
           class="plant-list__avatar"
-          [src]="getImgUrl(plant)"
-          [routerLink]="['/plant', plant.id]"
+          [src]="item.cover"
+          [routerLink]="['/plant', item.id]"
         >
-        <span matListItemTitle [routerLink]="['/plant', plant.id]">
-          {{ getName(plant) }}
+        <span matListItemTitle [routerLink]="['/plant', item.id]">
+          {{ item.name }}
         </span>
         <div matListItemIcon class="plant-list__menu">
           <ng-container
             [ngTemplateOutlet]="plantMenu"
-            [ngTemplateOutletContext]="{plant:plant}"
+            [ngTemplateOutletContext]="{ item }"
           >
           </ng-container>
         </div>
@@ -24,22 +24,22 @@
 } @else {
   <mat-grid-list cols="2" rowHeight="1:1.2" gutterSize="6">
 
-    @for (plant of list$ | async; track plant.id) {
+    @for (item of list$ | async; track item.id) {
       <mat-grid-tile>
         <mat-card matRipple class="plant-card">
           <img
             mat-card-image
             class="plant-card__image"
-            [src]="getImgUrl(plant)"
-            [routerLink]="['/plant', plant.id]"
+            [src]="item.cover"
+            [routerLink]="['/plant', item.id]"
           >
           <mat-card-title class="plant-card__title">
-            {{ getName(plant) }}
+            {{ item.name }}
           </mat-card-title>
           <div class="plant-card__menu">
             <ng-container
               [ngTemplateOutlet]="plantMenu"
-              [ngTemplateOutletContext]="{ plant: plant }"
+              [ngTemplateOutletContext]="{ item }"
             >
             </ng-container>
           </div>
@@ -50,18 +50,18 @@
   </mat-grid-list>
 }
 
-<ng-template let-plant="plant" #plantMenu>
+<ng-template let-item="item" #plantMenu>
   <button mat-icon-button [matMenuTriggerFor]="menu">
     <mat-icon>more_vert</mat-icon>
   </button>
   <mat-menu #menu="matMenu">
-    <ltm-plant-menu-water [id]="plant.id" />
-    <ltm-plant-menu-fert [id]="plant.id" />
-    <button mat-menu-item (click)="openEdit(plant.id)">
+    <ltm-plant-menu-water [id]="item.id" />
+    <ltm-plant-menu-fert [id]="item.id" />
+    <button mat-menu-item (click)="openEdit(item.id)">
       <mat-icon>edit_square</mat-icon>
       <span>{{ 'general.edit' | transloco }}</span>
     </button>
-    <button mat-menu-item (click)="openRemoveDialog(getName(plant), plant.id)">
+    <button mat-menu-item (click)="openRemoveDialog(item.name, item.id)">
       <mat-icon>delete</mat-icon>
       <span>{{ 'general.delete' | transloco }}</span>
     </button>

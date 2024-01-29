@@ -8,28 +8,22 @@ import { MatRippleModule } from '@angular/material/core';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import {
   MatBottomSheet,
-  MatBottomSheetModule
+  MatBottomSheetModule,
 } from '@angular/material/bottom-sheet';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslocoService, TranslocoModule } from '@ngneat/transloco';
 
 import { FabComponent } from '@components/fab/fab.component';
-import {
-  ConfirmDialogComponent
-} from '@components/dialogs/confirm-dialog/confirm-dialog.component';
-import {
-  WaitDialogComponent
-} from '@components/dialogs/wait-dialog/wait-dialog.component';
-import {
-  LocationEditComponent
-} from '@components/location/location-edit/location-edit.component';
+import { ConfirmDialogComponent } from '@components/dialogs/confirm-dialog/confirm-dialog.component';
+import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog.component';
+import { LocationEditComponent } from '@components/location/location-edit/location-edit.component';
 import { LocationService } from '@services/location.service';
 import { ErrorHandlerService } from '@services/error-handler.service';
 import { AuthService } from '@services/auth.service';
 import { LocationGetConfig } from '@services/api.service';
-import { ImagePath, ImagePathService } from '@services/image-path.service';
 import { User } from '@models/user.model';
 import { Location } from '@models/location.model';
+import { ImagePathPipe } from '@pipes/image-path/image-path.pipe';
 
 @Component({
   selector: 'ltm-location-list',
@@ -46,24 +40,24 @@ import { Location } from '@models/location.model';
     TranslocoModule,
     FabComponent,
     WaitDialogComponent,
+    ImagePathPipe,
   ],
   templateUrl: './location-list.component.html',
   styleUrls: ['./location-list.component.scss'],
 })
 export class LocationListComponent {
   @Input() user?: User;
-  owned: boolean = true;
-  locations$ = new BehaviorSubject<Location[]>([]);
+  protected owned: boolean = true;
+  protected locations$ = new BehaviorSubject<Location[]>([]);
 
   constructor(
-    private auth: AuthService,
-    private locationService: LocationService,
-    private imagePath: ImagePathService,
-    private router: Router,
-    private errorHandler: ErrorHandlerService,
-    private translate: TranslocoService,
-    private dialog: MatDialog,
-    private bottomSheet: MatBottomSheet
+    private readonly auth: AuthService,
+    private readonly locationService: LocationService,
+    private readonly router: Router,
+    private readonly errorHandler: ErrorHandlerService,
+    private readonly translate: TranslocoService,
+    private readonly dialog: MatDialog,
+    private readonly bottomSheet: MatBottomSheet,
   ) {}
 
   ngOnInit(): void {
@@ -85,7 +79,7 @@ export class LocationListComponent {
     const obs = this.locationService.getMany(options).pipe(
       finalize(() => {
         wd.close();
-      })
+      }),
     );
 
     obs.subscribe((res) => {
@@ -114,10 +108,6 @@ export class LocationListComponent {
 
   selectLocation(id: number) {
     this.router.navigate(['location', id]);
-  }
-
-  getHeaderPic(images: ImagePath): string | null {
-    return this.imagePath.get(images, 'thumb');
   }
 
   openRemoveDialog(name: string, id: number) {
@@ -149,9 +139,11 @@ export class LocationListComponent {
       },
       error: (err) => {
         if (err.msg === 'LOCATION_NOT_VALID') {
-          this.translate.selectTranslate('location.invalid').subscribe((res: string) => {
-            this.errorHandler.push(res);
-          });
+          this.translate
+            .selectTranslate('location.invalid')
+            .subscribe((res: string) => {
+              this.errorHandler.push(res);
+            });
         }
       },
     });

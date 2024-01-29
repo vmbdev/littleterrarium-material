@@ -10,21 +10,22 @@ import {
 import { AuthService } from '@services/auth.service';
 import { ImagePathService } from '@services/image-path.service';
 import { Photo } from '@models/photo.model';
-import { Condition, Plant } from '@models/plant.model';
+import { Condition, Plant, Pot } from '@models/plant.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PlantService {
-  plant = new BehaviorSubject<Plant | null>(null);
-  plant$ = this.plant.asObservable();
-  owned: boolean = false;
+  private plant = new BehaviorSubject<Plant | null>(null);
+  public readonly plant$ = this.plant.asObservable();
+  private owned = new BehaviorSubject<boolean>(false);
+  public readonly owned$ = this.owned.asObservable();
 
   constructor(
-    private api: ApiService,
-    private auth: AuthService,
-    private imagePath: ImagePathService,
-    private translate: TranslocoService
+    private readonly api: ApiService,
+    private readonly auth: AuthService,
+    private readonly imagePath: ImagePathService,
+    private readonly translate: TranslocoService
   ) {}
 
   create(plant: Plant): Observable<Plant> {
@@ -36,7 +37,7 @@ export class PlantService {
 
     return this.api.getPlant(id, options).pipe(
       map((plant: Plant) => {
-        this.owned = this.auth.getUser()?.id === plant.ownerId;
+        this.owned.next(this.auth.getUser()?.id === plant.ownerId);
         plant.visibleName = this.getVisibleName(plant);
 
         this.plant.next(plant);
@@ -167,37 +168,125 @@ export class PlantService {
         workingPlant.photos[0].images
       ) {
         image = this.imagePath.get(workingPlant.photos[0].images, 'thumb');
-      } else image = 'assets/nopic.png';
+      } else image = '';
 
       return image;
-    } else return 'assets/nopic.png';
+    } else return '';
   }
 
-  getConditionColor(condition: Condition): string {
-    let color: string;
+  getPotInfo(key: string): Pot {
+    let pot: Pot;
+
+    switch (key) {
+      case 'LT_POT_TERRACOTTA': {
+        pot = {
+          name: 'potMaterial.terracotta',
+          image: 'assets/pot-terracotta.jpg',
+        };
+        break;
+      }
+      case 'LT_POT_PLASTIC': {
+        pot = {
+          name: 'potMaterial.plastic',
+          image: 'assets/pot-plastic.jpg',
+        };
+        break;
+      }
+      case 'LT_POT_CERAMIC': {
+        pot = {
+          name: 'potMaterial.ceramic',
+          image: 'assets/pot-ceramic.jpg',
+        };
+        break;
+      }
+      case 'LT_POT_METAL': {
+        pot = {
+          name: 'potMaterial.metal',
+          image: 'assets/pot-metal.jpg',
+        };
+        break;
+      }
+      case 'LT_POT_GLASS': {
+        pot = {
+          name: 'potMaterial.glass',
+          image: 'assets/pot-glass.jpg',
+        };
+        break;
+      }
+      case 'LT_POT_WOOD': {
+        pot = {
+          name: 'potMaterial.wood',
+          image: 'assets/pot-wood.jpg',
+        };
+        break;
+      }
+      case 'LT_POT_CONCRETE': {
+        pot = {
+          name: 'potMaterial.concrete',
+          image: 'assets/pot-concrete.jpg',
+        };
+        break;
+      }
+      default: {
+        pot = {
+          name: 'potMaterial.other',
+          image: 'assets/pot-other.jpg',
+        };
+        break;
+      }
+    }
+
+    return pot;
+  }
+
+  getConditionDesc(condition: Condition | string): string {
+    let desc: string;
 
     switch (condition) {
       case 'BAD': {
-        color = 'red';
+        desc = 'condition.bad';
         break;
       }
       case 'POOR': {
-        color = 'yellow';
-        break;
-      }
-      case 'GOOD': {
-        color = 'grey';
+        desc = 'condition.poor';
         break;
       }
       case 'GREAT': {
+        desc = 'condition.great';
+        break;
+      }
+      case 'EXCELLENT': {
+        desc = 'condition.excellent';
+        break;
+      }
+      default:
+      case 'GOOD': {
+        desc = 'condition.good';
+        break;
+      }
+    }
+    return desc;
+  }
+
+  getConditionColor(condition: Condition | string): string {
+    let color: string;
+
+    switch (condition) {
+      case 'BAD':
+        color = 'red';
+        break;
+      case 'POOR':
+        color = 'yellow';
+        break;
+      case 'GREAT':
         color = 'greenyellow';
         break;
-      }
       case 'EXCELLENT':
-      default: {
         color = 'green';
         break;
-      }
+      default:
+        color = 'grey';
+        break;
     }
 
     return color;

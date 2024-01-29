@@ -8,9 +8,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterModule } from '@angular/router';
 import { TranslocoModule } from '@ngneat/transloco';
 
-import {
-  SearchComponent
-} from '@components/navigation/search/search.component';
+import { SearchComponent } from '@components/navigation/search/search.component';
 import { MainToolbarService } from '@services/main-toolbar.service';
 import { SearchService } from '@services/search.service';
 
@@ -33,9 +31,9 @@ import { SearchService } from '@services/search.service';
 })
 export class MainToolbarComponent {
   constructor(
-    public mt: MainToolbarService,
-    public search: SearchService,
-    private location: Location
+    public readonly mt: MainToolbarService,
+    public readonly search: SearchService,
+    private readonly location: Location,
   ) {}
 
   goBack(): void {

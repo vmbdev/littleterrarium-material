@@ -9,6 +9,11 @@ import { FormBaseComponent } from '@components/form-base/form-base.component';
 import { Light } from '@models/location.model';
 import { LocationService } from '@services/location.service';
 
+type LightOptionType = {
+  value: string;
+  asset: string;
+};
+
 @Component({
   selector: 'ltm-location-form-light',
   standalone: true,
@@ -22,16 +27,32 @@ import { LocationService } from '@services/location.service';
   templateUrl: './location-form-light.component.html',
 })
 export class LocationFormLightComponent implements FormBaseComponent {
-  @Input() currentLight: Light = 'FULLSUN';
-  form = this.fb.group({ light: ['FULLSUN', Validators.required] });
-  lightOptions = Light;
+  @Input() currentLight: string = 'FULLSUN';
+  public readonly form = this.fb.group({
+    light: ['FULLSUN', Validators.required],
+  });
+  protected lightOptions: LightOptionType[] = [];
 
   constructor(
-    private fb: FormBuilder,
-    public locationService: LocationService
+    private readonly fb: FormBuilder,
+    public readonly locationService: LocationService,
   ) {}
 
   ngOnInit(): void {
+    this.lightOptions = this.createLightOptions();
     this.form.patchValue({ light: this.currentLight });
+  }
+
+  createLightOptions(): LightOptionType[] {
+    const opts: LightOptionType[] = [];
+
+    for (const option of Object.keys(Light)) {
+      opts.push({
+        value: option,
+        asset: this.locationService.getLightAsset(option),
+      });
+    }
+
+    return opts;
   }
 }

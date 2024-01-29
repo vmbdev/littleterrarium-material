@@ -5,7 +5,7 @@ import { ToastrService } from 'ngx-toastr';
   providedIn: 'root',
 })
 export class ErrorHandlerService {
-  constructor(private toastr: ToastrService) {}
+  constructor(private readonly toastr: ToastrService) {}
 
   push(error: string) {
     this.toastr.error(error, undefined, {

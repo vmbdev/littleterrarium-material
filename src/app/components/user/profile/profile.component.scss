@@ -4,7 +4,7 @@
     flex-direction: column;
     align-items: center;
 
-    &-small {
+    &--small {
       flex-direction: row;
       justify-content: center;
     }
@@ -15,10 +15,14 @@
     max-width: 128px;
     height: auto;
 
-    &-small {
+    &--small {
       max-width: 64px;
       margin-right: 15px;
     }
+  }
+
+  &__userinfo {
+    text-align: center;
   }
 
   &__username {

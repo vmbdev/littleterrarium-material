@@ -7,36 +7,20 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
 import {
   MatBottomSheetRef,
-  MAT_BOTTOM_SHEET_DATA
+  MAT_BOTTOM_SHEET_DATA,
 } from '@angular/material/bottom-sheet';
 import { finalize, Observable } from 'rxjs';
 import { TranslocoService, TranslocoModule } from '@ngneat/transloco';
 
-import {
-  WaitDialogComponent
-} from '@components/dialogs/wait-dialog/wait-dialog.component';
-import {
-  FileUploaderComponent
-} from '@components/file-uploader/file-uploader.component';
-import {
-  PlantFormNameComponent
-} from '@components/plant/forms/plant-form-name/plant-form-name.component';
-import {
-  PlantFormSpecieComponent
-} from '@components/plant/forms/plant-form-specie/plant-form-specie.component';
-import {
-  PlantFormDescriptionComponent
-} from '@components/plant/forms/plant-form-description/plant-form-description.component';
-import {
-  PlantFormConditionComponent
-} from '@components/plant/forms/plant-form-condition/plant-form-condition.component';
-import {
-  PlantFormLocationComponent
-} from '@components/plant/forms/plant-form-location/plant-form-location.component';
+import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog.component';
+import { FileUploaderComponent } from '@components/file-uploader/file-uploader.component';
+import { PlantFormNameComponent } from '@components/plant/forms/plant-form-name/plant-form-name.component';
+import { PlantFormSpecieComponent } from '@components/plant/forms/plant-form-specie/plant-form-specie.component';
+import { PlantFormDescriptionComponent } from '@components/plant/forms/plant-form-description/plant-form-description.component';
+import { PlantFormConditionComponent } from '@components/plant/forms/plant-form-condition/plant-form-condition.component';
+import { PlantFormLocationComponent } from '@components/plant/forms/plant-form-location/plant-form-location.component';
 import { EditPageComponent } from '@components/edit-page/edit-page.component';
-import {
-  FormPrivacyComponent
-} from '@components/form-privacy/form-privacy.component';
+import { FormPrivacyComponent } from '@components/form-privacy/form-privacy.component';
 import { PlantGetConfig } from '@services/api.service';
 import { ErrorHandlerService } from '@services/error-handler.service';
 import { PlantService } from '@services/plant.service';
@@ -83,25 +67,26 @@ export class PlantEditComponent {
   @ViewChild(PlantFormLocationComponent)
   locationComponent!: PlantFormLocationComponent;
 
-  locations: Location[] = [];
-  returnedPlant?: Plant;
-  plant$?: Observable<Plant>;
+  private returnedPlant?: Plant;
+  protected plant$?: Observable<Plant>;
 
-  forms: FormGroup[] = [];
+  private forms: FormGroup[] = [];
 
   constructor(
-    private dialog: MatDialog,
-    private translate: TranslocoService,
-    public plantService: PlantService,
-    private errorHandler: ErrorHandlerService,
-    @Optional() private bottomSheetRef: MatBottomSheetRef,
-    @Optional() @Inject(MAT_BOTTOM_SHEET_DATA) public editPlant: PlantEditConfig
+    private readonly dialog: MatDialog,
+    private readonly translate: TranslocoService,
+    public readonly plantService: PlantService,
+    private readonly errorHandler: ErrorHandlerService,
+    @Optional() private readonly bottomSheetRef: MatBottomSheetRef,
+    @Optional()
+    @Inject(MAT_BOTTOM_SHEET_DATA)
+    private readonly editPlant: PlantEditConfig,
   ) {}
 
   ngOnInit(): void {
     this.plant$ = this.plantService.get(
       this.editPlant.id,
-      this.editPlant.config
+      this.editPlant.config,
     );
   }
 
@@ -159,7 +144,7 @@ export class PlantEditComponent {
       .pipe(
         finalize(() => {
           wd.close();
-        })
+        }),
       )
       .subscribe((updatedPlant: Plant) => {
         const currentPlant = this.plantService.current();

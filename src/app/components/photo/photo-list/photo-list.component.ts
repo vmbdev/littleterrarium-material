@@ -1,39 +1,30 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { BehaviorSubject } from 'rxjs';
+import { Observable } from 'rxjs';
 
-import { ImagePath, ImagePathService } from '@services/image-path.service';
 import { PlantService } from '@services/plant.service';
 import { Photo } from '@models/photo.model';
-import { SortPipe } from "@pipes/sort/sort.pipe";
+import { SortPipe } from '@pipes/sort/sort.pipe';
+import { ImagePathPipe } from '@pipes/image-path/image-path.pipe';
 
 @Component({
   selector: 'ltm-photo-list',
   standalone: true,
   templateUrl: './photo-list.component.html',
   styleUrls: ['./photo-list.component.scss'],
-  imports: [CommonModule, RouterModule, SortPipe],
+  imports: [CommonModule, RouterModule, SortPipe, ImagePathPipe],
 })
 export class PhotoListComponent {
   @Input({ required: true }) plantId?: number;
   @Input() owned: boolean = true;
-  list$ = new BehaviorSubject<Photo[]>([]);
+  protected list$?: Observable<Photo[]>;
 
-  constructor(
-    private imagePath: ImagePathService,
-    private plantService: PlantService
-  ) {}
+  constructor(private readonly plantService: PlantService) {}
 
   ngOnInit(): void {
     if (this.plantId) {
-      this.plantService.getPhotos(this.plantId).subscribe((photos: Photo[]) => {
-        this.list$.next(photos);
-      });
+      this.list$ = this.plantService.getPhotos(this.plantId);
     }
-  }
-
-  getThumb(path: ImagePath): string | null {
-    return this.imagePath.get(path, 'thumb');
   }
 }

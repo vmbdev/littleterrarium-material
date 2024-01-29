@@ -1,9 +1,11 @@
-<h1 mat-dialog-title>{{ data.title }}</h1>
-<div mat-dialog-content data-testid="questions">
-  @for (q of data.question; track q) {
-    <p [innerHTML]="q"></p>
-  }
-</div>
+<section>
+  <h1 mat-dialog-title>{{ data.title }}</h1>
+  <div mat-dialog-content data-testid="questions">
+    @for (q of data.question; track q) {
+      <p [innerHTML]="q"></p>
+    }
+  </div>
+</section>
 <div mat-dialog-actions align="center">
   <button mat-raised-button mat-dialog-close cdkFocusInitial>
     {{ 'general.cancel' | transloco }}

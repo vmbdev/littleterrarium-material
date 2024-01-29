@@ -15,8 +15,10 @@ export interface SearchReceipt {
   providedIn: 'root',
 })
 export class SearchService {
-  enabled$ = new BehaviorSubject<boolean>(true);
-  text$ = new BehaviorSubject<SearchReceipt>({ mode: 'Begin', value: null });
+  private readonly enabled = new BehaviorSubject<boolean>(true);
+  public readonly enabled$ = this.enabled.asObservable();
+  private readonly text = new BehaviorSubject<SearchReceipt>({ mode: 'Begin', value: null });
+  public readonly text$ = this.text.asObservable();
 
   constructor(private router: Router) {
     this.router.events
@@ -26,29 +28,29 @@ export class SearchService {
         )
       )
       .subscribe(() => {
-        this.enabled$.next(false);
-        this.text$.next({ mode: 'Begin', value: null });
+        this.enabled.next(false);
+        this.text.next({ mode: 'Begin', value: null });
       });
   }
 
   enable(val: boolean) {
-    this.enabled$.next(val);
+    this.enabled.next(val);
   }
 
   toggle(): void {
-    const val = this.enabled$.getValue();
-    this.enabled$.next(!val);
+    const val = this.enabled.getValue();
+    this.enabled.next(!val);
   }
 
   setText(val: string): void {
-    const prev = this.text$.getValue();
+    const prev = this.text.getValue();
 
     if (prev.value !== val) {
-      this.text$.next({ mode: 'UserInput', value: val });
+      this.text.next({ mode: 'UserInput', value: val });
     }
   }
 
   clear(): void {
-    this.text$.next({ mode: 'UserInput', value: null });
+    this.text.next({ mode: 'UserInput', value: null });
   }
 }

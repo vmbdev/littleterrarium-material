@@ -5,7 +5,7 @@ import {
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
-  Validators
+  Validators,
 } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -15,9 +15,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { TranslocoService, TranslocoModule } from '@ngneat/transloco';
 import { finalize } from 'rxjs';
 
-import {
-  WaitDialogComponent
-} from '@components/dialogs/wait-dialog/wait-dialog.component';
+import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog.component';
 import { AuthService } from '@services/auth.service';
 
 @Component({
@@ -38,19 +36,19 @@ import { AuthService } from '@services/auth.service';
   templateUrl: './signin.component.html',
 })
 export class SigninComponent {
-  signinForm: FormGroup = this.fb.group({
+  protected readonly signinForm: FormGroup = this.fb.group({
     username: ['', Validators.required],
     password: ['', Validators.required],
   });
-  hidePassword: boolean = true;
-  authInvalid: boolean = false;
+  protected hidePassword: boolean = true;
+  protected authInvalid: boolean = false;
 
   constructor(
-    private fb: FormBuilder,
-    private auth: AuthService,
-    private router: Router,
-    private dialog: MatDialog,
-    private translate: TranslocoService
+    private readonly fb: FormBuilder,
+    private readonly auth: AuthService,
+    private readonly router: Router,
+    private readonly dialog: MatDialog,
+    private readonly translate: TranslocoService,
   ) {}
 
   ngOnInit(): void {
@@ -81,7 +79,7 @@ export class SigninComponent {
       .pipe(
         finalize(() => {
           wd.close();
-        })
+        }),
       )
       .subscribe({
         next: () => {

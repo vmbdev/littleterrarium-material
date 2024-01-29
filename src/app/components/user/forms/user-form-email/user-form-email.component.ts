@@ -4,7 +4,7 @@ import {
   ReactiveFormsModule,
   FormBuilder,
   Validators,
-  FormControl
+  FormControl,
 } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -28,14 +28,14 @@ export class UserFormEmailComponent implements FormBaseComponent {
   @Input() currentEmail?: string;
   @Input() errorServerInvalid: boolean = false;
   @Input() errorServerTaken: boolean = false;
-  public form = this.fb.group({
+  public readonly form = this.fb.group({
     email: new FormControl<string>('', [
       Validators.required,
       Validators.pattern(/^\S+@\S+\.\S+$/i),
     ]),
   });
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private readonly fb: FormBuilder) {}
 
   ngOnInit(): void {
     if (this.currentEmail) this.form.patchValue({ email: this.currentEmail });

@@ -21,9 +21,9 @@ import { FormBaseComponent } from '@components/form-base/form-base.component';
 })
 export class PlantFormDescriptionComponent implements FormBaseComponent {
   @Input() currentDescription?: string | null;
-  form = this.fb.group({ description: [''] });
+  public readonly form = this.fb.group({ description: [''] });
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private readonly fb: FormBuilder) {}
 
   ngOnInit(): void {
     if (this.currentDescription) {

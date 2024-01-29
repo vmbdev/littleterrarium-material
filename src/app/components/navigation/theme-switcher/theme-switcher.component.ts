@@ -21,8 +21,7 @@ import { CapitalizePipe } from '@pipes/capitalize/capitalize.pipe';
   styleUrl: './theme-switcher.component.scss',
 })
 export class ThemeSwitcherComponent {
-  constructor(public readonly themeService: ThemeService) {
-  }
+  constructor(public readonly themeService: ThemeService) {}
 
   setTheme(theme: string) {
     this.themeService.switchTheme(theme);

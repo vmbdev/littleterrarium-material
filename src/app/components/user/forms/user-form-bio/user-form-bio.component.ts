@@ -21,9 +21,9 @@ import { FormBaseComponent } from '@components/form-base/form-base.component';
 })
 export class UserFormBioComponent implements FormBaseComponent {
   @Input() currentBio?: string | null;
-  public form = this.fb.group({ bio: [''] });
+  public readonly form = this.fb.group({ bio: [''] });
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private readonly fb: FormBuilder) {}
 
   ngOnInit(): void {
     if (this.currentBio) {

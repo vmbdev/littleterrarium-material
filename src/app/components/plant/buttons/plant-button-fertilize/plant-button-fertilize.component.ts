@@ -4,9 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
 
-import {
-  PlantBaseActionComponent
-} from '@components/plant/plant-base-action/plant-base-action.component';
+import { PlantBaseActionComponent } from '@components/plant/plant-base-action/plant-base-action.component';
 
 @Component({
   selector: 'ltm-plant-button-fertilize',

@@ -3,9 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { TranslocoService } from '@ngneat/transloco';
 
-import {
-  ConfirmDialogComponent
-} from '@components/dialogs/confirm-dialog/confirm-dialog.component';
+import { ConfirmDialogComponent } from '@components/dialogs/confirm-dialog/confirm-dialog.component';
 import { PlantService } from '@services/plant.service';
 
 @Component({
@@ -19,9 +17,9 @@ export class PlantBaseActionComponent {
   @Output() done = new EventEmitter();
 
   constructor(
-    private plantService: PlantService,
-    private dialog: MatDialog,
-    private translate: TranslocoService
+    private readonly plantService: PlantService,
+    private readonly dialog: MatDialog,
+    private readonly translate: TranslocoService,
   ) {}
 
   openWaterDialog() {
@@ -36,7 +34,7 @@ export class PlantBaseActionComponent {
           accept: () => {
             this.plantService.water(this.id).subscribe(() => {
               this.done.emit();
-            })
+            });
           },
         },
       });
@@ -48,11 +46,13 @@ export class PlantBaseActionComponent {
       this.dialog.open(ConfirmDialogComponent, {
         data: {
           title: this.translate.translate('general.fertilize'),
-          question: [this.translate.translate('plant-widget-fertilizer.confirm')],
+          question: [
+            this.translate.translate('plant-widget-fertilizer.confirm'),
+          ],
           accept: () => {
             this.plantService.fertilize(this.id).subscribe(() => {
               this.done.emit();
-            })
+            });
           },
         },
       });
