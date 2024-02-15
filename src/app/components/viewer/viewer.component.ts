@@ -1,8 +1,15 @@
-import { Component, ElementRef, ViewChild, Inject } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  ViewChild,
+  Inject,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { TranslocoModule } from '@ngneat/transloco';
 
 import { VIEWER_DATA } from 'src/tokens';
 
@@ -24,33 +31,40 @@ type CSSElementPosition = {
 @Component({
   selector: 'ltm-viewer',
   standalone: true,
-  imports: [CommonModule, MatToolbarModule, MatButtonModule, MatIconModule],
+  imports: [
+    CommonModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatIconModule,
+    TranslocoModule,
+  ],
   templateUrl: './viewer.component.html',
   styleUrls: ['./viewer.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ViewerComponent {
   @ViewChild('photo', { read: ElementRef, static: true })
   photoElement!: ElementRef<HTMLImageElement>;
 
-  scale: number = 1;
-  position: CSSElementPosition = {
+  private scale: number = 1;
+  private position: CSSElementPosition = {
     left: null,
     top: null,
   };
-  previousDelta = {
+  private previousDelta = {
     x: 0,
     y: 0,
   };
-  dimensions: ElementDimensions = {
+  private dimensions: ElementDimensions = {
     width: 0,
     height: 0,
   };
-  client: ElementDimensions = {
+  private client: ElementDimensions = {
     width: 0,
     height: 0,
   };
-  rightLimit: number = 0;
-  bottomLimit: number = 0;
+  private rightLimit: number = 0;
+  private bottomLimit: number = 0;
 
   constructor(@Inject(VIEWER_DATA) public readonly data: ViewerData) {}
 

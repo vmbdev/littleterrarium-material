@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpEventType } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -10,7 +10,7 @@ import {
 } from '@angular/material/dialog';
 import { MatStepperModule } from '@angular/material/stepper';
 import { TranslocoService, TranslocoModule } from '@ngneat/transloco';
-import { catchError, EMPTY, finalize, switchMap } from 'rxjs';
+import { catchError, EMPTY, finalize, Observable, switchMap } from 'rxjs';
 
 import {
   FileUploaderComponent
@@ -36,6 +36,7 @@ import { ErrorHandlerService } from '@services/error-handler.service';
 import { PhotoService } from '@services/photo.service';
 import { Plant } from '@models/plant.model';
 import { Photo } from '@models/photo.model';
+import { Location } from '@models/location.model';
 
 @Component({
   selector: 'ltm-plant-add',
@@ -58,6 +59,7 @@ import { Photo } from '@models/photo.model';
     FormPrivacyComponent,
   ],
   templateUrl: './plant-add.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlantAddComponent {
   @ViewChild(PlantFormNameComponent) nameComponent!: PlantFormNameComponent;
@@ -65,7 +67,8 @@ export class PlantAddComponent {
   specieComponent!: PlantFormSpecieComponent;
   @ViewChild(FormPrivacyComponent) privacyComponent!: FormPrivacyComponent;
 
-  protected locationId?: number;
+  private locationId?: number;
+  protected location$?: Observable<Location>;
   private photos: File[] = [];
 
   constructor(
@@ -83,12 +86,15 @@ export class PlantAddComponent {
     this.locationId = +this.route.snapshot.params['locationId'];
 
     if (this.locationId) {
-      this.locationService.get(this.locationId).subscribe({
-        error: () => {
+      this.location$ = this.locationService.get(this.locationId)
+      .pipe(
+        catchError(() => {
           this.errorHandler.push(this.translate.translate('plant-add.location'));
           this.router.navigateByUrl('/');
-        },
-      });
+
+          return EMPTY;
+        })
+      )
     }
   }
 
@@ -186,15 +192,15 @@ export class PlantAddComponent {
         .pipe(
           finalize(() => {
             ud.close();
+          }),
+          catchError(() => {
+            this.errorHandler.push(this.translate.translate('plant-add.create'));
+
+            return EMPTY;
           })
         )
-        .subscribe({
-          next: (plant: Plant) => {
-            this.router.navigate(['/plant', plant.id], { replaceUrl: true });
-          },
-          error: () => {
-            this.errorHandler.push(this.translate.translate('plant-add.create'));
-          },
+        .subscribe((plant: Plant) => {
+          this.router.navigate(['/plant', plant.id], { replaceUrl: true });
         });
     }
   }

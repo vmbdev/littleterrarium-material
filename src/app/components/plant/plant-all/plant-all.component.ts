@@ -17,11 +17,7 @@ export class PlantAllComponent {
   ) {}
 
   ngOnInit(): void {
-    this.translate
-      .selectTranslate('general.plants')
-      .subscribe((res: string) => {
-        this.mt.setName(res);
-      });
+    this.mt.setName(this.translate.translate('general.plants'));
     this.mt.setButtons([]);
     this.mt.setMenu([]);
   }

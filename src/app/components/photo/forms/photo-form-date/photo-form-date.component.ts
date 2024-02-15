@@ -20,8 +20,10 @@ import { FormBaseComponent } from '@components/form-base/form-base.component';
   templateUrl: './photo-form-date.component.html',
 })
 export class PhotoFormDateComponent implements FormBaseComponent {
-  @Input() currentTakenAt?: Date | null;
-  public readonly form = this.fb.group({ takenAt: new FormControl<Date | null>(null) });
+  @Input() currentTakenAt?: Date | string | null;
+  public readonly form = this.fb.group({
+    takenAt: new FormControl<Date | string | null>(null),
+  });
   protected today = new Date();
 
   constructor(private readonly fb: FormBuilder) {}

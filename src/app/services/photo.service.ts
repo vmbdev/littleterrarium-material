@@ -6,14 +6,16 @@ import {
   EMPTY,
   map,
   Observable,
+  tap,
   throwError,
 } from 'rxjs';
 
 import { AuthService } from '@services/auth.service';
 import { ErrorHandlerService } from '@services/error-handler.service';
-import { ApiService, PhotoGetConfig } from '@services/api.service';
+import { ApiService } from '@services/api.service';
 import { Photo } from '@models/photo.model';
 import { BackendResponse } from '@models/backend-response.model';
+import { TranslocoService } from '@ngneat/transloco';
 
 @Injectable({
   providedIn: 'root',
@@ -27,27 +29,40 @@ export class PhotoService {
   constructor(
     private readonly api: ApiService,
     private readonly auth: AuthService,
-    private readonly errorHandler: ErrorHandlerService
+    private readonly errorHandler: ErrorHandlerService,
+    private readonly translate: TranslocoService,
   ) {}
 
-  get(id: number, options?: PhotoGetConfig): Observable<Photo> {
-    return this.api.getPhoto(id, options).pipe(
-      map((photo: Photo) => {
+  get(id: number): Observable<Photo> {
+    return this.api.getPhoto(id).pipe(
+      tap((photo: Photo) => {
         this.owned.next(this.auth.getUser()?.id === photo.ownerId);
         this.photo.next(photo);
-
-        return photo;
       }),
-      catchError((error: HttpErrorResponse) => {
+      catchError((err: HttpErrorResponse) => {
+        let msg: string;
+
+        if (err.error?.msg === 'PHOTO_NOT_FOUND') msg = 'photo.invalid';
+        else msg = 'errors.server';
+
+        this.errorHandler.push(this.translate.translate(msg));
         this.photo.next(null);
 
-        return throwError(() => error);
+        return throwError(() => err);
       })
     );
   }
 
   getNavigation(id: number): Observable<any> {
-    return this.api.getPhotoNavigation(id);
+    return this.api.getPhotoNavigation(id).pipe(
+      catchError((err: HttpErrorResponse) => {
+        if (err.error?.msg === 'PHOTO_NOT_FOUND') {
+          this.errorHandler.push(this.translate.translate('photo.invalid'));
+        }
+
+        return throwError(() => err);
+      }),
+    );
   }
 
   create(
@@ -57,6 +72,7 @@ export class PhotoService {
     return this.api.createPhoto(photo).pipe(
       catchError((error: HttpErrorResponse) => {
         if (error.error?.msg === 'IMG_NOT_VALID') {
+          // FIXME: transloco
           this.errorHandler.push('Invalid image.');
         }
 
@@ -68,10 +84,8 @@ export class PhotoService {
 
   update(photo: Photo): Observable<Photo> {
     return this.api.updatePhoto(photo).pipe(
-      map((updatedPhoto: Photo) => {
+      tap((updatedPhoto: Photo) => {
         this.photo.next(updatedPhoto);
-
-        return updatedPhoto;
       }),
       catchError((HttpError: HttpErrorResponse) => {
         this.photo.next(null);
@@ -90,5 +104,10 @@ export class PhotoService {
 
   current(): Photo | null {
     return this.photo.getValue();
+  }
+
+  empty(): void {
+    this.photo.next(null);
+    this.owned.next(false);
   }
 }

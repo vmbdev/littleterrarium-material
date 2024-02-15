@@ -1,4 +1,5 @@
 import {
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
@@ -30,6 +31,7 @@ import { SearchService } from '@services/search.service';
   ],
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchComponent {
   @ViewChild('searchInput') searchElement!: ElementRef<MatInput>;

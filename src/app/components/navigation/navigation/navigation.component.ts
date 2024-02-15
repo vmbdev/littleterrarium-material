@@ -1,4 +1,11 @@
-import { ChangeDetectorRef, Component, ElementRef, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  ElementRef,
+  ViewChild,
+  inject,
+} from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -11,6 +18,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { fromEvent, Observable, map, shareReplay } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TranslocoModule } from '@ngneat/transloco';
 
 import { BottomToolbarComponent } from '@components/navigation/bottom-toolbar/bottom-toolbar.component';
@@ -48,6 +56,7 @@ import { ThemeService } from '@services/theme.service';
   ],
   templateUrl: './navigation.component.html',
   styleUrls: ['./navigation.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NavigationComponent {
   @ViewChild('content') contentElement!: ElementRef;
@@ -57,7 +66,7 @@ export class NavigationComponent {
       map((result) => result.matches),
       shareReplay(),
     );
-  protected userLink?: string;
+  private readonly destroyRef = inject(DestroyRef);
 
   constructor(
     private readonly breakpointObserver: BreakpointObserver,
@@ -70,20 +79,17 @@ export class NavigationComponent {
   // FIXME: use HostListener instead of this
   ngAfterViewInit(): void {
     if (this.contentElement) {
-      const scroll$ = fromEvent<Event>(
-        this.contentElement.nativeElement,
-        'scroll',
-      );
+      fromEvent<Event>(this.contentElement.nativeElement, 'scroll')
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe((element: Event) => {
+          const target = element.target as HTMLElement;
+          const gotBottom =
+            target.scrollHeight - target.scrollTop - target.clientHeight;
 
-      scroll$.subscribe((element: Event) => {
-        const target = element.target as HTMLElement;
-        const gotBottom =
-          target.scrollHeight - target.scrollTop - target.clientHeight;
-
-        if (gotBottom <= 1.0) {
-          this.bottomScrollDetector.set();
-        } else this.bottomScrollDetector.clear();
-      });
+          if (gotBottom <= 1.0) {
+            this.bottomScrollDetector.set();
+          } else this.bottomScrollDetector.clear();
+        });
     }
   }
 }

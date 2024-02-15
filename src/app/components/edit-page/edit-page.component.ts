@@ -1,4 +1,10 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
@@ -17,6 +23,7 @@ import { TranslocoModule } from '@ngneat/transloco';
   ],
   templateUrl: './edit-page.component.html',
   styleUrls: ['./edit-page.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EditPageComponent {
   @Input({ required: true }) title?: string;

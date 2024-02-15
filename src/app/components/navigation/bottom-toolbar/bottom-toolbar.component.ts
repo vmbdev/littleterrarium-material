@@ -1,4 +1,9 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Output,
+} from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatBadgeModule } from '@angular/material/badge';
@@ -23,6 +28,7 @@ import { CommonModule } from '@angular/common';
   ],
   templateUrl: './bottom-toolbar.component.html',
   styleUrls: ['./bottom-toolbar.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BottomToolbarComponent {
   @Output() toggleSidenav = new EventEmitter();

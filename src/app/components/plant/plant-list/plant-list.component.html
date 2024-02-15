@@ -1,4 +1,4 @@
-@if (smallView) {
+@if (listView$ | async) {
   <mat-list>
     @for (item of list$ | async; track item.id) {
       <mat-list-item>
@@ -6,6 +6,7 @@
           matListItemAvatar
           class="plant-list__avatar"
           [src]="item.cover"
+          [alt]="('general.picture' | transloco) + ' - ' + item.name"
           [routerLink]="['/plant', item.id]"
         >
         <span matListItemTitle [routerLink]="['/plant', item.id]">
@@ -31,6 +32,7 @@
             mat-card-image
             class="plant-card__image"
             [src]="item.cover"
+            [alt]="('general.picture' | transloco) + ' - ' + item.name"
             [routerLink]="['/plant', item.id]"
           >
           <mat-card-title class="plant-card__title">

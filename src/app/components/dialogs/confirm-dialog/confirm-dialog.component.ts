@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatDialogModule, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
@@ -15,10 +15,11 @@ interface ConfirmDataConfig {
   standalone: true,
   imports: [CommonModule, TranslocoModule, MatDialogModule, MatButtonModule],
   templateUrl: './confirm-dialog.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ConfirmDialogComponent {
   constructor(
-    @Inject(MAT_DIALOG_DATA) public readonly data: ConfirmDataConfig
+    @Inject(MAT_DIALOG_DATA) public readonly data: ConfirmDataConfig,
   ) {}
 
   accept(): void {

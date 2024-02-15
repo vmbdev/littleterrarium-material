@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -18,6 +18,7 @@ import { FormBaseComponent } from '@components/form-base/form-base.component';
     TranslocoModule,
   ],
   templateUrl: './location-form-name.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LocationFormNameComponent implements FormBaseComponent {
   @Input() currentName?: string;

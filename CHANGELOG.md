@@ -8,17 +8,9 @@
 - New Filesystem Service to manage the files created by the Camera and Share
 services.
 - New PasswordService to manage API calls related to the user password.
+- New component to easily change own's password.
 - WebP support detector: if the browser doesn't support WebP and the backend
 is set up to also send traditional image formats, images will use the later.
-
-### Fixes
-
-- Fixed a bug in ThemeSwitcher in which Transloco prevented the initial
-selection of the theme.
-- Fixed a bug in LangSwitcher in which no default language was selected if it
-wasn't stored previously.
-- Fixed a bug in SigninComponent where any button would submit the form.
-- Fixed a lost translation in PasswordRecoveryComponent.
 
 ### Changes
 
@@ -32,6 +24,15 @@ wasn't stored previously.
 - Cleanup of theme related variables.
 - Cleanup of many observables in services.
 - Cleanup of many models and enums that were wrongly placed and defined.
+
+### Fixes
+
+- Fixed a bug in ThemeSwitcher in which Transloco prevented the initial
+selection of the theme.
+- Fixed a bug in LangSwitcher in which no default language was selected if it
+wasn't stored previously.
+- Fixed a bug in SigninComponent where any button would submit the form.
+- Fixed a lost translation in PasswordRecoveryComponent.
 
 ## [1.0.3] - 2023-12-23
 

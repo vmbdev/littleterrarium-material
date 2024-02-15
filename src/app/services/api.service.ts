@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 import { HttpClient, HttpEvent } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 
 import { endpoint } from '@config';
 import { BACKEND_URL } from 'src/tokens';
@@ -15,6 +15,7 @@ import {
 } from '@models/user.model';
 import { BackendResponse } from '@models/backend-response.model';
 import { SortColumn, SortOrder } from '@models/sort-options.model';
+import { AdminSummary } from '@models/admin.model';
 
 export interface LocationGetConfig {
   plantCount?: boolean;
@@ -44,11 +45,6 @@ export interface PlantUpdateConfig {
   removeCover?: boolean;
 }
 
-export interface PhotoGetConfig {
-  navigation?: boolean;
-  cover?: boolean;
-}
-
 export interface UserEditConfig {
   removeAvatar?: boolean;
 }
@@ -58,8 +54,9 @@ export interface AngularLocales {
   default: string;
 }
 
-export interface DataCount {
-  count: number;
+export interface AdminUserList {
+  skip?: number;
+  limit?: number;
 }
 
 @Injectable({
@@ -68,7 +65,7 @@ export interface DataCount {
 export class ApiService {
   constructor(
     private readonly http: HttpClient,
-    @Inject(BACKEND_URL) public readonly backendUrl: string
+    @Inject(BACKEND_URL) public readonly backendUrl: string,
   ) {}
 
   endpoint(path: string): string {
@@ -80,12 +77,8 @@ export class ApiService {
   }
 
   /**
-   * Auth and user API functions
+   * User API functions
    */
-
-  getCurrentUser(): Observable<User> {
-    return this.http.get<User>(this.endpoint('users'));
-  }
 
   getUser(id: number): Observable<User> {
     return this.http.get<User>(this.endpoint(`users/id/${id}`));
@@ -95,56 +88,22 @@ export class ApiService {
     return this.http.get<User>(this.endpoint(`users/username/${username}`));
   }
 
-  signIn(username: string, password: string): Observable<User> {
-    return this.http.post<User>(this.endpoint('users/signin'), {
-      username,
-      password,
-    });
-  }
-
-  logOut(): Observable<any> {
-    return this.http.post<any>(this.endpoint('users/logout'), null);
-  }
-
-  forgotPassword(userRef: string): Observable<any> {
-    return this.http.post<any>(this.endpoint('users/forgotten'), { userRef });
-  }
-
-  recoverPassword(
-    token: string,
-    password: string,
-    userId: number
-  ): Observable<any> {
-    return this.http.post<any>(this.endpoint('users/restore'), {
-      token,
-      password,
-      userId,
-    });
-  }
-
-  verifyToken(token: string, userId: number): Observable<any> {
-    return this.http.post<any>(this.endpoint('users/verifyToken'), {
-      token,
-      userId,
-    });
-  }
-
   getPasswordRequirements(): Observable<PasswordRequirements> {
     return this.http.get<PasswordRequirements>(
-      this.endpoint('users/password/requirements')
+      this.endpoint('users/password/requirements'),
     );
   }
 
   getUsernameRequirements(): Observable<UsernameRequirements> {
     return this.http.get<UsernameRequirements>(
-      this.endpoint('users/usernamerequirements')
+      this.endpoint('users/usernamerequirements'),
     );
   }
 
   checkPassword(password: string): Observable<BackendResponse> {
     return this.http.post<BackendResponse>(
       this.endpoint('users/password/check'),
-      { password }
+      { password },
     );
   }
 
@@ -167,6 +126,48 @@ export class ApiService {
     else if (user.avatarFile) form.append('avatar', user.avatarFile);
 
     return this.http.put<User>(this.endpoint('users'), form);
+  }
+
+  /**
+   * Auth related calls
+   */
+
+  getCurrentUser(): Observable<User> {
+    return this.http.get<User>(this.endpoint('auth'));
+  }
+
+  signIn(username: string, password: string): Observable<User> {
+    return this.http.post<User>(this.endpoint('auth/signin'), {
+      username,
+      password,
+    });
+  }
+
+  logOut(): Observable<any> {
+    return this.http.post<any>(this.endpoint('auth/logout'), null);
+  }
+
+  forgotPassword(userRef: string): Observable<any> {
+    return this.http.post<any>(this.endpoint('auth/forgotten'), { userRef });
+  }
+
+  recoverPassword(
+    token: string,
+    password: string,
+    userId: number,
+  ): Observable<any> {
+    return this.http.post<any>(this.endpoint('auth/restore'), {
+      token,
+      password,
+      userId,
+    });
+  }
+
+  verifyToken(token: string, userId: number): Observable<any> {
+    return this.http.post<any>(this.endpoint('auth/verifyToken'), {
+      token,
+      userId,
+    });
   }
 
   /**
@@ -200,8 +201,10 @@ export class ApiService {
     return this.getPlants({ ...options, locationId: id });
   }
 
-  countLocationPlants(id: number): Observable<DataCount> {
-    return this.http.get<DataCount>(this.endpoint(`locations/${id}/plants/count`));
+  countLocationPlants(id: number): Observable<number> {
+    return this.http
+      .get<{ count: number }>(this.endpoint(`locations/${id}/plants/count`))
+      .pipe(map((count) => count.count));
   }
 
   /**
@@ -213,7 +216,7 @@ export class ApiService {
    */
   upsertLocation(
     location: Location,
-    options: LocationUpsertConfig = {}
+    options: LocationUpsertConfig = {},
   ): Observable<Location> {
     let observable;
     const form = new FormData();
@@ -246,7 +249,7 @@ export class ApiService {
 
   updateLocation(
     location: Location,
-    options: LocationUpsertConfig = {}
+    options: LocationUpsertConfig = {},
   ): Observable<Location> {
     return this.upsertLocation(location, { update: true, ...options });
   }
@@ -265,7 +268,7 @@ export class ApiService {
     if (options) {
       const urlParams = new URLSearchParams();
 
-      // for plants of location: location/:id/plants
+      // for plants in a location: location/:id/plants
       if (options.locationId) url = `locations/${options.locationId}/${url}`;
       // for plants of user: plants/user/:id
       else if (options.userId) url += `user/${options.userId}`;
@@ -275,6 +278,7 @@ export class ApiService {
       if (options.filter) urlParams.append('filter', options.filter.toString());
       if (options.sort) urlParams.append('sort', options.sort);
       if (options.order) urlParams.append('order', options.order);
+      if (options.limit) urlParams.append('limit', options.limit.toString());
 
       url += `?${urlParams.toString()}`;
     }
@@ -300,6 +304,12 @@ export class ApiService {
     return this.http.get<Photo[]>(this.endpoint(`plants/${id}/photos`));
   }
 
+  countPlants(): Observable<number> {
+    return this.http
+      .get<{ count: number }>(this.endpoint('plants/count'))
+      .pipe(map((count) => count.count));
+  }
+
   createPlant(plant: Plant): Observable<Plant> {
     return this.http.post<Plant>(this.endpoint('plants'), plant);
   }
@@ -321,27 +331,13 @@ export class ApiService {
    * Photo related calls
    */
 
-  getPhoto(id: number, options?: PhotoGetConfig): Observable<Photo> {
-    let url = `photos/${id}`;
-
-    if (options) {
-      const urlParams = new URLSearchParams();
-
-      
-      if (options.navigation) {
-        urlParams.append('navigation', options.navigation.toString());
-      }
-      if (options.cover) urlParams.append('cover', options.cover.toString());
-
-      url += `?${urlParams.toString()}`;
-    }
-
-    return this.http.get<Photo>(this.endpoint(url));
+  getPhoto(id: number): Observable<Photo> {
+    return this.http.get<Photo>(this.endpoint(`photos/${id}`));
   }
 
   getPhotoNavigation(id: number): Observable<NavigationData> {
     return this.http.get<NavigationData>(
-      this.endpoint(`photos/${id}/navigation`)
+      this.endpoint(`photos/${id}/navigation`),
     );
   }
 
@@ -386,5 +382,28 @@ export class ApiService {
 
   getTasks(): Observable<Plant[]> {
     return this.http.get<Plant[]>(this.endpoint('tasks'));
+  }
+
+  /**
+   * Admin related calls
+   */
+
+  getAdminSummary(): Observable<AdminSummary> {
+    return this.http.get<AdminSummary>(this.endpoint('admin'));
+  }
+
+  getAdminUserList(options?: AdminUserList): Observable<User[]> {
+    let url = 'admin/user';
+
+    if (options) {
+      const urlParams = new URLSearchParams();
+
+      if (options.skip) urlParams.append('skip', options.skip.toString());
+      if (options.limit) urlParams.append('limit', options.limit.toString());
+
+      url += `?${urlParams.toString()}`;
+    }
+
+    return this.http.get<User[]>(this.endpoint(url));
   }
 }

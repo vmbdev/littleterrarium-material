@@ -1,17 +1,16 @@
 import { Injectable } from '@angular/core';
-import { Location } from '@models/location.model';
-import { Plant } from '@models/plant.model';
-import { BehaviorSubject, EMPTY, map, Observable } from 'rxjs';
+import { BehaviorSubject, EMPTY, map, Observable, tap } from 'rxjs';
 
 import {
   ApiService,
-  DataCount,
   LocationGetConfig,
   LocationUpsertConfig,
   PlantGetConfig,
 } from '@services/api.service';
 import { AuthService } from '@services/auth.service';
 import { PlantService } from '@services/plant.service';
+import { Location } from '@models/location.model';
+import { Plant } from '@models/plant.model';
 
 @Injectable({
   providedIn: 'root',
@@ -32,10 +31,8 @@ export class LocationService {
     this.location.next(null);
 
     return this.api.createLocation(location).pipe(
-      map((location: Location) => {
+      tap((location: Location) => {
         this.location.next(location);
-
-        return location;
       })
     );
   }
@@ -44,12 +41,9 @@ export class LocationService {
     this.location.next(null);
 
     return this.api.getLocation(id, options).pipe(
-      map((location: Location) => {
+      tap((location: Location) => {
         this.owned.next(this.auth.getUser()?.id === location.ownerId);
-
         this.location.next(location);
-
-        return location;
       })
     );
   }
@@ -61,16 +55,21 @@ export class LocationService {
   getPlants(id: number, options?: PlantGetConfig): Observable<Plant[]> {
     return this.api.getLocationPlants(id, options).pipe(
       map((plants: Plant[]) => {
+        const newPlants = [];
+
         for (const plant of plants) {
-          plant.visibleName = this.plantService.getVisibleName(plant);
+          const newPlant = { ...plant };
+
+          newPlant.visibleName = this.plantService.getVisibleName(newPlant);
+          newPlants.push(newPlant);
         }
 
-        return plants;
+        return newPlants;
       })
     );
   }
 
-  countPlants(id: number): Observable<DataCount> {
+  countPlants(id: number): Observable<number> {
     return this.api.countLocationPlants(id);
   }
 
@@ -79,26 +78,27 @@ export class LocationService {
     options?: LocationUpsertConfig
   ): Observable<Location> {
     return this.api.updateLocation(location, options).pipe(
-      map((location: Location) => {
+      tap((location: Location) => {
         this.location.next(location);
-
-        return location;
       })
     );
   }
 
   delete(id: number): Observable<any> {
     return this.api.deleteLocation(id).pipe(
-      map(() => {
+      tap(() => {
         this.location.next(null);
-
-        return EMPTY;
       })
     );
   }
 
   current(): Location | null {
     return this.location.getValue();
+  }
+
+  empty(): void {
+    this.location.next(null);
+    this.owned.next(false);
   }
 
   getLightName(light: string): string {

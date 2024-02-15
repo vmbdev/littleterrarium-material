@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -25,6 +25,7 @@ type LightOptionType = {
     TranslocoModule,
   ],
   templateUrl: './location-form-light.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LocationFormLightComponent implements FormBaseComponent {
   @Input() currentLight: string = 'FULLSUN';

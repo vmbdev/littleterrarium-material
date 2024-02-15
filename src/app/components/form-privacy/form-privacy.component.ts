@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -16,6 +16,7 @@ import { FormBaseComponent } from '@components/form-base/form-base.component';
     TranslocoModule,
   ],
   templateUrl: './form-privacy.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormPrivacyComponent implements FormBaseComponent {
   @Input() currentPrivacy: boolean = true;

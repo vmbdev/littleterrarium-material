@@ -1,4 +1,10 @@
-import { Component, Input, TemplateRef, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 
@@ -8,9 +14,10 @@ import { MatIconModule } from '@angular/material/icon';
   imports: [CommonModule, MatIconModule],
   templateUrl: './property.component.html',
   styleUrls: ['./property.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PropertyComponent {
   @Input() icon: string = 'info';
-  @Input() iconColor?: string;
+  @Input() iconColor?: string | null;
   @ViewChild('propertyTemplate') propertyTemplate!: TemplateRef<any>;
 }

@@ -1,4 +1,4 @@
-@if (photoService.photo$ | async; as photo) {
+@if (photo$ | async; as photo) {
   <ltm-info-box [description]="photo.description">
     <ltm-property icon="event">
       {{ 'general.daysAgo' | transloco: { days: (photo.takenAt | daysAgo) } }}
@@ -7,17 +7,12 @@
       {{ (photo.public ? 'general.public' : 'general.private') | transloco }}
     </ltm-property>
   </ltm-info-box>
-  <ltm-toggle-option
-    [checked]="plantCoverId === photo.id"
-    (change)="updateCoverPhoto($event)"
-  >
-    {{ 'photo.cover' | transloco }}
-  </ltm-toggle-option>
   
-  @if (currentImageFull) {
+  @if (photo.images | imagePath:'full'; as fullImage) {
     <div class="photo">
       <img
-        [src]="currentImageFull"
+        [src]="fullImage"
+        [alt]="('general.picture' | transloco) + ' - ' + photo.description"
         draggable="false"
         (swiperight)="loadPrevPhoto()"
         (swipeleft)="loadNextPhoto()"

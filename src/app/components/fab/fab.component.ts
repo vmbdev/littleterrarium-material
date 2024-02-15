@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterModule } from '@angular/router';
 
@@ -8,6 +8,7 @@ import { RouterModule } from '@angular/router';
   imports: [MatButtonModule, RouterModule],
   templateUrl: './fab.component.html',
   styleUrls: ['./fab.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FabComponent {
   @Input({ required: true }) link?: string | any[];

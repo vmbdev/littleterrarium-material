@@ -1,5 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, Inject, Injector, Optional } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Inject,
+  Injector,
+  Optional,
+} from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { catchError, EMPTY, finalize, Observable } from 'rxjs';
 import { MatButtonModule } from '@angular/material/button';
@@ -35,6 +41,7 @@ import { Location } from '@models/location.model';
     EditPageComponent,
   ],
   templateUrl: './location-edit.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LocationEditComponent extends LocationUpsertBaseComponent {
   protected location$?: Observable<Location>;
@@ -71,7 +78,7 @@ export class LocationEditComponent extends LocationUpsertBaseComponent {
       data.id = this.editLocation.id;
 
       this.locationService
-        .update(data, { removePicture: removePicture })
+        .update(data, { removePicture })
         .pipe(
           catchError((error: HttpErrorResponse) => {
             if (error.error?.msg === 'IMG_NOT_VALID') {

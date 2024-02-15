@@ -20,6 +20,7 @@
   "general.accept": "Aceptar",
   "general.afterUpload": "Tras enviar los archivos tenemos que procesar las fotos. Por favor, espera hasta que esta ventana se cierre.",
   "general.avatar": "Avatar",
+  "general.preview": "Vista preliminar",
   "general.bio": "Bio",
   "general.cancel": "Cancelar",
   "general.cm": "Centímetros",
@@ -111,6 +112,7 @@
   "mainnav.home": "Inicio",
   "mainnav.plants": "Plantas",
   "mainnav.tasks": "Tareas",
+  "password-change.desc": "Crea una nueva contraseña",
   "password-recovery.button": "Recuperar",
   "password-recovery.error": "No pudimos encontrar un usuario o correo con esos datos.",
   "password-recovery.info": "Introduce tu usuario o correo electrónico y te mandaremos un enlace para recuperar tu contraseña.",
@@ -241,7 +243,7 @@
   "user-register.usernameInvalid": "Tu nombre de usuario no es correcto. Por favor, revisa el formato.",
   "user-register.usernameReq": "Debe tener entre {$INTERPOLATION} y {$INTERPOLATION_1} caracteres, y contener solo letras, números, puntos (.), guiones (-) y barras bajas (_).",
   "user-register.usernameTaken": "Lo sentimos, este usuario ya está en uso. Por favor, elige otro.",
+  "userbox.changePassword": "Cambiar contraseña",
   "userbox.profile": "Editar perfil",
-  "userbox.terrarium": "Tu Terrarium",
-  "userbox.username": "Hola <b>{$INTERPOLATION}</b>"
+  "userbox.terrarium": "Tu Terrarium"
 }

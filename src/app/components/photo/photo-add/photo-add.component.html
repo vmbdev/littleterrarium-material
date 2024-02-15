@@ -1,22 +1,23 @@
-<mat-stepper labelPosition="bottom" linear="false" animationDuration="300">
-  <mat-step [label]="'general.picture' | transloco">
-    <p [innerHTML]="'photo-add.addMsg' | transloco"></p>
-    <p [innerHTML]="'photo-add.addMsgLimit' | transloco"></p>
+@if (plant$ | async) {
+  <mat-stepper labelPosition="bottom" linear="false" animationDuration="300">
+    <mat-step [label]="'general.picture' | transloco">
+      <p [innerHTML]="'photo-add.addMsg' | transloco"></p>
+      <p [innerHTML]="'photo-add.addMsgLimit' | transloco"></p>
 
-    <ltm-file-uploader maxAmount="10" (fileChange)="fileChange($event)" />
+      <ltm-file-uploader maxAmount="10" (fileChange)="fileChange($event)" />
 
-    <ltm-stepper-navigation />
-  </mat-step>
-  
-  
-  <mat-step
-    [stepControl]="formPrivacy.form"
-    [label]="'general.privacy' | transloco"
-  >
-    <ltm-form-privacy #formPrivacy>
-      <p [innerHtml]="'photo-add.visibility' | transloco"></p>
-      <p [innerHtml]="'photo-add.visibilityNote' | transloco"></p>
-    </ltm-form-privacy>
-    <ltm-stepper-navigation finishButton="true" (finish)="submit()" />
-  </mat-step>
-</mat-stepper>
+      <ltm-stepper-navigation />
+    </mat-step>
+
+    <mat-step
+      [stepControl]="formPrivacy.form"
+      [label]="'general.privacy' | transloco"
+    >
+      <ltm-form-privacy #formPrivacy>
+        <p [innerHtml]="'photo-add.visibility' | transloco"></p>
+        <p [innerHtml]="'photo-add.visibilityNote' | transloco"></p>
+      </ltm-form-privacy>
+      <ltm-stepper-navigation finishButton="true" (finish)="submit()" />
+    </mat-step>
+  </mat-stepper>
+}

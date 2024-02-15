@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslocoService, TranslocoModule } from '@ngneat/transloco';
 
@@ -19,6 +19,7 @@ import { MainToolbarService } from '@services/main-toolbar.service';
     SigninComponent,
   ],
   templateUrl: './home.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomeComponent {
   constructor(
@@ -28,16 +29,11 @@ export class HomeComponent {
   ) {}
 
   ngOnInit(): void {
-    this.auth.signedIn$.subscribe((isSigned: boolean) => {
-      if (isSigned) {
-        this.translate
-          .selectTranslate('general.locations')
-          .subscribe((res: string) => {
-            this.mt.setName(res);
-          });
-        this.mt.setButtons([]);
-        this.mt.setMenu([]);
-      } else this.mt.hide();
-    });
+    this.translate.selectTranslate('general.locations')
+      .subscribe((res: string) => {
+        this.mt.setName(res);
+      });
+    this.mt.setButtons([]);
+    this.mt.setMenu([]);
   }
 }

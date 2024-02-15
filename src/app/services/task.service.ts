@@ -55,4 +55,9 @@ export class TaskService {
 
     this.count.next(recount);
   }
+
+  empty(): void {
+    this.count.next(0);
+    this.tasks.next([]);
+  }
 }

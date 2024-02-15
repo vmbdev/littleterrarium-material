@@ -25,7 +25,6 @@ import { PlantGetConfig } from '@services/api.service';
 import { ErrorHandlerService } from '@services/error-handler.service';
 import { PlantService } from '@services/plant.service';
 import { Plant } from '@models/plant.model';
-import { Location } from '@models/location.model';
 
 interface PlantEditConfig {
   id: number;

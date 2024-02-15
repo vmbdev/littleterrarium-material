@@ -1,4 +1,11 @@
-import { Component, Input, SimpleChanges } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  Input,
+  SimpleChanges,
+  inject,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -12,36 +19,23 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import {
   MatBottomSheet,
-  MatBottomSheetModule
+  MatBottomSheetModule,
 } from '@angular/material/bottom-sheet';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { TranslocoService, TranslocoModule } from '@ngneat/transloco';
 
 import { FabComponent } from '@components/fab/fab.component';
-import {
-  ConfirmDialogComponent
-} from '@components/dialogs/confirm-dialog/confirm-dialog.component';
-import {
-  PlantEditComponent
-} from '@components/plant/plant-edit/plant-edit.component';
-import {
-  PlantToolbarComponent
-} from '@components/plant/plant-toolbar/plant-toolbar.component';
-import {
-  PlantMenuWaterComponent
-} from '@components/plant/menu/plant-menu-water/plant-menu-water.component';
-import {
-  PlantMenuFertComponent
-} from '@components/plant/menu/plant-menu-fert/plant-menu-fert.component';
+import { ConfirmDialogComponent } from '@components/dialogs/confirm-dialog/confirm-dialog.component';
+import { PlantEditComponent } from '@components/plant/plant-edit/plant-edit.component';
+import { PlantToolbarComponent } from '@components/plant/plant-toolbar/plant-toolbar.component';
+import { PlantMenuWaterComponent } from '@components/plant/menu/plant-menu-water/plant-menu-water.component';
+import { PlantMenuFertComponent } from '@components/plant/menu/plant-menu-fert/plant-menu-fert.component';
 import { PlantGetConfig } from '@services/api.service';
 import { LocationService } from '@services/location.service';
 import { PlantService } from '@services/plant.service';
 import { SearchReceipt, SearchService } from '@services/search.service';
 import { MainToolbarService } from '@services/main-toolbar.service';
-import { AuthService } from '@services/auth.service';
-import {
-  BottomScrollDetectorService
-} from '@services/bottom-scroll-detector.service';
+import { BottomScrollDetectorService } from '@services/bottom-scroll-detector.service';
 import { User } from '@models/user.model';
 import { Plant } from '@models/plant.model';
 import { SortColumn, SortOrder } from '@models/sort-options.model';
@@ -51,7 +45,7 @@ type PlantListItem = {
   id: number;
   name: string;
   cover?: string;
-}
+};
 
 @Component({
   selector: 'ltm-plant-list',
@@ -77,43 +71,42 @@ type PlantListItem = {
     PlantMenuFertComponent,
     CapitalizePipe,
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlantListComponent {
   @Input() list?: Plant[];
   @Input() locationId?: number;
   @Input() user?: User;
-  owned: boolean = true;
-  list$ = new BehaviorSubject<PlantListItem[]>([]);
-  search$?: Subscription;
-  smallView: boolean;
+  private readonly destroyRef = inject(DestroyRef);
+  protected list$ = new BehaviorSubject<PlantListItem[]>([]);
+  private search$?: Subscription;
 
-  cursor?: number;
-  lastCursor?: number;
+  private cursor?: number;
+  private lastCursor?: number;
 
-  filter: string | null = null;
-  order: SortOrder;
-  sort: SortColumn;
+  private filter: string | null = null;
+  private order: SortOrder;
+  private sort: SortColumn;
 
   // subjects for the menus of MainToolbar
-  nameSelected$: BehaviorSubject<boolean>;
-  dateSelected$: BehaviorSubject<boolean>;
-  listView$: BehaviorSubject<boolean>;
-  cardView$: BehaviorSubject<boolean>;
+  private nameSelected$: BehaviorSubject<boolean>;
+  private dateSelected$: BehaviorSubject<boolean>;
+  protected listView$: BehaviorSubject<boolean>;
+  private cardView$: BehaviorSubject<boolean>;
 
   constructor(
-    private auth: AuthService,
-    private plantService: PlantService,
-    private locationService: LocationService,
-    private dialog: MatDialog,
-    private translate: TranslocoService,
-    private bottomSheet: MatBottomSheet,
-    private search: SearchService,
-    private mt: MainToolbarService,
-    private bottomScrollDetector: BottomScrollDetectorService
+    private readonly plantService: PlantService,
+    private readonly locationService: LocationService,
+    private readonly dialog: MatDialog,
+    private readonly translate: TranslocoService,
+    private readonly bottomSheet: MatBottomSheet,
+    private readonly search: SearchService,
+    private readonly mt: MainToolbarService,
+    private readonly bottomScrollDetector: BottomScrollDetectorService,
   ) {
-    this.smallView = localStorage.getItem('LT_plantListView') === 'true';
-    this.listView$ = new BehaviorSubject<boolean>(this.smallView);
-    this.cardView$ = new BehaviorSubject<boolean>(!this.smallView);
+    const view = localStorage.getItem('LT_plantListView') === 'true';
+    this.listView$ = new BehaviorSubject<boolean>(view);
+    this.cardView$ = new BehaviorSubject<boolean>(!view);
 
     const order = localStorage.getItem('LT_plantListOrder');
     const sort = localStorage.getItem('LT_plantListSort');
@@ -135,25 +128,21 @@ export class PlantListComponent {
   }
 
   ngOnInit(): void {
-    if (this.user?.id) {
-      this.owned = this.auth.isSameUser('id', this.user.id);
-    }
-
     if (this.list) this.list$.next(this.createPlantList(this.list));
     else this.fetchPlants();
 
     this.createMainToolbarContext();
 
-    this.search$ = this.search.text$.subscribe((res: SearchReceipt) => {
+    this.search$ = this.search.text$
+    .pipe(
+      takeUntilDestroyed(this.destroyRef)
+    )
+    .subscribe((res: SearchReceipt) => {
       if (res.mode !== 'Begin') {
         this.filter = res.value;
         this.fetchPlants();
       }
     });
-  }
-
-  ngOnDestroy(): void {
-    if (this.search$) this.search$.unsubscribe();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -192,7 +181,6 @@ export class PlantListComponent {
     }
 
     obs.subscribe((plants: Plant[]) => {
-      
       if (plants.length > 0) {
         let newList = [];
 
@@ -201,12 +189,10 @@ export class PlantListComponent {
 
         if (scroll) {
           const currentList = this.list$.getValue();
-  
+
           this.list$.next([...currentList, ...newList]);
         } else this.list$.next(newList);
       }
-
-
     });
   }
 
@@ -308,7 +294,6 @@ export class PlantListComponent {
   }
 
   setSmallView(val: boolean) {
-    this.smallView = val;
     localStorage.setItem('LT_plantListView', val.toString());
 
     this.listView$.next(val);
@@ -343,11 +328,12 @@ export class PlantListComponent {
         // we moved the plant, hence we remove it from the list
         if (this.locationId && updatedPlant.locationId !== this.locationId) {
           list.splice(index, 1);
-        } else list[index] = {
-          id: updatedPlant.id,
-          name: this.plantService.getVisibleName(updatedPlant),
-          cover: this.plantService.coverPhoto(updatedPlant),
-        }
+        } else
+          list[index] = {
+            id: updatedPlant.id,
+            name: this.plantService.getVisibleName(updatedPlant),
+            cover: this.plantService.coverPhoto(updatedPlant),
+          };
 
         this.list$.next(list);
       }

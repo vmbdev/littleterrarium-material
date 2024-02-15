@@ -1,5 +1,5 @@
 @if (auth.user$ | async; as user) {
-  <ltm-profile />
+  <ltm-profile [user]="user"/>
 
   <mat-nav-list class="user-main">
     <mat-list-item matRipple (click)="openEdit()">
@@ -10,6 +10,11 @@
     <mat-list-item [routerLink]="['/terrarium', user.username]" matRipple>
       <mat-icon matListItemIcon>theaters</mat-icon>
       <h1 matListItemTitle>{{ 'userbox.terrarium' | transloco }}</h1>
+    </mat-list-item>
+
+    <mat-list-item routerLink="/user/change" matRipple>
+      <mat-icon matListItemIcon>password</mat-icon>
+      <h1 matListItemTitle>{{ 'userbox.changePassword' | transloco }}</h1>
     </mat-list-item>
 
     <mat-list-item routerLink="/logout" matRipple>

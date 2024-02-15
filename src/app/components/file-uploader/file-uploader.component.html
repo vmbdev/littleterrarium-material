@@ -23,6 +23,7 @@
           </span>
           <img
             [src]="preview"
+            [alt]="'general.preview' | transloco"
             class="file-uploader__previewimg"
             (load)="revokeUrl(preview)"
           />

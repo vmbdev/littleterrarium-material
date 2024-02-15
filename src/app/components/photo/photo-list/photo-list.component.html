@@ -2,7 +2,10 @@
   @for (photo of (list$ | async | sort:'takenAt':'desc'); track photo.id) {
     <article class="photo-list__box">
       <a [routerLink]="['/photo', photo.id]">
-        <img [src]="photo.images | imagePath:'thumb'">
+        <img
+          [src]="photo.images | imagePath:'thumb'"
+          [alt]="('general.picture' | transloco) + ' - ' + photo.description"
+        />
       </a>
     </article>
   }

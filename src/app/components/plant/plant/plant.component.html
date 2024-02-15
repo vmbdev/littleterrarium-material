@@ -1,4 +1,4 @@
-@if (plantService.plant$ | async; as plant) {
+@if (plant$ | async; as plant) {
   @if (plantService.owned$ | async) {
     <ltm-fab [link]="['/photo/create', plant.id]" />
   }
@@ -9,12 +9,13 @@
         {{ plant.specie.name | capitalize }}
       </ltm-property>
     }
-    @if (plant.condition) {
+    @if (conditionColor$ | async; as conditionColor) {
+      <!-- FIXME: not updating -->
       <ltm-property
         icon="circle"
         [iconColor]="conditionColor"
       >
-        {{ conditionDesc | transloco }}
+        {{ (conditionDesc$ | async) | transloco }}
       </ltm-property>
     }
 

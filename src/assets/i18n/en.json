@@ -21,6 +21,7 @@
   "general.afterUpload": "After uploading, we must process your photos. Please, wait until this dialog closes.",
   "general.avatar": "Avatar",
   "general.bio": "Bio",
+  "general.preview": "Preview",
   "general.cancel": "Cancel",
   "general.cm": "Centimeters",
   "general.date": "Date",
@@ -111,6 +112,7 @@
   "mainnav.home": "Home",
   "mainnav.plants": "Plants",
   "mainnav.tasks": "Pending Tasks",
+  "password-change.desc": "Please set a new password below.",
   "password-recovery.button": "Recover",
   "password-recovery.error": "Sorry, we couldn't find the username or email provided.",
   "password-recovery.info": "Please, provide your username or your email and we'll send you a link to recover your password.",
@@ -240,7 +242,7 @@
   "user-register.usernameInvalid": "Sorry, your username is not valid. Please, check the formatting.",
   "user-register.usernameReq": "It must be {$INTERPOLATION} to {$INTERPOLATION_1} characters long, and contain only alphanumeric characters, dot (.), dash (-) and underscore (_).",
   "user-register.usernameTaken": "Sorry, your username already exists. Please choose another.",
+  "userbox.changePassword": "Change password",
   "userbox.profile": "Edit profile",
-  "userbox.terrarium": "Your Terrarium",
-  "userbox.username": "Hi <b>{$INTERPOLATION}</b>"
+  "userbox.terrarium": "Your Terrarium"
 }

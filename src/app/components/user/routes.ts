@@ -19,14 +19,14 @@ export const USER_ROUTES: Route[] = [
       ),
   },
   {
-    path: 'reset',
+    path: 'change',
     loadComponent: () =>
-      import('./password-reset/password-reset.component').then(
-        (m) => m.PasswordResetComponent
+      import('./password-change/password-change.component').then(
+        (m) => m.PasswordChangeComponent
       ),
   },
   {
-    path: 'reset/:userId?/:token?',
+    path: 'reset/:userId/:token',
     loadComponent: () =>
       import('./password-reset/password-reset.component').then(
         (m) => m.PasswordResetComponent

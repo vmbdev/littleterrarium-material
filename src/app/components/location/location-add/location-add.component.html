@@ -34,6 +34,8 @@
       <p [innerHtml]="'location-add-edit.visibilityNote' | transloco"></p>
     </ltm-form-privacy>
 
-    <ltm-stepper-navigation finishButton="true" (finish)="submit()" />
+    @if (!(createLocation$ | async)) {
+      <ltm-stepper-navigation finishButton="true" (finish)="submit()" />
+    }
   </mat-step>
 </mat-stepper>

@@ -1,18 +1,24 @@
-import { Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { HttpErrorResponse } from '@angular/common/http';
 import { MatButtonModule } from '@angular/material/button';
-import { catchError, EMPTY } from 'rxjs';
+import { BehaviorSubject, catchError, EMPTY, map, Observable, of } from 'rxjs';
 import { TranslocoService, TranslocoModule } from '@ngneat/transloco';
 
 import { UserFormPasswordComponent } from '@components/user/forms/user-form-password/user-form-password.component';
 import { PasswordService } from '@services/password.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'ltm-password-reset',
   standalone: true,
-  imports: [TranslocoModule, MatButtonModule, UserFormPasswordComponent],
+  imports: [
+    CommonModule,
+    TranslocoModule,
+    MatButtonModule,
+    UserFormPasswordComponent,
+  ],
   templateUrl: './password-reset.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PasswordResetComponent {
   @ViewChild(UserFormPasswordComponent)
@@ -20,14 +26,15 @@ export class PasswordResetComponent {
   private token?: string | null;
   private userId?: number | null;
 
-  protected errorInvalidToken: boolean = false;
-  protected errorInvalidPassword: boolean = false;
-  protected passwordChanged: boolean = false;
+  protected errorInvalidToken$?: Observable<boolean>;
+  protected errorInvalidPassword$ = new BehaviorSubject<boolean>(false);
+  protected passwordChanged$?: Observable<any>;
+  protected pwdRequirements$ = this.pws.getPasswordRequirements();
 
   constructor(
     private readonly route: ActivatedRoute,
     public readonly translate: TranslocoService,
-    private readonly pwd: PasswordService,
+    private readonly pws: PasswordService,
   ) {}
 
   ngOnInit(): void {
@@ -35,17 +42,13 @@ export class PasswordResetComponent {
     this.userId = +this.route.snapshot.paramMap.get('userId')!;
 
     if (this.token && this.userId) {
-      this.pwd
+      this.errorInvalidToken$ = this.pws
         .verifyToken(this.token, this.userId)
         .pipe(
-          catchError((err: HttpErrorResponse) => {
-            this.errorInvalidToken = true;
-
-            return EMPTY;
-          }),
+          map((x) => false),
+          catchError((e) => of(true))
         )
-        .subscribe();
-    }
+    } else this.errorInvalidToken$ = of(true);
   }
 
   submit() {
@@ -53,23 +56,20 @@ export class PasswordResetComponent {
 
     if (!pwd || !this.token || !this.userId) return;
 
-    this.pwd
+    this.passwordChanged$ = this.pws
       .recoverPassword(this.token, pwd, this.userId)
       .pipe(
         catchError((err) => {
           const msg = err.error?.msg;
 
           if (msg === 'USER_TOKEN_EXPIRED' || msg === 'USER_TOKEN_INVALID') {
-            this.errorInvalidToken = true;
+            this.errorInvalidToken$ = of(true);
           } else if (msg === 'USER_PASSWD_INVALID') {
-            this.errorInvalidPassword = true;
+            this.errorInvalidPassword$.next(true);
           }
 
           return EMPTY;
-        }),
+        })
       )
-      .subscribe(() => {
-        this.passwordChanged = true;
-      });
   }
 }

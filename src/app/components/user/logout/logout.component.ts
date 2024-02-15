@@ -7,6 +7,11 @@ import { finalize } from 'rxjs';
 
 import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog.component';
 import { AuthService } from '@services/auth.service';
+import { ErrorHandlerService } from '@services/error-handler.service';
+import { LocationService } from '@services/location.service';
+import { PhotoService } from '@services/photo.service';
+import { PlantService } from '@services/plant.service';
+import { TaskService } from '@services/task.service';
 
 @Component({
   selector: 'ltm-logout',
@@ -21,6 +26,10 @@ import { AuthService } from '@services/auth.service';
 })
 export class LogoutComponent {
   constructor(
+    private readonly taskService: TaskService,
+    private readonly plantService: PlantService,
+    private readonly photoService: PhotoService,
+    private readonly locationService: LocationService,
     private readonly auth: AuthService,
     private readonly router: Router,
     private readonly dialog: MatDialog,
@@ -30,6 +39,7 @@ export class LogoutComponent {
   ngOnInit(): void {
     const wd = this.openWaitDialog();
 
+    // For security, remove personal data stored in those services when out
     this.auth
       .logOut()
       .pipe(
@@ -37,10 +47,12 @@ export class LogoutComponent {
           wd.close();
         }),
       )
-      .subscribe({
-        complete: () => {
-          this.router.navigate(['/']);
-        },
+      .subscribe(() => {
+        this.taskService.empty();
+        this.plantService.empty();
+        this.photoService.empty();
+        this.locationService.empty();
+        this.router.navigate(['/']);
       });
   }
 

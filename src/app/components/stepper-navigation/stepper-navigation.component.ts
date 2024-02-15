@@ -1,5 +1,6 @@
 import {
   booleanAttribute,
+  ChangeDetectionStrategy,
   Component,
   EventEmitter,
   Input,
@@ -16,6 +17,7 @@ import { TranslocoModule } from '@ngneat/transloco';
   imports: [CommonModule, MatButtonModule, MatStepperModule, TranslocoModule],
   templateUrl: './stepper-navigation.component.html',
   styleUrls: ['./stepper-navigation.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StepperNavigationComponent {
   @Input({ transform: booleanAttribute }) backButton: boolean = true;

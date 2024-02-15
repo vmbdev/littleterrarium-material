@@ -15,6 +15,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatCardModule } from '@angular/material/card';
 import { TranslocoModule } from '@ngneat/transloco';
 
+import { EditPageComponent } from '@components/edit-page/edit-page.component';
 import { PlantService } from '@services/plant.service';
 import { Plant, PotNames } from '@models/plant.model';
 
@@ -24,13 +25,12 @@ type PotListItem = {
   name: string;
 };
 
-// FIXME: Use EditComponent
-
 @Component({
   selector: 'ltm-plant-edit-soil',
   standalone: true,
   imports: [
     CommonModule,
+    ReactiveFormsModule,
     MatFormFieldModule,
     MatButtonModule,
     MatRadioModule,
@@ -39,7 +39,7 @@ type PotListItem = {
     MatDividerModule,
     MatCardModule,
     TranslocoModule,
-    ReactiveFormsModule,
+    EditPageComponent,
   ],
   templateUrl: './plant-edit-soil.component.html',
   styleUrls: ['./plant-edit-soil.component.scss'],

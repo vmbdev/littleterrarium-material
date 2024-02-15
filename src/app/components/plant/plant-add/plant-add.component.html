@@ -1,4 +1,4 @@
-@if (locationId) {
+@if (location$ | async) {
   <mat-stepper labelPosition="bottom" linear="false" animationDuration="300">
     <mat-step
       [stepControl]="formName.form"

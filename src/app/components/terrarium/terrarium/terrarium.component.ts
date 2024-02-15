@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -19,6 +19,7 @@ import { User } from '@models/user.model';
     PlantListComponent,
   ],
   templateUrl: './terrarium.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TerrariumComponent {
   protected user$?: Observable<User>;

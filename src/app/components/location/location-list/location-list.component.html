@@ -8,12 +8,13 @@
       <mat-card class="location-list__item" matRipple>
         <mat-card-header (click)="selectLocation(item.id)">
           <mat-card-title-group>
-            <img
-              mat-card-sm-image
-              [src]="
-                item.pictures ? (item.pictures | imagePath:'thumb') : 'assets/nopic.png'
-              "
-            />
+            @if (item.pictures) {
+              <img
+                mat-card-sm-image
+                [src]="item.pictures | imagePath:'thumb'"
+                [alt]="('general.picture' | transloco) + ' - ' + item.name"
+              />
+            }
             <mat-card-title>{{ item.name }}</mat-card-title>
             <mat-card-subtitle>
               @if (item._count && item._count.plants > 0) {

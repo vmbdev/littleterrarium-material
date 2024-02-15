@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormGroup } from '@angular/forms';
 
@@ -7,6 +7,7 @@ import { FormGroup } from '@angular/forms';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './form-base.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export abstract class FormBaseComponent {
   public readonly form!: FormGroup;

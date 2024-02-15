@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {
   FormGroup,
   FormBuilder,
@@ -10,15 +10,17 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
-import { catchError, EMPTY } from 'rxjs';
+import { BehaviorSubject, catchError, EMPTY, Observable, tap } from 'rxjs';
 import { TranslocoModule } from '@ngneat/transloco';
 
 import { PasswordService } from '@services/password.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'ltm-password-recovery',
   standalone: true,
   imports: [
+    CommonModule,
     ReactiveFormsModule,
     MatFormFieldModule,
     MatIconModule,
@@ -27,15 +29,16 @@ import { PasswordService } from '@services/password.service';
     TranslocoModule,
   ],
   templateUrl: './password-recovery.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PasswordRecoveryComponent {
   protected userForm: FormGroup;
-  protected checkError: boolean = false;
-  protected recoveryStarted: boolean = false;
+  protected checkError$ = new BehaviorSubject<boolean>(false);
+  protected recoveryStarted$?: Observable<any>;
 
   constructor(
     private readonly fb: FormBuilder,
-    private readonly pwd: PasswordService
+    private readonly pws: PasswordService
   ) {
     this.userForm = this.fb.group({
       userRef: ['', Validators.required],
@@ -43,26 +46,21 @@ export class PasswordRecoveryComponent {
   }
 
   submit() {
-    this.checkError = false;
-    this.recoveryStarted = false;
-
     if (!this.userForm.valid) return;
 
     const { userRef } = this.userForm.value;
 
     if (userRef) {
-      this.pwd
+      this.recoveryStarted$ = this.pws
         .forgotPassword(userRef)
         .pipe(
+          tap(() => { this.checkError$.next(false) }),
           catchError((err: HttpErrorResponse) => {
-            this.checkError = true;
+            this.checkError$.next(true);
 
             return EMPTY;
           })
         )
-        .subscribe(() => {
-          this.recoveryStarted = true;
-        });
     }
   }
 }

@@ -45,11 +45,12 @@ export class RegisterComponent {
   @ViewChild(UserFormEmailComponent) emailComponent!: UserFormEmailComponent;
 
   protected stepperIndex: number | null = null;
+  protected pwdRequirements$ = this.pws.getPasswordRequirements();
 
   constructor(
     public readonly auth: AuthService,
     private readonly router: Router,
-    private readonly pwd: PasswordService,
+    private readonly pws: PasswordService,
   ) {}
 
   checkFormValidity(): boolean {
@@ -81,7 +82,7 @@ export class RegisterComponent {
 
     const user = this.getUserFromForm();
 
-    this.pwd
+    this.pws
       .checkPassword(user.password)
       .pipe(
         switchMap(() => {

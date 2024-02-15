@@ -25,7 +25,7 @@ export class PlantService {
     private readonly api: ApiService,
     private readonly auth: AuthService,
     private readonly imagePath: ImagePathService,
-    private readonly translate: TranslocoService
+    private readonly translate: TranslocoService,
   ) {}
 
   create(plant: Plant): Observable<Plant> {
@@ -37,25 +37,32 @@ export class PlantService {
 
     return this.api.getPlant(id, options).pipe(
       map((plant: Plant) => {
-        this.owned.next(this.auth.getUser()?.id === plant.ownerId);
-        plant.visibleName = this.getVisibleName(plant);
+        const newPlant = { ...plant };
 
-        this.plant.next(plant);
+        this.owned.next(this.auth.getUser()?.id === newPlant.ownerId);
+        newPlant.visibleName = this.getVisibleName(newPlant);
 
-        return plant;
-      })
+        this.plant.next(newPlant);
+
+        return newPlant;
+      }),
     );
   }
 
   getMany(options: PlantGetConfig): Observable<Plant[]> {
     return this.api.getPlants(options).pipe(
       map((plants: Plant[]) => {
+        const newPlants = [];
+
         for (const plant of plants) {
-          plant.visibleName = this.getVisibleName(plant);
+          const newPlant = { ...plant };
+
+          newPlant.visibleName = this.getVisibleName(newPlant);
+          newPlants.push(newPlant);
         }
 
-        return plants;
-      })
+        return newPlants;
+      }),
     );
   }
 
@@ -84,21 +91,26 @@ export class PlantService {
     return name;
   }
 
+  count(): Observable<number> {
+    return this.api.countPlants();
+  }
+
   update(plant: Plant, options: PlantUpdateConfig = {}): Observable<Plant> {
     if (plant.specieId === null) options.removeSpecie = true;
 
     return this.api.updatePlant(plant, options).pipe(
       map((plant: Plant) => {
+        const newPlant = { ...plant };
         const current = this.plant.getValue();
-        plant.visibleName = this.getVisibleName(plant);
+        newPlant.visibleName = this.getVisibleName(newPlant);
 
         if (current) {
-          plant.photos = current.photos;
-          this.plant.next(plant);
+          newPlant.photos = current.photos;
+          this.plant.next(newPlant);
         }
 
-        return plant;
-      })
+        return newPlant;
+      }),
     );
   }
 
@@ -151,6 +163,11 @@ export class PlantService {
     return this.plant.getValue();
   }
 
+  empty(): void {
+    this.plant.next(null);
+    this.owned.next(false);
+  }
+
   coverPhoto(plant?: Plant): string {
     let workingPlant;
 
@@ -168,10 +185,10 @@ export class PlantService {
         workingPlant.photos[0].images
       ) {
         image = this.imagePath.get(workingPlant.photos[0].images, 'thumb');
-      } else image = '';
+      } else image = 'assets/nopic.png';
 
       return image;
-    } else return '';
+    } else return 'assets/nopic.png';
   }
 
   getPotInfo(key: string): Pot {

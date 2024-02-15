@@ -18,7 +18,7 @@ export interface Plant {
   potSize: number | null;
   soil: string | null;
   public: boolean;
-  coverId?: number;
+  coverId?: number | null;
   locationId: number;
   ownerId: number;
   createdAt: Date;

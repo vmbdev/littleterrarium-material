@@ -84,8 +84,6 @@ export class UserEditComponent {
 
   ngOnInit(): void {
     this.mt.hide();
-
-    this.auth.checked$.pipe(skipWhile((val) => val === false)).subscribe();
   }
 
   openWaitDialog() {

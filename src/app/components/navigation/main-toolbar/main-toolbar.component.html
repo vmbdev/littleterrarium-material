@@ -33,12 +33,13 @@
                 [routerLink]="item[0].route ? item[0].route : null"
               >
                 <mat-icon>{{ item[0].icon }}</mat-icon>
+
                 @if (item[0].tooltip; as tooltip) {
                   <span>{{ tooltip | transloco }}</span>
                 }
               </button>
             } @else {
-              <mat-divider></mat-divider>
+              <mat-divider />
               <div class="toolbar__menurow">
                 @for (i of item; track i) {
                   <button

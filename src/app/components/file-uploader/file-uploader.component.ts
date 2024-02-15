@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import {
   booleanAttribute,
+  ChangeDetectionStrategy,
   Component,
   ElementRef,
   EventEmitter,
@@ -35,6 +36,7 @@ import { CameraService } from '@services/camera.service';
   ],
   templateUrl: './file-uploader.component.html',
   styleUrls: ['./file-uploader.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FileUploaderComponent implements FormBaseComponent {
   /**

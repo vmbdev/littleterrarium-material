@@ -6,6 +6,7 @@
       <img
         matListItemAvatar
         [src]="task.picture"
+        [alt]="('general.picture' | transloco) + ' - ' + task.plantName"
         [routerLink]="['/plant', task.plantId]"
       >
 

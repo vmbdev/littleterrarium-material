@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { BehaviorSubject, finalize } from 'rxjs';
@@ -44,6 +44,7 @@ import { ImagePathPipe } from '@pipes/image-path/image-path.pipe';
   ],
   templateUrl: './location-list.component.html',
   styleUrls: ['./location-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LocationListComponent {
   @Input() user?: User;
@@ -70,21 +71,21 @@ export class LocationListComponent {
 
   getLocationList() {
     const wd = this.openWaitDialog();
-
     const options: LocationGetConfig = {
       plantCount: true,
       userId: this.user?.id,
     };
 
-    const obs = this.locationService.getMany(options).pipe(
-      finalize(() => {
-        wd.close();
-      }),
-    );
-
-    obs.subscribe((res) => {
-      this.locations$.next(res);
-    });
+    this.locationService
+      .getMany(options)
+      .pipe(
+        finalize(() => {
+          wd.close();
+        }),
+      )
+      .subscribe((res) => {
+        this.locations$.next(res);
+      });
   }
 
   openEdit(id: number): void {
@@ -92,18 +93,19 @@ export class LocationListComponent {
       data: { id },
     });
 
-    bsRef.afterDismissed().subscribe((updatedLocation: Location) => {
-      if (updatedLocation) {
-        const list = this.locations$.getValue();
-        const index = list.findIndex((loc) => loc.id === updatedLocation.id);
-        const plantCount = list[index]._count?.plants;
+    bsRef
+      .afterDismissed().subscribe((updatedLocation: Location) => {
+        if (updatedLocation) {
+          const list = this.locations$.getValue();
+          const index = list.findIndex((loc) => loc.id === updatedLocation.id);
+          const plantCount = list[index]._count?.plants;
 
-        if (plantCount) updatedLocation._count = { plants: plantCount };
+          if (plantCount) updatedLocation._count = { plants: plantCount };
 
-        list[index] = updatedLocation;
-        this.locations$.next(list);
-      }
-    });
+          list[index] = updatedLocation;
+          this.locations$.next(list);
+        }
+      });
   }
 
   selectLocation(id: number) {
@@ -139,11 +141,7 @@ export class LocationListComponent {
       },
       error: (err) => {
         if (err.msg === 'LOCATION_NOT_VALID') {
-          this.translate
-            .selectTranslate('location.invalid')
-            .subscribe((res: string) => {
-              this.errorHandler.push(res);
-            });
+          this.errorHandler.push(this.translate.translate('location.invalid'));
         }
       },
     });

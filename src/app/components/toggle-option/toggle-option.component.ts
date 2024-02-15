@@ -1,5 +1,6 @@
 import {
   booleanAttribute,
+  ChangeDetectionStrategy,
   Component,
   EventEmitter,
   Input,
@@ -24,6 +25,7 @@ import { MatDividerModule } from '@angular/material/divider';
   ],
   templateUrl: './toggle-option.component.html',
   styleUrls: ['./toggle-option.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ToggleOptionComponent {
   @Input({ transform: booleanAttribute }) checked: boolean = false;

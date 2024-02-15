@@ -25,7 +25,7 @@
       [stepControl]="formPassword.form"
       [label]="'general.password' | transloco"
     >
-      <ltm-user-form-password #formPassword />
+      <ltm-user-form-password [requirements]="pwdRequirements$ | async" #formPassword />
       <ltm-stepper-navigation finishButton="true" (finish)="submit()" />
     </mat-step>
 

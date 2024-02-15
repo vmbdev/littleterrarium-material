@@ -7,13 +7,20 @@ import { PlantService } from '@services/plant.service';
 import { Photo } from '@models/photo.model';
 import { SortPipe } from '@pipes/sort/sort.pipe';
 import { ImagePathPipe } from '@pipes/image-path/image-path.pipe';
+import { TranslocoModule } from '@ngneat/transloco';
 
 @Component({
   selector: 'ltm-photo-list',
   standalone: true,
+  imports: [
+    CommonModule,
+    RouterModule,
+    SortPipe,
+    ImagePathPipe,
+    TranslocoModule,
+  ],
   templateUrl: './photo-list.component.html',
   styleUrls: ['./photo-list.component.scss'],
-  imports: [CommonModule, RouterModule, SortPipe, ImagePathPipe],
 })
 export class PhotoListComponent {
   @Input({ required: true }) plantId?: number;

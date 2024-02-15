@@ -1,11 +1,11 @@
-import { Component, Injector } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatStepperModule } from '@angular/material/stepper';
-import { catchError, EMPTY, finalize } from 'rxjs';
+import { catchError, EMPTY, finalize, Observable, tap } from 'rxjs';
 import { TranslocoModule } from '@ngneat/transloco';
 
 import { StepperNavigationComponent } from '@components/stepper-navigation/stepper-navigation.component';
@@ -37,8 +37,11 @@ import { Location } from '@models/location.model';
     LocationFormLightComponent,
     FormPrivacyComponent,
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LocationAddComponent extends LocationUpsertBaseComponent {
+  protected createLocation$?: Observable<Location>;
+
   constructor(
     private readonly injector: Injector,
     private readonly router: Router,
@@ -55,24 +58,20 @@ export class LocationAddComponent extends LocationUpsertBaseComponent {
     const location: Location = this.getLocationFromForm();
     const ud = this.openUploadDialog();
 
-    this.locationService
-      .create(location)
-      .pipe(
-        catchError((error: HttpErrorResponse) => {
-          if (error.error?.msg === 'IMG_NOT_VALID') {
-            this.errorHandler.push(
-              this.translate.translate('errors.invalidImg'),
-            );
-          }
+    this.createLocation$ = this.locationService.create(location).pipe(
+      tap((location: Location) => {
+        this.router.navigate(['location', location.id], { replaceUrl: true });
+      }),
+      catchError((error: HttpErrorResponse) => {
+        if (error.error?.msg === 'IMG_NOT_VALID') {
+          this.errorHandler.push(this.translate.translate('errors.invalidImg'));
+        }
 
-          return EMPTY;
-        }),
-        finalize(() => {
-          ud.close();
-        }),
-      )
-      .subscribe((location: Location) => {
-        this.router.navigate([`location/${location.id}`], { replaceUrl: true });
-      });
+        return EMPTY;
+      }),
+      finalize(() => {
+        ud.close();
+      }),
+    );
   }
 }

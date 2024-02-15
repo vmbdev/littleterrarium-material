@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpEventType } from '@angular/common/http';
-import { finalize } from 'rxjs';
+import { EMPTY, Observable, catchError, finalize } from 'rxjs';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { MatStepperModule } from '@angular/material/stepper';
 import {
@@ -22,6 +22,7 @@ import { PlantService } from '@services/plant.service';
 import { PhotoService } from '@services/photo.service';
 import { ErrorHandlerService } from '@services/error-handler.service';
 import { Photo } from '@models/photo.model';
+import { Plant } from '@models/plant.model';
 
 @Component({
   selector: 'ltm-photo-add',
@@ -48,6 +49,7 @@ import { Photo } from '@models/photo.model';
 export class PhotoAddComponent {
   @ViewChild(FormPrivacyComponent) privacyComponent!: FormPrivacyComponent;
   private plantId?: number;
+  protected plant$?: Observable<Plant>;
   private pictures: File[] = [];
 
   constructor(
@@ -64,12 +66,14 @@ export class PhotoAddComponent {
     this.plantId = +this.route.snapshot.params['plantId'];
 
     if (this.plantId) {
-      this.plantService.get(this.plantId).subscribe({
-        error: () => {
+      this.plant$ = this.plantService.get(this.plantId).pipe(
+        catchError(() => {
           this.errorHandler.push(this.translate.translate('plant.invalid'));
           this.router.navigateByUrl('/');
-        },
-      });
+
+          return EMPTY;
+        }),
+      );
     }
   }
 

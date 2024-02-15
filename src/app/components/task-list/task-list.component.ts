@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MatRippleModule } from '@angular/material/core';
@@ -25,6 +25,7 @@ import { TaskService } from '@services/task.service';
   ],
   templateUrl: './task-list.component.html',
   styleUrls: ['./task-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TaskListComponent {
   constructor(

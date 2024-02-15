@@ -9,7 +9,15 @@ import {
   MatBottomSheet,
   MatBottomSheetModule,
 } from '@angular/material/bottom-sheet';
-import { catchError, EMPTY, finalize, Subscription, switchMap } from 'rxjs';
+import {
+  catchError,
+  EMPTY,
+  forkJoin,
+  Observable,
+  of,
+  switchMap,
+  tap,
+} from 'rxjs';
 import { TranslocoService, TranslocoModule } from '@ngneat/transloco';
 import { DateTime } from 'luxon';
 
@@ -18,18 +26,16 @@ import { PropertyComponent } from '@components/info-box/property/property.compon
 import { ToggleOptionComponent } from '@components/toggle-option/toggle-option.component';
 import { PhotoEditComponent } from '@components/photo/photo-edit/photo-edit.component';
 import { ViewerComponent } from '@components/viewer/viewer.component';
-import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog.component';
 import { ConfirmDialogComponent } from '@components/dialogs/confirm-dialog/confirm-dialog.component';
 import { PhotoService } from '@services/photo.service';
-import { PlantService } from '@services/plant.service';
 import { MainToolbarService } from '@services/main-toolbar.service';
 import { ErrorHandlerService } from '@services/error-handler.service';
 import { ImagePathService } from '@services/image-path.service';
 import { ViewerService } from '@services/viewer.service';
-import { Plant } from '@models/plant.model';
+import { ShareService } from '@services/share.service';
 import { NavigationData, Photo } from '@models/photo.model';
 import { DaysAgoPipe } from '@pipes/days-ago/days-ago.pipe';
-import { ShareService } from '@services/share.service';
+import { ImagePathPipe } from '@pipes/image-path/image-path.pipe';
 
 @Component({
   selector: 'ltm-photo',
@@ -49,25 +55,19 @@ import { ShareService } from '@services/share.service';
     ToggleOptionComponent,
     ViewerComponent,
     DaysAgoPipe,
+    ImagePathPipe,
   ],
 })
 export class PhotoComponent {
   private id?: number;
-  protected confirmDelete: boolean = false;
-  protected enablePhotoEditing: boolean = false;
-  private navigation: NavigationData = {};
-  protected plantCoverId?: number;
+  private navigation?: NavigationData;
   protected currentImageFull?: string | null;
-  protected coverChecked: boolean = false;
-  protected touchEvents: any;
-
-  private routeDetect$?: Subscription;
+  protected photo$?: Observable<Photo | null>;
 
   constructor(
     private readonly route: ActivatedRoute,
     private readonly router: Router,
     public readonly photoService: PhotoService,
-    private readonly plantService: PlantService,
     private readonly errorHandler: ErrorHandlerService,
     public readonly imagePath: ImagePathService,
     private readonly translate: TranslocoService,
@@ -80,80 +80,29 @@ export class PhotoComponent {
 
   ngOnInit(): void {
     this.setMtMenus();
+    this.photo$ = this.getCurrentPhoto();
+  }
 
+  getCurrentPhoto(): Observable<Photo | null> {
     // Angular doesn't update a component when the route only changes its
     // parameters, so we need to do it when navigating the previous/next photo
-    this.routeDetect$ = this.route.params.subscribe((param: Params) => {
-      this.id = param['photoId'];
-      this.loadPhoto();
-    });
-  }
+    return this.route.params.pipe(
+      switchMap((param: Params) => {
+        this.id = +param['photoId'];
 
-  loadNextPhoto() {
-    if (this.navigation.next) {
-      this.router.navigate(['/photo', this.navigation.next.id], {
-        replaceUrl: true,
-      });
-    }
-  }
-
-  loadPrevPhoto() {
-    if (this.navigation.prev) {
-      this.router.navigate(['/photo', this.navigation.prev.id], {
-        replaceUrl: true,
-      });
-    }
-  }
-
-  ngOnDestroy(): void {
-    if (this.routeDetect$) this.routeDetect$.unsubscribe();
-  }
-
-  loadPhoto(): void {
-    if (this.id) {
-      const wd = this.openWaitDialog();
-
-      this.navigation = {};
-
-      this.photoService
-        .get(this.id, { navigation: true, cover: true })
-        .pipe(
-          finalize(() => {
-            wd.close();
-          }),
-          catchError((err: HttpErrorResponse) => {
-            let msg: string;
-
-            if (err.error?.msg === 'PHOTO_NOT_FOUND') msg = 'photo.invalid';
-            else msg = 'errors.server';
-
-            this.translate.selectTranslate(msg).subscribe((res: string) => {
-              this.errorHandler.push(res);
-            });
-
-            this.router.navigateByUrl('/');
-
-            return EMPTY;
-          }),
-          switchMap((photo: Photo) => {
-            this.currentImageFull = this.imagePath.get(photo.images, 'full');
-            this.mt.setName(this.getDateTitle(photo.takenAt));
-
-            return this.photoService.getNavigation(photo.id);
-          }),
-          switchMap((navigation: NavigationData) => {
-            this.navigation = navigation;
-            const photo = this.photoService.current();
-
-            if (photo?.plantId) {
-              return this.plantService.getCover(photo.plantId);
-            } else return EMPTY;
-          }),
-        )
-        .subscribe((cover: any) => {
-          this.plantCoverId = cover.coverId;
-        });
-    }
+        return forkJoin([
+          this.photoService.getNavigation(this.id),
+          this.photoService.get(this.id),
+          of(this.id),
+        ]);
+      }),
+      tap(([navigation, photo, id]) => {
+        this.currentImageFull = this.imagePath.get(photo.images, 'full');
+        this.mt.setName(this.getDateTitle(photo.takenAt));
+        this.navigation = navigation;
+      }),
+      switchMap(() => this.photoService.photo$)
+    );
   }
 
   setMtMenus(): void {
@@ -189,7 +138,23 @@ export class PhotoComponent {
     this.mt.setButtons([]);
   }
 
-  async sharePhoto() {
+  loadNextPhoto() {
+    if (this.navigation?.next) {
+      this.router.navigate(['/photo', this.navigation.next.id], {
+        replaceUrl: true,
+      });
+    }
+  }
+
+  loadPrevPhoto() {
+    if (this.navigation?.prev) {
+      this.router.navigate(['/photo', this.navigation.prev.id], {
+        replaceUrl: true,
+      });
+    }
+  }
+
+  sharePhoto() {
     if (this.currentImageFull) {
       this.share.shareImageFromURL(this.currentImageFull).subscribe();
     }
@@ -231,16 +196,6 @@ export class PhotoComponent {
     return this.translate.translate('general.daysAgo', { days: numberOfDays });
   }
 
-  openWaitDialog() {
-    return this.dialog.open(WaitDialogComponent, {
-      disableClose: true,
-      data: {
-        message: this.translate.translate('general.loading'),
-        progressBar: false,
-      },
-    });
-  }
-
   openEdit(): void {
     if (this.id) {
       const ref = this.bottomSheet.open(PhotoEditComponent, {
@@ -254,24 +209,6 @@ export class PhotoComponent {
           this.mt.setName(this.getDateTitle(photo.takenAt));
         }
       });
-    }
-  }
-
-  updateCoverPhoto(setCover: boolean): void {
-    const photo = this.photoService.current();
-
-    if (photo) {
-      if (!setCover && photo.id === this.plantCoverId) {
-        const plant: Plant = { id: photo.plantId } as Plant;
-        this.plantService.update(plant, { removeCover: true }).subscribe(() => {
-          this.plantCoverId = undefined;
-        });
-      } else if (setCover) {
-        const plant: Plant = { id: photo.plantId, coverId: photo.id } as Plant;
-        this.plantService.update(plant).subscribe(() => {
-          this.plantCoverId = photo.id;
-        });
-      }
     }
   }
 }

@@ -33,6 +33,7 @@ import { MatIconModule } from '@angular/material/icon';
   styleUrls: ['./user-form-password.component.scss'],
 })
 export class UserFormPasswordComponent implements FormBaseComponent {
+  @Input() requirements?: PasswordRequirements | null;
   public readonly form = this.fb.group(
     {
       password: ['', [Validators.required]],
@@ -45,38 +46,38 @@ export class UserFormPasswordComponent implements FormBaseComponent {
       ],
     },
   );
-  pwdReq?: PasswordRequirements;
-  hidePassword: boolean = true;
-  hidePassword2: boolean = true;
-  nonAlphaNumChars: string = '!@#$%^&*()_+-=[]{};\':"|,.<>/?';
+
+  protected hidePassword: boolean = true;
+  protected hidePassword2: boolean = true;
+  protected nonAlphaNumChars: string = '!@#$%^&*()_+-=[]{};\':"|,.<>/?';
 
   constructor(
     private readonly fb: FormBuilder,
     private readonly api: ApiService,
   ) {}
 
-  ngOnInit(): void {
-    this.api.getPasswordRequirements().subscribe((requirements: any) => {
-      this.pwdReq = requirements;
-    });
-  }
+  // ngOnInit(): void {
+  //   this.api.getPasswordRequirements().subscribe((requirements: any) => {
+  //     this.pwdReq = requirements;
+  //   });
+  // }
 
   checkPasswordStrength(group: AbstractControl): ValidationErrors | null {
     const value = group.get('password')?.value;
     const errorObj: ValidationErrors = {};
 
-    if (this.pwdReq) {
-      if (value.length < this.pwdReq.minLength) {
+    if (this.requirements) {
+      if (value.length < this.requirements.minLength) {
         errorObj['minLength'] = true;
       }
-      if (this.pwdReq.requireUppercase && !/.*([A-Z]).*/.test(value)) {
+      if (this.requirements.requireUppercase && !/.*([A-Z]).*/.test(value)) {
         errorObj['missingUppercase'] = true;
       }
-      if (this.pwdReq.requireNumber && !/.*(\d).*/.test(value)) {
+      if (this.requirements.requireNumber && !/.*(\d).*/.test(value)) {
         errorObj['missingNumber'] = true;
       }
       if (
-        this.pwdReq.requireNonAlphanumeric &&
+        this.requirements.requireNonAlphanumeric &&
         !/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/.test(value)
       ) {
         errorObj['missingNonAlphanumeric'] = true;
@@ -93,15 +94,6 @@ export class UserFormPasswordComponent implements FormBaseComponent {
     if (pwd1 !== pwd2) return { different: true };
 
     return null;
-  }
-
-  hasPasswordConditions(): boolean {
-    return !!(
-      this.pwdReq &&
-      (this.pwdReq.requireNumber ||
-        this.pwdReq.requireUppercase ||
-        this.pwdReq.requireNonAlphanumeric)
-    );
   }
 
   hasPasswordError(control: string): boolean | undefined {

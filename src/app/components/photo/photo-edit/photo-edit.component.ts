@@ -9,7 +9,14 @@ import {
 } from '@angular/material/bottom-sheet';
 import { MatDialog } from '@angular/material/dialog';
 import { FormGroup } from '@angular/forms';
-import { finalize } from 'rxjs';
+import {
+  EMPTY,
+  Observable,
+  forkJoin,
+  of,
+  switchMap,
+  withLatestFrom,
+} from 'rxjs';
 import { TranslocoService, TranslocoModule } from '@ngneat/transloco';
 
 import { PhotoFormDescriptionComponent } from '@components/photo/forms/photo-form-description/photo-form-description.component';
@@ -17,16 +24,17 @@ import { PhotoFormDateComponent } from '@components/photo/forms/photo-form-date/
 import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog.component';
 import { EditPageComponent } from '@components/edit-page/edit-page.component';
 import { FormPrivacyComponent } from '@components/form-privacy/form-privacy.component';
+import { ToggleOptionComponent } from '@components/toggle-option/toggle-option.component';
 import { ErrorHandlerService } from '@services/error-handler.service';
 import { PlantService } from '@services/plant.service';
 import { PhotoService } from '@services/photo.service';
 import { Photo } from '@models/photo.model';
+import { Plant } from '@models/plant.model';
 
 interface PhotoEditConfig {
   id: number;
 }
 
-// TODO: add cover edit here
 @Component({
   selector: 'ltm-photo-edit',
   standalone: true,
@@ -40,6 +48,7 @@ interface PhotoEditConfig {
     PhotoFormDateComponent,
     FormPrivacyComponent,
     EditPageComponent,
+    ToggleOptionComponent,
   ],
   templateUrl: './photo-edit.component.html',
 })
@@ -52,10 +61,11 @@ export class PhotoEditComponent {
   private forms: FormGroup[] = [];
   private returnedPhoto?: Photo;
 
-  photo$ = this.photoService.get(this.editPhoto.id, {
-    navigation: true,
-    cover: true,
-  });
+  protected plantCoverId?: number;
+  private plantId?: number;
+  private setPhotoAsCover: boolean = false;
+
+  photo$ = this.photoService.get(this.editPhoto.id);
 
   constructor(
     private readonly dialog: MatDialog,
@@ -68,6 +78,26 @@ export class PhotoEditComponent {
     @Inject(MAT_BOTTOM_SHEET_DATA)
     public readonly editPhoto: PhotoEditConfig,
   ) {}
+
+  ngOnInit(): void {
+    const obs$ = this.photoService.photo$;
+
+    obs$
+      .pipe(
+        switchMap((photo: Photo | null) => {
+          if (photo) return this.plantService.getCover(photo.plantId);
+
+          return EMPTY;
+        }),
+        withLatestFrom(obs$),
+      )
+      .subscribe(([{ coverId }, photo]) => {
+        if (photo) {
+          this.plantCoverId = coverId;
+          this.plantId = photo.plantId;
+        }
+      });
+  }
 
   openWaitDialog() {
     return this.dialog.open(WaitDialogComponent, {
@@ -106,29 +136,41 @@ export class PhotoEditComponent {
     return this.forms.every((form) => form.valid);
   }
 
+  updateCoverPhoto(checked: boolean) {
+    this.setPhotoAsCover = checked;
+  }
+
   submit(): void {
     if (!this.checkFormValidity()) {
       this.errorHandler.push(this.translate.translate('general.formErrors'));
       return;
     }
-
     const photo: Photo = this.getPhotoFromForm();
     const wd = this.openWaitDialog();
+    const updatePhoto$ = this.photoService.update(photo);
+    let updatePlantCover$: Observable<any>;
+    let plant: Plant | undefined = undefined;
 
-    this.photoService
-      .update(photo)
-      .pipe(
-        finalize(() => {
-          wd.close();
-        }),
-      )
-      .subscribe((updatedPhoto: Photo) => {
-        const currentPhoto = this.photoService.current();
+    // if this photo will be the new cover,
+    // or if the current photo will be removed from cover
+    if (this.setPhotoAsCover) {
+      plant = { id: this.plantId, coverId: this.editPhoto.id } as Plant;
+    } else if (this.plantCoverId == this.editPhoto.id) {
+      plant = { id: this.plantId, coverId: null } as Plant;
+    }
 
-        if (this.editPhoto && this.bottomSheetRef) {
-          this.returnedPhoto = { ...currentPhoto, ...updatedPhoto };
-          this.bottomSheetRef.dismiss(this.returnedPhoto);
-        }
-      });
+    if (plant) updatePlantCover$ = this.plantService.update(plant);
+    else updatePlantCover$ = of(null);
+
+    forkJoin([updatePhoto$, updatePlantCover$]).subscribe(([updatedPhoto]) => {
+      const currentPhoto = this.photoService.current();
+
+      if (this.editPhoto && this.bottomSheetRef) {
+        this.returnedPhoto = { ...currentPhoto, ...updatedPhoto };
+        this.bottomSheetRef.dismiss(this.returnedPhoto);
+      }
+
+      wd.close();
+    });
   }
 }

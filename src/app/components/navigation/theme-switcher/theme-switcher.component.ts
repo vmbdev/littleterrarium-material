@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { TranslocoModule } from '@ngneat/transloco';
@@ -19,6 +19,7 @@ import { CapitalizePipe } from '@pipes/capitalize/capitalize.pipe';
   ],
   templateUrl: './theme-switcher.component.html',
   styleUrl: './theme-switcher.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ThemeSwitcherComponent {
   constructor(public readonly themeService: ThemeService) {}

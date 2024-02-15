@@ -5,7 +5,7 @@ export interface Photo {
   images: ImagePath;
   description: string | null;
   public: boolean;
-  takenAt: Date;
+  takenAt: Date | string;
   hashId: number;
   plantId: number;
   ownerId: number;

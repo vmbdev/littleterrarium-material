@@ -1,5 +1,5 @@
 import { CommonModule, Location } from '@angular/common';
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
@@ -28,6 +28,7 @@ import { SearchService } from '@services/search.service';
   ],
   templateUrl: './main-toolbar.component.html',
   styleUrls: ['./main-toolbar.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MainToolbarComponent {
   constructor(

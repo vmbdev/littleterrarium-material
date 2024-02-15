@@ -1,23 +1,18 @@
-import { Component, Injector, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Injector,
+  ViewChild,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { TranslocoService } from '@ngneat/transloco';
 
-import {
-  LocationFormLightComponent
-} from '@components/location/forms/location-form-light/location-form-light.component';
-import {
-  LocationFormNameComponent
-} from '@components/location/forms/location-form-name/location-form-name.component';
-import {
-  WaitDialogComponent
-} from '@components/dialogs/wait-dialog/wait-dialog.component';
-import {
-  FormPrivacyComponent
-} from '@components/form-privacy/form-privacy.component';
-import {
-  FileUploaderComponent
-} from '@components/file-uploader/file-uploader.component';
+import { LocationFormLightComponent } from '@components/location/forms/location-form-light/location-form-light.component';
+import { LocationFormNameComponent } from '@components/location/forms/location-form-name/location-form-name.component';
+import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog.component';
+import { FormPrivacyComponent } from '@components/form-privacy/form-privacy.component';
+import { FileUploaderComponent } from '@components/file-uploader/file-uploader.component';
 import { LocationService } from '@services/location.service';
 import { ErrorHandlerService } from '@services/error-handler.service';
 import { Location } from '@models/location.model';
@@ -27,6 +22,7 @@ import { Location } from '@models/location.model';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './location-upsert-base.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LocationUpsertBaseComponent {
   @ViewChild(LocationFormNameComponent)

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -9,7 +9,16 @@ import {
   MatBottomSheet,
   MatBottomSheetModule,
 } from '@angular/material/bottom-sheet';
-import { catchError, EMPTY, finalize, forkJoin } from 'rxjs';
+import {
+  BehaviorSubject,
+  catchError,
+  EMPTY,
+  finalize,
+  Observable,
+  Subject,
+  switchMap,
+  tap,
+} from 'rxjs';
 import { TranslocoService, TranslocoModule } from '@ngneat/transloco';
 
 import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog.component';
@@ -23,7 +32,7 @@ import { ConfirmDialogComponent } from '@components/dialogs/confirm-dialog/confi
 import { MainToolbarService } from '@services/main-toolbar.service';
 import { PlantService } from '@services/plant.service';
 import { ErrorHandlerService } from '@services/error-handler.service';
-import { Condition, Plant } from '@models/plant.model';
+import { Plant } from '@models/plant.model';
 import { CapitalizePipe } from '@pipes/capitalize/capitalize.pipe';
 
 @Component({
@@ -45,11 +54,13 @@ import { CapitalizePipe } from '@pipes/capitalize/capitalize.pipe';
     PlantExpansionInfoComponent,
   ],
   templateUrl: './plant.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlantComponent {
   protected id?: number;
-  protected conditionColor?: string;
-  protected conditionDesc?: string;
+  protected conditionColor$ = new BehaviorSubject<string | null>(null);
+  protected conditionDesc$ = new BehaviorSubject<string | null>(null);
+  protected plant$?: Observable<Plant | null>;
 
   constructor(
     private readonly router: Router,
@@ -85,39 +96,31 @@ export class PlantComponent {
 
     const wd = this.openWaitDialog();
 
-    this.plantService
-      .get(this.id, { photos: true })
-      .pipe(
-        finalize(() => {
-          wd.close();
-        }),
-        catchError((err: HttpErrorResponse) => {
-          let msg;
-
-          if (err.error?.msg === 'PLANT_NOT_FOUND') msg = 'plant.invalid';
-          else msg = 'errors.server';
-
-          this.translate.selectTranslate(msg).subscribe((res: string) => {
-            this.errorHandler.push(res);
-          });
-
-          this.router.navigateByUrl('/');
-
-          return EMPTY;
-        }),
-      )
-      .subscribe((plant: Plant) => {
+    this.plant$ = this.plantService.get(this.id, { photos: true }).pipe(
+      tap((plant: Plant) => {
         if (plant.condition) {
-          this.conditionColor = this.plantService.getConditionColor(
-            plant.condition,
-          );
-          this.conditionDesc = this.plantService.getConditionDesc(
-            plant.condition,
-          );
+          this.conditionColor$.next(this.plantService.getConditionColor(plant.condition));
+          this.conditionDesc$.next(this.plantService.getConditionDesc(plant.condition));
         }
 
         this.updateMainToolbar(plant);
-      });
+      }),
+      finalize(() => {
+        wd.close();
+      }),
+      switchMap(() => this.plantService.plant$),
+      catchError((err: HttpErrorResponse) => {
+        let msg;
+
+        if (err.error?.msg === 'PLANT_NOT_FOUND') msg = 'plant.invalid';
+        else msg = 'errors.server';
+
+        this.errorHandler.push(this.translate.translate(msg));
+        this.router.navigateByUrl('/');
+
+        return EMPTY;
+      }),
+    );
   }
 
   updateMainToolbar(plant: Plant) {
@@ -147,19 +150,14 @@ export class PlantComponent {
   }
 
   openRemoveDialog() {
-    forkJoin({
-      title: this.translate.selectTranslate('general.delete'),
-      question: this.translate.selectTranslate('plant.remove'),
-    }).subscribe(({ title, question }) => {
-      this.dialog.open(ConfirmDialogComponent, {
-        data: {
-          title,
-          question: [question],
-          accept: () => {
-            this.delete();
-          },
+    this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        title: this.translate.translate('general.delete'),
+        question: [this.translate.translate('plant.remove')],
+        accept: () => {
+          this.delete();
         },
-      });
+      },
     });
   }
 
@@ -184,9 +182,8 @@ export class PlantComponent {
 
       ref.afterDismissed().subscribe((plant: Plant) => {
         if (plant) {
-          const newName = plant.visibleName
-            ? plant.visibleName
-            : this.plantService.getVisibleName(plant);
+          const newName =
+            plant.visibleName ?? this.plantService.getVisibleName(plant);
 
           this.mt.setName(newName);
         }

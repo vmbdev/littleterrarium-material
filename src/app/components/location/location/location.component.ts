@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -36,6 +36,7 @@ import { Location } from '@models/location.model';
     FabComponent,
   ],
   templateUrl: './location.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LocationComponent {
   private id?: number;

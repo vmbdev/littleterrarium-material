@@ -13,7 +13,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { TranslocoService, TranslocoModule } from '@ngneat/transloco';
-import { finalize } from 'rxjs';
+import { EMPTY, catchError, finalize } from 'rxjs';
 
 import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog.component';
 import { AuthService } from '@services/auth.service';
@@ -34,6 +34,7 @@ import { AuthService } from '@services/auth.service';
     WaitDialogComponent,
   ],
   templateUrl: './signin.component.html',
+  styleUrl: './signin.component.scss',
 })
 export class SigninComponent {
   protected readonly signinForm: FormGroup = this.fb.group({
@@ -50,12 +51,6 @@ export class SigninComponent {
     private readonly dialog: MatDialog,
     private readonly translate: TranslocoService,
   ) {}
-
-  ngOnInit(): void {
-    this.auth.signedIn$.subscribe((val: boolean) => {
-      if (val) this.router.navigateByUrl('/');
-    });
-  }
 
   openWaitDialog() {
     return this.dialog.open(WaitDialogComponent, {
@@ -80,17 +75,18 @@ export class SigninComponent {
         finalize(() => {
           wd.close();
         }),
-      )
-      .subscribe({
-        next: () => {
-          this.router.navigateByUrl('/');
-        },
-        error: (err: any) => {
+        catchError((err: any) => {
           if (err.msg && err.msg === 'USER_DATA_INCORRECT') {
             this.authInvalid = true;
           }
-        },
-      });
+
+          return EMPTY;
+        })
+      )
+      .subscribe(() => {
+          this.router.navigateByUrl('/');
+        }
+      );
   }
 
   toggleHidePassword(): void {

@@ -1,4 +1,5 @@
 import {
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ContentChildren,
@@ -27,6 +28,7 @@ import {
   ],
   templateUrl: './info-box.component.html',
   styleUrls: ['./info-box.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InfoBoxComponent {
   @Input() description?: string | null = null;
