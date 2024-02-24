@@ -5,8 +5,8 @@ import { MatRippleModule } from '@angular/material/core';
 import { MatListModule } from '@angular/material/list';
 import { TranslocoService, TranslocoModule } from '@ngneat/transloco';
 
-import { PlantButtonWaterComponent } from '@components/plant/buttons/plant-button-water/plant-button-water.component';
-import { PlantButtonFertilizeComponent } from '@components/plant/buttons/plant-button-fertilize/plant-button-fertilize.component';
+import { TaskButtonWaterComponent } from '@components/tasks/task-button-water/task-button-water.component';
+import { TaskButtonFertilizeComponent } from '@components/tasks/task-button-fertilize/task-button-fertilize.component';
 import { PlantService } from '@services/plant.service';
 import { MainToolbarService } from '@services/main-toolbar.service';
 import { TaskService } from '@services/task.service';
@@ -20,8 +20,8 @@ import { TaskService } from '@services/task.service';
     MatRippleModule,
     MatListModule,
     TranslocoModule,
-    PlantButtonWaterComponent,
-    PlantButtonFertilizeComponent,
+    TaskButtonWaterComponent,
+    TaskButtonFertilizeComponent,
   ],
   templateUrl: './task-list.component.html',
   styleUrls: ['./task-list.component.scss'],

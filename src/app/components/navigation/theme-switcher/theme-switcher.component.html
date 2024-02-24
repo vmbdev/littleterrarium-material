@@ -1,5 +1,5 @@
 @if (themeService.availableThemes && themeService.availableThemes.length > 1) {
-  @if (themeService.theme$ | async; as currentTheme) {
+  @if (themeService.$theme(); as currentTheme) {
     <mat-form-field appearance="fill" class="theme-switcher">
       <mat-label>{{ 'themes.title' | transloco }}</mat-label>
       <mat-select

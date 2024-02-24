@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { SigninComponent } from '@components/user/signin/signin.component';
 
@@ -7,6 +7,7 @@ import { SigninComponent } from '@components/user/signin/signin.component';
   standalone: true,
   imports: [SigninComponent],
   templateUrl: './signin-layout.component.html',
-  styleUrl: './signin-layout.component.scss'
+  styleUrl: './signin-layout.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SigninLayoutComponent {}

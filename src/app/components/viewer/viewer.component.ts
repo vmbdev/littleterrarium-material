@@ -162,7 +162,7 @@ export class ViewerComponent {
     this.position.top = null;
   }
 
-  doubleTap(event: any) {
+  doubleTap() {
     if (this.scale > 3) {
       this.resetView();
     } else {
@@ -199,12 +199,12 @@ export class ViewerComponent {
     }
   }
 
-  panEnd(event: any) {
+  panEnd() {
     this.previousDelta.x = 0;
     this.previousDelta.y = 0;
   }
 
-  pinchEnd(event: any) {
+  pinchEnd() {
     if (this.position.left && this.position.left <= -this.dimensions.width) {
       this.position.left = -this.rightLimit;
       this.photoElement.nativeElement.style.left = this.position.left + 'px';

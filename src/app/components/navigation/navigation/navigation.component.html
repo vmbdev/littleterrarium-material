@@ -1,6 +1,6 @@
 <mat-sidenav-container
   class="sidenav-container"
-  [ngClass]="(themeService.theme$ | async) + '-theme'"
+  [ngClass]="(themeService.$theme()) + '-theme'"
 >
   <mat-sidenav
     #drawer
@@ -28,7 +28,7 @@
         <h2 matListItemLine>
           {{
             'tasks.remaining'
-              | transloco: { taskNumber: (taskService.count$ | async) }
+              | transloco: { taskNumber: (taskService.$count()) }
           }}
         </h2>
       </mat-list-item>

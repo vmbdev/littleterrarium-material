@@ -10,24 +10,26 @@
       [matAutocomplete]="auto"
       [placeholder]="'specieFinder.inputPlaceholder' | transloco"
       (keyup)="keyPress(specieInput.value)"
-      [value]="currentSpecieName ? currentSpecieName : null"
-    >
+      [value]="specieName$ | async"
+    />
 
     <mat-autocomplete
       autoActiveFirstOption
       #auto="matAutocomplete"
-      (optionSelected)="selectSpecie($event.option.value.id)"
+      (optionSelected)="
+        selectSpecie($event.option.value.id, $event.option.value.name)
+      "
       [displayWith]="getSpecieName"
     >
-      @for (specie of results$ | async; track specie.id) {
+      @for (specie of $results(); track specie.id) {
         <mat-option [value]="specie">
           {{ specie.name }}
         </mat-option>
       }
     </mat-autocomplete>
-    
+
     @if (specieInput.value) {
-      <button matSuffix mat-icon-button (click)="clear(specieInput)">
+      <button matSuffix mat-icon-button (click)="clear()">
         <mat-icon>close</mat-icon>
       </button>
     }

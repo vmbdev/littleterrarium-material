@@ -2,8 +2,8 @@
   <ltm-fab link="/location/create" />
 }
 
-@if (locations$ | async; as locations) {
-  <div class="location-list">
+@if ($locations(); as locations) {
+  <article class="location-list">
     @for (item of locations; track item.id) {
       <mat-card class="location-list__item" matRipple>
         <mat-card-header (click)="selectLocation(item.id)">
@@ -29,7 +29,7 @@
           </mat-card-title-group>
         </mat-card-header>
         <mat-card-actions class="location-list__buttonrow">
-          <button mat-icon-button color="basic" (click)="openEdit(item.id)">
+          <button mat-icon-button color="basic" (click)="openEdit(item)">
             <mat-icon>edit</mat-icon>
           </button>
           <button
@@ -42,5 +42,5 @@
         </mat-card-actions>
       </mat-card>
     }
-  </div>
+  </article>
 }

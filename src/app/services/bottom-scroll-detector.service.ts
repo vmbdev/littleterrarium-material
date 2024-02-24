@@ -1,20 +1,21 @@
-import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Injectable, WritableSignal, signal } from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class BottomScrollDetectorService {
-  // for local count; not to stream if not necessary
-  private currentValue: boolean = false;
-  private detected = new Subject<boolean>();
-  public readonly detected$ = this.detected.asObservable();
+  readonly #$detected: WritableSignal<number | null> = signal(null);
+  public readonly $detected = this.#$detected.asReadonly();
 
   set(): void {
-    if (!this.currentValue) this.detected.next(true);
+    const tstamp = Date.now();
+
+    if (this.#$detected() !== tstamp) {
+      this.#$detected.set(tstamp);
+    }
   }
 
   clear(): void {
-    if (this.currentValue) this.detected.next(false);
+    this.#$detected.set(null);
   }
 }

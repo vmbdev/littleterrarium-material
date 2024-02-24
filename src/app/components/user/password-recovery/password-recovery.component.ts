@@ -1,4 +1,3 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {
   FormGroup,
@@ -55,7 +54,7 @@ export class PasswordRecoveryComponent {
         .forgotPassword(userRef)
         .pipe(
           tap(() => { this.checkError$.next(false) }),
-          catchError((err: HttpErrorResponse) => {
+          catchError(() => {
             this.checkError$.next(true);
 
             return EMPTY;

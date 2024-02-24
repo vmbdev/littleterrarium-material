@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal, WritableSignal } from '@angular/core';
 import { BehaviorSubject, EMPTY, map, Observable } from 'rxjs';
 import { TranslocoService } from '@ngneat/transloco';
 
@@ -11,6 +11,8 @@ import { AuthService } from '@services/auth.service';
 import { ImagePathService } from '@services/image-path.service';
 import { Photo } from '@models/photo.model';
 import { Condition, Plant, Pot } from '@models/plant.model';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from '@components/dialogs/confirm-dialog/confirm-dialog.component';
 
 @Injectable({
   providedIn: 'root',
@@ -18,14 +20,15 @@ import { Condition, Plant, Pot } from '@models/plant.model';
 export class PlantService {
   private plant = new BehaviorSubject<Plant | null>(null);
   public readonly plant$ = this.plant.asObservable();
-  private owned = new BehaviorSubject<boolean>(false);
-  public readonly owned$ = this.owned.asObservable();
+  readonly #$owned: WritableSignal<boolean> = signal(false);
+  public readonly $owned = this.#$owned.asReadonly();
 
   constructor(
     private readonly api: ApiService,
     private readonly auth: AuthService,
     private readonly imagePath: ImagePathService,
     private readonly translate: TranslocoService,
+    private readonly dialog: MatDialog,
   ) {}
 
   create(plant: Plant): Observable<Plant> {
@@ -39,7 +42,7 @@ export class PlantService {
       map((plant: Plant) => {
         const newPlant = { ...plant };
 
-        this.owned.next(this.auth.getUser()?.id === newPlant.ownerId);
+        this.#$owned.set(this.auth.getUser()?.id === newPlant.ownerId);
         newPlant.visibleName = this.getVisibleName(newPlant);
 
         this.plant.next(newPlant);
@@ -123,7 +126,7 @@ export class PlantService {
     } else return EMPTY;
   }
 
-  fertilize(id?: number): Observable<any> {
+  fertilize(id?: number): Observable<Plant> {
     let plantId: number | undefined;
 
     if (id) plantId = id;
@@ -141,7 +144,7 @@ export class PlantService {
     return EMPTY;
   }
 
-  water(id?: number): Observable<any> {
+  water(id?: number): Observable<Plant> {
     let plantId: number | undefined;
 
     if (id) plantId = id;
@@ -165,7 +168,7 @@ export class PlantService {
 
   empty(): void {
     this.plant.next(null);
-    this.owned.next(false);
+    this.#$owned.set(false);
   }
 
   coverPhoto(plant?: Plant): string {
@@ -307,5 +310,32 @@ export class PlantService {
     }
 
     return color;
+  }
+
+  openWaterDialog(id: number) {
+    this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        title: this.translate.translate('general.watering'),
+        question: [
+          this.translate.translate('plant-widget-water.confirm'),
+          this.translate.translate('plant-widget-water.warning'),
+        ],
+        accept: () => {
+          this.water(id).subscribe();
+        },
+      },
+    });
+  }
+
+  openFertDialog(id: number) {
+    this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        title: this.translate.translate('general.fertilize'),
+        question: [this.translate.translate('plant-widget-fertilizer.confirm')],
+        accept: () => {
+          this.fertilize(id).subscribe();
+        },
+      },
+    });
   }
 }

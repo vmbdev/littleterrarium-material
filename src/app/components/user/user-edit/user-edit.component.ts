@@ -1,4 +1,5 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   Optional,
   QueryList,
@@ -17,7 +18,7 @@ import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { skipWhile, catchError, EMPTY, finalize } from 'rxjs';
+import { catchError, EMPTY, finalize } from 'rxjs';
 import { TranslocoService, TranslocoModule } from '@ngneat/transloco';
 
 import { UserFormBioComponent } from '@components/user/forms/user-form-bio/user-form-bio.component';
@@ -53,6 +54,7 @@ import { User } from '@models/user.model';
     EditPageComponent,
   ],
   templateUrl: './user-edit.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserEditComponent {
   @ViewChildren('form') formComponents!: QueryList<FormBaseComponent>;

@@ -5,6 +5,10 @@ import {
   ContentChildren,
   Input,
   QueryList,
+  contentChildren,
+  effect,
+  inject,
+  input,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
@@ -31,12 +35,12 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InfoBoxComponent {
-  @Input() description?: string | null = null;
-  @ContentChildren(PropertyComponent) properties!: QueryList<PropertyComponent>;
+  public readonly description = input<string | null>(null);
+  protected readonly props = contentChildren<PropertyComponent>(PropertyComponent);
 
-  constructor(private readonly cdr: ChangeDetectorRef) {}
+  private readonly updateProps = effect(() => {
+    this.cdr.markForCheck();
+  })
 
-  ngAfterViewInit() {
-    this.cdr.detectChanges();
-  }
+  private readonly cdr = inject(ChangeDetectorRef);
 }

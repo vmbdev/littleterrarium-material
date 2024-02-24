@@ -29,7 +29,7 @@
       </button>
     </mat-form-field>
 
-    @if (authInvalid) {
+    @if ($authInvalid()) {
       <div class="user-form__error">
         {{ 'signin.invalidCredentials' | transloco }}
       </div>

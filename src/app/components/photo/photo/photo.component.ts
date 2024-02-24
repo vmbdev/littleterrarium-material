@@ -1,6 +1,5 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, WritableSignal, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpErrorResponse } from '@angular/common/http';
 import { ActivatedRoute, Params, Router, RouterModule } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
@@ -9,15 +8,8 @@ import {
   MatBottomSheet,
   MatBottomSheetModule,
 } from '@angular/material/bottom-sheet';
-import {
-  catchError,
-  EMPTY,
-  forkJoin,
-  Observable,
-  of,
-  switchMap,
-  tap,
-} from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { forkJoin, Observable, switchMap, tap } from 'rxjs';
 import { TranslocoService, TranslocoModule } from '@ngneat/transloco';
 import { DateTime } from 'luxon';
 
@@ -29,7 +21,6 @@ import { ViewerComponent } from '@components/viewer/viewer.component';
 import { ConfirmDialogComponent } from '@components/dialogs/confirm-dialog/confirm-dialog.component';
 import { PhotoService } from '@services/photo.service';
 import { MainToolbarService } from '@services/main-toolbar.service';
-import { ErrorHandlerService } from '@services/error-handler.service';
 import { ImagePathService } from '@services/image-path.service';
 import { ViewerService } from '@services/viewer.service';
 import { ShareService } from '@services/share.service';
@@ -57,18 +48,19 @@ import { ImagePathPipe } from '@pipes/image-path/image-path.pipe';
     DaysAgoPipe,
     ImagePathPipe,
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PhotoComponent {
   private id?: number;
   private navigation?: NavigationData;
-  protected currentImageFull?: string | null;
+  protected $currentImageFull: WritableSignal<string | null> = signal(null);
   protected photo$?: Observable<Photo | null>;
+  private readonly destroyRef = inject(DestroyRef);
 
   constructor(
     private readonly route: ActivatedRoute,
     private readonly router: Router,
     public readonly photoService: PhotoService,
-    private readonly errorHandler: ErrorHandlerService,
     public readonly imagePath: ImagePathService,
     private readonly translate: TranslocoService,
     private readonly mt: MainToolbarService,
@@ -93,15 +85,14 @@ export class PhotoComponent {
         return forkJoin([
           this.photoService.getNavigation(this.id),
           this.photoService.get(this.id),
-          of(this.id),
         ]);
       }),
-      tap(([navigation, photo, id]) => {
-        this.currentImageFull = this.imagePath.get(photo.images, 'full');
-        this.mt.setName(this.getDateTitle(photo.takenAt));
+      tap(([navigation, photo]) => {
+        this.$currentImageFull.set(this.imagePath.get(photo.images, 'full'));
         this.navigation = navigation;
+        this.mt.setName(this.getDateTitle(photo.takenAt));
       }),
-      switchMap(() => this.photoService.photo$)
+      switchMap(() => this.photoService.photo$),
     );
   }
 
@@ -155,15 +146,21 @@ export class PhotoComponent {
   }
 
   sharePhoto() {
-    if (this.currentImageFull) {
-      this.share.shareImageFromURL(this.currentImageFull).subscribe();
+    const img = this.$currentImageFull();
+
+    if (img) {
+      this.share.shareImageFromURL(img)
+      .pipe(
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe();
     }
   }
 
   toggleViewer() {
-    if (this.currentImageFull) {
-      this.viewer.create(this.currentImageFull);
-    }
+    const img = this.$currentImageFull();
+
+    if (img) this.viewer.create(img);
   }
 
   openRemoveDialog() {

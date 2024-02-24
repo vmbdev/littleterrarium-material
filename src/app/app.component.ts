@@ -1,5 +1,5 @@
 import { CommonModule, Location } from '@angular/common';
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { MatNativeDateModule } from '@angular/material/core';
 import { App } from '@capacitor/app';
@@ -11,6 +11,7 @@ import { LangService } from '@services/lang.service';
   standalone: true,
   templateUrl: './app.component.html',
   imports: [CommonModule, RouterModule, MatNativeDateModule],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent {
   constructor(

@@ -1,4 +1,9 @@
-import { ChangeDetectorRef, Component, Input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Input,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
@@ -13,7 +18,7 @@ type ConditionListItem = {
   id: string;
   color: string;
   name: string;
-}
+};
 
 @Component({
   selector: 'ltm-plant-form-condition',
@@ -26,6 +31,7 @@ type ConditionListItem = {
     ReactiveFormsModule,
   ],
   templateUrl: './plant-form-condition.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlantFormConditionComponent implements FormBaseComponent {
   @Input() currentCondition: Condition | null = Condition.GOOD;
@@ -33,8 +39,8 @@ export class PlantFormConditionComponent implements FormBaseComponent {
   protected conditions = this.getConditions();
 
   constructor(
-    private fb: FormBuilder,
-    public plantService: PlantService,
+    private readonly fb: FormBuilder,
+    public readonly plantService: PlantService,
     private readonly cdr: ChangeDetectorRef,
   ) {}
 

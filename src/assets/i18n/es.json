@@ -173,7 +173,7 @@
   "plant-widget-fertilizer.type": "Fertilizante:",
   "plant-widget-soil.composition": "Tu planta tiene un bonito sustrato compuesto de <b>{{soil}}</b>.",
   "plant-widget-soil.noData": "Edita los datos de la maceta y el sustrato para verlos aquí.",
-  "plant-widget-soil.potMaterial": "Tu maceta está hecha de <b>{{material}}</b>",
+  "plant-widget-soil.potMaterial": "Tu maceta está hecha de <b>{{material}}</b>.",
   "plant-widget-soil.potSize": "Tiene un diámetro de <b>{{size}}</b>.",
   "plant-widget-soil.title": "Maceta y sustrato",
   "plant-widget-water.confirm": "Vas a actualizar <b>la última vez que regaste</b> a hoy.",

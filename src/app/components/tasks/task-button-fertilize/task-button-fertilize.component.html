@@ -2,7 +2,7 @@
   mat-icon-button
   class="button__fert"
   [ngClass]="{ 'button__fert-disabled': disabled }"
-  (click)="openFertDialog()"
+  (click)="tasks.openFertDialog(id())"
   [disabled]="disabled"
 >
   <mat-icon>soup_kitchen</mat-icon>

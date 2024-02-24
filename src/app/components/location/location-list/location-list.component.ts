@@ -1,7 +1,12 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  WritableSignal,
+  signal,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
-import { BehaviorSubject, finalize } from 'rxjs';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatRippleModule } from '@angular/material/core';
@@ -11,6 +16,7 @@ import {
   MatBottomSheetModule,
 } from '@angular/material/bottom-sheet';
 import { MatIconModule } from '@angular/material/icon';
+import { finalize } from 'rxjs';
 import { TranslocoService, TranslocoModule } from '@ngneat/transloco';
 
 import { FabComponent } from '@components/fab/fab.component';
@@ -21,7 +27,6 @@ import { LocationService } from '@services/location.service';
 import { ErrorHandlerService } from '@services/error-handler.service';
 import { AuthService } from '@services/auth.service';
 import { LocationGetConfig } from '@services/api.service';
-import { User } from '@models/user.model';
 import { Location } from '@models/location.model';
 import { ImagePathPipe } from '@pipes/image-path/image-path.pipe';
 
@@ -47,9 +52,9 @@ import { ImagePathPipe } from '@pipes/image-path/image-path.pipe';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LocationListComponent {
-  @Input() user?: User;
+  @Input() userId?: number;
   protected owned: boolean = true;
-  protected locations$ = new BehaviorSubject<Location[]>([]);
+  protected readonly $locations: WritableSignal<Location[]> = signal([]);
 
   constructor(
     private readonly auth: AuthService,
@@ -62,8 +67,8 @@ export class LocationListComponent {
   ) {}
 
   ngOnInit(): void {
-    if (this.user?.id) {
-      this.owned = this.auth.isSameUser('id', this.user.id);
+    if (this.userId) {
+      this.owned = this.auth.isSameUser('id', this.userId);
     }
 
     this.getLocationList();
@@ -73,7 +78,7 @@ export class LocationListComponent {
     const wd = this.openWaitDialog();
     const options: LocationGetConfig = {
       plantCount: true,
-      userId: this.user?.id,
+      userId: this.userId,
     };
 
     this.locationService
@@ -84,28 +89,32 @@ export class LocationListComponent {
         }),
       )
       .subscribe((res) => {
-        this.locations$.next(res);
+        this.$locations.set(res);
       });
   }
 
-  openEdit(id: number): void {
+  openEdit(location: Location): void {
     const bsRef = this.bottomSheet.open(LocationEditComponent, {
-      data: { id },
+      data: location,
     });
 
-    bsRef
-      .afterDismissed().subscribe((updatedLocation: Location) => {
-        if (updatedLocation) {
-          const list = this.locations$.getValue();
-          const index = list.findIndex((loc) => loc.id === updatedLocation.id);
-          const plantCount = list[index]._count?.plants;
+    bsRef.afterDismissed().subscribe((updatedLocation: Location) => {
+      if (updatedLocation) {
+        this.$locations.update((val) => {
+          const newList = [...val];
+          const index = newList.findIndex(
+            (loc) => loc.id === updatedLocation.id,
+          );
+          const plantCount = newList[index]._count?.plants;
 
           if (plantCount) updatedLocation._count = { plants: plantCount };
 
-          list[index] = updatedLocation;
-          this.locations$.next(list);
-        }
-      });
+          newList[index] = updatedLocation;
+
+          return newList;
+        });
+      }
+    });
   }
 
   selectLocation(id: number) {
@@ -137,7 +146,14 @@ export class LocationListComponent {
   delete(id: number) {
     this.locationService.delete(id).subscribe({
       next: () => {
-        this.getLocationList();
+        this.$locations.update((val) => {
+          const newList = [...val];
+          const index = newList.findIndex((loc) => loc.id === id);
+
+          newList.splice(index, 1);
+
+          return newList;
+        });
       },
       error: (err) => {
         if (err.msg === 'LOCATION_NOT_VALID') {

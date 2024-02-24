@@ -1,4 +1,4 @@
-import { Component, Inject, Optional, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, Optional, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormGroup } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -51,6 +51,7 @@ interface PlantEditConfig {
     EditPageComponent,
   ],
   templateUrl: './plant-edit.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlantEditComponent {
   @ViewChild(PlantFormNameComponent)
@@ -66,9 +67,7 @@ export class PlantEditComponent {
   @ViewChild(PlantFormLocationComponent)
   locationComponent!: PlantFormLocationComponent;
 
-  private returnedPlant?: Plant;
   protected plant$?: Observable<Plant>;
-
   private forms: FormGroup[] = [];
 
   constructor(
@@ -149,8 +148,8 @@ export class PlantEditComponent {
         const currentPlant = this.plantService.current();
 
         if (this.editPlant && this.bottomSheetRef) {
-          this.returnedPlant = { ...currentPlant, ...updatedPlant };
-          this.bottomSheetRef.dismiss(this.returnedPlant);
+          const finalPlant = { ...currentPlant, ...updatedPlant };
+          this.bottomSheetRef.dismiss(finalPlant);
         }
       });
   }

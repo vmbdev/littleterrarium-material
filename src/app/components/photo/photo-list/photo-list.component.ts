@@ -1,13 +1,13 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { TranslocoModule } from '@ngneat/transloco';
 import { Observable } from 'rxjs';
 
 import { PlantService } from '@services/plant.service';
 import { Photo } from '@models/photo.model';
 import { SortPipe } from '@pipes/sort/sort.pipe';
 import { ImagePathPipe } from '@pipes/image-path/image-path.pipe';
-import { TranslocoModule } from '@ngneat/transloco';
 
 @Component({
   selector: 'ltm-photo-list',
@@ -21,6 +21,7 @@ import { TranslocoModule } from '@ngneat/transloco';
   ],
   templateUrl: './photo-list.component.html',
   styleUrls: ['./photo-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PhotoListComponent {
   @Input({ required: true }) plantId?: number;

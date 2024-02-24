@@ -16,7 +16,7 @@
   </button>
   <button type="button" routerLink="/tasks" mat-icon-button>
     <mat-icon
-      [matBadge]="taskService.count$ | async"
+      [matBadge]="taskService.$count()"
       matBadgeColor="warn"
       aria-hidden="false"
     >

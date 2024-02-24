@@ -1,23 +1,27 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { Injectable, WritableSignal, signal } from '@angular/core';
 
 import { ApiService } from '@services/api.service';
 import { PlantService } from '@services/plant.service';
 import { Plant } from '@models/plant.model';
 import { Task } from '@models/task.model';
+import { MatDialog } from '@angular/material/dialog';
+import { TranslocoService } from '@ngneat/transloco';
+import { ConfirmDialogComponent } from '@components/dialogs/confirm-dialog/confirm-dialog.component';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TaskService {
-  private tasks = new BehaviorSubject<Task[]>([]);
-  public readonly tasks$ = this.tasks.asObservable();
-  private count = new BehaviorSubject<number>(0);
-  public readonly count$ = this.count.asObservable();
+  readonly #$tasks: WritableSignal<Task[]> = signal([]);
+  public readonly $tasks = this.#$tasks.asReadonly();
+  readonly #$count: WritableSignal<number> = signal(0);
+  public readonly $count = this.#$count.asReadonly();
 
   constructor(
     private readonly api: ApiService,
     private readonly plantService: PlantService,
+    private readonly dialog: MatDialog,
+    private readonly translate: TranslocoService,
   ) {
     this.loadTasks();
   }
@@ -37,7 +41,7 @@ export class TaskService {
           fertNext: plant.fertNext,
         });
       }
-      this.tasks.next(newTasks);
+      this.#$tasks.set(newTasks);
     });
   }
 
@@ -53,11 +57,42 @@ export class TaskService {
       if (plant.fertNext) recount++;
     }
 
-    this.count.next(recount);
+    this.#$count.set(recount);
+  }
+
+  openWaterDialog(id: number) {
+    this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        title: this.translate.translate('general.watering'),
+        question: [
+          this.translate.translate('plant-widget-water.confirm'),
+          this.translate.translate('plant-widget-water.warning'),
+        ],
+        accept: () => {
+          this.plantService.water(id).subscribe(() => {
+            this.loadTasks();
+          });
+        },
+      },
+    });
+  }
+
+  openFertDialog(id: number) {
+    this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        title: this.translate.translate('general.fertilize'),
+        question: [this.translate.translate('plant-widget-fertilizer.confirm')],
+        accept: () => {
+          this.plantService.fertilize(id).subscribe(() => {
+            this.loadTasks();
+          });
+        },
+      },
+    });
   }
 
   empty(): void {
-    this.count.next(0);
-    this.tasks.next([]);
+    this.#$count.set(0);
+    this.#$tasks.set([]);
   }
 }

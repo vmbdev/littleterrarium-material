@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, WritableSignal, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import {
@@ -35,6 +35,7 @@ import { AuthService } from '@services/auth.service';
   ],
   templateUrl: './signin.component.html',
   styleUrl: './signin.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SigninComponent {
   protected readonly signinForm: FormGroup = this.fb.group({
@@ -42,7 +43,7 @@ export class SigninComponent {
     password: ['', Validators.required],
   });
   protected hidePassword: boolean = true;
-  protected authInvalid: boolean = false;
+  protected $authInvalid: WritableSignal<boolean> = signal(false);
 
   constructor(
     private readonly fb: FormBuilder,
@@ -67,7 +68,7 @@ export class SigninComponent {
 
     const { username, password } = this.signinForm.value;
     const wd = this.openWaitDialog();
-    this.authInvalid = false;
+    this.$authInvalid.set(false);
 
     this.auth
       .signIn(username, password)
@@ -77,7 +78,7 @@ export class SigninComponent {
         }),
         catchError((err: any) => {
           if (err.msg && err.msg === 'USER_DATA_INCORRECT') {
-            this.authInvalid = true;
+            this.$authInvalid.set(true);
           }
 
           return EMPTY;

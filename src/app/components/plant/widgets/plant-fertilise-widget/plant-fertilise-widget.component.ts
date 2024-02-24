@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
@@ -7,13 +7,13 @@ import {
   MatBottomSheet,
 } from '@angular/material/bottom-sheet';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDialogModule, MatDialog } from '@angular/material/dialog';
-import { TranslocoService, TranslocoModule } from '@ngneat/transloco';
+import { MatDialogModule } from '@angular/material/dialog';
+import { TranslocoModule } from '@ngneat/transloco';
 
-import { ConfirmDialogComponent } from '@components/dialogs/confirm-dialog/confirm-dialog.component';
 import { PlantEditFertilizerComponent } from '@components/plant/plant-edit-fertilizer/plant-edit-fertilizer.component';
-import { PlantService } from '@services/plant.service';
 import { DaysAgoPipe } from '@pipes/days-ago/days-ago.pipe';
+import { FertInfo } from '@models/plant.model';
+import { PlantService } from '@services/plant.service';
 
 @Component({
   selector: 'ltm-plant-fertilise-widget',
@@ -29,26 +29,17 @@ import { DaysAgoPipe } from '@pipes/days-ago/days-ago.pipe';
     DaysAgoPipe,
   ],
   templateUrl: './plant-fertilise-widget.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlantFertiliseWidgetComponent {
-  constructor(
-    public readonly plantService: PlantService,
-    private readonly bottomSheet: MatBottomSheet,
-    private readonly dialog: MatDialog,
-    private readonly translate: TranslocoService,
-  ) {}
+  public readonly id = input.required<number>();
+  public readonly owned = input<boolean>(true);
+  public readonly data = input.required<FertInfo>();
+
+  private readonly bottomSheet = inject(MatBottomSheet);
+  protected readonly plantService = inject(PlantService);
 
   openEdit(): void {
     this.bottomSheet.open(PlantEditFertilizerComponent);
-  }
-
-  openFertDialog() {
-    this.dialog.open(ConfirmDialogComponent, {
-      data: {
-        title: this.translate.translate('general.fertilizer'),
-        question: [this.translate.translate('plant-widget-fertilizer.confirm')],
-        accept: () => this.plantService.fertilize().subscribe(),
-      },
-    });
   }
 }

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -10,12 +10,10 @@ import {
   MatBottomSheetModule,
 } from '@angular/material/bottom-sheet';
 import {
-  BehaviorSubject,
   catchError,
   EMPTY,
   finalize,
   Observable,
-  Subject,
   switchMap,
   tap,
 } from 'rxjs';
@@ -58,8 +56,8 @@ import { CapitalizePipe } from '@pipes/capitalize/capitalize.pipe';
 })
 export class PlantComponent {
   protected id?: number;
-  protected conditionColor$ = new BehaviorSubject<string | null>(null);
-  protected conditionDesc$ = new BehaviorSubject<string | null>(null);
+  protected readonly $conditionColor = signal<string | null>(null);
+  protected readonly $conditionDesc = signal<string | null>(null);
   protected plant$?: Observable<Plant | null>;
 
   constructor(
@@ -96,19 +94,25 @@ export class PlantComponent {
 
     const wd = this.openWaitDialog();
 
-    this.plant$ = this.plantService.get(this.id, { photos: true }).pipe(
-      tap((plant: Plant) => {
-        if (plant.condition) {
-          this.conditionColor$.next(this.plantService.getConditionColor(plant.condition));
-          this.conditionDesc$.next(this.plantService.getConditionDesc(plant.condition));
-        }
-
-        this.updateMainToolbar(plant);
-      }),
+    this.plant$ = this.plantService.get(this.id).pipe(
       finalize(() => {
         wd.close();
       }),
       switchMap(() => this.plantService.plant$),
+      tap((plant: Plant | null) => {
+        if (plant) {
+          if (plant.condition) {
+            this.$conditionColor.set(
+              this.plantService.getConditionColor(plant.condition),
+            );
+            this.$conditionDesc.set(
+              this.plantService.getConditionDesc(plant.condition),
+            );
+          }
+
+          this.updateMainToolbar(plant);
+        }
+      }),
       catchError((err: HttpErrorResponse) => {
         let msg;
 
@@ -173,20 +177,8 @@ export class PlantComponent {
 
   openEdit(): void {
     if (this.id) {
-      const ref = this.bottomSheet.open(PlantEditComponent, {
-        data: {
-          id: this.id,
-          config: { photos: true },
-        },
-      });
-
-      ref.afterDismissed().subscribe((plant: Plant) => {
-        if (plant) {
-          const newName =
-            plant.visibleName ?? this.plantService.getVisibleName(plant);
-
-          this.mt.setName(newName);
-        }
+      this.bottomSheet.open(PlantEditComponent, {
+        data: { id: this.id },
       });
     }
   }

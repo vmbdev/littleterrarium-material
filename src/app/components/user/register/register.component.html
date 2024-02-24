@@ -1,33 +1,33 @@
-@if (!(auth.signedIn$ | async)) {
-  <mat-stepper
-    [selectedIndex]="stepperIndex"
-    labelPosition="bottom"
-    linear="true"
-    animationDuration="300"
+<mat-stepper
+  [selectedIndex]="$stepperIndex()"
+  labelPosition="bottom"
+  linear="true"
+  animationDuration="300"
+>
+  <mat-step
+    [stepControl]="formUsername.form"
+    [label]="'general.username' | transloco"
   >
-    <mat-step
-      [stepControl]="formUsername.form"
-      [label]="'general.username' | transloco"
-    >
-      <ltm-user-form-username #formUsername />
-      <ltm-stepper-navigation backButton="false" />
-    </mat-step>
+    <ltm-user-form-username #formUsername />
+    <ltm-stepper-navigation backButton="false" />
+  </mat-step>
 
-    <mat-step
-      [stepControl]="formEmail.form"
-      [label]="'general.email' | transloco"
-    >
-      <ltm-user-form-email #formEmail />
-      <ltm-stepper-navigation />
-    </mat-step>
+  <mat-step
+    [stepControl]="formEmail.form"
+    [label]="'general.email' | transloco"
+  >
+    <ltm-user-form-email #formEmail />
+    <ltm-stepper-navigation />
+  </mat-step>
 
-    <mat-step
-      [stepControl]="formPassword.form"
-      [label]="'general.password' | transloco"
-    >
-      <ltm-user-form-password [requirements]="pwdRequirements$ | async" #formPassword />
-      <ltm-stepper-navigation finishButton="true" (finish)="submit()" />
-    </mat-step>
-
-  </mat-stepper>
-}
+  <mat-step
+    [stepControl]="formPassword.form"
+    [label]="'general.password' | transloco"
+  >
+    <ltm-user-form-password
+      [requirements]="pwdRequirements$ | async"
+      #formPassword
+    />
+    <ltm-stepper-navigation finishButton="true" (finish)="submit()" />
+  </mat-step>
+</mat-stepper>

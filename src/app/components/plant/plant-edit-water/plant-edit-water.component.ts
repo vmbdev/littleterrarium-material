@@ -1,4 +1,4 @@
-import { Component, Optional } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Optional } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   MatBottomSheetModule,
@@ -34,6 +34,7 @@ import { Plant } from '@models/plant.model';
     EditPageComponent,
   ],
   templateUrl: './plant-edit-water.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlantEditWaterComponent {
   protected readonly waterForm = this.fb.group({
@@ -41,7 +42,7 @@ export class PlantEditWaterComponent {
     waterLast: new FormControl<Date | null>(null),
   });
   private id?: number;
-  protected today = new Date();
+  protected readonly today = new Date();
 
   constructor(
     public plantService: PlantService,

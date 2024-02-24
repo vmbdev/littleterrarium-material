@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   ReactiveFormsModule,
@@ -23,6 +23,7 @@ import { FormBaseComponent } from '@components/form-base/form-base.component';
     TranslocoModule,
   ],
   templateUrl: './user-form-email.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserFormEmailComponent implements FormBaseComponent {
   @Input() currentEmail?: string;

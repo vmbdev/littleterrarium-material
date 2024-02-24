@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
+import { Injectable, WritableSignal, signal } from '@angular/core';
 import { Event, NavigationEnd, Router } from '@angular/router';
-import { BehaviorSubject, filter } from 'rxjs';
+import { filter } from 'rxjs';
 
 /**
  * mode avoids searching on component init
@@ -15,10 +15,10 @@ export interface SearchReceipt {
   providedIn: 'root',
 })
 export class SearchService {
-  private readonly enabled = new BehaviorSubject<boolean>(true);
-  public readonly enabled$ = this.enabled.asObservable();
-  private readonly text = new BehaviorSubject<SearchReceipt>({ mode: 'Begin', value: null });
-  public readonly text$ = this.text.asObservable();
+  readonly #$enabled: WritableSignal<boolean> = signal(true);
+  public readonly $enabled = this.#$enabled.asReadonly();
+  readonly #$text: WritableSignal<SearchReceipt> = signal({ mode: 'Begin', value: null });
+  public readonly $text = this.#$text.asReadonly();
 
   constructor(private router: Router) {
     this.router.events
@@ -28,29 +28,28 @@ export class SearchService {
         )
       )
       .subscribe(() => {
-        this.enabled.next(false);
-        this.text.next({ mode: 'Begin', value: null });
+        this.#$enabled.set(false);
+        this.#$text.set({ mode: 'Begin', value: null });
       });
   }
 
   enable(val: boolean) {
-    this.enabled.next(val);
+    this.#$enabled.set(val);
   }
 
   toggle(): void {
-    const val = this.enabled.getValue();
-    this.enabled.next(!val);
+    this.#$enabled.update((val) => !val);
   }
 
-  setText(val: string): void {
-    const prev = this.text.getValue();
+  setText(val: string): void { 
+    const prev = this.#$text();
 
     if (prev.value !== val) {
-      this.text.next({ mode: 'UserInput', value: val });
+      this.#$text.set({ mode: 'UserInput', value: val });
     }
   }
 
   clear(): void {
-    this.text.next({ mode: 'UserInput', value: null });
+    this.#$text.set({ mode: 'UserInput', value: null });
   }
 }

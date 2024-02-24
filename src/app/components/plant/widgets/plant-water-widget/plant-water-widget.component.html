@@ -1,4 +1,4 @@
-@if (plantService.plant$ | async; as plant) {
+@if (data(); as waterData) {
   <mat-expansion-panel>
     <mat-expansion-panel-header>
       <mat-panel-title>
@@ -9,31 +9,31 @@
       </mat-panel-description>
     </mat-expansion-panel-header>
   
-    @if (plant.waterFreq || plant.waterLast) {
-      @if (plant.waterLast) {
+    @if (waterData.waterFreq || waterData.waterLast) {
+      @if (waterData.waterLast) {
         <p>
-          <b>{{ 'general.lastTime' | transloco }}</b> {{ plant.waterLast | date }}
+          <b>{{ 'general.lastTime' | transloco }}</b> {{ waterData.waterLast | date }}
         </p>
       }
 
-      @if (plant.waterFreq) {
+      @if (waterData.waterFreq) {
         <p
-          [innerHTML]="'plant-widget-water.freq' | transloco:{ days: plant.waterFreq }"
+          [innerHTML]="'plant-widget-water.freq' | transloco:{ days: waterData.waterFreq }"
         >
       </p>
       }
 
-      @if (plant.waterNext) {
+      @if (waterData.waterNext) {
         <p>
-          @if (plant.waterNext | daysAgo:false; as days) {
+          @if (waterData.waterNext | daysAgo:false; as days) {
             <b>{{ 'general.nextTime' | transloco }}</b>
             
             @if (days < 0) {
               <span [ngStyle]="{ 'color': 'red' }">
-                {{ 'general.daysAgo' | transloco:{ days: (plant.waterNext | daysAgo) } }}
+                {{ 'general.daysAgo' | transloco:{ days: (waterData.waterNext | daysAgo) } }}
               </span>
             } @else {
-              {{ 'general.daysCount' | transloco:{ days: (plant.waterNext | daysAgo) } }}
+              {{ 'general.daysCount' | transloco:{ days: (waterData.waterNext | daysAgo) } }}
             }
           }
         </p>
@@ -42,12 +42,12 @@
       <p>{{ 'plant-widget-water.noData' | transloco }}</p>
     }
   
-    @if (plantService.owned$ | async) {
+    @if (owned()) {
       <mat-action-row>
-        <button mat-button color="primary" (click)="openWaterDialog()">
+        <button mat-button color="accent" (click)="plantService.openWaterDialog(id())">
           {{ 'plant-widget-water.now' | transloco }}
         </button>
-        <button mat-button color="primary" (click)="openEdit()">
+        <button mat-button color="accent" (click)="openEdit()">
           {{ 'general.edit' | transloco }}
         </button>
       </mat-action-row>

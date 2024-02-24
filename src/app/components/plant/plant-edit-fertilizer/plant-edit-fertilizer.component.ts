@@ -1,4 +1,4 @@
-import { Component, Optional } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Optional } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
 import {
@@ -34,6 +34,7 @@ import { Plant } from '@models/plant.model';
     EditPageComponent,
   ],
   templateUrl: './plant-edit-fertilizer.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlantEditFertilizerComponent {
   protected readonly fertForm = this.fb.group({

@@ -1,7 +1,8 @@
 @if (plant$ | async; as plant) {
-  @if (plantService.owned$ | async) {
+  @if (plantService.$owned(); as owned) {
     <ltm-fab [link]="['/photo/create', plant.id]" />
   }
+  
   
   <ltm-info-box [description]="plant.description">
     @if (plant.specie && plant.specie.name) {
@@ -9,13 +10,12 @@
         {{ plant.specie.name | capitalize }}
       </ltm-property>
     }
-    @if (conditionColor$ | async; as conditionColor) {
-      <!-- FIXME: not updating -->
+    @if ($conditionColor(); as conditionColor) {
       <ltm-property
         icon="circle"
         [iconColor]="conditionColor"
       >
-        {{ (conditionDesc$ | async) | transloco }}
+        {{ $conditionDesc() | transloco }}
       </ltm-property>
     }
 
@@ -24,13 +24,16 @@
     </ltm-property>
   </ltm-info-box>
 
-  <ltm-plant-expansion-info />
+  <ltm-plant-expansion-info
+    [$plant]="plant"
+    [$owned]="this.plantService.$owned()"
+  />
 
   <section>
     <h1 class="centered">{{ 'general.pictures' | transloco }}</h1>
 
     <ltm-photo-list
-      [owned]="!!(this.plantService.owned$ | async)"
+      [owned]="this.plantService.$owned()"
       [plantId]="this.id"
     />
   </section>

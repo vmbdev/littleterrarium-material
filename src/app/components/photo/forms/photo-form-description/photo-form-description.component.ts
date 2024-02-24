@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -16,6 +16,7 @@ import { FormBaseComponent } from '@components/form-base/form-base.component';
     MatInputModule,
   ],
   templateUrl: './photo-form-description.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PhotoFormDescriptionComponent implements FormBaseComponent {
   @Input() currentDescription?: string | null;

@@ -1,4 +1,4 @@
-@if (location$ | async; as location) {
+@if ($location(); as location) {
   <ltm-edit-page
     [title]="
       'location-add-edit.header' | transloco: { location: location.name }

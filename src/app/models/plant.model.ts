@@ -1,22 +1,12 @@
 import { Photo } from '@models/photo.model';
 import { Specie } from '@models/specie.model';
 
-export interface Plant {
+export interface Plant extends WaterInfo, FertInfo, PotInfo {
   id: number;
   specieId: number | null;
   customName: string | null;
   description: string | null;
   condition: Condition | null;
-  waterFreq: number | null;
-  waterLast: Date | null;
-  waterNext: Date | null;
-  fertFreq: number | null;
-  fertLast: Date | null;
-  fertType: string | null;
-  fertNext: Date | null;
-  potType: string | null;
-  potSize: number | null;
-  soil: string | null;
   public: boolean;
   coverId?: number | null;
   locationId: number;
@@ -27,6 +17,25 @@ export interface Plant {
   photos?: Photo[];
   specie?: Specie;
   visibleName?: string;
+}
+
+export interface WaterInfo {
+  waterFreq: number | null;
+  waterLast: Date | null;
+  waterNext: Date | null;
+}
+
+export interface FertInfo {
+  fertFreq: number | null;
+  fertLast: Date | null;
+  fertType: string | null;
+  fertNext: Date | null;
+}
+
+export interface PotInfo {
+  potType: string | null;
+  potSize: number | null;
+  soil: string | null;
 }
 
 export interface CoverPhoto {

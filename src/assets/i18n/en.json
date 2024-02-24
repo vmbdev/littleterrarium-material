@@ -172,7 +172,7 @@
   "plant-widget-fertilizer.type": "Fertilizer:",
   "plant-widget-soil.composition": "Your plant has a nice soil made up of <b>{{soil}}</b>.",
   "plant-widget-soil.noData": "Edit pot and soil data to see it here.",
-  "plant-widget-soil.potMaterial": "Your pot is made of <b>{{material}}</b>",
+  "plant-widget-soil.potMaterial": "Your pot is made of <b>{{material}}</b>.",
   "plant-widget-soil.potSize": "It has a diameter of <b>{{size}}</b>",
   "plant-widget-soil.title": "Soil and Pot",
   "plant-widget-water.confirm": "This will update your <b>last time watered</b> to today.",

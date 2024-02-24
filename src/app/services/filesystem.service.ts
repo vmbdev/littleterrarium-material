@@ -23,25 +23,14 @@ export class FilesystemService {
     data: string | Blob,
     options?: Partial<WriteFileOptions>,
   ): Observable<WriteFileResult> {
-    return from(
-      Filesystem.writeFile({
-        path,
-        data,
-        ...options,
-      }),
-    );
+    return from(Filesystem.writeFile({ path, data, ...options }));
   }
 
   deleteFile(
     path: string,
     options?: Partial<DeleteFileOptions>,
   ): Observable<void> {
-    return from(
-      Filesystem.deleteFile({
-        path,
-        ...options,
-      }),
-    );
+    return from(Filesystem.deleteFile({ path, ...options }));
   }
 
   getBase64FromFile(blob: Blob): Observable<string> {

@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -45,6 +45,7 @@ import { Plant } from '@models/plant.model';
     FormPrivacyComponent,
   ],
   templateUrl: './photo-add.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PhotoAddComponent {
   @ViewChild(FormPrivacyComponent) privacyComponent!: FormPrivacyComponent;
@@ -128,18 +129,13 @@ export class PhotoAddComponent {
         }),
       )
       .subscribe((event) => {
-        switch (event.type) {
-          case HttpEventType.UploadProgress: {
-            const eventTotal = event.total ? event.total : 0;
-            const progressVal = Math.round((event.loaded / eventTotal) * 100);
+        if (event.type === HttpEventType.UploadProgress) {
+          const eventTotal = event.total ? event.total : 0;
+          const progressVal = Math.round((event.loaded / eventTotal) * 100);
 
-            ud.componentInstance.data.progressValue = progressVal;
-            break;
-          }
-          case HttpEventType.Response: {
-            this.router.navigate(['plant', this.plantId], { replaceUrl: true });
-            break;
-          }
+          ud.componentInstance.data.progressValue = progressVal;
+        } else if (event.type === HttpEventType.Response) {
+          this.router.navigate(['plant', this.plantId], { replaceUrl: true });
         }
       });
   }

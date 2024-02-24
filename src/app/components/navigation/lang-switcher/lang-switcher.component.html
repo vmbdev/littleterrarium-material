@@ -4,7 +4,7 @@
     <mat-select
       #select
       (selectionChange)="setLang(select.value)"
-      [value]="langService.current"
+      [value]="langService.$current()"
     >
       @for (lang of langService.languages; track lang.id) {
         <mat-option [value]="lang.id">

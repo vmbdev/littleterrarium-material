@@ -1,6 +1,6 @@
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
-import { Component, Inject, Optional, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, Optional, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import {
@@ -51,6 +51,7 @@ interface PhotoEditConfig {
     ToggleOptionComponent,
   ],
   templateUrl: './photo-edit.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PhotoEditComponent {
   @ViewChild(PhotoFormDescriptionComponent)

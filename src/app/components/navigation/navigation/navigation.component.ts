@@ -79,7 +79,7 @@ export class NavigationComponent {
   // FIXME: use HostListener instead of this
   ngAfterViewInit(): void {
     if (this.contentElement) {
-      fromEvent<Event>(this.contentElement.nativeElement, 'scroll')
+      fromEvent<Event>(this.contentElement.nativeElement, 'scrollend')
         .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe((element: Event) => {
           const target = element.target as HTMLElement;

@@ -1,7 +1,7 @@
 <button
   mat-menu-item
   class="menu__water"
-  (click)="openWaterDialog()"
+  (click)="plantService.openWaterDialog(id())"
 >
   <mat-icon>water_drop</mat-icon>
   <span>{{ 'general.water' | transloco }}</span>

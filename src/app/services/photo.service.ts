@@ -1,10 +1,9 @@
 import { HttpErrorResponse, HttpEvent } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, WritableSignal, signal } from '@angular/core';
 import {
   BehaviorSubject,
   catchError,
   EMPTY,
-  map,
   Observable,
   tap,
   throwError,
@@ -23,8 +22,8 @@ import { TranslocoService } from '@ngneat/transloco';
 export class PhotoService {
   private photo = new BehaviorSubject<Photo | null>(null);
   public readonly photo$ = this.photo.asObservable();
-  private owned = new BehaviorSubject<boolean>(false);
-  public readonly owned$ = this.owned.asObservable();
+  readonly #$owned: WritableSignal<boolean> = signal(false);
+  public readonly $owned = this.#$owned.asReadonly();
 
   constructor(
     private readonly api: ApiService,
@@ -36,7 +35,7 @@ export class PhotoService {
   get(id: number): Observable<Photo> {
     return this.api.getPhoto(id).pipe(
       tap((photo: Photo) => {
-        this.owned.next(this.auth.getUser()?.id === photo.ownerId);
+        this.#$owned.set(this.auth.getUser()?.id === photo.ownerId);
         this.photo.next(photo);
       }),
       catchError((err: HttpErrorResponse) => {
@@ -72,8 +71,7 @@ export class PhotoService {
     return this.api.createPhoto(photo).pipe(
       catchError((error: HttpErrorResponse) => {
         if (error.error?.msg === 'IMG_NOT_VALID') {
-          // FIXME: transloco
-          this.errorHandler.push('Invalid image.');
+          this.errorHandler.push(this.translate.translate('errors.invalidImg'));
         }
 
         if (propagateError) return throwError(() => error);
@@ -108,6 +106,6 @@ export class PhotoService {
 
   empty(): void {
     this.photo.next(null);
-    this.owned.next(false);
+    this.#$owned.set(false);
   }
 }

@@ -1,6 +1,5 @@
-import { Injectable } from '@angular/core';
+import { Injectable, WritableSignal, signal } from '@angular/core';
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { BehaviorSubject } from 'rxjs';
 
 import {
   theme as configTheme,
@@ -11,8 +10,9 @@ import {
   providedIn: 'root',
 })
 export class ThemeService {
-  readonly theme$: BehaviorSubject<string>;
-  readonly availableThemes: string[];
+  readonly #$theme: WritableSignal<string>;
+  public readonly $theme;
+  readonly availableThemes: string[] = configAvailableThemes;
 
   /**
    * Defines the theme to use.
@@ -24,8 +24,6 @@ export class ThemeService {
     let newTheme: string;
     const storedTheme = localStorage.getItem('LT_theme');
 
-    this.availableThemes = configAvailableThemes;
-
     if (storedTheme && this.availableThemes.includes(storedTheme)) {
       newTheme = storedTheme;
     } else if (this.availableThemes.includes(configTheme)) {
@@ -34,20 +32,16 @@ export class ThemeService {
       newTheme = this.availableThemes[0];
     } else newTheme = '';
 
-    this.theme$ = new BehaviorSubject<string>(newTheme);
+    this.#$theme = signal(newTheme);
+    this.$theme = this.#$theme.asReadonly();
 
     if (newTheme) this.setOverlayTheme(newTheme);
   }
 
-  getTheme(): string {
-    return this.theme$.getValue();
-  }
-
   switchTheme(newTheme: string) {
     if (this.availableThemes.includes(newTheme)) {
-      const prevTheme = this.getTheme();
-      this.setOverlayTheme(newTheme, prevTheme);
-      this.theme$.next(newTheme);
+      this.setOverlayTheme(newTheme, this.#$theme());
+      this.#$theme.set(newTheme);
 
       localStorage.setItem('LT_theme', newTheme);
     }

@@ -1,5 +1,7 @@
-<mat-accordion multi="false">
-  <ltm-plant-water-widget />
-  <ltm-plant-fertilise-widget />
-  <ltm-plant-soil-widget />
-</mat-accordion>
+@if ($plant(); as plant) {
+  <mat-accordion multi="false">
+    <ltm-plant-water-widget [id]="plant.id" [data]="$waterData()" [owned]="$owned()" />
+    <ltm-plant-fertilise-widget [id]="plant.id" [data]="$fertData()" [owned]="$owned()" />
+    <ltm-plant-soil-widget [data]="$potData()" [owned]="$owned()" />
+  </mat-accordion>
+}

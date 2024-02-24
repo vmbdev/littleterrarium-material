@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, EMPTY, map, Observable, tap } from 'rxjs';
+import { Injectable, WritableSignal, signal } from '@angular/core';
+import { catchError, map, Observable, tap, throwError } from 'rxjs';
 
 import {
   ApiService,
@@ -9,17 +9,18 @@ import {
 } from '@services/api.service';
 import { AuthService } from '@services/auth.service';
 import { PlantService } from '@services/plant.service';
-import { Location } from '@models/location.model';
+import { Light, Location } from '@models/location.model';
 import { Plant } from '@models/plant.model';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LocationService {
-  private location = new BehaviorSubject<Location | null>(null);
-  public readonly location$ = this.location.asObservable();
-  private owned = new BehaviorSubject<boolean>(false);
-  public readonly owned$ = this.owned.asObservable();
+  readonly #$location: WritableSignal<Location | null> = signal(null);
+  public readonly $location = this.#$location.asReadonly();
+  readonly #$owned: WritableSignal<boolean> = signal(false);
+  public readonly $owned = this.#$owned.asReadonly();
 
   constructor(
     private readonly api: ApiService,
@@ -28,22 +29,27 @@ export class LocationService {
   ) {}
 
   create(location: Location): Observable<Location> {
-    this.location.next(null);
+    this.#$location.set(null);
 
     return this.api.createLocation(location).pipe(
       tap((location: Location) => {
-        this.location.next(location);
+        this.#$location.set(location);
       })
     );
   }
 
   get(id: number, options?: LocationGetConfig): Observable<Location> {
-    this.location.next(null);
+    this.#$location.set(null);
 
     return this.api.getLocation(id, options).pipe(
       tap((location: Location) => {
-        this.owned.next(this.auth.getUser()?.id === location.ownerId);
-        this.location.next(location);
+        this.#$owned.set(this.auth.getUser()?.id === location.ownerId);
+        this.#$location.set(location);
+      }),
+      catchError((err: HttpErrorResponse) => {
+        this.#$location.set(null);
+        this.#$owned.set(false);
+        return throwError(() => err);
       })
     );
   }
@@ -78,8 +84,8 @@ export class LocationService {
     options?: LocationUpsertConfig
   ): Observable<Location> {
     return this.api.updateLocation(location, options).pipe(
-      tap((location: Location) => {
-        this.location.next(location);
+      tap((updatedLocation: Location) => {
+        this.#$location.set(updatedLocation);
       })
     );
   }
@@ -87,18 +93,14 @@ export class LocationService {
   delete(id: number): Observable<any> {
     return this.api.deleteLocation(id).pipe(
       tap(() => {
-        this.location.next(null);
+        this.#$location.set(null);
       })
     );
   }
 
-  current(): Location | null {
-    return this.location.getValue();
-  }
-
   empty(): void {
-    this.location.next(null);
-    this.owned.next(false);
+    this.#$location.set(null);
+    this.#$owned.set(false);
   }
 
   getLightName(light: string): string {
@@ -122,7 +124,7 @@ export class LocationService {
     return desc;
   }
 
-  getLightDesc(light: string): string {
+  getLightDesc(light: string | Light): string {
     let desc: string;
 
     switch (light) {
@@ -143,7 +145,7 @@ export class LocationService {
     return desc;
   }
 
-  getLightAsset(light: string): string {
+  getLightAsset(light: string | Light): string {
     let icon: string;
 
     if (light === 'FULLSUN') icon = 'brightness_7';

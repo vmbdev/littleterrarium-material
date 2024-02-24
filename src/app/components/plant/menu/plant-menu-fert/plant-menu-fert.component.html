@@ -1,7 +1,7 @@
 <button
   mat-menu-item
   class="menu__water"
-  (click)="openFertDialog()"
+  (click)="plantService.openFertDialog(id())"
 >
   <mat-icon>soup_kitchen</mat-icon>
   <span>{{ 'general.fertilize' | transloco }}</span>

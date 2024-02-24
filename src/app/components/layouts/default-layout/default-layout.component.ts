@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+
 import { NavigationComponent } from '@components/navigation/navigation/navigation.component';
 
 @Component({
@@ -6,7 +7,8 @@ import { NavigationComponent } from '@components/navigation/navigation/navigatio
   standalone: true,
   imports: [NavigationComponent],
   templateUrl: './default-layout.component.html',
-  styleUrl: './default-layout.component.scss'
+  styleUrl: './default-layout.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DefaultLayoutComponent {
 

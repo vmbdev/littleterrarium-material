@@ -1,6 +1,6 @@
-@if (listView$ | async) {
+@if ($listView()) {
   <mat-list>
-    @for (item of list$ | async; track item.id) {
+    @for (item of $list(); track item.id) {
       <mat-list-item>
         <img
           matListItemAvatar
@@ -25,7 +25,7 @@
 } @else {
   <mat-grid-list cols="2" rowHeight="1:1.2" gutterSize="6">
 
-    @for (item of list$ | async; track item.id) {
+    @for (item of $list(); track item.id) {
       <mat-grid-tile>
         <mat-card matRipple class="plant-card">
           <img

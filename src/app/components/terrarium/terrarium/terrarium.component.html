@@ -1,5 +1,5 @@
 @if (user$ | async; as user) {
   <ltm-profile [user]="user" />
-  <ltm-location-list [user]="user" />
-  <ltm-plant-list [user]="user" />
+  <ltm-location-list [userId]="user.id" />
+  <ltm-plant-list [userId]="user.id" />
 }

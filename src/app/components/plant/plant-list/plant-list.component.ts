@@ -1,12 +1,14 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  DestroyRef,
   Input,
-  SimpleChanges,
-  inject,
+  Signal,
+  WritableSignal,
+  computed,
+  effect,
+  signal,
+  untracked,
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MatListModule } from '@angular/material/list';
@@ -21,22 +23,20 @@ import {
   MatBottomSheet,
   MatBottomSheetModule,
 } from '@angular/material/bottom-sheet';
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import { TranslocoService, TranslocoModule } from '@ngneat/transloco';
 
 import { FabComponent } from '@components/fab/fab.component';
 import { ConfirmDialogComponent } from '@components/dialogs/confirm-dialog/confirm-dialog.component';
 import { PlantEditComponent } from '@components/plant/plant-edit/plant-edit.component';
-import { PlantToolbarComponent } from '@components/plant/plant-toolbar/plant-toolbar.component';
 import { PlantMenuWaterComponent } from '@components/plant/menu/plant-menu-water/plant-menu-water.component';
 import { PlantMenuFertComponent } from '@components/plant/menu/plant-menu-fert/plant-menu-fert.component';
 import { PlantGetConfig } from '@services/api.service';
 import { LocationService } from '@services/location.service';
 import { PlantService } from '@services/plant.service';
-import { SearchReceipt, SearchService } from '@services/search.service';
+import { SearchService } from '@services/search.service';
 import { MainToolbarService } from '@services/main-toolbar.service';
 import { BottomScrollDetectorService } from '@services/bottom-scroll-detector.service';
-import { User } from '@models/user.model';
 import { Plant } from '@models/plant.model';
 import { SortColumn, SortOrder } from '@models/sort-options.model';
 import { CapitalizePipe } from '@pipes/capitalize/capitalize.pipe';
@@ -66,7 +66,6 @@ type PlantListItem = {
     MatListModule,
     TranslocoModule,
     FabComponent,
-    PlantToolbarComponent,
     PlantMenuWaterComponent,
     PlantMenuFertComponent,
     CapitalizePipe,
@@ -74,25 +73,53 @@ type PlantListItem = {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlantListComponent {
-  @Input() list?: Plant[];
   @Input() locationId?: number;
-  @Input() user?: User;
-  private readonly destroyRef = inject(DestroyRef);
-  protected list$ = new BehaviorSubject<PlantListItem[]>([]);
-  private search$?: Subscription;
+  @Input() userId?: number;
+  protected $list: WritableSignal<PlantListItem[]> = signal([]);
 
   private cursor?: number;
   private lastCursor?: number;
 
   private filter: string | null = null;
   private order: SortOrder;
-  private sort: SortColumn;
 
-  // subjects for the menus of MainToolbar
-  private nameSelected$: BehaviorSubject<boolean>;
-  private dateSelected$: BehaviorSubject<boolean>;
-  protected listView$: BehaviorSubject<boolean>;
-  private cardView$: BehaviorSubject<boolean>;
+  /**
+   * Defines the sorting column. We make it a signal so we can compute the
+   * signals to be sent to MainToolbarService automatically.
+   */
+  private sort: WritableSignal<SortColumn>;
+
+  /**
+   * The menus of MainToolbar
+   */
+  private readonly $nameSelected: Signal<boolean> = computed(
+    () => this.sort() === 'name',
+  );
+  private readonly $dateSelected: Signal<boolean> = computed(
+    () => this.sort() === 'date',
+  );
+  protected $listView: WritableSignal<boolean>;
+
+  /**
+   * Just for convenience to pass to MainToolbarService
+   */
+  private $cardView: Signal<boolean> = computed(() => !this.$listView());
+
+  readonly searchUpdate = effect(() => {
+    const res = this.search.$text();
+    if (res.mode !== 'Begin') {
+      this.filter = res.value;
+      untracked(() => {
+        this.fetchPlants();
+      });
+    }
+  });
+
+  readonly bottomDetected = effect(() => {
+    if (this.bottomScrollDetector.$detected()) {
+      if (this.cursor !== this.lastCursor) this.fetchPlants(true);
+    }
+  });
 
   constructor(
     private readonly plantService: PlantService,
@@ -105,55 +132,17 @@ export class PlantListComponent {
     private readonly bottomScrollDetector: BottomScrollDetectorService,
   ) {
     const view = localStorage.getItem('LT_plantListView') === 'true';
-    this.listView$ = new BehaviorSubject<boolean>(view);
-    this.cardView$ = new BehaviorSubject<boolean>(!view);
-
     const order = localStorage.getItem('LT_plantListOrder');
     const sort = localStorage.getItem('LT_plantListSort');
-
-    if (order === 'asc') this.order = 'asc';
-    else this.order = 'desc';
-
-    if (sort === 'name') {
-      this.sort = sort;
-      this.nameSelected$ = new BehaviorSubject<boolean>(true);
-      this.dateSelected$ = new BehaviorSubject<boolean>(false);
-    } else {
-      this.sort = 'date';
-      this.nameSelected$ = new BehaviorSubject<boolean>(false);
-      this.dateSelected$ = new BehaviorSubject<boolean>(true);
-    }
-
-    this.detectBottomReached();
+    
+    this.$listView = signal(view);
+    this.order = order === 'asc' ? 'asc' : 'desc';
+    this.sort = (sort === 'name') ? signal('name') : signal('date');
   }
 
   ngOnInit(): void {
-    if (this.list) this.list$.next(this.createPlantList(this.list));
-    else this.fetchPlants();
-
+    this.fetchPlants();
     this.createMainToolbarContext();
-
-    this.search$ = this.search.text$
-    .pipe(
-      takeUntilDestroyed(this.destroyRef)
-    )
-    .subscribe((res: SearchReceipt) => {
-      if (res.mode !== 'Begin') {
-        this.filter = res.value;
-        this.fetchPlants();
-      }
-    });
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['locationId'] && changes['locationId'].previousValue) {
-      if (
-        changes['locationId'].previousValue !==
-        changes['locationId'].currentValue
-      ) {
-        this.fetchPlants();
-      }
-    }
   }
 
   fetchPlants(scroll: boolean = false): void {
@@ -161,7 +150,7 @@ export class PlantListComponent {
     let options: PlantGetConfig = {
       cursor: scroll && this.cursor ? this.cursor : undefined,
       filter: this.filter ?? '',
-      sort: this.sort,
+      sort: this.sort(),
       order: this.order,
     };
 
@@ -173,7 +162,7 @@ export class PlantListComponent {
     } else {
       options = {
         ...options,
-        userId: this.user?.id,
+        userId: this.userId,
         cover: true,
       };
 
@@ -182,17 +171,14 @@ export class PlantListComponent {
 
     obs.subscribe((plants: Plant[]) => {
       if (plants.length > 0) {
-        let newList = [];
+        const newList: PlantListItem[] = this.createPlantList(plants);
 
         this.cursor = plants[plants.length - 1].id;
-        newList = this.createPlantList(plants);
 
         if (scroll) {
-          const currentList = this.list$.getValue();
-
-          this.list$.next([...currentList, ...newList]);
-        } else this.list$.next(newList);
-      }
+          this.$list.update((value) => [...value, ...newList]);
+        } else this.$list.set(newList);
+      } else if (!scroll) this.$list.set([]);
     });
   }
 
@@ -228,7 +214,7 @@ export class PlantListComponent {
           click: () => {
             this.setSmallView(true);
           },
-          selected: this.listView$,
+          $selected: this.$listView,
         },
         {
           icon: 'grid_view',
@@ -236,7 +222,7 @@ export class PlantListComponent {
           click: () => {
             this.setSmallView(false);
           },
-          selected: this.cardView$,
+          $selected: this.$cardView,
         },
       ],
       [
@@ -246,7 +232,7 @@ export class PlantListComponent {
           click: () => {
             this.toggleSortColumn('name');
           },
-          selected: this.nameSelected$,
+          $selected: this.$nameSelected,
         },
         {
           icon: 'history',
@@ -254,33 +240,20 @@ export class PlantListComponent {
           click: () => {
             this.toggleSortColumn('date');
           },
-          selected: this.dateSelected$,
+          $selected: this.$dateSelected,
         },
       ],
     ]);
   }
 
-  detectBottomReached(): void {
-    this.bottomScrollDetector.detected$
-      .pipe(takeUntilDestroyed())
-      .subscribe((reachedBottom: boolean) => {
-        if (reachedBottom && this.cursor !== this.lastCursor) {
-          this.fetchPlants(true);
-        }
-      });
-  }
-
   toggleSortColumn(column: SortColumn) {
-    if (this.sort !== column) {
-      this.sort = column;
+    if (this.sort() !== column) {
+      this.sort.set(column);
       // when a new sortable column is chosen, we order 'asc' by default
       this.order = 'asc';
     } else this.toggleSortOrder();
 
-    this.nameSelected$.next(column === 'name');
-    this.dateSelected$.next(column === 'date');
     this.storeSortOptions();
-
     this.fetchPlants();
   }
 
@@ -296,8 +269,7 @@ export class PlantListComponent {
   setSmallView(val: boolean) {
     localStorage.setItem('LT_plantListView', val.toString());
 
-    this.listView$.next(val);
-    this.cardView$.next(!val);
+    this.$listView.set(val);
   }
 
   openRemoveDialog(name: string, id: number) {
@@ -322,31 +294,39 @@ export class PlantListComponent {
 
     bsRef.afterDismissed().subscribe((updatedPlant: Plant) => {
       if (updatedPlant) {
-        const list = this.list$.getValue();
-        const index = list.findIndex((plant) => plant.id === updatedPlant.id);
+        const index = this.$list().findIndex(
+          (plant) => plant.id === updatedPlant.id,
+        );
 
         // we moved the plant, hence we remove it from the list
         if (this.locationId && updatedPlant.locationId !== this.locationId) {
-          list.splice(index, 1);
-        } else
-          list[index] = {
-            id: updatedPlant.id,
-            name: this.plantService.getVisibleName(updatedPlant),
-            cover: this.plantService.coverPhoto(updatedPlant),
-          };
+          this.$list.update((value) => {
+            const list = [...value];
+            list.splice(index, 1);
 
-        this.list$.next(list);
+            return list;
+          });
+        } else {
+          this.$list.update((value) => {
+            const list = [...value];
+            list[index] = {
+              id: updatedPlant.id,
+              name: this.plantService.getVisibleName(updatedPlant),
+              cover: this.plantService.coverPhoto(updatedPlant),
+            };
+
+            return list;
+          });
+        }
       }
     });
   }
 
   delete(id: number): void {
     this.plantService.delete(id).subscribe(() => {
-      const newList = this.list$
-        .getValue()
-        .filter((item: PlantListItem) => item.id !== id);
-
-      this.list$.next(newList);
+      this.$list.update((value) =>
+        value.filter((item: PlantListItem) => item.id !== id),
+      );
     });
   }
 }

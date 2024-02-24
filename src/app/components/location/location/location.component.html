@@ -1,12 +1,13 @@
-@if (locationService.location$ | async; as location) {
+@if (locationService.$location(); as location) {
   <div>
-    @if (locationService.owned$ | async) {
+    @if (locationService.$owned()) {
       <ltm-fab [link]="['/plant/create', location.id]" />
     }
+
     <ltm-info-box>
-      @if (lightAsset) {
+      @if ($lightAsset(); as lightAsset) {
         <ltm-property [icon]="lightAsset">
-          {{ lightName | transloco }}
+          {{ $lightName() | transloco }}
         </ltm-property>
       }
 
@@ -17,7 +18,7 @@
       </ltm-property>
 
       <ltm-property icon="forest" data-testid="countProperty">
-        @if (location._count?.plants; as count) {
+        @if (plantCount$ | async; as count) {
           {{ 'location.plants' | transloco: { plantCount: count } }}
         } @else {
           {{ 'location.noPlants' | transloco }}

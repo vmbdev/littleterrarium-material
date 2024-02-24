@@ -45,8 +45,8 @@ export class PasswordResetComponent {
       this.errorInvalidToken$ = this.pws
         .verifyToken(this.token, this.userId)
         .pipe(
-          map((x) => false),
-          catchError((e) => of(true))
+          map(() => false),
+          catchError(() => of(true))
         )
     } else this.errorInvalidToken$ = of(true);
   }

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Injector, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -42,10 +42,8 @@ import { Location } from '@models/location.model';
 export class LocationAddComponent extends LocationUpsertBaseComponent {
   protected createLocation$?: Observable<Location>;
 
-  constructor(
-    private readonly injector: Injector,
-    private readonly router: Router,
-  ) {
+  constructor(private readonly router: Router) {
+    const injector = inject(Injector);
     super(injector);
   }
 

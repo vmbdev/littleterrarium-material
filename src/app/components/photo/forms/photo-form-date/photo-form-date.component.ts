@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormControl } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -18,6 +18,7 @@ import { FormBaseComponent } from '@components/form-base/form-base.component';
     MatDatepickerModule,
   ],
   templateUrl: './photo-form-date.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PhotoFormDateComponent implements FormBaseComponent {
   @Input() currentTakenAt?: Date | string | null;

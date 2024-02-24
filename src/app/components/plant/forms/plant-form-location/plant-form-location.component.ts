@@ -29,10 +29,10 @@ import { Location } from '@models/location.model';
 })
 export class PlantFormLocationComponent implements FormBaseComponent {
   @Input() currentLocation?: number;
-  form = this.fb.group({
+  public readonly form = this.fb.group({
     locationId: new FormControl<number | null>(null, [Validators.required]),
   });
-  locations$?: Observable<Location[]>;
+  protected locations$?: Observable<Location[]>;
 
   constructor(
     private readonly fb: FormBuilder,

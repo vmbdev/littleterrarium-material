@@ -16,11 +16,9 @@ export class AuthInterceptor implements HttpInterceptor {
 
   intercept(
     request: HttpRequest<any>,
-    next: HttpHandler
+    next: HttpHandler,
   ): Observable<HttpEvent<any>> {
-    request = request.clone({
-      withCredentials: true,
-    });
+    request = request.clone({ withCredentials: true });
 
     return next.handle(request).pipe(
       catchError((error: HttpErrorResponse) => {
@@ -28,7 +26,7 @@ export class AuthInterceptor implements HttpInterceptor {
           this.errorHandler.push('Insufficient permissions.');
           return EMPTY;
         } else return throwError(() => error);
-      })
+      }),
     );
   }
 }

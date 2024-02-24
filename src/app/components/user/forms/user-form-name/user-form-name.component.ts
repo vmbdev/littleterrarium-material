@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -18,6 +18,7 @@ import { FormBaseComponent } from '@components/form-base/form-base.component';
     TranslocoModule,
   ],
   templateUrl: './user-form-name.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserFormNameComponent implements FormBaseComponent {
   @Input() currentFirstname?: string | null;

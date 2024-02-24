@@ -8,7 +8,7 @@
     </ltm-property>
   </ltm-info-box>
   
-  @if (photo.images | imagePath:'full'; as fullImage) {
+  @if ($currentImageFull(); as fullImage) {
     <div class="photo">
       <img
         [src]="fullImage"

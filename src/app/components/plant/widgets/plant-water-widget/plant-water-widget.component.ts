@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
@@ -7,17 +7,15 @@ import {
   MatBottomSheet,
   MatBottomSheetModule
 } from '@angular/material/bottom-sheet';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { TranslocoService, TranslocoModule } from '@ngneat/transloco';
+import { MatDialogModule } from '@angular/material/dialog';
+import { TranslocoModule } from '@ngneat/transloco';
 
 import {
   PlantEditWaterComponent
 } from '@components/plant/plant-edit-water/plant-edit-water.component';
-import {
-  ConfirmDialogComponent
-} from '@components/dialogs/confirm-dialog/confirm-dialog.component';
 import { PlantService } from '@services/plant.service';
 import { DaysAgoPipe } from '@pipes/days-ago/days-ago.pipe';
+import { WaterInfo } from '@models/plant.model';
 
 @Component({
   selector: 'ltm-plant-water-widget',
@@ -33,29 +31,16 @@ import { DaysAgoPipe } from '@pipes/days-ago/days-ago.pipe';
     TranslocoModule,
     DaysAgoPipe,
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlantWaterWidgetComponent {
-  constructor(
-    public readonly plantService: PlantService,
-    private readonly bottomSheet: MatBottomSheet,
-    private readonly dialog: MatDialog,
-    private readonly translate: TranslocoService
-  ) {}
+  public readonly id = input.required<number>();
+  public readonly owned = input<boolean>(true);
+  public readonly data = input.required<WaterInfo>();
+  private readonly bottomSheet = inject(MatBottomSheet);
+  protected readonly plantService = inject(PlantService);
 
   openEdit(): void {
     this.bottomSheet.open(PlantEditWaterComponent);
-  }
-
-  openWaterDialog() {
-    this.dialog.open(ConfirmDialogComponent, {
-      data: {
-        title: this.translate.translate('general.watering'),
-        question: [
-          this.translate.translate('plant-widget-water.confirm'),
-          this.translate.translate('plant-widget-water.warning'),
-        ],
-        accept: () => this.plantService.water().subscribe(),
-      },
-    });
   }
 }

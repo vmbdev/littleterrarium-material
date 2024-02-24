@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild, WritableSignal, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -36,6 +36,7 @@ import { PasswordService } from '@services/password.service';
       useValue: { showError: true },
     },
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegisterComponent {
   @ViewChild(UserFormPasswordComponent)
@@ -44,7 +45,7 @@ export class RegisterComponent {
   usernameComponent!: UserFormUsernameComponent;
   @ViewChild(UserFormEmailComponent) emailComponent!: UserFormEmailComponent;
 
-  protected stepperIndex: number | null = null;
+  protected $stepperIndex: WritableSignal<number | null> = signal(null);
   protected pwdRequirements$ = this.pws.getPasswordRequirements();
 
   constructor(
@@ -73,8 +74,8 @@ export class RegisterComponent {
 
   stepperMoveTo(i: number): void {
     // trigger an Input() detection
-    this.stepperIndex = null;
-    this.stepperIndex = i;
+    this.$stepperIndex.set(null);
+    this.$stepperIndex.set(i);
   }
 
   submit(): void {
@@ -120,7 +121,7 @@ export class RegisterComponent {
           }
 
           return EMPTY;
-        })
+        }),
       )
       .subscribe(() => {
         this.router.navigateByUrl('/');

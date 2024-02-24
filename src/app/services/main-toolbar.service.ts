@@ -1,12 +1,11 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { Injectable, Signal, WritableSignal, signal } from '@angular/core';
 
 interface MainToolbarButton {
   icon: string;
   tooltip?: string;
   route?: any;
   click?: any;
-  selected?: BehaviorSubject<boolean>;
+  $selected?: Signal<boolean>;
 }
 
 type MainToolbarButtonCollection = MainToolbarButton[];
@@ -15,52 +14,51 @@ type MainToolbarButtonCollection = MainToolbarButton[];
   providedIn: 'root',
 })
 export class MainToolbarService {
-  private readonly name = new BehaviorSubject<string>('');
-  public readonly name$ = this.name.asObservable();
-  private readonly buttons = new BehaviorSubject<MainToolbarButton[]>([]);
-  public readonly buttons$ = this.buttons.asObservable();
-  private readonly menu = new BehaviorSubject<MainToolbarButtonCollection[]>(
-    [],
-  );
-  public readonly menu$ = this.menu.asObservable();
-  private readonly hidden = new BehaviorSubject<boolean>(true);
-  public readonly hidden$ = this.hidden.asObservable();
+  readonly #$name: WritableSignal<string> = signal('');
+  public readonly $name = this.#$name.asReadonly();
+
+  readonly #$buttons: WritableSignal<MainToolbarButton[]> = signal([]);
+  public readonly $buttons = this.#$buttons.asReadonly();
+
+  readonly #$menu: WritableSignal<MainToolbarButtonCollection[]> = signal([]);
+  public readonly $menu = this.#$menu.asReadonly();
+
+  readonly #$hidden: WritableSignal<boolean> = signal(true);
+  public readonly $hidden = this.#$hidden.asReadonly();
 
   setName(name: string) {
-    this.hidden.next(false);
-    this.name.next(name);
+    this.#$hidden.set(false);
+    this.#$name.set(name);
   }
 
   setButtons(buttons: MainToolbarButton[]) {
-    this.hidden.next(false);
-    this.buttons.next(buttons);
+    this.#$hidden.set(false);
+    this.#$buttons.set(buttons);
   }
 
   addButtons(buttons: MainToolbarButton[]) {
-    const curr = this.buttons.getValue();
-
-    this.setButtons([...curr, ...buttons]);
+    this.#$hidden.set(false);
+    this.#$buttons.update((val) => [...val, ...buttons]);
   }
 
   setMenu(menu: MainToolbarButtonCollection[]) {
-    this.hidden.next(false);
-    this.menu.next(menu);
+    this.#$hidden.set(false);
+    this.#$menu.set(menu);
   }
 
   addButtonsToMenu(menu: MainToolbarButtonCollection[]) {
-    const curr = this.menu.getValue();
-
-    this.setMenu([...curr, ...menu]);
+    this.#$hidden.set(false);
+    this.#$menu.update((val) => [...val, ...menu]);
   }
 
   hide() {
-    this.buttons.next([]);
-    this.menu.next([]);
-    this.name.next('');
-    this.hidden.next(true);
+    this.#$buttons.set([]);
+    this.#$menu.set([]);
+    this.#$name.set('');
+    this.#$hidden.set(true);
   }
 
   show() {
-    this.hidden.next(false);
+    this.#$hidden.set(false);
   }
 }

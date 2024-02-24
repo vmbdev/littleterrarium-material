@@ -12,13 +12,11 @@ import { RouterModule } from '@angular/router';
 
 import { UserBoxComponent } from '@components/navigation/user-box/user-box.component';
 import { TaskService } from '@services/task.service';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'ltm-bottom-toolbar',
   standalone: true,
   imports: [
-    CommonModule,
     MatIconModule,
     MatToolbarModule,
     MatBadgeModule,

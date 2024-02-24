@@ -1,0 +1,18 @@
+$breakpoints: (
+  's': ( 'min': 0, 'max': 320px ),
+  'm': ( 'min': 321px, 'max': 375px ),
+  'l': ( 'min': 376px, 'max': 425px),
+  'tablet': ( 'min': 426px, 'max': 768px ),
+  'desktop': ( 'min': 769px, 'max': 1024px ),
+  'desktop-l': ( 'min': 1025, 'max': 1044px )
+);
+
+@mixin media($breakpoint) {
+  $sizes: map-get($breakpoints, $breakpoint);
+  $min: map-get($sizes, 'min');
+  $max: map-get($sizes, 'max');
+  
+  @media only screen and (min-width: $min) and (max-width: $max) {
+    @content;
+  }
+}

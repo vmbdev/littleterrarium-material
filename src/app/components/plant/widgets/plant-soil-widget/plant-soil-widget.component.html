@@ -1,4 +1,4 @@
-@if (plant$ | async; as plant) {
+@if (data(); as pot) {
   <mat-expansion-panel>
     <mat-expansion-panel-header>
       <mat-panel-title>
@@ -9,32 +9,32 @@
       </mat-panel-description>
     </mat-expansion-panel-header>
 
-    @if (plant.potType) {
-      @if (potName) {
-        <span
+    @if (pot.potType) {
+      @if ($potName(); as potName) {
+        <p
           *transloco="let t"
           [innerHTML]="
             'plant-widget-soil.potMaterial'
               | transloco: { material: t(potName) }
           "
         >
-        </span>
+        </p>
       }
 
-      @if (plant.potSize) {
-        <span
-          [innerHTML]="
-            'plant-widget-soil.potSize'
-              | transloco: { size: plant.potSize | unit: 'cm' }
-          "
-        >
-        </span>
-      }
-
-      @if (plant.soil) {
+      @if (pot.potSize) {
         <p
           [innerHTML]="
-            'plant-widget-soil.composition' | transloco: { soil: plant.soil }
+            'plant-widget-soil.potSize'
+              | transloco: { size: pot.potSize | unit: 'cm' }
+          "
+        >
+        </p>
+      }
+
+      @if (pot.soil) {
+        <p
+          [innerHTML]="
+            'plant-widget-soil.composition' | transloco: { soil: pot.soil }
           "
         ></p>
       }
@@ -42,9 +42,9 @@
       <p>{{ 'plant-widget-soil.noData' | transloco }}</p>
     }
 
-    @if (plantService.owned$ | async) {
+    @if (owned()) {
       <mat-action-row>
-        <button mat-button color="primary" (click)="openEdit()">
+        <button mat-button color="accent" (click)="openEdit()">
           {{ 'general.edit' | transloco }}
         </button>
       </mat-action-row>

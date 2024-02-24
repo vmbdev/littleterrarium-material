@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   ReactiveFormsModule,
@@ -12,7 +12,6 @@ import { MatInputModule } from '@angular/material/input';
 import { TranslocoModule } from '@ngneat/transloco';
 
 import { FormBaseComponent } from '@components/form-base/form-base.component';
-import { ApiService } from '@services/api.service';
 import { PasswordRequirements } from '@models/user.model';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -31,6 +30,7 @@ import { MatIconModule } from '@angular/material/icon';
   ],
   templateUrl: './user-form-password.component.html',
   styleUrls: ['./user-form-password.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserFormPasswordComponent implements FormBaseComponent {
   @Input() requirements?: PasswordRequirements | null;
@@ -51,16 +51,7 @@ export class UserFormPasswordComponent implements FormBaseComponent {
   protected hidePassword2: boolean = true;
   protected nonAlphaNumChars: string = '!@#$%^&*()_+-=[]{};\':"|,.<>/?';
 
-  constructor(
-    private readonly fb: FormBuilder,
-    private readonly api: ApiService,
-  ) {}
-
-  // ngOnInit(): void {
-  //   this.api.getPasswordRequirements().subscribe((requirements: any) => {
-  //     this.pwdReq = requirements;
-  //   });
-  // }
+  constructor(private readonly fb: FormBuilder) {}
 
   checkPasswordStrength(group: AbstractControl): ValidationErrors | null {
     const value = group.get('password')?.value;

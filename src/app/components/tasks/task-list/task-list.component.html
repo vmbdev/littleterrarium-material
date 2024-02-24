@@ -1,33 +1,32 @@
-<p>{{ 'tasks.msg' | transloco }}</p>
+<p>{{ "tasks.msg" | transloco }}</p>
 <mat-list>
-
-  @for (task of taskService.tasks$ | async; track task.plantId) {
+  @for (task of taskService.$tasks(); track task.plantId) {
     <mat-list-item matRipple>
       <img
         matListItemAvatar
         [src]="task.picture"
         [alt]="('general.picture' | transloco) + ' - ' + task.plantName"
         [routerLink]="['/plant', task.plantId]"
-      >
+      />
 
       <span matListItemTitle [routerLink]="['/plant', task.plantId]">
         {{ task.plantName }}
       </span>
 
       <div matListItemIcon class="tasks__buttons">
-        <ltm-plant-button-water
+        <ltm-task-button-water
           [id]="task.plantId"
-          [disabled]="!!(!task.waterNext)"
+          [disabled]="!!!task.waterNext"
           (done)="taskService.loadTasks()"
         >
-        </ltm-plant-button-water>
+        </ltm-task-button-water>
 
-        <ltm-plant-button-fertilize
+        <ltm-task-button-fertilize
           [id]="task.plantId"
-          [disabled]="!!(!task.fertNext)"
+          [disabled]="!!!task.fertNext"
           (done)="taskService.loadTasks()"
         >
-        </ltm-plant-button-fertilize>
+        </ltm-task-button-fertilize>
       </div>
     </mat-list-item>
   } @empty {
@@ -35,5 +34,4 @@
       <p>{{ 'tasks.noTasks' | transloco }}</p>
     </mat-list-item>
   }
-
 </mat-list>

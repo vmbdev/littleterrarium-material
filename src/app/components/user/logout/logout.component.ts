@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { TranslocoService, TranslocoModule } from '@ngneat/transloco';
@@ -7,7 +7,6 @@ import { finalize } from 'rxjs';
 
 import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog.component';
 import { AuthService } from '@services/auth.service';
-import { ErrorHandlerService } from '@services/error-handler.service';
 import { LocationService } from '@services/location.service';
 import { PhotoService } from '@services/photo.service';
 import { PlantService } from '@services/plant.service';
@@ -23,6 +22,7 @@ import { TaskService } from '@services/task.service';
     MatDialogModule,
   ],
   templateUrl: './logout.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LogoutComponent {
   constructor(

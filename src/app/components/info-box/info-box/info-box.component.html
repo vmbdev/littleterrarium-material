@@ -1,11 +1,11 @@
 <mat-card class="info-box">
   <mat-card-content class="info-box__properties">
-    @for (property of properties; track property) {
+    @for (property of props(); track property) {
       <ng-template [ngTemplateOutlet]="property.propertyTemplate" />
     }
   </mat-card-content>
 
-  @if (description) {
+  @if (description(); as description) {
     <mat-divider class="info-box__divider" />
     <mat-card-content>
       <mat-icon class="info-box__descicon">book</mat-icon>

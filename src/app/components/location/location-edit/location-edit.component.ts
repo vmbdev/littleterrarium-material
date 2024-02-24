@@ -5,9 +5,12 @@ import {
   Inject,
   Injector,
   Optional,
+  WritableSignal,
+  inject,
+  signal,
 } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
-import { catchError, EMPTY, finalize, Observable } from 'rxjs';
+import { catchError, EMPTY, finalize } from 'rxjs';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
@@ -44,22 +47,20 @@ import { Location } from '@models/location.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LocationEditComponent extends LocationUpsertBaseComponent {
-  protected location$?: Observable<Location>;
-
+  protected $location: WritableSignal<Location | null> = signal(null);
+  
   constructor(
-    private readonly injector: Injector,
     @Optional() private readonly bottomSheetRef: MatBottomSheetRef,
     @Optional()
     @Inject(MAT_BOTTOM_SHEET_DATA)
-    public readonly editLocation: { id: number },
-  ) {
-    super(injector);
+    protected readonly location: Location,
+    ) {
+      const injector = inject(Injector);
+      super(injector);
   }
 
   ngOnInit(): void {
-    if (this.editLocation && this.editLocation.id) {
-      this.location$ = this.locationService.get(this.editLocation.id);
-    }
+    if (this.location) this.$location.set(this.location);
   }
 
   submit(): void {
@@ -68,14 +69,13 @@ export class LocationEditComponent extends LocationUpsertBaseComponent {
       return;
     }
 
-    const data: Location = this.getLocationFromForm();
-    const ud = this.openUploadDialog();
-
-    if (this.editLocation.id) {
+    if (this.location) {
+      const data: Location = this.getLocationFromForm();
+      const ud = this.openUploadDialog();
       const removePicture =
         !!this.fileUploaderComponent.form.get('remove')?.value;
 
-      data.id = this.editLocation.id;
+      data.id = this.location.id;
 
       this.locationService
         .update(data, { removePicture })

@@ -16,7 +16,11 @@ is set up to also send traditional image formats, images will use the later.
 
 - Visual update, including a new logo.
 - Updated tests.
-- Updated to Angular 17.1.0.
+- Updated to Angular 17.2.0.
+- Remaining components migrated to OnPush.
+- Several components and services migrated to the new Signal functionality.
+Just for my amusement.
+- Improved visuals in bigger screens.
 - Improved markup semantics.
 - Improved methods and properties protection.
 - Updated translations.

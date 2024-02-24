@@ -29,10 +29,7 @@ export class HomeComponent {
   ) {}
 
   ngOnInit(): void {
-    this.translate.selectTranslate('general.locations')
-      .subscribe((res: string) => {
-        this.mt.setName(res);
-      });
+    this.mt.setName(this.translate.translate('general.locations'));
     this.mt.setButtons([]);
     this.mt.setMenu([]);
   }
