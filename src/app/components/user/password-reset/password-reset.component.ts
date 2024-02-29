@@ -1,12 +1,13 @@
-import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { BehaviorSubject, catchError, EMPTY, map, Observable, of } from 'rxjs';
-import { TranslocoService, TranslocoModule } from '@ngneat/transloco';
+import { TranslocoModule } from '@ngneat/transloco';
 
 import { UserFormPasswordComponent } from '@components/user/forms/user-form-password/user-form-password.component';
 import { PasswordService } from '@services/password.service';
 import { CommonModule } from '@angular/common';
+import { FormBuilder, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'ltm-password-reset',
@@ -21,8 +22,13 @@ import { CommonModule } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PasswordResetComponent {
-  @ViewChild(UserFormPasswordComponent)
-  private passwordComponent!: UserFormPasswordComponent;
+  private readonly fb = inject(FormBuilder);
+  private readonly pws = inject(PasswordService);
+  private readonly route = inject(ActivatedRoute);
+
+  protected readonly form = this.fb.group({
+    password: new FormControl<string>(''),
+  });
   private token?: string | null;
   private userId?: number | null;
 
@@ -30,12 +36,6 @@ export class PasswordResetComponent {
   protected errorInvalidPassword$ = new BehaviorSubject<boolean>(false);
   protected passwordChanged$?: Observable<any>;
   protected pwdRequirements$ = this.pws.getPasswordRequirements();
-
-  constructor(
-    private readonly route: ActivatedRoute,
-    public readonly translate: TranslocoService,
-    private readonly pws: PasswordService,
-  ) {}
 
   ngOnInit(): void {
     this.token = this.route.snapshot.paramMap.get('token');
@@ -52,12 +52,12 @@ export class PasswordResetComponent {
   }
 
   submit() {
-    const pwd = this.passwordComponent.form.get('password')?.value;
+    const { password } = this.form.value;
 
-    if (!pwd || !this.token || !this.userId) return;
+    if (!password || !this.form.valid || !this.token || !this.userId) return;
 
     this.passwordChanged$ = this.pws
-      .recoverPassword(this.token, pwd, this.userId)
+      .recoverPassword(this.token, password, this.userId)
       .pipe(
         catchError((err) => {
           const msg = err.error?.msg;

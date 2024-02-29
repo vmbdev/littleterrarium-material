@@ -1,4 +1,4 @@
-<form [formGroup]="form">
+<ltm-form-base-action>
   <p>{{ 'plant-edit.health' | transloco }}</p>
 
   <mat-button-toggle-group
@@ -8,7 +8,7 @@
   >
     @for (condition of conditions; track condition.id) {
       <mat-button-toggle
-        [checked]="condition.id === currentCondition"
+        [checked]="condition.id === group.value"
         [value]="condition.id"
       >
         <div class="icon-button-toggle__option">
@@ -19,10 +19,11 @@
       </mat-button-toggle>
     }
   </mat-button-toggle-group>
-  <div class="icon-button-toggle__selection">
-    @if (group.value) {
-      {{ ('condition.' + group.value | lowercase ) | transloco }}
-    }
-  </div>
 
-</form>
+  @if (group.value) {
+    <div class="icon-button-toggle__selection">
+      {{ ('condition.' + group.value | lowercase ) | transloco }}
+    </div>
+  }
+
+</ltm-form-base-action>

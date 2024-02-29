@@ -1,41 +1,49 @@
-<mat-stepper labelPosition="bottom" linear="true" animationDuration="300">
-  <mat-step
-    [stepControl]="formName.form"
-    [errorMessage]="'general.required' | transloco"
-    [label]="'general.name' | transloco"
-  >
-    <ltm-location-form-name #formName />
-    <ltm-stepper-navigation backButton="false" />
-  </mat-step>
+<form [formGroup]="form">
+  <mat-stepper labelPosition="bottom" linear="true" animationDuration="300">
+    <mat-step
+      [stepControl]="nameForm"
+      [errorMessage]="'general.required' | transloco"
+      [label]="'general.name' | transloco"
+    >
+      <ng-container [formGroup]="nameForm">
+        <ltm-location-form-name />
+      </ng-container>
+      <ltm-stepper-navigation backButton="false" />
+    </mat-step>
 
-  <mat-step optional="true" [label]="'general.picture' | transloco">
-    <p [innerHTML]="'location-add-edit.choose' | transloco"></p>
-    <p [innerHTML]="'location-add-edit.ornot' | transloco"></p>
+    <mat-step optional="true" [label]="'general.picture' | transloco">
+      <p [innerHTML]="'location-add-edit.choose' | transloco"></p>
+      <p [innerHTML]="'location-add-edit.ornot' | transloco"></p>
 
-    <ltm-file-uploader maxAmount="1" (fileChange)="fileChange($event)" />
+      <ltm-file-uploader maxAmount="1" (fileChange)="fileChange($event)" />
 
-    <ltm-stepper-navigation />
-  </mat-step>
+      <ltm-stepper-navigation />
+    </mat-step>
 
-  <mat-step
-    [stepControl]="formLight.form"
-    [label]="'general.light' | transloco"
-  >
-    <ltm-location-form-light #formLight />
-    <ltm-stepper-navigation />
-  </mat-step>
+    <mat-step
+      [stepControl]="lightForm"
+      [label]="'general.light' | transloco"
+    >
+      <ng-container [formGroup]="lightForm">
+        <ltm-location-form-light />
+      </ng-container>
+      <ltm-stepper-navigation />
+    </mat-step>
 
-  <mat-step
-    [stepControl]="formPrivacy.form"
-    [label]="'general.privacy' | transloco"
-  >
-    <ltm-form-privacy #formPrivacy>
-      <p [innerHtml]="'location-add-edit.visibility' | transloco"></p>
-      <p [innerHtml]="'location-add-edit.visibilityNote' | transloco"></p>
-    </ltm-form-privacy>
+    <mat-step
+      [stepControl]="privacyForm"
+      [label]="'general.privacy' | transloco"
+    >
+      <ng-container [formGroup]="privacyForm">
+        <ltm-form-privacy #formPrivacy>
+          <p [innerHtml]="'location-add-edit.visibility' | transloco"></p>
+          <p [innerHtml]="'location-add-edit.visibilityNote' | transloco"></p>
+        </ltm-form-privacy>
+      </ng-container>
 
-    @if (!(createLocation$ | async)) {
-      <ltm-stepper-navigation finishButton="true" (finish)="submit()" />
-    }
-  </mat-step>
-</mat-stepper>
+      @if (!(createLocation$ | async)) {
+        <ltm-stepper-navigation finishButton="true" (finish)="submit()" />
+      }
+    </mat-step>
+  </mat-stepper>
+</form>

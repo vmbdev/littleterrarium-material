@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import {
   FormGroup,
   FormBuilder,
@@ -32,7 +32,7 @@ import { CommonModule } from '@angular/common';
 })
 export class PasswordRecoveryComponent {
   protected userForm: FormGroup;
-  protected checkError$ = new BehaviorSubject<boolean>(false);
+  protected $checkError = signal<boolean>(false);
   protected recoveryStarted$?: Observable<any>;
 
   constructor(
@@ -53,9 +53,9 @@ export class PasswordRecoveryComponent {
       this.recoveryStarted$ = this.pws
         .forgotPassword(userRef)
         .pipe(
-          tap(() => { this.checkError$.next(false) }),
+          tap(() => { this.$checkError.set(false) }),
           catchError(() => {
-            this.checkError$.next(true);
+            this.$checkError.set(true);
 
             return EMPTY;
           })

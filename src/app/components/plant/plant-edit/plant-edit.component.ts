@@ -1,6 +1,12 @@
-import { ChangeDetectionStrategy, Component, Inject, Optional, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormGroup } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
@@ -9,7 +15,7 @@ import {
   MatBottomSheetRef,
   MAT_BOTTOM_SHEET_DATA,
 } from '@angular/material/bottom-sheet';
-import { finalize, Observable } from 'rxjs';
+import { finalize, Observable, tap } from 'rxjs';
 import { TranslocoService, TranslocoModule } from '@ngneat/transloco';
 
 import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog.component';
@@ -36,12 +42,12 @@ interface PlantEditConfig {
   standalone: true,
   imports: [
     CommonModule,
+    ReactiveFormsModule,
     TranslocoModule,
     MatCardModule,
     MatIconModule,
     MatButtonModule,
     FileUploaderComponent,
-
     PlantFormNameComponent,
     PlantFormSpecieComponent,
     PlantFormDescriptionComponent,
@@ -54,38 +60,44 @@ interface PlantEditConfig {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlantEditComponent {
-  @ViewChild(PlantFormNameComponent)
-  nameComponent!: PlantFormNameComponent;
-  @ViewChild(PlantFormSpecieComponent)
-  specieComponent!: PlantFormSpecieComponent;
-  @ViewChild(FormPrivacyComponent)
-  privacyComponent!: FormPrivacyComponent;
-  @ViewChild(PlantFormDescriptionComponent)
-  descriptionComponent!: PlantFormDescriptionComponent;
-  @ViewChild(PlantFormConditionComponent)
-  conditionComponent!: PlantFormConditionComponent;
-  @ViewChild(PlantFormLocationComponent)
-  locationComponent!: PlantFormLocationComponent;
+  private readonly fb = inject(FormBuilder);
+  private readonly dialog = inject(MatDialog);
+  private readonly translate = inject(TranslocoService);
+  private readonly plantService = inject(PlantService);
+  private readonly errorHandler = inject(ErrorHandlerService);
+  private readonly bottomSheetRef = inject(MatBottomSheetRef, {
+    optional: true,
+  });
+  private readonly editPlant: PlantEditConfig = inject(MAT_BOTTOM_SHEET_DATA, {
+    optional: true,
+  });
 
   protected plant$?: Observable<Plant>;
-  private forms: FormGroup[] = [];
 
-  constructor(
-    private readonly dialog: MatDialog,
-    private readonly translate: TranslocoService,
-    public readonly plantService: PlantService,
-    private readonly errorHandler: ErrorHandlerService,
-    @Optional() private readonly bottomSheetRef: MatBottomSheetRef,
-    @Optional()
-    @Inject(MAT_BOTTOM_SHEET_DATA)
-    private readonly editPlant: PlantEditConfig,
-  ) {}
+  protected readonly form = this.fb.group({
+    customName: [''],
+    description: [''],
+    locationId: new FormControl<number | null>(null, Validators.required),
+    specieId: new FormControl<number | null>(null),
+    condition: [''],
+    public: new FormControl<boolean>(true, Validators.required),
+  });
 
   ngOnInit(): void {
-    this.plant$ = this.plantService.get(
-      this.editPlant.id,
-      this.editPlant.config,
-    );
+    this.plant$ = this.plantService
+      .get(this.editPlant.id, this.editPlant.config)
+      .pipe(
+        tap((plant: Plant) => {
+          this.form.patchValue({
+            customName: plant.customName,
+            description: plant.description,
+            locationId: plant.locationId,
+            specieId: plant.specieId,
+            condition: plant.condition,
+            public: plant.public,
+          });
+        }),
+      );
   }
 
   openWaitDialog() {
@@ -98,43 +110,16 @@ export class PlantEditComponent {
     });
   }
 
-  createFormList(): void {
-    this.forms = [
-      this.nameComponent.form,
-      this.specieComponent.form,
-      this.privacyComponent.form,
-      this.descriptionComponent.form,
-      this.conditionComponent.form,
-      this.locationComponent.form,
-    ];
-  }
-
-  getPlantFromForm(): Plant {
-    // calling here to avoid a race condition in OnInit
-    // where plant$ isn't ready before ngViewAfterInit
-    if (this.forms.length === 0) this.createFormList();
-
-    return {
-      ...Object.assign({}, ...this.forms.map((i) => i.value)),
-      id: this.editPlant.id,
-    } as Plant;
-  }
-
-  checkFormValidity(): boolean {
-    // calling here to avoid a race condition in OnInit
-    // where plant$ isn't ready before ngViewAfterInit
-    if (this.forms.length === 0) this.createFormList();
-
-    return this.forms.every((form) => form.valid);
-  }
-
   submit(): void {
-    if (!this.checkFormValidity()) {
+    if (!this.form.valid || !this.editPlant.id) {
       this.errorHandler.push(this.translate.translate('general.formErrors'));
       return;
     }
 
-    const plant: Plant = this.getPlantFromForm();
+    const plant: Plant = {
+      id: this.editPlant.id,
+      ...this.form.value
+    } as Plant;
     const wd = this.openWaitDialog();
 
     this.plantService

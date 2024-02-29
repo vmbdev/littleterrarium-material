@@ -1,53 +1,54 @@
 @if ($location(); as location) {
-  <ltm-edit-page
-    [title]="
-      'location-add-edit.header' | transloco: { location: location.name }
-    "
-    (accept)="submit()"
-  >
-    <mat-card class="settings-card">
-      <mat-card-header>
-        <mat-card-title>{{ 'general.name' | transloco }}</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <ltm-location-form-name [currentName]="location.name" />
-      </mat-card-content>
-    </mat-card>
+  <form [formGroup]="form" (submit)="submit()">
+    <ltm-edit-page
+      [title]="
+        'location-add-edit.header' | transloco: { location: location.name }
+      "
+    >
+      <mat-card class="settings-card">
+        <mat-card-header>
+          <mat-card-title>{{ 'general.name' | transloco }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <ltm-location-form-name />
+        </mat-card-content>
+      </mat-card>
 
-    <mat-card class="settings-card">
-      <mat-card-header>
-        <mat-card-title>{{ 'general.picture' | transloco }}</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <p [innerHTML]="'location-add-edit.choose' | transloco"></p>
-        <p [innerHTML]="'location-add-edit.ornot' | transloco"></p>
-        <ltm-file-uploader
-          maxAmount="1"
-          (fileChange)="fileChange($event)"
-          [removable]="!!location.pictures"
-        />
-      </mat-card-content>
-    </mat-card>
+      <mat-card class="settings-card">
+        <mat-card-header>
+          <mat-card-title>{{ 'general.picture' | transloco }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p [innerHTML]="'location-add-edit.choose' | transloco"></p>
+          <p [innerHTML]="'location-add-edit.ornot' | transloco"></p>
+          <ltm-file-uploader
+            maxAmount="1"
+            (fileChange)="fileChange($event)"
+            [removable]="!!location.pictures"
+          />
+        </mat-card-content>
+      </mat-card>
 
-    <mat-card class="settings-card">
-      <mat-card-header>
-        <mat-card-title>{{ 'general.light' | transloco }}</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <ltm-location-form-light [currentLight]="location.light" />
-      </mat-card-content>
-    </mat-card>
+      <mat-card class="settings-card">
+        <mat-card-header>
+          <mat-card-title>{{ 'general.light' | transloco }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <ltm-location-form-light />
+        </mat-card-content>
+      </mat-card>
 
-    <mat-card class="settings-card">
-      <mat-card-header>
-        <mat-card-title>{{ 'general.privacy' | transloco }}</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <ltm-form-privacy [currentPrivacy]="location.public">
-          <p [innerHtml]="'location-add-edit.visibility' | transloco"></p>
-          <p [innerHtml]="'location-add-edit.visibilityNote' | transloco"></p>
-        </ltm-form-privacy>
-      </mat-card-content>
-    </mat-card>
-  </ltm-edit-page>
+      <mat-card class="settings-card">
+        <mat-card-header>
+          <mat-card-title>{{ 'general.privacy' | transloco }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <ltm-form-privacy>
+            <p [innerHtml]="'location-add-edit.visibility' | transloco"></p>
+            <p [innerHtml]="'location-add-edit.visibilityNote' | transloco"></p>
+          </ltm-form-privacy>
+        </mat-card-content>
+      </mat-card>
+    </ltm-edit-page>
+  </form>
 }

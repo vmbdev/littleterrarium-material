@@ -1,6 +1,6 @@
-<p>{{ 'photo-edit.takenAt' | transloco }}></p>
+<ltm-form-base-action>
+  <p>{{ "photo-edit.takenAt" | transloco }}></p>
 
-<form [formGroup]="form">
   <mat-form-field appearance="fill" class="full-width">
     <mat-label>{{ 'general.date' | transloco }}</mat-label>
     <input
@@ -8,8 +8,8 @@
       [max]="today"
       matInput
       [matDatepicker]="picker"
-    >
+    />
     <mat-datepicker-toggle matIconSuffix [for]="picker" />
     <mat-datepicker #picker />
   </mat-form-field>
-</form>
+</ltm-form-base-action>

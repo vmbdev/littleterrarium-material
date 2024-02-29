@@ -1,37 +1,35 @@
 <p [innerHTML]="'plant-add.specieDesc' | transloco"></p>
 
-<form [formGroup]="form">
-  <mat-form-field appearance="fill" class="full-width">
-    <mat-label>{{ 'general.search' | transloco }}</mat-label>
-    <input
-      #specieInput
-      type="text"
-      matInput
-      [matAutocomplete]="auto"
-      [placeholder]="'specieFinder.inputPlaceholder' | transloco"
-      (keyup)="keyPress(specieInput.value)"
-      [value]="specieName$ | async"
-    />
+<mat-form-field appearance="fill" class="full-width">
+  <mat-label>{{ 'general.search' | transloco }}</mat-label>
+  <input
+    #specieInput
+    type="text"
+    matInput
+    [matAutocomplete]="auto"
+    [placeholder]="'specieFinder.inputPlaceholder' | transloco"
+    (input)="change(specieInput.value)"
+    [value]="specieName$ | async"
+  />
 
-    <mat-autocomplete
-      autoActiveFirstOption
-      #auto="matAutocomplete"
-      (optionSelected)="
-        selectSpecie($event.option.value.id, $event.option.value.name)
-      "
-      [displayWith]="getSpecieName"
-    >
-      @for (specie of $results(); track specie.id) {
-        <mat-option [value]="specie">
-          {{ specie.name }}
-        </mat-option>
-      }
-    </mat-autocomplete>
-
-    @if (specieInput.value) {
-      <button matSuffix mat-icon-button (click)="clear()">
-        <mat-icon>close</mat-icon>
-      </button>
+  <mat-autocomplete
+    autoActiveFirstOption
+    #auto="matAutocomplete"
+    (optionSelected)="
+      selectSpecie($event.option.value.id, $event.option.value.name)
+    "
+    [displayWith]="getSpecieName"
+  >
+    @for (specie of results$ | async; track specie.id) {
+      <mat-option [value]="specie">
+        {{ specie.name }}
+      </mat-option>
     }
-  </mat-form-field>
-</form>
+  </mat-autocomplete>
+
+  @if (specieInput.value) {
+    <button matSuffix mat-icon-button (click)="clear()">
+      <mat-icon>close</mat-icon>
+    </button>
+  }
+</mat-form-field>

@@ -26,7 +26,6 @@ import { ViewerService } from '@services/viewer.service';
 import { ShareService } from '@services/share.service';
 import { NavigationData, Photo } from '@models/photo.model';
 import { DaysAgoPipe } from '@pipes/days-ago/days-ago.pipe';
-import { ImagePathPipe } from '@pipes/image-path/image-path.pipe';
 
 @Component({
   selector: 'ltm-photo',
@@ -46,7 +45,6 @@ import { ImagePathPipe } from '@pipes/image-path/image-path.pipe';
     ToggleOptionComponent,
     ViewerComponent,
     DaysAgoPipe,
-    ImagePathPipe,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

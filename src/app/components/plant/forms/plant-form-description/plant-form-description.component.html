@@ -1,6 +1,5 @@
-<p [innerHtml]="'plant-edit.description' | transloco"></p>
-
-<form [formGroup]="form">
+<ltm-form-base-action>
+  <p [innerHtml]="'plant-edit.description' | transloco"></p>
   <mat-form-field class="full-width">
     <mat-label>{{ 'general.description' | transloco }}</mat-label>
     <textarea
@@ -13,4 +12,4 @@
     </textarea>
     <mat-hint align="end">{{ desc.value.length }} / 300</mat-hint>
   </mat-form-field>
-</form>
+</ltm-form-base-action>

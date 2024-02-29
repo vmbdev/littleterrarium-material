@@ -17,9 +17,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslocoModule } from '@ngneat/transloco';
 
-import { ShortFilenamePipe } from '@pipes/short-filename/short-filename.pipe';
-import { FormBaseComponent } from '@components/form-base/form-base.component';
 import { CameraService } from '@services/camera.service';
+import { ShortFilenamePipe } from '@pipes/short-filename/short-filename.pipe';
 
 @Component({
   standalone: true,
@@ -38,7 +37,7 @@ import { CameraService } from '@services/camera.service';
   styleUrls: ['./file-uploader.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FileUploaderComponent implements FormBaseComponent {
+export class FileUploaderComponent {
   /**
    * Max amount of files the user can select. By default, 1.
    */

@@ -1,7 +1,7 @@
-<ng-content />
+<ltm-form-base-action>
+  <ng-content />
 
-<form [formGroup]="form">
-  <mat-checkbox formControlName="public" [checked]="currentPrivacy">
+  <mat-checkbox formControlName="public">
     {{ 'general.visibilityPublic' | transloco }}
   </mat-checkbox>
-</form>
+</ltm-form-base-action>

@@ -1,15 +1,15 @@
-<form [formGroup]="form">
+<ltm-form-base-action>
   <p [innerHTML]="'user-edit.bioDesc' | transloco"></p>
   <mat-form-field class="full-width">
     <mat-label>{{ 'general.bio' | transloco }}</mat-label>
     <textarea
-      #bio
+    #bio
       formControlName="bio"
       matInput
       maxlength="300"
       rows="6"
-    >
+      >
     </textarea>
     <mat-hint align="end">{{ bio.value.length }} / 300</mat-hint>
   </mat-form-field>
-</form>
+</ltm-form-base-action>

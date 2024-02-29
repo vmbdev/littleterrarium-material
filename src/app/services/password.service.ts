@@ -41,6 +41,6 @@ export class PasswordService {
       password
     } as User;
 
-    return this.api.editUser(user);
+    return this.api.updateUser(user);
   }
 }

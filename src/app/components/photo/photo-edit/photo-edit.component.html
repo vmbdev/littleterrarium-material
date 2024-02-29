@@ -1,47 +1,49 @@
 @if (photo$ | async; as photo) {
-  <ltm-edit-page [title]="'photo-edit.header' | transloco" (accept)="submit()">
-    <mat-card class="settings-card">
-      <mat-card-header>
-        <mat-card-title>{{ 'general.description' | transloco }}</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <ltm-photo-form-description [currentDescription]="photo.description" />
-      </mat-card-content>
-    </mat-card>
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <ltm-edit-page [title]="'photo-edit.header' | transloco" (accept)="submit()">
+      <mat-card class="settings-card">
+        <mat-card-header>
+          <mat-card-title>{{ 'general.description' | transloco }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <ltm-photo-form-description />
+        </mat-card-content>
+      </mat-card>
 
-    <mat-card class="settings-card">
-      <mat-card-header>
-        <mat-card-title>{{ 'photo.cover' | transloco }}</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <ltm-toggle-option
-          [checked]="plantCoverId === photo.id"
-          (change)="updateCoverPhoto($event)"
-        >
-          {{ "photo.cover" | transloco }}
-        </ltm-toggle-option>
-      </mat-card-content>
-    </mat-card>
+      <mat-card class="settings-card">
+        <mat-card-header>
+          <mat-card-title>{{ 'photo.cover' | transloco }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <ltm-toggle-option
+            [checked]="plantCoverId === photo.id"
+            (change)="updateCoverPhoto($event)"
+          >
+            {{ "photo.cover" | transloco }}
+          </ltm-toggle-option>
+        </mat-card-content>
+      </mat-card>
 
-    <mat-card class="settings-card">
-      <mat-card-header>
-        <mat-card-title>{{ 'general.date' | transloco }}</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <ltm-photo-form-date [currentTakenAt]="photo.takenAt" />
-      </mat-card-content>
-    </mat-card>
+      <mat-card class="settings-card">
+        <mat-card-header>
+          <mat-card-title>{{ 'general.date' | transloco }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <ltm-photo-form-date />
+        </mat-card-content>
+      </mat-card>
 
-    <mat-card class="settings-card">
-      <mat-card-header>
-        <mat-card-title>{{ 'general.privacy' | transloco }}</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <ltm-form-privacy [currentPrivacy]="photo.public">
-          <p [innerHtml]="'photo-add.visibility' | transloco"></p>
-          <p [innerHtml]="'photo-add.visibilityNote' | transloco"></p>
-        </ltm-form-privacy>
-      </mat-card-content>
-    </mat-card>
-  </ltm-edit-page>
+      <mat-card class="settings-card">
+        <mat-card-header>
+          <mat-card-title>{{ 'general.privacy' | transloco }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <ltm-form-privacy>
+            <p [innerHtml]="'photo-add.visibility' | transloco"></p>
+            <p [innerHtml]="'photo-add.visibilityNote' | transloco"></p>
+          </ltm-form-privacy>
+        </mat-card-content>
+      </mat-card>
+    </ltm-edit-page>
+  </form>
 }

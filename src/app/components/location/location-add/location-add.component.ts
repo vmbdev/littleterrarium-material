@@ -1,20 +1,27 @@
-import { ChangeDetectionStrategy, Component, Injector, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import {
+  FormBuilder,
+  FormControl,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatStepperModule } from '@angular/material/stepper';
 import { catchError, EMPTY, finalize, Observable, tap } from 'rxjs';
-import { TranslocoModule } from '@ngneat/transloco';
+import { TranslocoModule, TranslocoService } from '@ngneat/transloco';
 
 import { StepperNavigationComponent } from '@components/stepper-navigation/stepper-navigation.component';
 import { FileUploaderComponent } from '@components/file-uploader/file-uploader.component';
 import { LocationFormNameComponent } from '@components/location/forms/location-form-name/location-form-name.component';
 import { LocationFormLightComponent } from '@components/location/forms/location-form-light/location-form-light.component';
-import { LocationUpsertBaseComponent } from '@components/location/location-upsert-base/location-upsert-base.component';
 import { FormPrivacyComponent } from '@components/form-privacy/form-privacy.component';
 import { Location } from '@models/location.model';
+import { ErrorHandlerService } from '@services/error-handler.service';
+import { LocationService } from '@services/location.service';
 
 @Component({
   selector: 'ltm-location-add',
@@ -28,6 +35,7 @@ import { Location } from '@models/location.model';
   ],
   imports: [
     CommonModule,
+    ReactiveFormsModule,
     MatStepperModule,
     MatDialogModule,
     TranslocoModule,
@@ -39,22 +47,54 @@ import { Location } from '@models/location.model';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LocationAddComponent extends LocationUpsertBaseComponent {
+export class LocationAddComponent {
+  protected readonly fb = inject(FormBuilder);
+  protected readonly translate = inject(TranslocoService);
+  protected readonly locationService = inject(LocationService);
+  protected readonly errorHandler = inject(ErrorHandlerService);
+  private readonly router = inject(Router);
+
+  protected readonly nameForm = this.fb.group({
+    name: new FormControl<string>('', Validators.required),
+  });
+  protected readonly lightForm = this.fb.group({
+    light: new FormControl<string>('FULLSUN', Validators.required),
+  });
+  protected readonly privacyForm = this.fb.group({
+    public: new FormControl<boolean>(true),
+  });
+  protected readonly pictureFileForm = this.fb.group({
+    pictureFile: new FormControl<File | null>(null),
+  });
+
+  protected readonly form = this.fb.group({
+    name: this.nameForm,
+    light: this.lightForm,
+    public: this.privacyForm,
+    pictureFile: this.pictureFileForm,
+  });
+
   protected createLocation$?: Observable<Location>;
 
-  constructor(private readonly router: Router) {
-    const injector = inject(Injector);
-    super(injector);
+  fileChange(files: File[]) {
+    if (files.length > 0) {
+      this.pictureFileForm.patchValue({ pictureFile: files[0] });
+    }
   }
 
   submit(): void {
-    if (!this.checkFormValidity()) {
+    if (!this.form.valid) {
       this.errorHandler.push(this.translate.translate('general.formErrors'));
       return;
     }
 
-    const location: Location = this.getLocationFromForm();
-    const ud = this.openUploadDialog();
+    const location: Location = {
+      ...this.nameForm.value,
+      ...this.lightForm.value,
+      ...this.privacyForm.value,
+      ...this.pictureFileForm.value,
+    } as Location;
+    const ud = this.locationService.openUploadDialog();
 
     this.createLocation$ = this.locationService.create(location).pipe(
       tap((location: Location) => {

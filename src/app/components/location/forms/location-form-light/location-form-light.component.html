@@ -1,4 +1,4 @@
-<form [formGroup]="form">
+<ltm-form-base-action>
   <p [innerHTML]="'location-add-edit.lightInfo' | transloco"></p>
   <p>{{ 'location-add-edit.lightAmount' | transloco }}</p>
 
@@ -7,10 +7,10 @@
     class="icon-button-toggle"
     #group="matButtonToggleGroup"
   >
-    @for (option of lightOptions; track option.value) {
+    @for (option of $lightOptions(); track option.value) {
       <mat-button-toggle
+        [checked]="option.value === group.value"
         [value]="option.value"
-        [checked]="option.value === currentLight"
       >
         <div class="icon-button-toggle__option">
           <mat-icon>{{ option.asset }}</mat-icon>
@@ -20,9 +20,10 @@
     }
   </mat-button-toggle-group>
 
-  @if (form.get('light')?.value; as light) {
+  @if (group.value) {
     <div class="icon-button-toggle__selection">
       {{ 'light.' + (group.value | lowercase) + 'Desc' | transloco }}
     </div>
   }
-</form>
+
+</ltm-form-base-action>

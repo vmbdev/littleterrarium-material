@@ -1,20 +1,24 @@
 @if (location$ | async) {
   <mat-stepper labelPosition="bottom" linear="false" animationDuration="300">
     <mat-step
-      [stepControl]="formName.form"
+      [stepControl]="customNameForm"
       optional="true"
       [label]="'general.name' | transloco"
     >
-      <ltm-plant-form-name #formName />
+      <ng-container [formGroup]="customNameForm">
+        <ltm-plant-form-name />
+      </ng-container>
       <ltm-stepper-navigation backButton="false" />
     </mat-step>
 
     <mat-step
-      [stepControl]="formSpecie.form"
+      [stepControl]="specieIdForm"
       optional="true"
       [label]="'general.specie' | transloco"
     >
-      <ltm-plant-form-specie #formSpecie />
+      <form [formGroup]="specieIdForm">
+        <ltm-plant-form-specie formControlName="specieId" />
+      </form>
       <ltm-stepper-navigation />
     </mat-step>
 
@@ -29,13 +33,15 @@
 
 
     <mat-step
-      [stepControl]="formPrivacy.form"
+      [stepControl]="privacyForm"
       [label]="'general.privacy' | transloco"
     >
-      <ltm-form-privacy #formPrivacy>
-        <p [innerHtml]="'plant-add.privacy' | transloco"></p>
-        <p [innerHtml]="'plant-add.privacyTip' | transloco"></p>
-      </ltm-form-privacy>
+      <ng-container [formGroup]="privacyForm">
+        <ltm-form-privacy>
+          <p [innerHtml]="'plant-add.privacy' | transloco"></p>
+          <p [innerHtml]="'plant-add.privacyTip' | transloco"></p>
+        </ltm-form-privacy>
+      </ng-container>
 
       <ltm-stepper-navigation finishButton="true" (finish)="submit()" />
     </mat-step>

@@ -1,6 +1,14 @@
-import { ChangeDetectionStrategy, Component, Input, WritableSignal, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  Renderer2,
+  forwardRef,
+  inject,
+  viewChild,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -9,7 +17,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { TranslocoModule } from '@ngneat/transloco';
 import { Observable, map, of } from 'rxjs';
 
-import { FormBaseComponent } from '@components/form-base/form-base.component';
 import { ApiService } from '@services/api.service';
 import { Specie } from '@models/specie.model';
 
@@ -21,57 +28,72 @@ import { Specie } from '@models/specie.model';
     MatAutocompleteModule,
     MatFormFieldModule,
     MatInputModule,
-    ReactiveFormsModule,
-    TranslocoModule,
     MatIconModule,
     MatButtonModule,
+    TranslocoModule,
   ],
   templateUrl: './plant-form-specie.component.html',
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => PlantFormSpecieComponent),
+      multi: true,
+    },
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PlantFormSpecieComponent implements FormBaseComponent {
-  @Input() selected?: number;
-  public readonly form = this.fb.group({
-    specieId: new FormControl<number | null>(null),
-  });
+export class PlantFormSpecieComponent {
+  private readonly api = inject(ApiService);
+  private readonly renderer = inject(Renderer2);
+
+  private readonly specieEl = viewChild<ElementRef>('specieId');
 
   protected specieName$?: Observable<string>;
-  protected readonly $results: WritableSignal<Specie[]> = signal([]);
+  protected results$?: Observable<Specie[]>;
 
-  constructor(
-    private readonly api: ApiService,
-    private readonly fb: FormBuilder,
-  ) {}
+  private onChange = (val: number | null) => {};
+  private onTouched = () => {};
 
-  ngOnInit(): void {
-    if (this.selected) {
-      this.specieName$ = this.api
-        .getSpecie(this.selected)
-        .pipe(map((specie: Specie) => {
-          this.form.patchValue({ specieId: this.selected });;
+  writeValue(val: number): void {
+    if (val) {
+      this.specieName$ = this.api.getSpecie(val).pipe(
+        map((specie: Specie) => {
+          this.onChange(val);
 
           return specie.name;
-        })
+        }),
       );
     }
   }
 
-  keyPress(value: string): void {
+  registerOnChange(fn: any): void {
+    this.onChange = fn;
+  }
+
+  change(value: string) {
     if (value.length >= 3) {
-      this.api.findSpecie(value).subscribe((res) => {
-        this.$results.set(res);
-      });
+      this.results$ = this.api.findSpecie(value);
     } else if (value.length === 0) {
-      this.form.patchValue({ specieId: null });
-      this.$results.set([]);
+      this.onChange(null);
+      this.results$ = undefined;
     }
+  }
+
+  registerOnTouched(fn: any): void {
+    this.onTouched = fn;
+  }
+
+  setDisabledState(isDisabled: boolean): void {
+    this.renderer.setProperty(
+      this.specieEl()?.nativeElement,
+      'disabled',
+      isDisabled,
+    );
   }
 
   selectSpecie(id: number, name: string): void {
     this.specieName$ = of(name);
-    this.form.patchValue({
-      specieId: id,
-    });
+    this.onChange(id);
   }
 
   getSpecieName(specie: Specie): string {
@@ -80,6 +102,7 @@ export class PlantFormSpecieComponent implements FormBaseComponent {
 
   clear(): void {
     this.specieName$ = of('');
-    this.form.patchValue({ specieId: null });
+    this.results$ = undefined;
+    this.onChange(null);
   }
 }

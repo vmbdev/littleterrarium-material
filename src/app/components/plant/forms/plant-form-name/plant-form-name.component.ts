@@ -1,11 +1,15 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import {
+  ControlContainer,
+  FormGroupDirective,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { TranslocoModule } from '@ngneat/transloco';
 
-import { FormBaseComponent } from '@components/form-base/form-base.component';
+import { FormBaseActionComponent } from '@components/form-base-action/form-base-action.component';
 
 @Component({
   selector: 'ltm-plant-form-name',
@@ -16,19 +20,12 @@ import { FormBaseComponent } from '@components/form-base/form-base.component';
     MatFormFieldModule,
     MatInputModule,
     TranslocoModule,
+    FormBaseActionComponent,
   ],
   templateUrl: './plant-form-name.component.html',
+  viewProviders: [
+    { provide: ControlContainer, useExisting: FormGroupDirective },
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PlantFormNameComponent implements FormBaseComponent {
-  @Input() currentCustomName?: string | null;
-  public readonly form = this.fb.group({ customName: [''] });
-
-  constructor(private readonly fb: FormBuilder) {}
-
-  ngOnInit(): void {
-    if (this.currentCustomName) {
-      this.form.patchValue({ customName: this.currentCustomName });
-    }
-  }
-}
+export class PlantFormNameComponent {}

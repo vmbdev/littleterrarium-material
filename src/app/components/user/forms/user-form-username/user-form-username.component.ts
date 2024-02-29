@@ -1,11 +1,24 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  DestroyRef,
+  WritableSignal,
+  inject,
+  signal,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
+import {
+  ReactiveFormsModule,
+  FormGroupDirective,
+  FormControlStatus,
+  FormGroup,
+} from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { TranslocoModule } from '@ngneat/transloco';
-
-import { FormBaseComponent } from '@components/form-base/form-base.component';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Observable, distinctUntilChanged, skipWhile, tap } from 'rxjs';
 
 @Component({
   selector: 'ltm-user-form-username',
@@ -20,25 +33,37 @@ import { FormBaseComponent } from '@components/form-base/form-base.component';
   templateUrl: './user-form-username.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UserFormUsernameComponent implements FormBaseComponent {
-  @Input() currentUsername?: string;
-  public readonly form = this.fb.group({ username: ['', Validators.required] });
+export class UserFormUsernameComponent {
+  private readonly rootFormGroup = inject(FormGroupDirective);
+  private readonly cdr = inject(ChangeDetectorRef);
+  private readonly destroyRef = inject(DestroyRef);
 
-  constructor(private readonly fb: FormBuilder) {}
+  protected formStatusDetector$?: Observable<FormControlStatus>;
+  protected $form?: WritableSignal<FormGroup>;
+  protected readonly $errorTaken = signal<boolean>(false);
+  protected readonly $errorInvalid = signal<boolean>(false);
 
-  ngOnInit(): void {
-    if (this.currentUsername) {
-      this.form.patchValue({ username: this.currentUsername });
+  ngOnInit() {
+    this.$form = signal(this.rootFormGroup.control);
+    this.rootFormGroup.control.statusChanges.pipe(
+      takeUntilDestroyed(this.destroyRef),
+      distinctUntilChanged(),
+      skipWhile((status) => status === 'VALID'),
+      tap(() => {
+        if (this.checkForError('invalid')) this.$errorInvalid.set(true);
+        else if (this.checkForError('taken')) this.$errorTaken.set(true);
+        this.cdr.markForCheck();
+      }),
+    )
+    .subscribe()
+  }
+
+  checkForError(error: string): boolean {
+    if (this.rootFormGroup.control) {
+      const errors = this.rootFormGroup.control.get('username')?.errors;
+      return errors && errors[error];
     }
-  }
 
-  isTaken(): boolean {
-    const errors = this.form.get('username')?.errors;
-    return errors && errors['taken'];
-  }
-
-  isInvalid(): boolean {
-    const errors = this.form.get('username')?.errors;
-    return errors && errors['invalid'];
+    return false;
   }
 }

@@ -1,17 +1,18 @@
-<form [formGroup]="form">
-  <p [innerHTML]="'user-edit.usernameDesc' | transloco"></p>
+@if ($form) {
+  <ng-container [formGroup]="$form()">
+    <p [innerHTML]="'user-edit.usernameDesc' | transloco"></p>
+    <mat-form-field class="full-width">
+      <mat-label>{{ 'general.username' | transloco }}</mat-label>
+      <input matInput type="text" formControlName="username">
 
-  <mat-form-field class="full-width">
-    <mat-label>{{ 'general.username' | transloco }}</mat-label>
-    <input matInput type="text" formControlName="username">
+      @if ($errorTaken()) {
+        <mat-error>{{ 'user-register.usernameTaken' | transloco }}</mat-error>
+      }
 
-    @if (isTaken()) {
-      <mat-error>{{ 'user-register.usernameTaken' | transloco }}</mat-error>
-    }
-    
-    @if (isInvalid()) {
-      <mat-error>{{ 'user-register.usernameInvalid' | transloco }}</mat-error>
-    }
+      @if ($errorInvalid()) {
+        <mat-error>{{ 'user-register.usernameInvalid' | transloco }}</mat-error>
+      }
 
-  </mat-form-field>
-</form>
+    </mat-form-field>
+  </ng-container>
+}

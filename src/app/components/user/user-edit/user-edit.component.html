@@ -1,73 +1,67 @@
-@if (auth.user$ | async; as user) {
-  <ltm-edit-page [title]="'user-edit.header' | transloco" (accept)="submit()">
-    <mat-card class="settings-card">
-      <mat-card-header>
-        <mat-card-title>{{ 'general.username' | transloco }}</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <ltm-user-form-username
-          #form
-          #formUsername
-          [currentUsername]="user.username"
-        />
-      </mat-card-content>
-    </mat-card>
+@if (user$ | async; as user) {
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <ltm-edit-page [title]="'user-edit.header' | transloco">
+      <mat-card class="settings-card">
+        <mat-card-header>
+          <mat-card-title>{{ 'general.username' | transloco }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <ltm-user-form-username />
+        </mat-card-content>
+      </mat-card>
 
-    <mat-card class="settings-card">
-      <mat-card-header>
-        <mat-card-title>{{ 'general.fullname' | transloco }}</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <ltm-user-form-name
-          #form
-          [currentFirstname]="user.firstname"
-          [currentLastname]="user.lastname"
-        />
-      </mat-card-content>
-    </mat-card>
+      <mat-card class="settings-card">
+        <mat-card-header>
+          <mat-card-title>{{ 'general.fullname' | transloco }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <ltm-user-form-name />
+        </mat-card-content>
+      </mat-card>
 
-    <mat-card class="settings-card">
-      <mat-card-header>
-        <mat-card-title>{{ 'general.avatar' | transloco }}</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <p [innerHTML]="'user-edit.avatarDesc' | transloco"></p>
+      <mat-card class="settings-card">
+        <mat-card-header>
+          <mat-card-title>{{ 'general.avatar' | transloco }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p [innerHTML]="'user-edit.avatarDesc' | transloco"></p>
 
-        <ltm-file-uploader
-          #fileUploader
-          maxAmount="1"
-          (fileChange)="fileChange($event)"
-          [removable]="!!user.avatar"
-        />
-      </mat-card-content>
-    </mat-card>
+          <ltm-file-uploader
+            #fileUploader
+            maxAmount="1"
+            (fileChange)="fileChange($event)"
+            [removable]="!!user.avatar"
+          />
+        </mat-card-content>
+      </mat-card>
 
-    <mat-card class="settings-card">
-      <mat-card-header>
-        <mat-card-title>{{ 'general.email' | transloco }}</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <ltm-user-form-email #form #formEmail [currentEmail]="user.email" />
-      </mat-card-content>
-    </mat-card>
+      <mat-card class="settings-card">
+        <mat-card-header>
+          <mat-card-title>{{ 'general.email' | transloco }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <ltm-user-form-email />
+        </mat-card-content>
+      </mat-card>
 
-    <mat-card class="settings-card">
-      <mat-card-header>
-        <mat-card-title>{{ 'general.bio' | transloco }}</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <ltm-user-form-bio #form [currentBio]="user.bio" />
-      </mat-card-content>
-    </mat-card>
+      <mat-card class="settings-card">
+        <mat-card-header>
+          <mat-card-title>{{ 'general.bio' | transloco }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <ltm-user-form-bio />
+        </mat-card-content>
+      </mat-card>
 
-    <mat-card class="settings-card">
-      <mat-card-header>
-        <mat-card-title>{{ 'general.privacy' | transloco }}</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <ltm-form-privacy #form [currentPrivacy]="user.public" />
-      </mat-card-content>
-    </mat-card>
+      <mat-card class="settings-card">
+        <mat-card-header>
+          <mat-card-title>{{ 'general.privacy' | transloco }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <ltm-form-privacy />
+        </mat-card-content>
+      </mat-card>
 
-  </ltm-edit-page>
+    </ltm-edit-page>
+  </form>
 }

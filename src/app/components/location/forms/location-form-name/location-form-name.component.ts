@@ -1,11 +1,15 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  ControlContainer,
+  FormGroupDirective,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { TranslocoModule } from '@ngneat/transloco';
 
-import { FormBaseComponent } from '@components/form-base/form-base.component';
+import { FormBaseActionComponent } from '@components/form-base-action/form-base-action.component';
 
 @Component({
   selector: 'ltm-location-form-name',
@@ -16,17 +20,12 @@ import { FormBaseComponent } from '@components/form-base/form-base.component';
     MatFormFieldModule,
     MatInputModule,
     TranslocoModule,
+    FormBaseActionComponent,
   ],
   templateUrl: './location-form-name.component.html',
+  viewProviders: [
+    { provide: ControlContainer, useExisting: FormGroupDirective },
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LocationFormNameComponent implements FormBaseComponent {
-  @Input() currentName?: string;
-  public readonly form = this.fb.group({ name: ['', Validators.required] });
-
-  constructor(private readonly fb: FormBuilder) {}
-
-  ngOnInit(): void {
-    if (this.currentName) this.form.patchValue({ name: this.currentName });
-  }
-}
+export class LocationFormNameComponent {}

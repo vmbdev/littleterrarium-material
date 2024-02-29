@@ -1,13 +1,24 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  effect,
+  inject,
+  signal,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  ControlContainer,
+  FormGroupDirective,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslocoModule } from '@ngneat/transloco';
 
-import { FormBaseComponent } from '@components/form-base/form-base.component';
-import { Light } from '@models/location.model';
+import { FormBaseActionComponent } from '@components/form-base-action/form-base-action.component';
 import { LocationService } from '@services/location.service';
+import { Light } from '@models/location.model';
 
 type LightOptionType = {
   value: string;
@@ -23,37 +34,33 @@ type LightOptionType = {
     MatButtonToggleModule,
     MatIconModule,
     TranslocoModule,
+    FormBaseActionComponent,
   ],
   templateUrl: './location-form-light.component.html',
+  viewProviders: [
+    { provide: ControlContainer, useExisting: FormGroupDirective },
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LocationFormLightComponent implements FormBaseComponent {
-  @Input() currentLight: string = 'FULLSUN';
-  public readonly form = this.fb.group({
-    light: ['FULLSUN', Validators.required],
-  });
-  protected lightOptions: LightOptionType[] = [];
+export class LocationFormLightComponent {
+  private readonly locationService = inject(LocationService);
+  private readonly cdr = inject(ChangeDetectorRef);
+  protected readonly $lightOptions = signal<LightOptionType[]>(
+    this.createLightOptions(),
+  );
 
-  constructor(
-    private readonly fb: FormBuilder,
-    public readonly locationService: LocationService,
-  ) {}
-
-  ngOnInit(): void {
-    this.lightOptions = this.createLightOptions();
-    this.form.patchValue({ light: this.currentLight });
-  }
+  /**
+   * Refresh the selection in the template; otherwise description won't
+   * show.
+   */
+  updLight = effect(() => {
+    if (this.$lightOptions()) this.cdr.markForCheck();
+  })
 
   createLightOptions(): LightOptionType[] {
-    const opts: LightOptionType[] = [];
-
-    for (const option of Object.keys(Light)) {
-      opts.push({
-        value: option,
-        asset: this.locationService.getLightAsset(option),
-      });
-    }
-
-    return opts;
+    return Object.keys(Light).map((key) => ({
+      value: key,
+      asset: this.locationService.getLightAsset(key),
+    }));
   }
 }

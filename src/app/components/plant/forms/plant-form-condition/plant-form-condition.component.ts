@@ -2,17 +2,17 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  Input,
+  inject,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { ControlContainer, FormGroupDirective, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslocoModule } from '@ngneat/transloco';
 
-import { FormBaseComponent } from '@components/form-base/form-base.component';
 import { PlantService } from '@services/plant.service';
 import { Condition } from '@models/plant.model';
+import { FormBaseActionComponent } from '@components/form-base-action/form-base-action.component';
 
 type ConditionListItem = {
   id: string;
@@ -29,29 +29,21 @@ type ConditionListItem = {
     MatButtonToggleModule,
     MatIconModule,
     ReactiveFormsModule,
+    FormBaseActionComponent,
   ],
   templateUrl: './plant-form-condition.component.html',
+  viewProviders: [
+    { provide: ControlContainer, useExisting: FormGroupDirective },
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PlantFormConditionComponent implements FormBaseComponent {
-  @Input() currentCondition: Condition | null = Condition.GOOD;
-  public readonly form = this.fb.group({ condition: [''] });
+export class PlantFormConditionComponent {
+  private readonly plantService = inject(PlantService);
+  private readonly cdr = inject(ChangeDetectorRef);
   protected conditions = this.getConditions();
 
-  constructor(
-    private readonly fb: FormBuilder,
-    public readonly plantService: PlantService,
-    private readonly cdr: ChangeDetectorRef,
-  ) {}
-
-  ngOnInit(): void {
-    if (this.currentCondition) {
-      this.form.patchValue({ condition: this.currentCondition });
-    }
-  }
-
-  ngAfterViewChecked(): void {
-    this.cdr.detectChanges();
+  ngAfterViewInit() {
+    this.cdr.markForCheck();
   }
 
   getConditions(): ConditionListItem[] {

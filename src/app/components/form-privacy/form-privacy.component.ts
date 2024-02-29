@@ -1,10 +1,17 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import {
+  ControlContainer,
+  FormGroupDirective,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { TranslocoModule } from '@ngneat/transloco';
 
-import { FormBaseComponent } from '@components/form-base/form-base.component';
+import { FormBaseActionComponent } from '@components/form-base-action/form-base-action.component';
 
 @Component({
   selector: 'ltm-form-privacy',
@@ -14,17 +21,12 @@ import { FormBaseComponent } from '@components/form-base/form-base.component';
     ReactiveFormsModule,
     MatCheckboxModule,
     TranslocoModule,
+    FormBaseActionComponent,
   ],
   templateUrl: './form-privacy.component.html',
+  viewProviders: [
+    { provide: ControlContainer, useExisting: FormGroupDirective },
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FormPrivacyComponent implements FormBaseComponent {
-  @Input() currentPrivacy: boolean = true;
-  public readonly form = this.fb.group({ public: [true] });
-
-  constructor(private readonly fb: FormBuilder) {}
-
-  ngOnInit(): void {
-    this.form.patchValue({ public: this.currentPrivacy });
-  }
-}
+export class FormPrivacyComponent {}

@@ -5,6 +5,8 @@ import {
   QueryList,
   ViewChild,
   ViewChildren,
+  WritableSignal,
+  signal,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -13,12 +15,13 @@ import {
   FormBuilder,
   Validators,
   FormControl,
+  ReactiveFormsModule,
 } from '@angular/forms';
 import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { catchError, EMPTY, finalize } from 'rxjs';
+import { catchError, EMPTY, finalize, Observable, tap } from 'rxjs';
 import { TranslocoService, TranslocoModule } from '@ngneat/transloco';
 
 import { UserFormBioComponent } from '@components/user/forms/user-form-bio/user-form-bio.component';
@@ -26,7 +29,6 @@ import { UserFormEmailComponent } from '@components/user/forms/user-form-email/u
 import { UserFormUsernameComponent } from '@components/user/forms/user-form-username/user-form-username.component';
 import { UserFormNameComponent } from '@components/user/forms/user-form-name/user-form-name.component';
 import { FormPrivacyComponent } from '@components/form-privacy/form-privacy.component';
-import { FormBaseComponent } from '@components/form-base/form-base.component';
 import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog.component';
 import { FileUploaderComponent } from '@components/file-uploader/file-uploader.component';
 import { EditPageComponent } from '@components/edit-page/edit-page.component';
@@ -41,6 +43,7 @@ import { User } from '@models/user.model';
   standalone: true,
   imports: [
     CommonModule,
+    ReactiveFormsModule,
     MatButtonModule,
     MatDialogModule,
     MatCardModule,
@@ -57,26 +60,32 @@ import { User } from '@models/user.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserEditComponent {
-  @ViewChildren('form') formComponents!: QueryList<FormBaseComponent>;
-  @ViewChild('formEmail') emailComponent!: UserFormEmailComponent;
-  @ViewChild('formUsername') usernameComponent!: UserFormUsernameComponent;
+  // FIXME: remove this
   @ViewChild('fileUploader') fileUploaderComponent!: FileUploaderComponent;
 
-  protected readonly userForm: FormGroup = this.fb.group({
+  protected readonly form: FormGroup = this.fb.group({
     username: new FormControl<string>('', Validators.required),
     firstname: new FormControl<string | null>(''),
     lastname: new FormControl<string | null>(''),
-    email: ['', [Validators.required, Validators.email]],
+    email: [
+      '',
+      [
+        Validators.required,
+        Validators.email,
+        Validators.pattern(/^\S+@\S+\.\S+$/i),
+      ],
+    ],
     bio: new FormControl<string | null>(''),
     avatarFile: [],
     public: new FormControl<boolean>(true),
   });
+  protected user$?: Observable<User | null>;
   private avatar?: File;
 
   constructor(
     private readonly fb: FormBuilder,
     private readonly api: ApiService,
-    public readonly auth: AuthService,
+    private readonly auth: AuthService,
     private readonly errorHandler: ErrorHandlerService,
     private readonly mt: MainToolbarService,
     private readonly translate: TranslocoService,
@@ -86,6 +95,21 @@ export class UserEditComponent {
 
   ngOnInit(): void {
     this.mt.hide();
+
+    this.user$ = this.auth.user$.pipe(
+      tap((user: User | null) => {
+        if (user) {
+          this.form.patchValue({
+            username: user.username,
+            firstname: user.firstname,
+            lastname: user.lastname,
+            email: user.email,
+            bio: user.bio,
+            public: user.public,
+          });
+        }
+      }),
+    );
   }
 
   openWaitDialog() {
@@ -98,25 +122,6 @@ export class UserEditComponent {
     });
   }
 
-  getUserFromForm(): User | null {
-    const user = this.auth.getUser();
-
-    if (user) {
-      return {
-        ...Object.assign(
-          {},
-          ...this.formComponents.toArray().map((comp) => comp.form.value),
-        ),
-        id: user.id,
-        avatarFile: this.avatar,
-      } as User;
-    } else return null;
-  }
-
-  checkFormValidity(): boolean {
-    return this.formComponents.toArray().every((comp) => comp.form.valid);
-  }
-
   fileChange(files: File[]) {
     if (files.length > 0) {
       this.avatar = files[0];
@@ -124,11 +129,14 @@ export class UserEditComponent {
   }
 
   submit(): void {
-    if (!this.checkFormValidity()) {
+    if (!this.form.valid) {
       this.errorHandler.push(this.translate.translate('general.formErrors'));
       return;
     }
-    const user = this.getUserFromForm();
+    const user = {
+      ...this.form.value,
+      avatarFile: this.avatar,
+    } as User;
     const wd = this.openWaitDialog();
 
     if (user) {
@@ -136,7 +144,7 @@ export class UserEditComponent {
         !!this.fileUploaderComponent.form.get('remove')?.value;
 
       this.api
-        .editUser(user, { removeAvatar: removePicture })
+        .updateUser(user, { removeAvatar: removePicture })
         .pipe(
           finalize(() => {
             wd.close();
@@ -150,23 +158,15 @@ export class UserEditComponent {
               );
             } else if (error.msg === 'USER_FIELD_EXISTS') {
               if (error.errorData.field === 'username') {
-                this.usernameComponent.form
-                  .get('username')
-                  ?.setErrors({ taken: true });
+                this.form.get('username')?.setErrors({ taken: true });
               } else if (error.errorData.field === 'email') {
-                this.emailComponent.form
-                  .get('email')
-                  ?.setErrors({ taken: true });
+                this.form.get('email')?.setErrors({ taken: true });
               }
             } else if (error.msg === 'USER_FIELD_INVALID') {
               if (error.errorData.field === 'username') {
-                this.usernameComponent.form
-                  .get('username')
-                  ?.setErrors({ invalid: true });
+                this.form.get('username')?.setErrors({ invalid: true });
               } else if (error.errorData.field === 'email') {
-                this.emailComponent.form
-                  .get('email')
-                  ?.setErrors({ invalid: true });
+                this.form.get('email')?.setErrors({ invalid: true });
               }
             }
 

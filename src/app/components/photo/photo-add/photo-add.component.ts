@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpEventType } from '@angular/common/http';
 import { EMPTY, Observable, catchError, finalize } from 'rxjs';
@@ -48,12 +48,15 @@ import { Plant } from '@models/plant.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PhotoAddComponent {
-  @ViewChild(FormPrivacyComponent) privacyComponent!: FormPrivacyComponent;
+  protected readonly form = this.fb.group({
+    public: new FormControl<boolean>(true),
+  });
   private plantId?: number;
   protected plant$?: Observable<Plant>;
   private pictures: File[] = [];
 
   constructor(
+    private readonly fb: FormBuilder,
     private readonly plantService: PlantService,
     private readonly photoService: PhotoService,
     private readonly translate: TranslocoService,
@@ -82,20 +85,6 @@ export class PhotoAddComponent {
     this.pictures = files;
   }
 
-  checkFormValidity(): boolean {
-    const forms = [this.privacyComponent.form];
-
-    return forms.every((form) => form.valid) && this.pictures.length > 0;
-  }
-
-  getPhotoFromForm(): Photo {
-    return {
-      ...this.privacyComponent.form.value,
-      pictureFiles: this.pictures,
-      plantId: this.plantId,
-    } as Photo;
-  }
-
   openUploadDialog(): MatDialogRef<WaitDialogComponent, any> {
     return this.dialog.open(WaitDialogComponent, {
       disableClose: true,
@@ -111,12 +100,16 @@ export class PhotoAddComponent {
   submit(): void {
     if (!this.plantId) return;
 
-    if (!this.checkFormValidity()) {
+    if (!this.form.valid || this.pictures.length === 0) {
       this.errorHandler.push(this.translate.translate('general.formErrors'));
       return;
     }
 
-    const newPhoto = this.getPhotoFromForm();
+    const newPhoto = {
+      ...this.form.value,
+      pictureFiles: this.pictures,
+      plantId: this.plantId,
+    } as Photo;
     const ud = this.openUploadDialog();
 
     newPhoto.plantId = this.plantId;

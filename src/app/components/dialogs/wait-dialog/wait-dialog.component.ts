@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
@@ -11,6 +11,7 @@ interface WaitDialogConfig {
   finalMessage?: string;
 }
 
+// FIXME: replace with background spinner
 @Component({
   selector: 'ltm-wait-dialog',
   standalone: true,
@@ -25,7 +26,5 @@ interface WaitDialogConfig {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WaitDialogComponent {
-  constructor(
-    @Inject(MAT_DIALOG_DATA) public readonly data: WaitDialogConfig,
-  ) {}
+  public readonly data: WaitDialogConfig = inject(MAT_DIALOG_DATA);
 }

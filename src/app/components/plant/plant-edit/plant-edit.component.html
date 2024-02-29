@@ -1,76 +1,76 @@
 @if (plant$ | async; as plant) {
-  <ltm-edit-page 
-    [title]="'plant-edit.header' | transloco:{ plantName: plant.visibleName }"
-    (accept)="submit()"
-  >
-    <mat-card class="settings-card">
-      <mat-card-header>
-        <mat-card-title>
-          {{ 'general.name' | transloco }}
-        </mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <ltm-plant-form-name [currentCustomName]="plant.customName" />
-      </mat-card-content>
-    </mat-card>
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <ltm-edit-page 
+      [title]="'plant-edit.header' | transloco:{ plantName: plant.visibleName }"
+    >
+      <mat-card class="settings-card">
+        <mat-card-header>
+          <mat-card-title>
+            {{ 'general.name' | transloco }}
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <ltm-plant-form-name />
+        </mat-card-content>
+      </mat-card>
 
-    <mat-card class="settings-card">
-      <mat-card-header>
-        <mat-card-title>
-          {{ 'general.description' | transloco }}
-        </mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <ltm-plant-form-description [currentDescription]="plant.description" />
-      </mat-card-content>
-    </mat-card>
+      <mat-card class="settings-card">
+        <mat-card-header>
+          <mat-card-title>
+            {{ 'general.description' | transloco }}
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <ltm-plant-form-description />
+        </mat-card-content>
+      </mat-card>
 
-    <mat-card class="settings-card">
-      <mat-card-header>
-        <mat-card-title>
-          {{ 'general.specie' | transloco }}
-        </mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <ltm-plant-form-specie [selected]="plant.specieId ?? undefined" />
-      </mat-card-content>
-    </mat-card>
+      <mat-card class="settings-card">
+        <mat-card-header>
+          <mat-card-title>
+            {{ 'general.specie' | transloco }}
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <ltm-plant-form-specie formControlName="specieId" />
+        </mat-card-content>
+      </mat-card>
 
-    <mat-card class="settings-card">
-      <mat-card-header>
-        <mat-card-title>
-          {{ 'plant-edit.condition' | transloco }}
-        </mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <ltm-plant-form-condition [currentCondition]="plant.condition" />
-      </mat-card-content>
-    </mat-card>
+      <mat-card class="settings-card">
+        <mat-card-header>
+          <mat-card-title>
+            {{ 'plant-edit.condition' | transloco }}
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <ltm-plant-form-condition />
+        </mat-card-content>
+      </mat-card>
 
-    <mat-card class="settings-card">
-      <mat-card-header>
-        <mat-card-title>
-          {{ 'general.location' | transloco }}
-        </mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <ltm-plant-form-location [currentLocation]="plant.locationId" />
-      </mat-card-content>
-    </mat-card>
+      <mat-card class="settings-card">
+        <mat-card-header>
+          <mat-card-title>
+            {{ 'general.location' | transloco }}
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <ltm-plant-form-location />
+        </mat-card-content>
+      </mat-card>
 
-    <mat-card class="settings-card">
-      <mat-card-header>
-        <mat-card-title>
-          {{ 'general.privacy' | transloco }}
-        </mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <ltm-form-privacy [currentPrivacy]="plant.public">
-          <p [innerHtml]="'plant-add.privacy' | transloco"></p>
-          <p [innerHtml]="'plant-add.privacyTip' | transloco"></p>
-        </ltm-form-privacy>
-      </mat-card-content>
-    </mat-card>
-
-  </ltm-edit-page>
+      <mat-card class="settings-card">
+        <mat-card-header>
+          <mat-card-title>
+            {{ 'general.privacy' | transloco }}
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <ltm-form-privacy>
+            <p [innerHtml]="'plant-add.privacy' | transloco"></p>
+            <p [innerHtml]="'plant-add.privacyTip' | transloco"></p>
+          </ltm-form-privacy>
+        </mat-card-content>
+      </mat-card>
+    </ltm-edit-page>
+  </form>
 }

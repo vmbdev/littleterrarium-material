@@ -1,4 +1,4 @@
-import { Injectable, WritableSignal, signal } from '@angular/core';
+import { Injectable, WritableSignal, inject, signal } from '@angular/core';
 import { catchError, map, Observable, tap, throwError } from 'rxjs';
 
 import {
@@ -12,21 +12,24 @@ import { PlantService } from '@services/plant.service';
 import { Light, Location } from '@models/location.model';
 import { Plant } from '@models/plant.model';
 import { HttpErrorResponse } from '@angular/common/http';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog.component';
+import { TranslocoService } from '@ngneat/transloco';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LocationService {
+  private readonly translate = inject(TranslocoService);
+  private readonly dialog = inject(MatDialog);
+  private readonly api = inject(ApiService);
+  private readonly auth = inject(AuthService);
+  private readonly plantService = inject(PlantService);
+
   readonly #$location: WritableSignal<Location | null> = signal(null);
   public readonly $location = this.#$location.asReadonly();
   readonly #$owned: WritableSignal<boolean> = signal(false);
   public readonly $owned = this.#$owned.asReadonly();
-
-  constructor(
-    private readonly api: ApiService,
-    private readonly auth: AuthService,
-    private readonly plantService: PlantService,
-  ) {}
 
   create(location: Location): Observable<Location> {
     this.#$location.set(null);
@@ -153,5 +156,16 @@ export class LocationService {
     else icon = 'brightness_5';
 
     return icon;
+  }
+
+  openUploadDialog(): MatDialogRef<WaitDialogComponent, any> {
+    return this.dialog.open(WaitDialogComponent, {
+      data: {
+        message: this.translate.translate('progress-bar.uploading'),
+        progressBar: true,
+        progressValue: 100,
+        finalMessage: this.translate.translate('general.afterUpload'),
+      },
+    });
   }
 }

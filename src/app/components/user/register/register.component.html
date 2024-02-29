@@ -1,33 +1,39 @@
 <mat-stepper
-  [selectedIndex]="$stepperIndex()"
+  [(selectedIndex)]="$stepperIndex"
   labelPosition="bottom"
   linear="true"
   animationDuration="300"
 >
   <mat-step
-    [stepControl]="formUsername.form"
+    [stepControl]="usernameForm"
     [label]="'general.username' | transloco"
   >
-    <ltm-user-form-username #formUsername />
+    <form [formGroup]="usernameForm">
+      <ltm-user-form-username />
+    </form>
     <ltm-stepper-navigation backButton="false" />
   </mat-step>
 
   <mat-step
-    [stepControl]="formEmail.form"
+    [stepControl]="emailForm"
     [label]="'general.email' | transloco"
   >
-    <ltm-user-form-email #formEmail />
+    <form [formGroup]="emailForm">
+      <ltm-user-form-email />
+    </form>
     <ltm-stepper-navigation />
   </mat-step>
 
   <mat-step
-    [stepControl]="formPassword.form"
+    [stepControl]="passwordForm"
     [label]="'general.password' | transloco"
   >
-    <ltm-user-form-password
-      [requirements]="pwdRequirements$ | async"
-      #formPassword
-    />
+    <form [formGroup]="passwordForm">
+      <ltm-user-form-password
+        [requirements]="pwdRequirements$ | async"
+        formControlName="password"
+      />
+    </form>
     <ltm-stepper-navigation finishButton="true" (finish)="submit()" />
   </mat-step>
 </mat-stepper>

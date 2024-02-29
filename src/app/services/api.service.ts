@@ -111,12 +111,12 @@ export class ApiService {
     return this.http.post<User>(this.endpoint('users'), user);
   }
 
-  editUser(user: User, options: UserEditConfig = {}): Observable<User> {
+  updateUser(user: User, options: UserEditConfig = {}): Observable<User> {
     const form = new FormData();
 
     if (user.username) form.append('username', user.username);
     if (user.email) form.append('email', user.email);
-    if (user.public) form.append('public', user.public.toString());
+    if (user.public || user.public === false) form.append('public', user.public.toString());
     if (user.firstname) form.append('firstname', user.firstname);
     if (user.lastname) form.append('lastname', user.lastname);
     if (user.bio) form.append('bio', user.bio);

@@ -1,4 +1,4 @@
-<form [formGroup]="form">
+<ltm-form-base-action>
   <p [innerHTML]="'location-add-edit.name' | transloco"></p>
   <p [innerHTML]="'location-add-edit.nameTip' | transloco"></p>
   <mat-form-field class="full-width">
@@ -6,7 +6,6 @@
       formControlName="name"
       matInput
       [placeholder]="'location-add-edit.namePlaceholder' | transloco"
-      [value]="currentName"
     />
   </mat-form-field>
-</form>
+</ltm-form-base-action>

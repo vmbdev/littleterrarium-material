@@ -1,6 +1,11 @@
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
-import { ChangeDetectionStrategy, Component, Inject, Optional, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Inject,
+  Optional,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import {
@@ -8,13 +13,14 @@ import {
   MAT_BOTTOM_SHEET_DATA,
 } from '@angular/material/bottom-sheet';
 import { MatDialog } from '@angular/material/dialog';
-import { FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
 import {
   EMPTY,
   Observable,
   forkJoin,
   of,
   switchMap,
+  tap,
   withLatestFrom,
 } from 'rxjs';
 import { TranslocoService, TranslocoModule } from '@ngneat/transloco';
@@ -40,6 +46,7 @@ interface PhotoEditConfig {
   standalone: true,
   imports: [
     CommonModule,
+    ReactiveFormsModule,
     TranslocoModule,
     MatButtonModule,
     MatCardModule,
@@ -54,23 +61,24 @@ interface PhotoEditConfig {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PhotoEditComponent {
-  @ViewChild(PhotoFormDescriptionComponent)
-  descriptionComp!: PhotoFormDescriptionComponent;
-  @ViewChild(FormPrivacyComponent) privacyComp!: FormPrivacyComponent;
-  @ViewChild(PhotoFormDateComponent) dateComp!: PhotoFormDateComponent;
+  protected form = this.fb.group({
+    takenAt: new FormControl<Date | string | null>(null),
+    description: [''],
+    public: new FormControl<boolean>(true),
+  });
 
-  private forms: FormGroup[] = [];
   private returnedPhoto?: Photo;
 
   protected plantCoverId?: number;
   private plantId?: number;
   private setPhotoAsCover: boolean = false;
 
-  photo$ = this.photoService.get(this.editPhoto.id);
+  protected photo$?: Observable<Photo | null>;
 
   constructor(
     private readonly dialog: MatDialog,
     private readonly translate: TranslocoService,
+    private readonly fb: FormBuilder,
     public readonly plantService: PlantService,
     public readonly photoService: PhotoService,
     private readonly errorHandler: ErrorHandlerService,
@@ -81,23 +89,26 @@ export class PhotoEditComponent {
   ) {}
 
   ngOnInit(): void {
-    const obs$ = this.photoService.photo$;
+    this.photo$ = this.photoService.get(this.editPhoto.id).pipe(
+      switchMap((photo: Photo | null) => {
+        if (photo) return this.plantService.getCover(photo.plantId);
 
-    obs$
-      .pipe(
-        switchMap((photo: Photo | null) => {
-          if (photo) return this.plantService.getCover(photo.plantId);
-
-          return EMPTY;
-        }),
-        withLatestFrom(obs$),
-      )
-      .subscribe(([{ coverId }, photo]) => {
+        return EMPTY;
+      }),
+      withLatestFrom(this.photoService.photo$),
+      tap(([{ coverId }, photo]) => {
         if (photo) {
+          this.form.patchValue({
+            description: photo.description,
+            takenAt: photo.takenAt,
+            public: photo.public
+          });
           this.plantCoverId = coverId;
           this.plantId = photo.plantId;
         }
-      });
+      }),
+      switchMap(() => this.photoService.photo$),
+    );
   }
 
   openWaitDialog() {
@@ -110,43 +121,20 @@ export class PhotoEditComponent {
     });
   }
 
-  createFormList(): void {
-    this.forms = [
-      this.descriptionComp.form,
-      this.privacyComp.form,
-      this.dateComp.form,
-    ];
-  }
-
-  getPhotoFromForm(): Photo {
-    // calling here to avoid a race condition in OnInit
-    // where plant$ isn't ready before ngViewAfterInit
-    if (this.forms.length === 0) this.createFormList();
-
-    return {
-      ...Object.assign({}, ...this.forms.map((i) => i.value)),
-      id: this.editPhoto.id,
-    } as Photo;
-  }
-
-  checkFormValidity(): boolean {
-    // calling here to avoid a race condition in OnInit
-    // where plant$ isn't ready before ngViewAfterInit
-    if (this.forms.length === 0) this.createFormList();
-
-    return this.forms.every((form) => form.valid);
-  }
-
   updateCoverPhoto(checked: boolean) {
     this.setPhotoAsCover = checked;
   }
 
   submit(): void {
-    if (!this.checkFormValidity()) {
+    if (!this.form.valid) {
       this.errorHandler.push(this.translate.translate('general.formErrors'));
       return;
     }
-    const photo: Photo = this.getPhotoFromForm();
+
+    const photo: Photo = {
+      ...this.form.value,
+      id: this.editPhoto.id,
+    } as Photo;
     const wd = this.openWaitDialog();
     const updatePhoto$ = this.photoService.update(photo);
     let updatePlantCover$: Observable<any>;
