@@ -144,6 +144,6 @@ types
 
 ## License
 
-Little Terrarium Web is licensed under the MIT License - see the
-[LICENSE](https://github.com/vmbdev/littleterrarium-web/blob/main/LICENSE)
+Little Terrarium Material is licensed under the MIT License - see the
+[LICENSE](https://github.com/vmbdev/littleterrarium-material/blob/main/LICENSE)
 file for more details.
