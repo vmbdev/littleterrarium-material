@@ -32,11 +32,10 @@
     </div>
   }
   <input
-    #fileInput
     type="file"
     (change)="fileInputChange($event)"
-    [disabled]="availableSlots() === 0"
-    [multiple]="maxAmount > 1"
+    [disabled]="availableSlots() === 0 || disabled"
+    [multiple]="maxAmount() > 1"
     accept="image/*"
     hidden
   />
@@ -47,7 +46,7 @@
       mat-mini-fab
       color="primary"
       (click)="captureFromCamera()"
-      [disabled]="availableSlots() === 0"
+      [disabled]="availableSlots() === 0 || disabled"
     >
       <mat-icon>photo_camera</mat-icon>
     </button>
@@ -57,17 +56,9 @@
       mat-mini-fab
       color="primary"
       (click)="pickFromGallery()"
-      [disabled]="availableSlots() === 0"
+      [disabled]="availableSlots() === 0 || disabled"
     >
       <mat-icon>photo_library</mat-icon>
     </button>
   </div>
-
-  <form [formGroup]="form">
-    @if (removable) {
-      <mat-checkbox formControlName="remove">
-        {{ 'fileUploader.removeCurrent' | transloco }}
-      </mat-checkbox>
-    }
-  </form>
 </div>

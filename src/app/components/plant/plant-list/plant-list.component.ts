@@ -1,11 +1,12 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  Input,
   Signal,
   WritableSignal,
   computed,
   effect,
+  inject,
+  input,
   signal,
   untracked,
 } from '@angular/core';
@@ -73,8 +74,17 @@ type PlantListItem = {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlantListComponent {
-  @Input() locationId?: number;
-  @Input() userId?: number;
+  private readonly plantService = inject(PlantService);
+  private readonly locationService = inject(LocationService);
+  private readonly dialog = inject(MatDialog);
+  private readonly translate = inject(TranslocoService);
+  private readonly bottomSheet = inject(MatBottomSheet);
+  private readonly search = inject(SearchService);
+  private readonly mt = inject(MainToolbarService);
+  private readonly bottomScrollDetector = inject(BottomScrollDetectorService);
+
+  locationId = input<number>();
+  userId = input<number>();
   protected $list: WritableSignal<PlantListItem[]> = signal([]);
 
   private cursor?: number;
@@ -107,6 +117,7 @@ export class PlantListComponent {
 
   readonly searchUpdate = effect(() => {
     const res = this.search.$text();
+
     if (res.mode !== 'Begin') {
       this.filter = res.value;
       untracked(() => {
@@ -121,16 +132,7 @@ export class PlantListComponent {
     }
   });
 
-  constructor(
-    private readonly plantService: PlantService,
-    private readonly locationService: LocationService,
-    private readonly dialog: MatDialog,
-    private readonly translate: TranslocoService,
-    private readonly bottomSheet: MatBottomSheet,
-    private readonly search: SearchService,
-    private readonly mt: MainToolbarService,
-    private readonly bottomScrollDetector: BottomScrollDetectorService,
-  ) {
+  constructor() {
     const view = localStorage.getItem('LT_plantListView') === 'true';
     const order = localStorage.getItem('LT_plantListOrder');
     const sort = localStorage.getItem('LT_plantListSort');
@@ -146,6 +148,8 @@ export class PlantListComponent {
   }
 
   fetchPlants(scroll: boolean = false): void {
+    const locationId = this.locationId();
+    const userId = this.userId();
     let obs: Observable<Plant[]>;
     let options: PlantGetConfig = {
       cursor: scroll && this.cursor ? this.cursor : undefined,
@@ -157,12 +161,12 @@ export class PlantListComponent {
     // in case of multiple bottom reached signals, we avoid asking twice
     if (this.cursor) this.lastCursor = this.cursor;
 
-    if (this.locationId) {
-      obs = this.locationService.getPlants(this.locationId, options);
+    if (locationId) {
+      obs = this.locationService.getPlants(locationId, options);
     } else {
       options = {
         ...options,
-        userId: this.userId,
+        userId,
         cover: true,
       };
 
@@ -299,7 +303,7 @@ export class PlantListComponent {
         );
 
         // we moved the plant, hence we remove it from the list
-        if (this.locationId && updatedPlant.locationId !== this.locationId) {
+        if (this.locationId() && updatedPlant.locationId !== this.locationId()) {
           this.$list.update((value) => {
             const list = [...value];
             list.splice(index, 1);

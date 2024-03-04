@@ -1,8 +1,10 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  Signal,
   ViewChild,
   inject,
+  signal,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpEventType } from '@angular/common/http';
@@ -79,6 +81,9 @@ export class PlantAddComponent {
   protected readonly privacyForm = this.fb.group({
     public: new FormControl<boolean>(true, Validators.required),
   });
+  protected readonly photoForm = this.fb.group({
+    photos: new FormControl<File[]>([]),
+  });
 
   private readonly form = this.fb.group({
     customName: this.customNameForm,
@@ -88,7 +93,6 @@ export class PlantAddComponent {
 
   private locationId?: number;
   protected location$?: Observable<Location>;
-  private photos: File[] = [];
 
   ngOnInit(): void {
     this.locationId = +this.route.snapshot.params['locationId'];
@@ -107,17 +111,15 @@ export class PlantAddComponent {
     }
   }
 
-  fileChange(files: File[]) {
-    this.photos = files;
-  }
-
-  openUploadDialog(): MatDialogRef<WaitDialogComponent, any> {
+  openUploadDialog(
+    progressVal: Signal<number> = signal(0),
+  ): MatDialogRef<WaitDialogComponent, any> {
     return this.dialog.open(WaitDialogComponent, {
       disableClose: true,
       data: {
         message: this.translate.translate('progress-bar.uploading'),
         progressBar: true,
-        progressValue: 0,
+        progressValue: progressVal,
         finalMessage: this.translate.translate('general.afterUpload'),
       },
     });
@@ -139,21 +141,22 @@ export class PlantAddComponent {
     }
 
     const plant: Plant = this.getPlantFromForm();
-
-    const ud = this.openUploadDialog();
+    const photos = this.photoForm.value.photos;
+    const progressVal = signal<number>(0);
+    const ud = this.openUploadDialog(progressVal);
     const obs = this.plantService.create(plant);
 
-    if (this.photos.length > 0) {
+    if (photos && photos.length > 0) {
       obs
         .pipe(
           switchMap((plant: Plant) => {
-            const photos = {
+            const photoData = {
               plantId: plant.id,
               public: plant.public,
-              pictureFiles: this.photos,
+              pictureFiles: photos,
             } as Photo;
 
-            return this.photoService.create(photos, true).pipe(
+            return this.photoService.create(photoData, true).pipe(
               catchError(() => {
                 // Plant is created even though photo upload may have failed
                 // we redirect to Plant
@@ -171,8 +174,7 @@ export class PlantAddComponent {
           switch (event.type) {
             case HttpEventType.UploadProgress: {
               const eventTotal = event.total ? event.total : 0;
-              const progressVal = Math.round((event.loaded / eventTotal) * 100);
-              ud.componentInstance.data.progressValue = progressVal;
+              progressVal.set(Math.round((event.loaded / eventTotal) * 100));
 
               break;
             }

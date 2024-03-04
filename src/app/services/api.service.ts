@@ -116,14 +116,19 @@ export class ApiService {
 
     if (user.username) form.append('username', user.username);
     if (user.email) form.append('email', user.email);
-    if (user.public || user.public === false) form.append('public', user.public.toString());
-    if (user.firstname) form.append('firstname', user.firstname);
-    if (user.lastname) form.append('lastname', user.lastname);
-    if (user.bio) form.append('bio', user.bio);
+    if (user.firstname || user.firstname === '') {
+      form.append('firstname', user.firstname);
+    }
+    if (user.lastname || user.lastname === '') {
+      form.append('lastname', user.lastname);
+    }
+    if (user.bio || user.bio === '') form.append('bio', user.bio);
     if (user.password) form.append('password', user.password);
-
+    
     if (options.removeAvatar) form.append('removeAvatar', 'true');
     else if (user.avatarFile) form.append('avatar', user.avatarFile);
+
+    form.append('public', user.public.toString());
 
     return this.http.put<User>(this.endpoint('users'), form);
   }

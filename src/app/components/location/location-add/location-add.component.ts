@@ -48,10 +48,10 @@ import { LocationService } from '@services/location.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LocationAddComponent {
-  protected readonly fb = inject(FormBuilder);
-  protected readonly translate = inject(TranslocoService);
-  protected readonly locationService = inject(LocationService);
-  protected readonly errorHandler = inject(ErrorHandlerService);
+  private readonly fb = inject(FormBuilder);
+  private readonly translate = inject(TranslocoService);
+  private readonly locationService = inject(LocationService);
+  private readonly errorHandler = inject(ErrorHandlerService);
   private readonly router = inject(Router);
 
   protected readonly nameForm = this.fb.group({
@@ -63,7 +63,7 @@ export class LocationAddComponent {
   protected readonly privacyForm = this.fb.group({
     public: new FormControl<boolean>(true),
   });
-  protected readonly pictureFileForm = this.fb.group({
+  protected readonly photoForm = this.fb.group({
     pictureFile: new FormControl<File | null>(null),
   });
 
@@ -71,16 +71,10 @@ export class LocationAddComponent {
     name: this.nameForm,
     light: this.lightForm,
     public: this.privacyForm,
-    pictureFile: this.pictureFileForm,
+    pictureFile: this.photoForm,
   });
 
   protected createLocation$?: Observable<Location>;
-
-  fileChange(files: File[]) {
-    if (files.length > 0) {
-      this.pictureFileForm.patchValue({ pictureFile: files[0] });
-    }
-  }
 
   submit(): void {
     if (!this.form.valid) {
@@ -88,12 +82,13 @@ export class LocationAddComponent {
       return;
     }
 
-    const location: Location = {
+    const location = {
       ...this.nameForm.value,
       ...this.lightForm.value,
       ...this.privacyForm.value,
-      ...this.pictureFileForm.value,
+      ...this.photoForm.value,
     } as Location;
+
     const ud = this.locationService.openUploadDialog();
 
     this.createLocation$ = this.locationService.create(location).pipe(

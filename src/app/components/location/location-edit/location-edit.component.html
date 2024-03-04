@@ -21,11 +21,15 @@
         <mat-card-content>
           <p [innerHTML]="'location-add-edit.choose' | transloco"></p>
           <p [innerHTML]="'location-add-edit.ornot' | transloco"></p>
-          <ltm-file-uploader
-            maxAmount="1"
-            (fileChange)="fileChange($event)"
-            [removable]="!!location.pictures"
-          />
+
+          @if (removePicture || !location.pictures) {
+            <ltm-file-uploader maxAmount="1" formControlName="pictureFile" />
+          } @else {
+            <ltm-current-pic
+              [pic]="location.pictures | imagePath:'thumb'"
+              (click)="setRemovePicture()"
+            />
+          }
         </mat-card-content>
       </mat-card>
 

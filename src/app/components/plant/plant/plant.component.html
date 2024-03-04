@@ -32,9 +32,6 @@
   <section>
     <h1 class="centered">{{ 'general.pictures' | transloco }}</h1>
 
-    <ltm-photo-list
-      [owned]="this.plantService.$owned()"
-      [plantId]="this.id"
-    />
+    <ltm-photo-list [plantId]="this.id" />
   </section>
 }

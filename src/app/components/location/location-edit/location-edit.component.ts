@@ -16,7 +16,6 @@ import {
 import { HttpErrorResponse } from '@angular/common/http';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import {
   MatBottomSheetRef,
@@ -30,10 +29,11 @@ import { LocationFormLightComponent } from '@components/location/forms/location-
 import { LocationFormNameComponent } from '@components/location/forms/location-form-name/location-form-name.component';
 import { EditPageComponent } from '@components/edit-page/edit-page.component';
 import { FormPrivacyComponent } from '@components/form-privacy/form-privacy.component';
-import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog.component';
-import { Location } from '@models/location.model';
 import { ErrorHandlerService } from '@services/error-handler.service';
 import { LocationService } from '@services/location.service';
+import { Location } from '@models/location.model';
+import { CurrentPicComponent } from '@components/current-pic/current-pic.component';
+import { ImagePathPipe } from '@pipes/image-path/image-path.pipe';
 
 @Component({
   selector: 'ltm-location-edit',
@@ -50,6 +50,8 @@ import { LocationService } from '@services/location.service';
     LocationFormLightComponent,
     FormPrivacyComponent,
     EditPageComponent,
+    CurrentPicComponent,
+    ImagePathPipe,
   ],
   templateUrl: './location-edit.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -73,10 +75,11 @@ export class LocationEditComponent {
     name: new FormControl<string>('', Validators.required),
     light: new FormControl<string>('FULLSUN', Validators.required),
     public: new FormControl<boolean>(true),
-    pictureFile: new FormControl<File | null>(null),
+    pictureFile: new FormControl<File | null>(null)
   });
 
   protected $location: WritableSignal<Location | null> = signal(null);
+  protected removePicture: boolean = false;
 
   ngOnInit(): void {
     if (this.location) {
@@ -90,10 +93,8 @@ export class LocationEditComponent {
     }
   }
 
-  fileChange(files: File[]) {
-    if (files.length > 0) {
-      this.form.patchValue({ pictureFile: files[0] });
-    }
+  setRemovePicture() {
+    this.removePicture = true;
   }
 
   submit(): void {
@@ -103,15 +104,14 @@ export class LocationEditComponent {
     }
 
     if (this.location) {
-      const data: Location = this.form.value as Location;
+      const data = {
+        ...this.form.value,
+        id: this.location.id,
+      } as Location;
       const ud = this.locationService.openUploadDialog();
-      const removePicture =
-        !!this.fileUploaderComponent.form.get('remove')?.value;
-
-      data.id = this.location.id;
 
       this.locationService
-        .update(data, { removePicture })
+        .update(data, { removePicture: this.removePicture })
         .pipe(
           catchError((error: HttpErrorResponse) => {
             if (error.error?.msg === 'IMG_NOT_VALID') {

@@ -16,9 +16,11 @@ import {
 } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { TranslocoModule } from '@ngneat/transloco';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Observable, distinctUntilChanged, skipWhile, tap } from 'rxjs';
+import { TranslocoModule } from '@ngneat/transloco';
+
+import { FullWidthDirective } from '@directives/full-width.directive';
 
 @Component({
   selector: 'ltm-user-form-email',
@@ -29,6 +31,7 @@ import { Observable, distinctUntilChanged, skipWhile, tap } from 'rxjs';
     MatFormFieldModule,
     MatInputModule,
     TranslocoModule,
+    FullWidthDirective,
   ],
   templateUrl: './user-form-email.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

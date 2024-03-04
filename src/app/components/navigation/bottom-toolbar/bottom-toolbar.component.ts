@@ -1,9 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Output,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatBadgeModule } from '@angular/material/badge';
@@ -29,11 +24,5 @@ import { TaskService } from '@services/task.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BottomToolbarComponent {
-  @Output() toggleSidenav = new EventEmitter();
-
   constructor(public readonly taskService: TaskService) {}
-
-  emitToggleSidenav() {
-    this.toggleSidenav.emit();
-  }
 }

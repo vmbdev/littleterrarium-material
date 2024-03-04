@@ -1,13 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  Optional,
-  QueryList,
-  ViewChild,
-  ViewChildren,
-  WritableSignal,
-  signal,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import {
@@ -32,11 +23,13 @@ import { FormPrivacyComponent } from '@components/form-privacy/form-privacy.comp
 import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog.component';
 import { FileUploaderComponent } from '@components/file-uploader/file-uploader.component';
 import { EditPageComponent } from '@components/edit-page/edit-page.component';
+import { CurrentPicComponent } from '@components/current-pic/current-pic.component';
 import { MainToolbarService } from '@services/main-toolbar.service';
 import { ApiService } from '@services/api.service';
 import { AuthService } from '@services/auth.service';
 import { ErrorHandlerService } from '@services/error-handler.service';
 import { User } from '@models/user.model';
+import { ImagePathPipe } from '@pipes/image-path/image-path.pipe';
 
 @Component({
   selector: 'ltm-user-edit',
@@ -55,13 +48,23 @@ import { User } from '@models/user.model';
     UserFormNameComponent,
     FormPrivacyComponent,
     EditPageComponent,
+    CurrentPicComponent,
+    ImagePathPipe,
   ],
   templateUrl: './user-edit.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserEditComponent {
-  // FIXME: remove this
-  @ViewChild('fileUploader') fileUploaderComponent!: FileUploaderComponent;
+  private readonly fb = inject(FormBuilder);
+  private readonly api = inject(ApiService);
+  private readonly auth = inject(AuthService);
+  private readonly errorHandler = inject(ErrorHandlerService);
+  private readonly mt = inject(MainToolbarService);
+  private readonly translate = inject(TranslocoService);
+  private readonly dialog = inject(MatDialog);
+  private readonly bottomSheetRef = inject(MatBottomSheetRef, {
+    optional: true,
+  });
 
   protected readonly form: FormGroup = this.fb.group({
     username: new FormControl<string>('', Validators.required),
@@ -76,22 +79,11 @@ export class UserEditComponent {
       ],
     ],
     bio: new FormControl<string | null>(''),
-    avatarFile: [],
+    avatarFile: new FormControl<File | null>(null),
     public: new FormControl<boolean>(true),
   });
   protected user$?: Observable<User | null>;
-  private avatar?: File;
-
-  constructor(
-    private readonly fb: FormBuilder,
-    private readonly api: ApiService,
-    private readonly auth: AuthService,
-    private readonly errorHandler: ErrorHandlerService,
-    private readonly mt: MainToolbarService,
-    private readonly translate: TranslocoService,
-    private readonly dialog: MatDialog,
-    @Optional() private readonly bottomSheetRef: MatBottomSheetRef,
-  ) {}
+  protected removeAvatar: boolean = false;
 
   ngOnInit(): void {
     this.mt.hide();
@@ -122,10 +114,8 @@ export class UserEditComponent {
     });
   }
 
-  fileChange(files: File[]) {
-    if (files.length > 0) {
-      this.avatar = files[0];
-    }
+  setRemoveAvatar() {
+    this.removeAvatar = true;
   }
 
   submit(): void {
@@ -133,40 +123,44 @@ export class UserEditComponent {
       this.errorHandler.push(this.translate.translate('general.formErrors'));
       return;
     }
-    const user = {
-      ...this.form.value,
-      avatarFile: this.avatar,
-    } as User;
+    const user = this.form.value as User;
     const wd = this.openWaitDialog();
 
     if (user) {
-      const removePicture =
-        !!this.fileUploaderComponent.form.get('remove')?.value;
-
       this.api
-        .updateUser(user, { removeAvatar: removePicture })
+        .updateUser(user, { removeAvatar: this.removeAvatar })
         .pipe(
           finalize(() => {
             wd.close();
           }),
           catchError((err: HttpErrorResponse) => {
-            const error = err.error;
+            const { msg } = err.error;
+            const { field } = err.error.errorData;
 
-            if (error.msg === 'IMG_NOT_VALID') {
-              this.errorHandler.push(
-                this.translate.translate('errors.invalidImg'),
-              );
-            } else if (error.msg === 'USER_FIELD_EXISTS') {
-              if (error.errorData.field === 'username') {
-                this.form.get('username')?.setErrors({ taken: true });
-              } else if (error.errorData.field === 'email') {
-                this.form.get('email')?.setErrors({ taken: true });
+            switch (msg) {
+              case 'IMG_NOT_VALID': {
+                this.errorHandler.push(
+                  this.translate.translate('errors.invalidImg'),
+                );
+                break;
               }
-            } else if (error.msg === 'USER_FIELD_INVALID') {
-              if (error.errorData.field === 'username') {
-                this.form.get('username')?.setErrors({ invalid: true });
-              } else if (error.errorData.field === 'email') {
-                this.form.get('email')?.setErrors({ invalid: true });
+              case 'USER_FIELD_EXISTS': {
+                if (field === 'username') {
+                  this.form.get('username')?.setErrors({ taken: true });
+                } else if (field === 'email') {
+                  this.form.get('email')?.setErrors({ taken: true });
+                }
+
+                break;
+              }
+              case 'USER_FIELD_INVALID': {
+                if (field === 'username') {
+                  this.form.get('username')?.setErrors({ invalid: true });
+                } else if (field === 'email') {
+                  this.form.get('email')?.setErrors({ invalid: true });
+                }
+
+                break;
               }
             }
 
@@ -175,7 +169,7 @@ export class UserEditComponent {
         )
         .subscribe((user: User) => {
           this.auth.updateUser(user);
-          this.bottomSheetRef.dismiss();
+          this.bottomSheetRef?.dismiss();
         });
     }
   }

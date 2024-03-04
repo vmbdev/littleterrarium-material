@@ -3,14 +3,15 @@ import {
   booleanAttribute,
   ChangeDetectionStrategy,
   Component,
-  ElementRef,
   EventEmitter,
-  Input,
+  forwardRef,
+  inject,
+  input,
   numberAttribute,
   Output,
-  ViewChild,
+  Renderer2,
 } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -35,27 +36,26 @@ import { ShortFilenamePipe } from '@pipes/short-filename/short-filename.pipe';
   ],
   templateUrl: './file-uploader.component.html',
   styleUrls: ['./file-uploader.component.scss'],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => FileUploaderComponent),
+      multi: true,
+    },
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FileUploaderComponent {
+  private readonly fb = inject(FormBuilder);
+  private readonly camera = inject(CameraService);
+
   /**
    * Max amount of files the user can select. By default, 1.
    */
-  @Input({ transform: numberAttribute }) maxAmount: number = 1;
+  // @Input({ transform: numberAttribute }) maxAmount: number = 1;
+  maxAmount = input(1, { transform: numberAttribute });
 
-  /**
-   * Whether the uploader will show a "remove current photo" checkbox
-   */
-  @Input({ transform: booleanAttribute }) removable: boolean = false;
-
-  /**
-   * Emitted when the files selected in the component have changed.
-   */
-  @Output() fileChange: EventEmitter<File[]> = new EventEmitter<File[]>();
-
-  @ViewChild('fileInput') fileInput!: ElementRef;
-
-  public readonly form = this.fb.group({ remove: [this.removable] });
+  protected disabled: boolean = false;
 
   /**
    * Files currently selected in the component.
@@ -65,18 +65,30 @@ export class FileUploaderComponent {
   /**
    * Thumbnails for the current file selection, in the same order.
    */
-  protected previews: string[] = new Array<string>(this.maxAmount);
+  protected previews: string[] = new Array<string>(this.maxAmount());
 
   /**
    * Mouse is over the component containing a file.
    */
   protected dragOver: boolean = false;
 
+  private onChange = (val: File[] | File | null) => {};
+  private onTouched = () => {};
 
-  constructor(
-    private readonly fb: FormBuilder,
-    private readonly camera: CameraService
-  ) {}
+  writeValue(val: File[]): void {
+    if (val) this.onChange(val);
+  }
+
+  registerOnChange(fn: any): void {
+    this.onChange = fn;
+  }
+  registerOnTouched(fn: any): void {
+    this.onTouched = fn;
+  }
+
+  setDisabledState(isDisabled: boolean): void {
+    this.disabled = isDisabled;
+  }
 
   /**
    * Mouse is dragging a file over the component.
@@ -129,6 +141,7 @@ export class FileUploaderComponent {
     if (target.files) this.addFiles(target.files);
   }
 
+
   /**
    * The number of files that can still be added, depending on the max amount
    * of files allowed.
@@ -137,7 +150,7 @@ export class FileUploaderComponent {
    * already selected.
    */
   availableSlots(): number {
-    return this.maxAmount - this.files.length;
+    return this.maxAmount() - this.files.length;
   }
 
   /**
@@ -160,7 +173,9 @@ export class FileUploaderComponent {
         this.previews[i] = URL.createObjectURL(this.files[i]);
       }
 
-      this.fileChange.emit(this.files);
+      if (this.maxAmount() === 1) {
+        this.onChange(this.files[0]);
+      } else this.onChange(this.files);
     }
   }
 
@@ -184,6 +199,10 @@ export class FileUploaderComponent {
   removeFile(index: number): void {
     this.files.splice(index, 1);
     this.previews.splice(index, 1);
+
+    if (this.maxAmount() === 1) {
+      this.onChange(null);
+    } else this.onChange(this.files);
   }
 
   /**

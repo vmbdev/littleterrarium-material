@@ -26,12 +26,15 @@
         <mat-card-content>
           <p [innerHTML]="'user-edit.avatarDesc' | transloco"></p>
 
-          <ltm-file-uploader
-            #fileUploader
-            maxAmount="1"
-            (fileChange)="fileChange($event)"
-            [removable]="!!user.avatar"
-          />
+          @if (removeAvatar || !user.avatar) {
+            <ltm-file-uploader maxAmount="1" formControlName="avatarFile" />
+          } @else {
+            <ltm-current-pic
+              [pic]="user.avatar | imagePath:'thumb'"
+              (click)="setRemoveAvatar()"
+            />
+          }
+
         </mat-card-content>
       </mat-card>
 

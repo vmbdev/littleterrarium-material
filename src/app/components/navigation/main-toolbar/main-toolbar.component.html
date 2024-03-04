@@ -1,6 +1,17 @@
 @if (!mt.$hidden()) {
   <mat-toolbar color="primary" class="toolbar">
     <mat-toolbar-row>
+      @if (toggleSidenav.observers.length > 0) {
+        <button
+          data-testid="toggleSidenavButton"
+          type="button"
+          aria-label="Toggle sidenav"
+          mat-icon-button
+          (click)="emitToggleSidenav()"
+        >
+          <mat-icon>menu</mat-icon>
+        </button>
+      }
       <button mat-icon-button (click)="goBack()">
         <mat-icon>arrow_back_ios_new</mat-icon>
       </button>
@@ -66,7 +77,7 @@
 
     @if (search.$enabled()) {
       <mat-toolbar-row color="primary">
-        <ltm-search />
+        <ltm-search fullWidth />
       </mat-toolbar-row>
     }
   </mat-toolbar>

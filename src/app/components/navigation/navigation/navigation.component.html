@@ -1,66 +1,79 @@
-<mat-sidenav-container
-  class="sidenav-container"
-  [ngClass]="(themeService.$theme()) + '-theme'"
->
-  <mat-sidenav
-    #drawer
-    class="sidenav"
-    fixedInViewport
-    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-    [mode]="(isHandset$ | async) ? 'over' : 'side'"
-    opened="false"
-  >
-    <mat-toolbar>Little Terrarium</mat-toolbar>
-    <mat-nav-list>
-      <mat-list-item routerLink="/">
-        <mat-icon matListItemIcon>home</mat-icon>
-        <h1 matListItemTitle>{{ 'general.locations' | transloco }}</h1>
-      </mat-list-item>
-
-      <mat-list-item routerLink="/plant/all">
-        <mat-icon matListItemIcon>forest</mat-icon>
-        <h1 matListItemTitle>{{ 'general.plants' | transloco }}</h1>
-      </mat-list-item>
-
-      <mat-list-item routerLink="/tasks">
-        <mat-icon matListItemIcon>task</mat-icon>
-        <h1 matListItemTitle>{{ 'general.tasks' | transloco }}</h1>
-        <h2 matListItemLine>
-          {{
-            'tasks.remaining'
-              | transloco: { taskNumber: (taskService.$count()) }
-          }}
-        </h2>
-      </mat-list-item>
-
-      @if (auth.user$ | async; as user) {
-        <mat-list-item routerLink="/user">
-          <div matListItemIcon>
-            <ltm-user-box />
-          </div>
-          <h1 matListItemTitle>
-            {{ user.username }}
-          </h1>
+<mat-sidenav-container [ngClass]="(themeService.$theme()) + '-theme'">
+  @if (isLargeScreen$ | async) {
+    <mat-sidenav
+      #drawer
+      class="sidenav"
+      fixedInViewport
+      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+      [mode]="(isHandset$ | async) ? 'over' : 'side'"
+      opened="true"
+    >
+      <mat-toolbar>Little Terrarium</mat-toolbar>
+      <mat-nav-list>
+        <mat-list-item routerLink="/">
+          <mat-icon matListItemIcon>home</mat-icon>
+          <h1 matListItemTitle>{{ 'general.locations' | transloco }}</h1>
         </mat-list-item>
-      } @else {
-        <mat-list-item routerLink="/signin">
-          <div matListItemIcon>
-            <ltm-user-box />
-          </div>
-          <h1 matListItemTitle>
-            {{ 'general.signin' | transloco }}
-          </h1>
+
+        <mat-list-item routerLink="/plant/all">
+          <mat-icon matListItemIcon>forest</mat-icon>
+          <h1 matListItemTitle>{{ 'general.plants' | transloco }}</h1>
         </mat-list-item>
-      }
-    </mat-nav-list>
-    <ltm-lang-switcher />
-    <ltm-theme-switcher />
-  </mat-sidenav>
-  <mat-sidenav-content>
-    <ltm-main-toolbar />
-    <div class="main-content" #content>
-      <router-outlet />
-    </div>
-    <ltm-bottom-toolbar (toggleSidenav)="drawer.toggle()" />
+
+        <mat-list-item routerLink="/tasks">
+          <mat-icon matListItemIcon>task</mat-icon>
+          <h1 matListItemTitle>{{ 'general.tasks' | transloco }}</h1>
+          <h2 matListItemLine>
+            {{
+              'tasks.remaining'
+                | transloco: { taskNumber: (taskService.$count()) }
+            }}
+          </h2>
+        </mat-list-item>
+
+        @if (auth.user$ | async; as user) {
+          <mat-list-item routerLink="/user">
+            <div matListItemIcon>
+              <ltm-user-box />
+            </div>
+            <h1 matListItemTitle>
+              {{ user.username }}
+            </h1>
+          </mat-list-item>
+        } @else {
+          <mat-list-item routerLink="/signin">
+            <div matListItemIcon>
+              <ltm-user-box />
+            </div>
+            <h1 matListItemTitle>
+              {{ 'general.signin' | transloco }}
+            </h1>
+          </mat-list-item>
+        }
+      </mat-nav-list>
+      <ltm-lang-switcher />
+      <ltm-theme-switcher />
+    </mat-sidenav>
+  }
+
+  <mat-sidenav-content class="sidenav-content">
+    @if (isLargeScreen$ | async) {
+      <header role="heading" class="main-toolbar">
+        <ltm-main-toolbar (toggleSidenav)="toggleNav()" />
+      </header>
+      <main class="main-content main-content--no-bottom" role="main" bottomScroll>
+        <router-outlet />
+      </main>
+    } @else {
+      <header role="heading" class="main-toolbar">
+        <ltm-main-toolbar />
+      </header>
+      <main class="main-content" role="main" bottomScroll>
+        <router-outlet />
+      </main>
+      <footer class="bottom-toolbar" role="toolbar">
+        <ltm-bottom-toolbar />
+      </footer>
+    }
   </mat-sidenav-content>
 </mat-sidenav-container>

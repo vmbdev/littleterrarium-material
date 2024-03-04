@@ -1,5 +1,5 @@
 import { CommonModule, Location } from '@angular/common';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
@@ -11,6 +11,7 @@ import { TranslocoModule } from '@ngneat/transloco';
 import { SearchComponent } from '@components/navigation/search/search.component';
 import { MainToolbarService } from '@services/main-toolbar.service';
 import { SearchService } from '@services/search.service';
+import { FullWidthDirective } from '@directives/full-width.directive';
 
 @Component({
   selector: 'ltm-main-toolbar',
@@ -25,12 +26,19 @@ import { SearchService } from '@services/search.service';
     TranslocoModule,
     RouterModule,
     SearchComponent,
+    FullWidthDirective,
   ],
   templateUrl: './main-toolbar.component.html',
   styleUrls: ['./main-toolbar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MainToolbarComponent {
+  @Output() toggleSidenav = new EventEmitter();
+
+  emitToggleSidenav() {
+    this.toggleSidenav.emit();
+  }
+
   constructor(
     public readonly mt: MainToolbarService,
     public readonly search: SearchService,

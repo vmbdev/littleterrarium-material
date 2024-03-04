@@ -1,4 +1,5 @@
 import { Plant } from '@models/plant.model';
+import { ImagePath } from './image-path.model';
 
 export interface Location {
   id: number;
@@ -13,7 +14,7 @@ export interface Location {
     plants: number;
   };
   pictureFile: File;
-  pictures?: any;
+  pictures?: ImagePath;
 }
 
 export enum Light {

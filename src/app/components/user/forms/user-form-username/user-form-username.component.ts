@@ -20,6 +20,8 @@ import { TranslocoModule } from '@ngneat/transloco';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Observable, distinctUntilChanged, skipWhile, tap } from 'rxjs';
 
+import { FullWidthDirective } from '@directives/full-width.directive';
+
 @Component({
   selector: 'ltm-user-form-username',
   standalone: true,
@@ -29,6 +31,7 @@ import { Observable, distinctUntilChanged, skipWhile, tap } from 'rxjs';
     MatFormFieldModule,
     MatInputModule,
     TranslocoModule,
+    FullWidthDirective,
   ],
   templateUrl: './user-form-username.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

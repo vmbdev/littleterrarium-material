@@ -1,6 +1,12 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Signal,
+  inject,
+  signal,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpEventType } from '@angular/common/http';
 import { EMPTY, Observable, catchError, finalize } from 'rxjs';
@@ -35,10 +41,10 @@ import { Plant } from '@models/plant.model';
   ],
   imports: [
     CommonModule,
+    ReactiveFormsModule,
     MatStepperModule,
     MatCheckboxModule,
     MatDialogModule,
-    ReactiveFormsModule,
     TranslocoModule,
     StepperNavigationComponent,
     FileUploaderComponent,
@@ -48,23 +54,21 @@ import { Plant } from '@models/plant.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PhotoAddComponent {
+  private readonly fb = inject(FormBuilder);
+  private readonly plantService = inject(PlantService);
+  private readonly photoService = inject(PhotoService);
+  private readonly translate = inject(TranslocoService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly errorHandler = inject(ErrorHandlerService);
+  private readonly dialog = inject(MatDialog);
+
   protected readonly form = this.fb.group({
     public: new FormControl<boolean>(true),
+    pictureFiles: new FormControl<File[]>([], Validators.required),
   });
   private plantId?: number;
   protected plant$?: Observable<Plant>;
-  private pictures: File[] = [];
-
-  constructor(
-    private readonly fb: FormBuilder,
-    private readonly plantService: PlantService,
-    private readonly photoService: PhotoService,
-    private readonly translate: TranslocoService,
-    private readonly route: ActivatedRoute,
-    private readonly router: Router,
-    private readonly errorHandler: ErrorHandlerService,
-    private readonly dialog: MatDialog,
-  ) {}
 
   ngOnInit(): void {
     this.plantId = +this.route.snapshot.params['plantId'];
@@ -81,17 +85,15 @@ export class PhotoAddComponent {
     }
   }
 
-  fileChange(files: File[]) {
-    this.pictures = files;
-  }
-
-  openUploadDialog(): MatDialogRef<WaitDialogComponent, any> {
+  openUploadDialog(
+    progressVal: Signal<number> = signal(0),
+  ): MatDialogRef<WaitDialogComponent, any> {
     return this.dialog.open(WaitDialogComponent, {
       disableClose: true,
       data: {
         message: this.translate.translate('progress-bar.uploading'),
         progressBar: true,
-        progressValue: 0,
+        progressValue: progressVal,
         finalMessage: this.translate.translate('general.afterUpload'),
       },
     });
@@ -100,19 +102,17 @@ export class PhotoAddComponent {
   submit(): void {
     if (!this.plantId) return;
 
-    if (!this.form.valid || this.pictures.length === 0) {
+    if (!this.form.valid) {
       this.errorHandler.push(this.translate.translate('general.formErrors'));
       return;
     }
 
     const newPhoto = {
       ...this.form.value,
-      pictureFiles: this.pictures,
       plantId: this.plantId,
     } as Photo;
-    const ud = this.openUploadDialog();
-
-    newPhoto.plantId = this.plantId;
+    const progressVal = signal(0);
+    const ud = this.openUploadDialog(progressVal);
 
     this.photoService
       .create(newPhoto)
@@ -124,9 +124,7 @@ export class PhotoAddComponent {
       .subscribe((event) => {
         if (event.type === HttpEventType.UploadProgress) {
           const eventTotal = event.total ? event.total : 0;
-          const progressVal = Math.round((event.loaded / eventTotal) * 100);
-
-          ud.componentInstance.data.progressValue = progressVal;
+          progressVal.set(Math.round((event.loaded / eventTotal) * 100));
         } else if (event.type === HttpEventType.Response) {
           this.router.navigate(['plant', this.plantId], { replaceUrl: true });
         }

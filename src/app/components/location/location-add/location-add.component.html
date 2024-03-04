@@ -15,15 +15,14 @@
       <p [innerHTML]="'location-add-edit.choose' | transloco"></p>
       <p [innerHTML]="'location-add-edit.ornot' | transloco"></p>
 
-      <ltm-file-uploader maxAmount="1" (fileChange)="fileChange($event)" />
+      <ng-container [formGroup]="photoForm">
+        <ltm-file-uploader maxAmount="1" formControlName="pictureFile" />
+      </ng-container>
 
       <ltm-stepper-navigation />
     </mat-step>
 
-    <mat-step
-      [stepControl]="lightForm"
-      [label]="'general.light' | transloco"
-    >
+    <mat-step [stepControl]="lightForm" [label]="'general.light' | transloco">
       <ng-container [formGroup]="lightForm">
         <ltm-location-form-light />
       </ng-container>

@@ -1,5 +1,5 @@
 import { CommonModule, Location } from '@angular/common';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { MatNativeDateModule } from '@angular/material/core';
 import { App } from '@capacitor/app';
@@ -14,10 +14,8 @@ import { LangService } from '@services/lang.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent {
-  constructor(
-    private readonly location: Location,
-    private readonly langService: LangService,
-  ) {}
+  private readonly location = inject(Location);
+  private readonly langService = inject(LangService);
 
   ngOnInit() {
     this.langService.load();

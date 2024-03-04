@@ -9,7 +9,7 @@
       <div>
         <p [innerHTML]="'plant-edit-fertilizer.lastTime' | transloco"></p>
 
-        <mat-form-field appearance="fill" class="full-width">
+        <mat-form-field appearance="fill" fullWidth>
           <mat-label>{{ 'general.date' | transloco }}</mat-label>
           <input
             formControlName="fertLast"
@@ -26,7 +26,7 @@
 
       <div>
         <p [innerHTML]="'plant-edit-fertilizer.nextTime' | transloco"></p>
-        <mat-form-field class="full-width">
+        <mat-form-field fullWidth>
           <input matInput type="number" formControlName="fertFreq">
         </mat-form-field>
       </div>
@@ -35,7 +35,7 @@
 
       <div>
         <p [innerHTML]="'plant-edit-fertilizer.type' | transloco"></p>
-        <mat-form-field class="full-width">
+        <mat-form-field fullWidth>
           <input matInput type="text" formControlName="fertType">
         </mat-form-field>
       </div>

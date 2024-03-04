@@ -7,6 +7,7 @@ import {
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormBaseActionComponent } from '@components/form-base-action/form-base-action.component';
+import { FullWidthDirective } from '@directives/full-width.directive';
 import { TranslocoModule } from '@ngneat/transloco';
 
 @Component({
@@ -15,9 +16,10 @@ import { TranslocoModule } from '@ngneat/transloco';
   imports: [
     TranslocoModule,
     ReactiveFormsModule,
-    FormBaseActionComponent,
     MatFormFieldModule,
     MatInputModule,
+    FormBaseActionComponent,
+    FullWidthDirective,
   ],
   viewProviders: [
     { provide: ControlContainer, useExisting: FormGroupDirective },

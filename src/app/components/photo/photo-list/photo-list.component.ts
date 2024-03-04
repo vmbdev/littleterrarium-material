@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  input,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { TranslocoModule } from '@ngneat/transloco';
@@ -24,15 +29,17 @@ import { ImagePathPipe } from '@pipes/image-path/image-path.pipe';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PhotoListComponent {
-  @Input({ required: true }) plantId?: number;
-  @Input() owned: boolean = true;
+  private readonly plantService = inject(PlantService);
+
+  plantId = input<number>();
+
   protected list$?: Observable<Photo[]>;
 
-  constructor(private readonly plantService: PlantService) {}
-
   ngOnInit(): void {
-    if (this.plantId) {
-      this.list$ = this.plantService.getPhotos(this.plantId);
+    const plantId = this.plantId();
+
+    if (plantId) {
+      this.list$ = this.plantService.getPhotos(plantId);
     }
   }
 }

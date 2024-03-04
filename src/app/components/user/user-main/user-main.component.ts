@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatListModule } from '@angular/material/list';
 import { RouterModule } from '@angular/router';
@@ -30,13 +30,12 @@ import { AuthService } from '@services/auth.service';
   ],
   templateUrl: './user-main.component.html',
   styleUrls: ['./user-main.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserMainComponent {
-  constructor(
-    public readonly auth: AuthService,
-    private readonly mt: MainToolbarService,
-    private readonly bottomSheet: MatBottomSheet
-  ) {}
+  protected readonly auth = inject(AuthService);
+  private readonly mt = inject(MainToolbarService);
+  private readonly bottomSheet = inject(MatBottomSheet);
 
   ngOnInit(): void {
     this.mt.hide();

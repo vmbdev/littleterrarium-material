@@ -15,17 +15,21 @@ export interface SearchReceipt {
   providedIn: 'root',
 })
 export class SearchService {
-  readonly #$enabled: WritableSignal<boolean> = signal(true);
+  readonly #$enabled: WritableSignal<boolean> = signal(false);
   public readonly $enabled = this.#$enabled.asReadonly();
-  readonly #$text: WritableSignal<SearchReceipt> = signal({ mode: 'Begin', value: null });
+  readonly #$text: WritableSignal<SearchReceipt> = signal({
+    mode: 'Begin',
+    value: null,
+  });
   public readonly $text = this.#$text.asReadonly();
 
   constructor(private router: Router) {
     this.router.events
       .pipe(
-        filter((event: Event): event is NavigationEnd =>
-          event instanceof NavigationEnd
-        )
+        filter(
+          (event: Event): event is NavigationEnd =>
+            event instanceof NavigationEnd,
+        ),
       )
       .subscribe(() => {
         this.#$enabled.set(false);
@@ -41,7 +45,7 @@ export class SearchService {
     this.#$enabled.update((val) => !val);
   }
 
-  setText(val: string): void { 
+  setText(val: string): void {
     const prev = this.#$text();
 
     if (prev.value !== val) {

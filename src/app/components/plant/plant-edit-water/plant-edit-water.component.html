@@ -15,7 +15,7 @@
       <div>
         <p [innerHTML]="'plant-edit-watering.lastTime' | transloco"></p>
 
-        <mat-form-field appearance="fill" class="full-width">
+        <mat-form-field appearance="fill" fullWidth>
           <mat-label>{{ 'general.date' | transloco }}</mat-label>
           <input
             formControlName="waterLast"
@@ -33,7 +33,7 @@
 
       <div>
         <p [innerHTML]="'plant-edit-watering.nextTime' | transloco"></p>
-        <mat-form-field class="full-width">
+        <mat-form-field fullWidth>
           <input matInput type="number" formControlName="waterFreq">
         </mat-form-field>
       </div>

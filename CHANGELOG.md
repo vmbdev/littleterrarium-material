@@ -15,6 +15,8 @@ is set up to also send traditional image formats, images will use the later.
 ### Changes
 
 - Visual update, including a new logo.
+- As per Material 3 design, sidebar will only show in bigger screens and bottom
+toolbar will only show in smaller screens.
 - Updated tests.
 - Updated to Angular 17.2.0.
 - Remaining components migrated to OnPush.

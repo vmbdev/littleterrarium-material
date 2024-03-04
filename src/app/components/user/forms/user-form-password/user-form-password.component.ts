@@ -21,11 +21,12 @@ import {
 } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 import { TranslocoModule } from '@ngneat/transloco';
 
 import { PasswordRequirements } from '@models/user.model';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
+import { FullWidthDirective } from '@directives/full-width.directive';
 
 @Component({
   selector: 'ltm-user-form-password',
@@ -38,6 +39,7 @@ import { MatIconModule } from '@angular/material/icon';
     MatButtonModule,
     MatIconModule,
     TranslocoModule,
+    FullWidthDirective,
   ],
   templateUrl: './user-form-password.component.html',
   styleUrls: ['./user-form-password.component.scss'],

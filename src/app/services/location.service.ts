@@ -163,7 +163,7 @@ export class LocationService {
       data: {
         message: this.translate.translate('progress-bar.uploading'),
         progressBar: true,
-        progressValue: 100,
+        progressValue: signal(0),
         finalMessage: this.translate.translate('general.afterUpload'),
       },
     });

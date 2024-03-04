@@ -19,6 +19,7 @@ import { Observable, map, of } from 'rxjs';
 
 import { ApiService } from '@services/api.service';
 import { Specie } from '@models/specie.model';
+import { FullWidthDirective } from '@directives/full-width.directive';
 
 @Component({
   selector: 'ltm-plant-form-specie',
@@ -31,6 +32,7 @@ import { Specie } from '@models/specie.model';
     MatIconModule,
     MatButtonModule,
     TranslocoModule,
+    FullWidthDirective,
   ],
   templateUrl: './plant-form-specie.component.html',
   providers: [
