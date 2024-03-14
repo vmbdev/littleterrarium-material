@@ -1,12 +1,10 @@
-<mat-card>
-  <mat-card-content matRipple class="toggle-option" (click)="toggleOption()">
-    <mat-label class="toggle-option__label">
-      <ng-content />
-    </mat-label>
-    <mat-slide-toggle
-      class="toggle-option__toggle"
-      [checked]="currentlyChecked"
-      color="primary"
-    />
-  </mat-card-content>
-</mat-card>
+<article matRipple class="toggle-option" (click)="toggleOption()">
+  <mat-label class="toggle-option__label">
+    <ng-content />
+  </mat-label>
+  <mat-slide-toggle
+    [checked]="checked()"
+    color="primary"
+    [disabled]="disabled"
+  />
+</article>

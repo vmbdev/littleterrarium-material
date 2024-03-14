@@ -5,6 +5,7 @@ import {
   Component,
   Inject,
   Optional,
+  inject,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
@@ -61,6 +62,19 @@ interface PhotoEditConfig {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PhotoEditComponent {
+  private readonly dialog = inject(MatDialog);
+  private readonly translate = inject(TranslocoService);
+  private readonly fb = inject(FormBuilder);
+  protected readonly plantService = inject(PlantService);
+  protected readonly photoService = inject(PhotoService);
+  private readonly errorHandler = inject(ErrorHandlerService);
+  private readonly bottomSheetRef = inject(MatBottomSheetRef, {
+    optional: true,
+  });
+  protected readonly editPhoto: PhotoEditConfig = inject(MAT_BOTTOM_SHEET_DATA, {
+    optional: true,
+  });
+
   protected form = this.fb.group({
     takenAt: new FormControl<Date | string | null>(null),
     description: [''],
@@ -75,19 +89,6 @@ export class PhotoEditComponent {
 
   protected photo$?: Observable<Photo | null>;
 
-  constructor(
-    private readonly dialog: MatDialog,
-    private readonly translate: TranslocoService,
-    private readonly fb: FormBuilder,
-    public readonly plantService: PlantService,
-    public readonly photoService: PhotoService,
-    private readonly errorHandler: ErrorHandlerService,
-    @Optional() private readonly bottomSheetRef: MatBottomSheetRef,
-    @Optional()
-    @Inject(MAT_BOTTOM_SHEET_DATA)
-    public readonly editPhoto: PhotoEditConfig,
-  ) {}
-
   ngOnInit(): void {
     this.photo$ = this.photoService.get(this.editPhoto.id).pipe(
       switchMap((photo: Photo | null) => {
@@ -101,7 +102,7 @@ export class PhotoEditComponent {
           this.form.patchValue({
             description: photo.description,
             takenAt: photo.takenAt,
-            public: photo.public
+            public: photo.public,
           });
           this.plantCoverId = coverId;
           this.plantId = photo.plantId;

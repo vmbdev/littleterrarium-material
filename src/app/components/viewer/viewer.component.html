@@ -1,22 +1,16 @@
-<div class="viewer">
+<article #viewer class="viewer">
   <mat-toolbar class="viewer__toolbar">
     <button mat-icon-button (click)="data.close()">
       <mat-icon class="viewer__closeicon">close</mat-icon>
     </button>
   </mat-toolbar>
-  <div class="viewer__content">
-    <img
-      #photo
-      class="viewer__pic"
-      draggable="false"
-      (load)="imageLoaded()"
-      (doubletap)="doubleTap()"
-      (pinchend)="pinchEnd()"
-      (pinchmove)="pinchMove($event)"
-      (panmove)="panMove($event)"
-      (panend)="panEnd()"
-      [src]="data.src"
-      [alt]="('general.picture' | transloco)"
-    >
-  </div>
-</div>
+  <canvas
+    #canvas
+    class="viewer__canvas"
+    (doubletap)="doubleTap()"
+    (panmove)="panMove($event)"
+    (panend)="panEnd()"
+    (pinchmove)="pinchMove($event)"
+  >
+  </canvas>
+</article>

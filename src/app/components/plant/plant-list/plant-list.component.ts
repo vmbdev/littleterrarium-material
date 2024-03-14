@@ -1,6 +1,8 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  HostBinding,
+  HostListener,
   Signal,
   WritableSignal,
   computed,
@@ -90,6 +92,8 @@ export class PlantListComponent {
   private cursor?: number;
   private lastCursor?: number;
 
+  protected breakpoint: number = 2;
+
   private filter: string | null = null;
   private order: SortOrder;
 
@@ -143,8 +147,26 @@ export class PlantListComponent {
   }
 
   ngOnInit(): void {
+    this.computeBreakpoint(window.innerWidth);
     this.fetchPlants();
     this.createMainToolbarContext();
+  }
+
+  ngOnDestroy() {
+    this.search.reset();
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResizeWindow(event: Event) {
+    const target = event.target as Window;
+
+    this.computeBreakpoint(target.innerWidth);
+  }
+
+  computeBreakpoint(width: number) {
+    if (width <= 480) this.breakpoint = 2;
+    else if (width >= 1280) this.breakpoint = 7;
+    else this.breakpoint = 4;
   }
 
   fetchPlants(scroll: boolean = false): void {
@@ -267,7 +289,7 @@ export class PlantListComponent {
 
   storeSortOptions() {
     localStorage.setItem('LT_plantListOrder', this.order.toString());
-    localStorage.setItem('LT_plantListSort', this.sort.toString());
+    localStorage.setItem('LT_plantListSort', this.sort().toString());
   }
 
   setSmallView(val: boolean) {

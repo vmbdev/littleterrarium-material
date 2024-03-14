@@ -17,15 +17,17 @@ is set up to also send traditional image formats, images will use the later.
 - Visual update, including a new logo.
 - As per Material 3 design, sidebar will only show in bigger screens and bottom
 toolbar will only show in smaller screens.
+- Image viewer rewritten to use canvas.
 - Updated tests.
-- Updated to Angular 17.2.0.
+- Updated Angular and Angular Material to 17.2.0.
+- Updated ngx-toastr to 18.0.0.
 - Remaining components migrated to OnPush.
 - Improved visuals in bigger screens.
 - Improved markup semantics.
 - Improved methods and properties protection.
 - Updated translations.
-- Several components and services migrated to the new Signal functionality.
-Just for my amusement.
+- Several components and services migrated to signals. Just for my own
+amusement.
 - Rewritten forms for a better, cleaner system.
 - Reduced function calls from templates.
 - Cleanup of theme related variables.
@@ -40,6 +42,8 @@ selection of the theme.
 wasn't stored previously.
 - Fixed a bug in SigninComponent where any button would submit the form.
 - Fixed a lost translation in PasswordRecoveryComponent.
+- Fixed startup language selection on Transloco.
+- Fixed several visual artifacts in some screen sizes.
 
 ## [1.0.3] - 2023-12-23
 

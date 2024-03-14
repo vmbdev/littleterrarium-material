@@ -12,23 +12,23 @@
       <mat-nav-list>
         <mat-list-item routerLink="/">
           <mat-icon matListItemIcon>home</mat-icon>
-          <h1 matListItemTitle>{{ 'general.locations' | transloco }}</h1>
+          <span matListItemTitle>{{ 'general.locations' | transloco }}</span>
         </mat-list-item>
 
         <mat-list-item routerLink="/plant/all">
           <mat-icon matListItemIcon>forest</mat-icon>
-          <h1 matListItemTitle>{{ 'general.plants' | transloco }}</h1>
+          <span matListItemTitle>{{ 'general.plants' | transloco }}</span>
         </mat-list-item>
 
         <mat-list-item routerLink="/tasks">
           <mat-icon matListItemIcon>task</mat-icon>
-          <h1 matListItemTitle>{{ 'general.tasks' | transloco }}</h1>
-          <h2 matListItemLine>
+          <span matListItemTitle>{{ 'general.tasks' | transloco }}</span>
+          <span matListItemLine>
             {{
               'tasks.remaining'
                 | transloco: { taskNumber: (taskService.$count()) }
             }}
-          </h2>
+          </span>
         </mat-list-item>
 
         @if (auth.user$ | async; as user) {
@@ -36,39 +36,37 @@
             <div matListItemIcon>
               <ltm-user-box />
             </div>
-            <h1 matListItemTitle>
+            <span matListItemTitle>
               {{ user.username }}
-            </h1>
+            </span>
           </mat-list-item>
         } @else {
           <mat-list-item routerLink="/signin">
             <div matListItemIcon>
               <ltm-user-box />
             </div>
-            <h1 matListItemTitle>
+            <span matListItemTitle>
               {{ 'general.signin' | transloco }}
-            </h1>
+            </span>
           </mat-list-item>
         }
       </mat-nav-list>
-      <ltm-lang-switcher />
-      <ltm-theme-switcher />
     </mat-sidenav>
   }
 
-  <mat-sidenav-content class="sidenav-content">
+  <mat-sidenav-content bottomScroll class="sidenav-content">
     @if (isLargeScreen$ | async) {
       <header role="heading" class="main-toolbar">
         <ltm-main-toolbar (toggleSidenav)="toggleNav()" />
       </header>
-      <main class="main-content main-content--no-bottom" role="main" bottomScroll>
+      <main class="main-content main-content--no-bottom" role="main">
         <router-outlet />
       </main>
     } @else {
       <header role="heading" class="main-toolbar">
         <ltm-main-toolbar />
       </header>
-      <main class="main-content" role="main" bottomScroll>
+      <main class="main-content" role="main">
         <router-outlet />
       </main>
       <footer class="bottom-toolbar" role="toolbar">

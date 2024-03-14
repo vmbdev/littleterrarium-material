@@ -1,25 +1,33 @@
 @if (auth.user$ | async; as user) {
   <ltm-profile [user]="user"/>
 
-  <mat-nav-list class="user-main">
+  <mat-nav-list class="user-main" limitLargeScreen [width]="400">
     <mat-list-item matRipple (click)="openEdit()">
       <mat-icon matListItemIcon>edit</mat-icon>
-      <h1 matListItemTitle>{{ 'userbox.profile' | transloco }}</h1>
+      <span matListItemTitle>{{ 'userbox.profile' | transloco }}</span>
     </mat-list-item>
 
     <mat-list-item [routerLink]="['/terrarium', user.username]" matRipple>
       <mat-icon matListItemIcon>theaters</mat-icon>
-      <h1 matListItemTitle>{{ 'userbox.terrarium' | transloco }}</h1>
+      <span matListItemTitle>{{ 'userbox.terrarium' | transloco }}</span>
     </mat-list-item>
 
     <mat-list-item routerLink="/user/change" matRipple>
       <mat-icon matListItemIcon>password</mat-icon>
-      <h1 matListItemTitle>{{ 'userbox.changePassword' | transloco }}</h1>
+      <span matListItemTitle>{{ 'userbox.changePassword' | transloco }}</span>
     </mat-list-item>
 
     <mat-list-item routerLink="/logout" matRipple>
       <mat-icon matListItemIcon>logout</mat-icon>
-      <h1 matListItemTitle>{{ 'general.logout' | transloco }}</h1>
+      <span matListItemTitle>{{ 'general.logout' | transloco }}</span>
+    </mat-list-item>
+
+    <mat-list-item matRipple>
+      <ltm-theme-switcher />
+    </mat-list-item>
+
+    <mat-list-item matRipple>
+      <ltm-lang-switcher />
     </mat-list-item>
   </mat-nav-list>
 }

@@ -3,7 +3,7 @@
   color="primary"
   class="fab"
   data-testid="fab"
-  [routerLink]="link"
+  [routerLink]="link()"
 >
-  {{ text }}
+  <mat-icon>{{ icon() }}</mat-icon>
 </button>

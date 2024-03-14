@@ -3,7 +3,7 @@ import {
   provideHttpClient,
   withInterceptorsFromDi,
 } from '@angular/common/http';
-import { importProvidersFrom, isDevMode } from '@angular/core';
+import { APP_INITIALIZER, importProvidersFrom, isDevMode } from '@angular/core';
 import {
   bootstrapApplication,
   HammerModule,
@@ -12,13 +12,14 @@ import {
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { DateAdapter, NativeDateAdapter } from '@angular/material/core';
-import { provideTransloco } from '@ngneat/transloco';
+import { TranslocoService, provideTransloco } from '@ngneat/transloco';
+import { provideTranslocoPersistLang } from '@ngneat/transloco-persist-lang';
 import { ToastrModule } from 'ngx-toastr';
 import 'hammerjs';
 
 import { AuthInterceptor } from '@interceptors/auth.interceptor';
 import { ErrorHandlerInterceptor } from '@interceptors/error-handler.interceptor';
-import { TranslocoHttpLoader } from './transloco-loader';
+import { TranslocoHttpLoader, preloadLanguage } from './transloco-loader';
 import { AppComponent } from './app/app.component';
 import { routes } from './app/routes';
 import { BACKEND_URL } from './tokens';
@@ -49,6 +50,10 @@ bootstrapApplication(AppComponent, {
     { provide: HAMMER_GESTURE_CONFIG, useClass: LTHammerConfig },
     importProvidersFrom(RouterModule.forRoot(routes)),
     importProvidersFrom(ToastrModule.forRoot()),
+    provideTranslocoPersistLang({
+      storage: { useValue: localStorage },
+      storageKey: 'LT_locale',
+    }),
     provideTransloco({
       config: {
         availableLangs,
@@ -58,5 +63,11 @@ bootstrapApplication(AppComponent, {
       },
       loader: TranslocoHttpLoader,
     }),
+    {
+      provide: APP_INITIALIZER,
+      useFactory: preloadLanguage,
+      multi: true,
+      deps: [TranslocoService],
+    },
   ],
 }).catch((err) => console.error(err));

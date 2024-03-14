@@ -2,9 +2,6 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ContentChildren,
-  Input,
-  QueryList,
   contentChildren,
   effect,
   inject,
@@ -19,6 +16,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import {
   PropertyComponent
 } from '@components/info-box/property/property.component';
+import { LimitLargeScreenDirective } from '@directives/limit-large-screen/limit-large-screen.directive';
 
 @Component({
   selector: 'ltm-info-box',
@@ -29,6 +27,7 @@ import {
     MatIconModule,
     MatCardModule,
     MatDividerModule,
+    LimitLargeScreenDirective,
   ],
   templateUrl: './info-box.component.html',
   styleUrls: ['./info-box.component.scss'],

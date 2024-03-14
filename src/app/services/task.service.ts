@@ -1,28 +1,28 @@
-import { Injectable, WritableSignal, signal } from '@angular/core';
+import { Injectable, WritableSignal, inject, signal } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { TranslocoService } from '@ngneat/transloco';
 
+import { ConfirmDialogComponent } from '@components/dialogs/confirm-dialog/confirm-dialog.component';
 import { ApiService } from '@services/api.service';
 import { PlantService } from '@services/plant.service';
 import { Plant } from '@models/plant.model';
 import { Task } from '@models/task.model';
-import { MatDialog } from '@angular/material/dialog';
-import { TranslocoService } from '@ngneat/transloco';
-import { ConfirmDialogComponent } from '@components/dialogs/confirm-dialog/confirm-dialog.component';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TaskService {
+  private readonly api = inject(ApiService);
+  private readonly plantService = inject(PlantService);
+  private readonly dialog = inject(MatDialog);
+  private readonly translate = inject(TranslocoService);
+
   readonly #$tasks: WritableSignal<Task[]> = signal([]);
   public readonly $tasks = this.#$tasks.asReadonly();
   readonly #$count: WritableSignal<number> = signal(0);
   public readonly $count = this.#$count.asReadonly();
 
-  constructor(
-    private readonly api: ApiService,
-    private readonly plantService: PlantService,
-    private readonly dialog: MatDialog,
-    private readonly translate: TranslocoService,
-  ) {
+  constructor() {
     this.loadTasks();
   }
 

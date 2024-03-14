@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {
   Observable,
   of,
@@ -7,6 +7,8 @@ import {
   catchError,
   throwError,
   BehaviorSubject,
+  tap,
+  EMPTY,
 } from 'rxjs';
 
 import { ApiService } from '@services/api.service';
@@ -16,6 +18,8 @@ import { User } from '@models/user.model';
   providedIn: 'root',
 })
 export class AuthService {
+  private readonly api = inject(ApiService);
+
   // signedIn$ exists just for convenience.
   // We can achieve the same checking if user$ is null
   private signedIn = new BehaviorSubject<boolean>(false);
@@ -27,17 +31,19 @@ export class AuthService {
   private user = new BehaviorSubject<User | null>(null);
   public readonly user$ = this.user.asObservable();
 
-  constructor(private readonly api: ApiService) {
-    this.api.getCurrentUser().subscribe({
-      next: (user: User) => {
+  check(): Observable<User> {
+    return this.api.getCurrentUser().pipe(
+      tap((user: User) => {
         this.signedIn.next(true);
         this.user.next(user);
         this.checked.next(true);
-      },
-      error: () => {
+      }),
+      catchError(() => {
         this.checked.next(true);
-      },
-    });
+
+        return EMPTY;
+      }),
+    )
   }
 
   signIn(username: string, password: string): Observable<User> {

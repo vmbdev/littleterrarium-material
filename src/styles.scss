@@ -63,14 +63,6 @@ mat-card {
   }
 }
 
-mat-bottom-sheet-container {
-  min-height: 80vh;
-}
-
-.full-width {
-  width: 100%;
-}
-
 .tab-navigation {
   display: flex;
   flex-direction: row;
@@ -106,6 +98,7 @@ mat-bottom-sheet-container {
   background-color: rgba(0, 0, 0, 0.8);
 }
 
-// mat-stepper, .mat-horizontal-stepper-wrapper, .mat-horizontal-content-container, .mat-horizontal-stepper-content {
-//   height: 100% !important;
-// }
+mat-bottom-sheet-container {
+  padding: 0 !important;
+  min-height: 80vh;
+}

@@ -19,7 +19,7 @@ import { Observable, map, of } from 'rxjs';
 
 import { ApiService } from '@services/api.service';
 import { Specie } from '@models/specie.model';
-import { FullWidthDirective } from '@directives/full-width.directive';
+import { FullWidthDirective } from '@directives/full-width/full-width.directive';
 
 @Component({
   selector: 'ltm-plant-form-specie',
@@ -72,10 +72,10 @@ export class PlantFormSpecieComponent {
     this.onChange = fn;
   }
 
-  change(value: string) {
-    if (value.length >= 3) {
-      this.results$ = this.api.findSpecie(value);
-    } else if (value.length === 0) {
+  change(val: string) {
+    if (val.length >= 3) {
+      this.results$ = this.api.findSpecie(val);
+    } else if (val.length === 0) {
       this.onChange(null);
       this.results$ = undefined;
     }

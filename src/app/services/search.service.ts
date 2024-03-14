@@ -1,6 +1,4 @@
 import { Injectable, WritableSignal, signal } from '@angular/core';
-import { Event, NavigationEnd, Router } from '@angular/router';
-import { filter } from 'rxjs';
 
 /**
  * mode avoids searching on component init
@@ -23,22 +21,9 @@ export class SearchService {
   });
   public readonly $text = this.#$text.asReadonly();
 
-  constructor(private router: Router) {
-    this.router.events
-      .pipe(
-        filter(
-          (event: Event): event is NavigationEnd =>
-            event instanceof NavigationEnd,
-        ),
-      )
-      .subscribe(() => {
-        this.#$enabled.set(false);
-        this.#$text.set({ mode: 'Begin', value: null });
-      });
-  }
-
-  enable(val: boolean) {
-    this.#$enabled.set(val);
+  reset() {
+    this.#$enabled.set(false);
+    this.#$text.set({ mode: 'Begin', value: null });
   }
 
   toggle(): void {

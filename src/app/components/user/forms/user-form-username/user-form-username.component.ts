@@ -20,7 +20,7 @@ import { TranslocoModule } from '@ngneat/transloco';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Observable, distinctUntilChanged, skipWhile, tap } from 'rxjs';
 
-import { FullWidthDirective } from '@directives/full-width.directive';
+import { FullWidthDirective } from '@directives/full-width/full-width.directive';
 
 @Component({
   selector: 'ltm-user-form-username',
@@ -58,7 +58,7 @@ export class UserFormUsernameComponent {
         this.cdr.markForCheck();
       }),
     )
-    .subscribe()
+    .subscribe();
   }
 
   checkForError(error: string): boolean {

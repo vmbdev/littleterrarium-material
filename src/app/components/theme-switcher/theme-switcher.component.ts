@@ -4,9 +4,16 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { TranslocoModule } from '@ngneat/transloco';
 
+import { ToggleOptionComponent } from '@components/toggle-option/toggle-option.component';
 import { ThemeService } from '@services/theme.service';
 import { CapitalizePipe } from '@pipes/capitalize/capitalize.pipe';
 
+/**
+ * Theme Switcher component.
+ * Note that the current implementation implies that there are only two
+ * themes: light and dark. Check for the commented code on the template for a
+ * list-based selector.
+ */
 @Component({
   selector: 'ltm-theme-switcher',
   standalone: true,
@@ -15,6 +22,7 @@ import { CapitalizePipe } from '@pipes/capitalize/capitalize.pipe';
     MatFormFieldModule,
     MatSelectModule,
     TranslocoModule,
+    ToggleOptionComponent,
     CapitalizePipe,
   ],
   templateUrl: './theme-switcher.component.html',
@@ -26,5 +34,11 @@ export class ThemeSwitcherComponent {
 
   setTheme(theme: string) {
     this.themeService.switchTheme(theme);
+  }
+
+  toggleDarkTheme() {
+    if (this.themeService.$theme() === 'light') {
+      this.themeService.switchTheme('dark');
+    } else this.themeService.switchTheme('light');
   }
 }

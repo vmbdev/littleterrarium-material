@@ -57,7 +57,7 @@ export class LocationComponent {
     return light ? this.locationService.getLightName(light) : null;
   });
 
-  updateMTTitle = effect(() => {
+  updateMtTitle = effect(() => {
     const loc = this.locationService.$location();
 
     untracked(() => {

@@ -13,22 +13,10 @@
     color: white;
   }
 
-  &__content {
+  &__canvas {
     position: absolute;
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
     z-index: -1;
-    touch-action: none;
-  }
-
-  &__pic {
-    position: absolute;
-    width: 100%;
-    height: auto;
   }
 }

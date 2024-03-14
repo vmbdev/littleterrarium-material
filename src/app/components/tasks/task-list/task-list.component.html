@@ -1,5 +1,5 @@
 <p>{{ "tasks.msg" | transloco }}</p>
-<mat-list>
+<mat-list limitLargeScreen>
   @for (task of taskService.$tasks(); track task.plantId) {
     <mat-list-item matRipple>
       <img

@@ -18,7 +18,7 @@ import { TranslocoModule } from '@ngneat/transloco';
 import { EditPageComponent } from '@components/edit-page/edit-page.component';
 import { PlantService } from '@services/plant.service';
 import { Plant, PotNames } from '@models/plant.model';
-import { FullWidthDirective } from '@directives/full-width.directive';
+import { FullWidthDirective } from '@directives/full-width/full-width.directive';
 
 type PotListItem = {
   id: string;

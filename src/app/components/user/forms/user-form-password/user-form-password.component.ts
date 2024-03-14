@@ -26,7 +26,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { TranslocoModule } from '@ngneat/transloco';
 
 import { PasswordRequirements } from '@models/user.model';
-import { FullWidthDirective } from '@directives/full-width.directive';
+import { FullWidthDirective } from '@directives/full-width/full-width.directive';
 
 @Component({
   selector: 'ltm-user-form-password',

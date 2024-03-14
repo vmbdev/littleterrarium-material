@@ -23,7 +23,7 @@
     }
   </mat-list>
 } @else {
-  <mat-grid-list cols="2" rowHeight="1:1.2" gutterSize="6">
+  <mat-grid-list [cols]="breakpoint" rowHeight="1:1.2" gutterSize="6">
 
     @for (item of $list(); track item.id) {
       <mat-grid-tile>

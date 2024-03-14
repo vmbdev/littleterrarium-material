@@ -1,6 +1,11 @@
-<div class="photo-list">
+<article #grid class="photo-list" [ngStyle]="{
+  'grid-template-columns': 'repeat(auto-fit, ' + breakpoint + 'px)'
+}">
   @for (photo of (list$ | async | sort:'takenAt':'desc'); track photo.id) {
-    <article class="photo-list__box">
+    <article class="photo-list__box" [ngStyle]="{
+      'width': breakpoint + 'px',
+      'height': breakpoint + 'px',
+    }">
       <a [routerLink]="['/photo', photo.id]">
         <img
           [src]="photo.images | imagePath:'thumb'"
@@ -9,4 +14,4 @@
       </a>
     </article>
   }
-</div>
+</article>

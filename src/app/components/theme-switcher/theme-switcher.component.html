@@ -1,6 +1,13 @@
 @if (themeService.availableThemes && themeService.availableThemes.length > 1) {
   @if (themeService.$theme(); as currentTheme) {
-    <mat-form-field appearance="fill" class="theme-switcher">
+    <ltm-toggle-option
+      [checked]="currentTheme === 'dark'"
+      (checkedChange)="toggleDarkTheme()"
+    >
+      {{ "themes.darkThemeOption" | transloco }}
+    </ltm-toggle-option>
+
+    <!-- <mat-form-field appearance="fill" class="theme-switcher">
       <mat-label>{{ 'themes.title' | transloco }}</mat-label>
       <mat-select
         #select
@@ -13,6 +20,6 @@
           </mat-option>
         }
       </mat-select>
-    </mat-form-field>
+    </mat-form-field> -->
   }
 }

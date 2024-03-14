@@ -1,12 +1,12 @@
-@if (langService.languages.length > 1) {
+@if (languages.length > 1) {
   <mat-form-field appearance="fill" class="lang-switcher">
     <mat-label>{{ 'general.language' | transloco }}</mat-label>
     <mat-select
       #select
       (selectionChange)="setLang(select.value)"
-      [value]="langService.$current()"
+      [value]="$current()"
     >
-      @for (lang of langService.languages; track lang.id) {
+      @for (lang of languages; track lang.id) {
         <mat-option [value]="lang.id">
           {{ lang.label }}
         </mat-option>

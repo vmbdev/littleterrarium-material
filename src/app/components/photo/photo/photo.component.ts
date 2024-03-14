@@ -17,7 +17,6 @@ import { InfoBoxComponent } from '@components/info-box/info-box/info-box.compone
 import { PropertyComponent } from '@components/info-box/property/property.component';
 import { ToggleOptionComponent } from '@components/toggle-option/toggle-option.component';
 import { PhotoEditComponent } from '@components/photo/photo-edit/photo-edit.component';
-import { ViewerComponent } from '@components/viewer/viewer.component';
 import { ConfirmDialogComponent } from '@components/dialogs/confirm-dialog/confirm-dialog.component';
 import { PhotoService } from '@services/photo.service';
 import { MainToolbarService } from '@services/main-toolbar.service';
@@ -43,7 +42,6 @@ import { DaysAgoPipe } from '@pipes/days-ago/days-ago.pipe';
     InfoBoxComponent,
     PropertyComponent,
     ToggleOptionComponent,
-    ViewerComponent,
     DaysAgoPipe,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,

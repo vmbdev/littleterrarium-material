@@ -10,6 +10,7 @@ import { TaskButtonFertilizeComponent } from '@components/tasks/task-button-fert
 import { PlantService } from '@services/plant.service';
 import { MainToolbarService } from '@services/main-toolbar.service';
 import { TaskService } from '@services/task.service';
+import { LimitLargeScreenDirective } from '@directives/limit-large-screen/limit-large-screen.directive';
 
 @Component({
   selector: 'ltm-task-list',
@@ -22,6 +23,7 @@ import { TaskService } from '@services/task.service';
     TranslocoModule,
     TaskButtonWaterComponent,
     TaskButtonFertilizeComponent,
+    LimitLargeScreenDirective,
   ],
   templateUrl: './task-list.component.html',
   styleUrls: ['./task-list.component.scss'],

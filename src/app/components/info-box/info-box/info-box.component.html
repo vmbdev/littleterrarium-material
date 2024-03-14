@@ -1,4 +1,4 @@
-<mat-card class="info-box">
+<mat-card class="info-box" limitLargeScreen>
   <mat-card-content class="info-box__properties">
     @for (property of props(); track property) {
       <ng-template [ngTemplateOutlet]="property.propertyTemplate" />

@@ -1,9 +1,15 @@
-<mat-toolbar color="primary" class="edit-page">
-  <span class="edit-page__title">{{ title }}</span>
-  <span class="toolbar-spacer"></span>
-  <button mat-icon-button (click)="acceptChanges()" data-testid="acceptChanges">
-    <mat-icon class="edit-page__check">check</mat-icon>
-  </button>
-</mat-toolbar>
+<section class="edit-page">
+  <header role="heading" class="edit-page__heading">
+    <mat-toolbar color="primary" class="edit-page__toolbar">
+      <span class="edit-page__title">{{ title }}</span>
+      <span class="toolbar-spacer"></span>
+      <button color="accent" mat-mini-fab (click)="acceptChanges()" data-testid="acceptChanges">
+        <mat-icon class="edit-page__check">check</mat-icon>
+      </button>
+    </mat-toolbar>
+  </header>
 
-<ng-content />
+  <article class="edit-page__content">
+    <ng-content />
+  </article>
+</section>

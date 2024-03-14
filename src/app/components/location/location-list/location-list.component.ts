@@ -3,6 +3,7 @@ import {
   Component,
   Input,
   WritableSignal,
+  inject,
   signal,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -52,19 +53,17 @@ import { ImagePathPipe } from '@pipes/image-path/image-path.pipe';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LocationListComponent {
+  private readonly auth = inject(AuthService);
+  private readonly locationService = inject(LocationService);
+  private readonly router = inject(Router);
+  private readonly errorHandler = inject(ErrorHandlerService);
+  private readonly translate = inject(TranslocoService);
+  private readonly dialog = inject(MatDialog);
+  private readonly bottomSheet = inject(MatBottomSheet);
+
   @Input() userId?: number;
   protected owned: boolean = true;
   protected readonly $locations: WritableSignal<Location[]> = signal([]);
-
-  constructor(
-    private readonly auth: AuthService,
-    private readonly locationService: LocationService,
-    private readonly router: Router,
-    private readonly errorHandler: ErrorHandlerService,
-    private readonly translate: TranslocoService,
-    private readonly dialog: MatDialog,
-    private readonly bottomSheet: MatBottomSheet,
-  ) {}
 
   ngOnInit(): void {
     if (this.userId) {

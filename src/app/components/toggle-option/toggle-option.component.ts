@@ -1,18 +1,13 @@
-import {
-  booleanAttribute,
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Input,
-  Output,
-  SimpleChanges
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, forwardRef, model } from '@angular/core';
 import { MatRippleModule } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { MatCardModule } from '@angular/material/card';
-import { MatDividerModule } from '@angular/material/divider';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
 
+/**
+ * Toggle custom component. Can work either as a FormControl or just through
+ * the checked input and the checkedChange output.
+ */
 @Component({
   selector: 'ltm-toggle-option',
   standalone: true,
@@ -20,30 +15,49 @@ import { MatDividerModule } from '@angular/material/divider';
     MatSlideToggleModule,
     MatFormFieldModule,
     MatRippleModule,
-    MatCardModule,
-    MatDividerModule,
   ],
   templateUrl: './toggle-option.component.html',
   styleUrls: ['./toggle-option.component.scss'],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => ToggleOptionComponent),
+      multi: true,
+    },
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ToggleOptionComponent {
-  @Input({ transform: booleanAttribute }) checked: boolean = false;
-  @Output() change = new EventEmitter<boolean>();
-  protected currentlyChecked: boolean = false;
+  checked = model<boolean>(false);
+  disabled: boolean = false;
 
-  ngOnInit(): void {
-    this.currentlyChecked = this.checked;
+  private onChange = (val: boolean) => {};
+  private onTouched = () => {};
+
+  writeValue(val: boolean): void {
+    this.checked.set(val);
+    this.onChange(val);
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['checked'].currentValue !== changes['checked'].previousValue) {
-      this.currentlyChecked = changes['checked'].currentValue;
-    }
+  registerOnChange(fn: any): void {
+    this.onChange = fn;
+  }
+
+  change(val: boolean) {
+    this.checked.set(val);
+    this.onChange(val);
+  }
+
+  registerOnTouched(fn: any): void {
+    this.onTouched = fn;
+  }
+
+  setDisabledState(isDisabled: boolean): void {
+    this.disabled = isDisabled;
   }
 
   toggleOption(): void {
-    this.currentlyChecked = !this.currentlyChecked;
-    this.change.emit(this.currentlyChecked);
+    this.checked.update((val) => !val);
+    this.onChange(this.checked());
   }
 }

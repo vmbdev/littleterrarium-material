@@ -40,8 +40,3 @@ $dark-theme: mat.define-dark-theme((
   @include file-uploader.theme-dark($dark-theme);
   @include edit-page.theme-dark($dark-theme);
 }
-
-mat-card {
-  // background-color: #f2f2f2 !important;
-  @include mat.elevation(8);
-}

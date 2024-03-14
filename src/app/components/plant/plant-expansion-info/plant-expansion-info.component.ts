@@ -14,6 +14,7 @@ import { PlantFertiliseWidgetComponent } from '@components/plant/widgets/plant-f
 import { PlantSoilWidgetComponent } from '@components/plant/widgets/plant-soil-widget/plant-soil-widget.component';
 import { FertInfo, Plant, PotInfo, WaterInfo } from '@models/plant.model';
 import { PlantService } from '@services/plant.service';
+import { LimitLargeScreenDirective } from '@directives/limit-large-screen/limit-large-screen.directive';
 
 @Component({
   selector: 'ltm-plant-expansion-info',
@@ -25,8 +26,10 @@ import { PlantService } from '@services/plant.service';
     PlantFertiliseWidgetComponent,
     PlantSoilWidgetComponent,
     TranslocoModule,
+    LimitLargeScreenDirective,
   ],
   templateUrl: './plant-expansion-info.component.html',
+  styleUrl: './plant-expansion-info.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlantExpansionInfoComponent {

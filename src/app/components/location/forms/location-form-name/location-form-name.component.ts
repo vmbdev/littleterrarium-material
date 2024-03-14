@@ -10,7 +10,7 @@ import { MatInputModule } from '@angular/material/input';
 import { TranslocoModule } from '@ngneat/transloco';
 
 import { FormBaseActionComponent } from '@components/form-base-action/form-base-action.component';
-import { FullWidthDirective } from '@directives/full-width.directive';
+import { FullWidthDirective } from '@directives/full-width/full-width.directive';
 
 @Component({
   selector: 'ltm-location-form-name',
