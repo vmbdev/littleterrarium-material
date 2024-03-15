@@ -3,31 +3,28 @@
     [title]="'general.soil' | transloco"
     (accept)="submit()"
   >
-    <form [formGroup]="potForm" method="post" (submit)="submit()">
-      <p>{{ 'plant-edit-soil.potDesc' | transloco }}</p>
-        
-      <div>
+    <form [formGroup]="potForm" method="post">
+      <ltm-settings-card [title]="'plant-edit-soil.potDesc' | transloco">
         <p [innerHTML]="'plant-edit-soil.material' | transloco"></p>
 
-        <div class="pot-selector">
-          <div
-            *ngFor="let pot of pots"
-            class="pot-selector__material"
-            (click)="selectPot(pot.id)"
-            [ngClass]="{
-              'pot-selector__material-selected': selectedPot === pot.id
-            }"
-          >
-            <img [src]="pot.asset" [alt]="(pot.name | transloco)">
-            <p>{{ pot.name | transloco }}</p>
-          </div>
-        </div>
-      </div>
+        <article class="pot-selector">
+          @for (pot of pots; track pot.id) {
+            <div
+              class="pot-selector__material"
+              (click)="selectPot(pot.id)"
+              [ngClass]="{
+                'pot-selector__material-selected': selectedPot === pot.id
+              }"
+            >
+              <img [src]="pot.asset" [alt]="(pot.name | transloco)">
+              <p>{{ pot.name | transloco }}</p>
+            </div>
+          }
+        </article>
+      </ltm-settings-card>
 
-      <mat-divider />
 
-      <div>
-        <p [innerHTML]="'plant-edit-soil.size' | transloco"></p>
+      <ltm-settings-card [title]="'plant-edit-soil.size' | transloco">
         <mat-form-field fullWidth>
           <input matInput type="number" formControlName="potSize">
         </mat-form-field>
@@ -40,16 +37,13 @@
             {{ 'general.in' | transloco }}
           </mat-radio-button>
         </mat-radio-group>
-      </div>
+      </ltm-settings-card>
 
-      <mat-divider />
-
-      <div>
-        <p [innerHTML]="'plant-edit-soil.composition' | transloco"></p>
+      <ltm-settings-card [title]="'plant-edit-soil.composition' | transloco">
         <mat-form-field fullWidth>
           <input matInput type="text" formControlName="soil">
         </mat-form-field>
-      </div>
+      </ltm-settings-card>
     </form>
   </ltm-edit-page>
 }

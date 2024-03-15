@@ -3,74 +3,32 @@
     <ltm-edit-page 
       [title]="'plant-edit.header' | transloco:{ plantName: plant.visibleName }"
     >
-      <mat-card class="settings-card">
-        <mat-card-header>
-          <mat-card-title>
-            {{ 'general.name' | transloco }}
-          </mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <ltm-plant-form-name />
-        </mat-card-content>
-      </mat-card>
+      <ltm-settings-card [title]="'general.name' | transloco">
+        <ltm-plant-form-name />
+      </ltm-settings-card>
 
-      <mat-card class="settings-card">
-        <mat-card-header>
-          <mat-card-title>
-            {{ 'general.description' | transloco }}
-          </mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <ltm-plant-form-description />
-        </mat-card-content>
-      </mat-card>
+      <ltm-settings-card [title]="'general.description' | transloco">
+        <ltm-plant-form-description />
+      </ltm-settings-card>
 
-      <mat-card class="settings-card">
-        <mat-card-header>
-          <mat-card-title>
-            {{ 'general.specie' | transloco }}
-          </mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <ltm-plant-form-specie formControlName="specieId" />
-        </mat-card-content>
-      </mat-card>
+      <ltm-settings-card [title]="'general.specie' | transloco">
+        <ltm-plant-form-specie formControlName="specieId" />
+      </ltm-settings-card>
 
-      <mat-card class="settings-card">
-        <mat-card-header>
-          <mat-card-title>
-            {{ 'plant-edit.condition' | transloco }}
-          </mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <ltm-plant-form-condition />
-        </mat-card-content>
-      </mat-card>
+      <ltm-settings-card [title]="'plant-edit.condition' | transloco">
+        <ltm-plant-form-condition />
+      </ltm-settings-card>
 
-      <mat-card class="settings-card">
-        <mat-card-header>
-          <mat-card-title>
-            {{ 'general.location' | transloco }}
-          </mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <ltm-plant-form-location />
-        </mat-card-content>
-      </mat-card>
+      <ltm-settings-card [title]="'general.location' | transloco">
+        <ltm-plant-form-location />
+      </ltm-settings-card>
 
-      <mat-card class="settings-card">
-        <mat-card-header>
-          <mat-card-title>
-            {{ 'general.privacy' | transloco }}
-          </mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <ltm-form-privacy>
-            <p [innerHtml]="'plant-add.privacy' | transloco"></p>
-            <p [innerHtml]="'plant-add.privacyTip' | transloco"></p>
-          </ltm-form-privacy>
-        </mat-card-content>
-      </mat-card>
+      <ltm-settings-card [title]="'general.privacy' | transloco">
+        <ltm-form-privacy>
+          <p [innerHtml]="'plant-add.privacy' | transloco"></p>
+          <p [innerHtml]="'plant-add.privacyTip' | transloco"></p>
+        </ltm-form-privacy>
+      </ltm-settings-card>
     </ltm-edit-page>
   </form>
 }

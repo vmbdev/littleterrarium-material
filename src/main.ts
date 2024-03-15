@@ -12,6 +12,7 @@ import {
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { DateAdapter, NativeDateAdapter } from '@angular/material/core';
+import { MatIconRegistry } from '@angular/material/icon';
 import { TranslocoService, provideTransloco } from '@ngneat/transloco';
 import { provideTranslocoPersistLang } from '@ngneat/transloco-persist-lang';
 import { ToastrModule } from 'ngx-toastr';
@@ -65,9 +66,17 @@ bootstrapApplication(AppComponent, {
     }),
     {
       provide: APP_INITIALIZER,
-      useFactory: preloadLanguage,
       multi: true,
+      useFactory: preloadLanguage,
       deps: [TranslocoService],
     },
+    {
+      provide: APP_INITIALIZER,
+      multi: true,
+      useFactory: (iconRegistry: MatIconRegistry) => () => {
+        iconRegistry.setDefaultFontSetClass('material-symbols-outlined');
+      },
+      deps: [MatIconRegistry]
+    }
   ],
 }).catch((err) => console.error(err));

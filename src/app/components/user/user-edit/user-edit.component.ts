@@ -24,6 +24,7 @@ import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog
 import { FileUploaderComponent } from '@components/file-uploader/file-uploader.component';
 import { EditPageComponent } from '@components/edit-page/edit-page.component';
 import { CurrentPicComponent } from '@components/current-pic/current-pic.component';
+import { SettingsCardComponent } from '@components/settings-card/settings-card.component';
 import { MainToolbarService } from '@services/main-toolbar.service';
 import { ApiService } from '@services/api.service';
 import { AuthService } from '@services/auth.service';
@@ -48,6 +49,7 @@ import { ImagePathPipe } from '@pipes/image-path/image-path.pipe';
     UserFormNameComponent,
     FormPrivacyComponent,
     EditPageComponent,
+    SettingsCardComponent,
     CurrentPicComponent,
     ImagePathPipe,
   ],

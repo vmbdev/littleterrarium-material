@@ -124,11 +124,11 @@ export class ApiService {
     }
     if (user.bio || user.bio === '') form.append('bio', user.bio);
     if (user.password) form.append('password', user.password);
+    if (user.public) form.append('public', user.public.toString());
     
     if (options.removeAvatar) form.append('removeAvatar', 'true');
     else if (user.avatarFile) form.append('avatar', user.avatarFile);
 
-    form.append('public', user.public.toString());
 
     return this.http.put<User>(this.endpoint('users'), form);
   }

@@ -1,6 +1,11 @@
 @if (plant$ | async) {
   <form [formGroup]="form" (ngSubmit)="submit()">
-    <mat-stepper labelPosition="bottom" linear="false" animationDuration="300">
+    <mat-stepper
+      labelPosition="bottom"
+      linear="false"
+      animationDuration="300"
+      limitLargeScreen
+    >
       <mat-step [label]="'general.picture' | transloco">
         <p [innerHTML]="'photo-add.addMsg' | transloco"></p>
         <p [innerHTML]="'photo-add.addMsgLimit' | transloco"></p>

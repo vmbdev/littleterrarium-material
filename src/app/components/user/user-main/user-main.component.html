@@ -17,17 +17,22 @@
       <span matListItemTitle>{{ 'userbox.changePassword' | transloco }}</span>
     </mat-list-item>
 
+    <mat-divider />
+
+    <mat-list-item matRipple>
+      <ltm-theme-switcher />
+    </mat-list-item>
+    
+    <mat-list-item matRipple>
+      <ltm-lang-switcher />
+    </mat-list-item>
+
+    <mat-divider />
+    
     <mat-list-item routerLink="/logout" matRipple>
       <mat-icon matListItemIcon>logout</mat-icon>
       <span matListItemTitle>{{ 'general.logout' | transloco }}</span>
     </mat-list-item>
 
-    <mat-list-item matRipple>
-      <ltm-theme-switcher />
-    </mat-list-item>
-
-    <mat-list-item matRipple>
-      <ltm-lang-switcher />
-    </mat-list-item>
   </mat-nav-list>
 }

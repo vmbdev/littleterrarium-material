@@ -17,6 +17,7 @@ import { EMPTY, catchError, finalize } from 'rxjs';
 
 import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog.component';
 import { AuthService } from '@services/auth.service';
+import { LimitLargeScreenDirective } from '@directives/limit-large-screen/limit-large-screen.directive';
 
 @Component({
   selector: 'ltm-signin',
@@ -32,6 +33,7 @@ import { AuthService } from '@services/auth.service';
     MatDialogModule,
     TranslocoModule,
     WaitDialogComponent,
+    LimitLargeScreenDirective,
   ],
   templateUrl: './signin.component.html',
   styleUrl: './signin.component.scss',

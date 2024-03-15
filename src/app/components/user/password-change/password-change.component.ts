@@ -1,14 +1,22 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { TranslocoModule, TranslocoService } from '@ngneat/transloco';
-import { BehaviorSubject, EMPTY, Observable, catchError, switchMap, tap } from 'rxjs';
+import { TranslocoModule } from '@ngneat/transloco';
+import {
+  BehaviorSubject,
+  EMPTY,
+  Observable,
+  catchError,
+  switchMap,
+  tap,
+} from 'rxjs';
 
 import { UserFormPasswordComponent } from '@components/user/forms/user-form-password/user-form-password.component';
 import { PasswordService } from '@services/password.service';
 import { AuthService } from '@services/auth.service';
 import { User } from '@models/user.model';
+import { LimitLargeScreenDirective } from '@directives/limit-large-screen/limit-large-screen.directive';
 
 @Component({
   selector: 'ltm-password-change',
@@ -19,6 +27,7 @@ import { User } from '@models/user.model';
     TranslocoModule,
     MatButtonModule,
     UserFormPasswordComponent,
+    LimitLargeScreenDirective,
   ],
   templateUrl: './password-change.component.html',
   styleUrl: './password-change.component.scss',

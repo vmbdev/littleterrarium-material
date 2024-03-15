@@ -1,20 +1,11 @@
 @if (plantService.plant$ | async; as plant) {
-  <ltm-edit-page 
-    [title]="'general.water' | transloco"
-    (accept)="submit()"
-  >
+  <ltm-edit-page [title]="'general.water' | transloco">
     <form [formGroup]="waterForm" method="post" (submit)="submit()">
-      <mat-card>
-        <mat-card-content>
-          <p [innerHTML]="'plant-edit-watering.warning' | transloco"></p>
-          <p [innerHTML]="'plant-edit-watering.sensitive' | transloco"></p>
-          <p [innerHTML]="'plant-edit-watering.reminder' | transloco"></p>
-        </mat-card-content>
-      </mat-card>
+        <p [innerHTML]="'plant-edit-watering.warning' | transloco"></p>
+        <p [innerHTML]="'plant-edit-watering.sensitive' | transloco"></p>
+        <p [innerHTML]="'plant-edit-watering.reminder' | transloco"></p>
       
-      <div>
-        <p [innerHTML]="'plant-edit-watering.lastTime' | transloco"></p>
-
+      <ltm-settings-card [title]="'plant-edit-watering.lastTime' | transloco">
         <mat-form-field appearance="fill" fullWidth>
           <mat-label>{{ 'general.date' | transloco }}</mat-label>
           <input
@@ -26,17 +17,13 @@
           <mat-datepicker-toggle matIconSuffix [for]="picker" />
           <mat-datepicker #picker />
         </mat-form-field>
+      </ltm-settings-card>
 
-      </div>
-
-      <mat-divider />
-
-      <div>
-        <p [innerHTML]="'plant-edit-watering.nextTime' | transloco"></p>
+      <ltm-settings-card [title]="'plant-edit-watering.nextTime' | transloco">
         <mat-form-field fullWidth>
-          <input matInput type="number" formControlName="waterFreq">
+          <input matInput min="0" type="number" formControlName="waterFreq">
         </mat-form-field>
-      </div>
+      </ltm-settings-card>
     </form>
   </ltm-edit-page>
 }

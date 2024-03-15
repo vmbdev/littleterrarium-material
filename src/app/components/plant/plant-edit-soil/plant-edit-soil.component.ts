@@ -8,14 +8,12 @@ import {
 } from '@angular/forms';
 import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatButtonModule } from '@angular/material/button';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatInputModule } from '@angular/material/input';
-import { MatDividerModule } from '@angular/material/divider';
-import { MatCardModule } from '@angular/material/card';
 import { TranslocoModule } from '@ngneat/transloco';
 
 import { EditPageComponent } from '@components/edit-page/edit-page.component';
+import { SettingsCardComponent } from '@components/settings-card/settings-card.component';
 import { PlantService } from '@services/plant.service';
 import { Plant, PotNames } from '@models/plant.model';
 import { FullWidthDirective } from '@directives/full-width/full-width.directive';
@@ -33,15 +31,13 @@ type PotListItem = {
     CommonModule,
     ReactiveFormsModule,
     MatFormFieldModule,
-    MatButtonModule,
     MatRadioModule,
     MatInputModule,
     MatFormFieldModule,
-    MatDividerModule,
-    MatCardModule,
     TranslocoModule,
     EditPageComponent,
     FullWidthDirective,
+    SettingsCardComponent,
   ],
   templateUrl: './plant-edit-soil.component.html',
   styleUrls: ['./plant-edit-soil.component.scss'],

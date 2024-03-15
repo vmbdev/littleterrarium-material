@@ -1,5 +1,4 @@
 @use '@angular/material' as mat;
-@use 'settings-card-theme.scss' as settings-card;
 @use 'file-uploader-theme.scss' as file-uploader;
 @use 'edit-page-theme.scss' as edit-page;
 
@@ -18,14 +17,13 @@ $light-theme: mat.define-light-theme((
 ));
 
 @include mat.all-component-themes($light-theme);
-@include settings-card.theme-light($light-theme);
 @include file-uploader.theme-light($light-theme);
 @include edit-page.theme-light($light-theme);
 
 // dark theme
 
-$color-primary-dark: mat.define-palette(mat.$indigo-palette, 900);
-$color-accent-dark: mat.define-palette(mat.$green-palette, 400);
+$color-primary-dark: mat.define-palette(mat.$indigo-palette, 600);
+$color-accent-dark: mat.define-palette(mat.$light-green-palette, 400);
 
 $dark-theme: mat.define-dark-theme((
   color: (
@@ -36,7 +34,6 @@ $dark-theme: mat.define-dark-theme((
 
 .dark-theme {
   @include mat.all-component-colors($dark-theme);
-  @include settings-card.theme-dark($dark-theme);
   @include file-uploader.theme-dark($dark-theme);
   @include edit-page.theme-dark($dark-theme);
 }

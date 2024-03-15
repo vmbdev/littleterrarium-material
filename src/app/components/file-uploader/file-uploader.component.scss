@@ -3,9 +3,10 @@
   flex-direction: column;
   align-items: center;
   justify-content: space-evenly;
-  margin: 10px 0;
+  margin: 10px auto;
   min-height: 15em;
-  width: 80vw;
+  min-width: 30rem;
+  width: 80%;
 
   input[type=file] {
     display: none;

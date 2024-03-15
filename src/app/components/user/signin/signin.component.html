@@ -1,5 +1,5 @@
 <form [formGroup]="signinForm" (ngSubmit)="submit()">
-  <section class="signin">
+  <section class="signin" limitLargeScreen>
     <h1>{{ 'signin.homepageTitle' | transloco }}</h1>
     <p [innerHTML]="'signin.homepageMsg' | transloco"></p>
 

@@ -1,14 +1,9 @@
 @if (plantService.plant$ | async; as plant) {
-  <ltm-edit-page 
-    [title]="'general.fertilizer' | transloco"
-    (accept)="submit()"
-  >
+  <ltm-edit-page [title]="'general.fertilizer' | transloco">
     <form [formGroup]="fertForm" method="post" (submit)="submit()">
-      <p>{{ 'plant-edit-fertilizer.header' | transloco }}></p>
-      
-      <div>
-        <p [innerHTML]="'plant-edit-fertilizer.lastTime' | transloco"></p>
+      <p [innerHTML]="'plant-edit-fertilizer.header' | transloco"></p>
 
+      <ltm-settings-card [title]="'plant-edit-fertilizer.lastTime' | transloco">
         <mat-form-field appearance="fill" fullWidth>
           <mat-label>{{ 'general.date' | transloco }}</mat-label>
           <input
@@ -20,25 +15,19 @@
           <mat-datepicker-toggle matIconSuffix [for]="picker" />
           <mat-datepicker #picker />
         </mat-form-field>
-      </div>
+      </ltm-settings-card>
 
-      <mat-divider />
-
-      <div>
-        <p [innerHTML]="'plant-edit-fertilizer.nextTime' | transloco"></p>
+      <ltm-settings-card [title]="'plant-edit-fertilizer.nextTime' | transloco">
         <mat-form-field fullWidth>
-          <input matInput type="number" formControlName="fertFreq">
+          <input matInput min="0" type="number" formControlName="fertFreq">
         </mat-form-field>
-      </div>
+      </ltm-settings-card>
 
-      <mat-divider />
-
-      <div>
-        <p [innerHTML]="'plant-edit-fertilizer.type' | transloco"></p>
+      <ltm-settings-card [title]="'plant-edit-fertilizer.type' | transloco">
         <mat-form-field fullWidth>
           <input matInput type="text" formControlName="fertType">
         </mat-form-field>
-      </div>
+      </ltm-settings-card>
     </form>
   </ltm-edit-page>
 }

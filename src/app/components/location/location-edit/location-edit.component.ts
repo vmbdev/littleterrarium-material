@@ -1,8 +1,6 @@
-import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
-  ViewChild,
   WritableSignal,
   inject,
   signal,
@@ -14,9 +12,6 @@ import {
   Validators,
 } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatIconModule } from '@angular/material/icon';
 import {
   MatBottomSheetRef,
   MAT_BOTTOM_SHEET_DATA,
@@ -29,37 +24,32 @@ import { LocationFormLightComponent } from '@components/location/forms/location-
 import { LocationFormNameComponent } from '@components/location/forms/location-form-name/location-form-name.component';
 import { EditPageComponent } from '@components/edit-page/edit-page.component';
 import { FormPrivacyComponent } from '@components/form-privacy/form-privacy.component';
+import { SettingsCardComponent } from '@components/settings-card/settings-card.component';
+import { CurrentPicComponent } from '@components/current-pic/current-pic.component';
 import { ErrorHandlerService } from '@services/error-handler.service';
 import { LocationService } from '@services/location.service';
 import { Location } from '@models/location.model';
-import { CurrentPicComponent } from '@components/current-pic/current-pic.component';
 import { ImagePathPipe } from '@pipes/image-path/image-path.pipe';
 
 @Component({
   selector: 'ltm-location-edit',
   standalone: true,
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     TranslocoModule,
-    MatButtonModule,
-    MatCardModule,
-    MatIconModule,
     FileUploaderComponent,
     LocationFormNameComponent,
     LocationFormLightComponent,
     FormPrivacyComponent,
     EditPageComponent,
     CurrentPicComponent,
+    SettingsCardComponent,
     ImagePathPipe,
   ],
   templateUrl: './location-edit.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LocationEditComponent {
-  @ViewChild(FileUploaderComponent)
-  fileUploaderComponent!: FileUploaderComponent;
-
   protected readonly fb = inject(FormBuilder);
   protected readonly translate = inject(TranslocoService);
   protected readonly locationService = inject(LocationService);

@@ -1,5 +1,10 @@
 <form [formGroup]="form">
-  <mat-stepper labelPosition="bottom" linear="true" animationDuration="300">
+  <mat-stepper
+    labelPosition="bottom"
+    linear="true"
+    animationDuration="300"
+    limitLargeScreen
+  >
     <mat-step
       [stepControl]="nameForm"
       [errorMessage]="'general.required' | transloco"

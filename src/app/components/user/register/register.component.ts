@@ -2,7 +2,6 @@ import {
   ChangeDetectionStrategy,
   Component,
   ModelSignal,
-  effect,
   inject,
   model,
 } from '@angular/core';
@@ -27,6 +26,7 @@ import { UserFormUsernameComponent } from '@components/user/forms/user-form-user
 import { UserFormEmailComponent } from '@components/user/forms/user-form-email/user-form-email.component';
 import { PasswordService } from '@services/password.service';
 import { User } from '@models/user.model';
+import { LimitLargeScreenDirective } from '@directives/limit-large-screen/limit-large-screen.directive';
 
 @Component({
   selector: 'ltm-register',
@@ -40,6 +40,7 @@ import { User } from '@models/user.model';
     UserFormPasswordComponent,
     UserFormUsernameComponent,
     UserFormEmailComponent,
+    LimitLargeScreenDirective,
   ],
   templateUrl: './register.component.html',
   providers: [

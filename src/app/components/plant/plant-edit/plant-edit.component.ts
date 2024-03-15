@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import {
   FormBuilder,
   FormControl,
-  FormGroup,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
@@ -27,6 +26,7 @@ import { PlantFormConditionComponent } from '@components/plant/forms/plant-form-
 import { PlantFormLocationComponent } from '@components/plant/forms/plant-form-location/plant-form-location.component';
 import { EditPageComponent } from '@components/edit-page/edit-page.component';
 import { FormPrivacyComponent } from '@components/form-privacy/form-privacy.component';
+import { SettingsCardComponent } from '@components/settings-card/settings-card.component';
 import { PlantGetConfig } from '@services/api.service';
 import { ErrorHandlerService } from '@services/error-handler.service';
 import { PlantService } from '@services/plant.service';
@@ -44,9 +44,6 @@ interface PlantEditConfig {
     CommonModule,
     ReactiveFormsModule,
     TranslocoModule,
-    MatCardModule,
-    MatIconModule,
-    MatButtonModule,
     FileUploaderComponent,
     PlantFormNameComponent,
     PlantFormSpecieComponent,
@@ -55,6 +52,7 @@ interface PlantEditConfig {
     PlantFormLocationComponent,
     FormPrivacyComponent,
     EditPageComponent,
+    SettingsCardComponent,
   ],
   templateUrl: './plant-edit.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

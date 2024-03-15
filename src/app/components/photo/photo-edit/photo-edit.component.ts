@@ -3,8 +3,6 @@ import { MatCardModule } from '@angular/material/card';
 import {
   ChangeDetectionStrategy,
   Component,
-  Inject,
-  Optional,
   inject,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -32,6 +30,7 @@ import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog
 import { EditPageComponent } from '@components/edit-page/edit-page.component';
 import { FormPrivacyComponent } from '@components/form-privacy/form-privacy.component';
 import { ToggleOptionComponent } from '@components/toggle-option/toggle-option.component';
+import { SettingsCardComponent } from '@components/settings-card/settings-card.component';
 import { ErrorHandlerService } from '@services/error-handler.service';
 import { PlantService } from '@services/plant.service';
 import { PhotoService } from '@services/photo.service';
@@ -49,14 +48,12 @@ interface PhotoEditConfig {
     CommonModule,
     ReactiveFormsModule,
     TranslocoModule,
-    MatButtonModule,
-    MatCardModule,
-    MatIconModule,
     PhotoFormDescriptionComponent,
     PhotoFormDateComponent,
     FormPrivacyComponent,
     EditPageComponent,
     ToggleOptionComponent,
+    SettingsCardComponent,
   ],
   templateUrl: './photo-edit.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

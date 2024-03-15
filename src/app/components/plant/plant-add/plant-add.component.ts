@@ -2,7 +2,6 @@ import {
   ChangeDetectionStrategy,
   Component,
   Signal,
-  ViewChild,
   inject,
   signal,
 } from '@angular/core';
@@ -38,6 +37,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { LimitLargeScreenDirective } from '@directives/limit-large-screen/limit-large-screen.directive';
 
 @Component({
   selector: 'ltm-plant-add',
@@ -59,6 +59,7 @@ import {
     PlantFormNameComponent,
     PlantFormSpecieComponent,
     FormPrivacyComponent,
+    LimitLargeScreenDirective,
   ],
   templateUrl: './plant-add.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

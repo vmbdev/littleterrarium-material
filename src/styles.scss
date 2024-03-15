@@ -1,7 +1,6 @@
 @use '@angular/material' as mat;
 @use 'ngx-toastr/toastr';
 @use 'scss/themes.scss';
-@use 'scss/settings-card.scss';
 
 @mixin border-style {
   border-width: 1px !important;

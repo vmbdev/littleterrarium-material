@@ -1,69 +1,38 @@
 @if (user$ | async; as user) {
   <form [formGroup]="form" (ngSubmit)="submit()">
     <ltm-edit-page [title]="'user-edit.header' | transloco">
-      <mat-card class="settings-card">
-        <mat-card-header>
-          <mat-card-title>{{ 'general.username' | transloco }}</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <ltm-user-form-username />
-        </mat-card-content>
-      </mat-card>
+      <ltm-settings-card [title]="'general.username' | transloco">
+        <ltm-user-form-username />
+      </ltm-settings-card>
 
-      <mat-card class="settings-card">
-        <mat-card-header>
-          <mat-card-title>{{ 'general.fullname' | transloco }}</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <ltm-user-form-name />
-        </mat-card-content>
-      </mat-card>
+      <ltm-settings-card [title]="'general.fullname' | transloco">
+        <ltm-user-form-name />
+      </ltm-settings-card>
 
-      <mat-card class="settings-card">
-        <mat-card-header>
-          <mat-card-title>{{ 'general.avatar' | transloco }}</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <p [innerHTML]="'user-edit.avatarDesc' | transloco"></p>
+      <ltm-settings-card [title]="'general.avatar' | transloco">
+        <p [innerHTML]="'user-edit.avatarDesc' | transloco"></p>
 
-          @if (removeAvatar || !user.avatar) {
-            <ltm-file-uploader maxAmount="1" formControlName="avatarFile" />
-          } @else {
-            <ltm-current-pic
-              [pic]="user.avatar | imagePath:'thumb'"
-              (click)="setRemoveAvatar()"
-            />
-          }
+        @if (removeAvatar || !user.avatar) {
+          <ltm-file-uploader maxAmount="1" formControlName="avatarFile" />
+        } @else {
+          <ltm-current-pic
+            [pic]="user.avatar | imagePath:'thumb'"
+            (click)="setRemoveAvatar()"
+          />
+        }
+      </ltm-settings-card>
 
-        </mat-card-content>
-      </mat-card>
+      <ltm-settings-card [title]="'general.email' | transloco">
+        <ltm-user-form-email />
+      </ltm-settings-card>
 
-      <mat-card class="settings-card">
-        <mat-card-header>
-          <mat-card-title>{{ 'general.email' | transloco }}</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <ltm-user-form-email />
-        </mat-card-content>
-      </mat-card>
+      <ltm-settings-card [title]="'general.bio' | transloco">
+        <ltm-user-form-bio />
+      </ltm-settings-card>
 
-      <mat-card class="settings-card">
-        <mat-card-header>
-          <mat-card-title>{{ 'general.bio' | transloco }}</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <ltm-user-form-bio />
-        </mat-card-content>
-      </mat-card>
-
-      <mat-card class="settings-card">
-        <mat-card-header>
-          <mat-card-title>{{ 'general.privacy' | transloco }}</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <ltm-form-privacy />
-        </mat-card-content>
-      </mat-card>
+      <ltm-settings-card [title]="'general.privacy' | transloco">
+        <ltm-form-privacy />
+      </ltm-settings-card>
 
     </ltm-edit-page>
   </form>

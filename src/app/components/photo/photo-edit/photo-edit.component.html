@@ -1,49 +1,29 @@
 @if (photo$ | async; as photo) {
   <form [formGroup]="form" (ngSubmit)="submit()">
     <ltm-edit-page [title]="'photo-edit.header' | transloco">
-      <mat-card class="settings-card">
-        <mat-card-header>
-          <mat-card-title>{{ 'general.description' | transloco }}</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <ltm-photo-form-description />
-        </mat-card-content>
-      </mat-card>
+      <ltm-settings-card [title]="'general.description' | transloco">
+        <ltm-photo-form-description />
+      </ltm-settings-card>
 
-      <mat-card class="settings-card">
-        <mat-card-header>
-          <mat-card-title>{{ 'photo.cover' | transloco }}</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <ltm-toggle-option
-            [checked]="plantCoverId === photo.id"
-            (checkedChange)="updateCoverPhoto($event)"
-          >
-            {{ "photo.cover" | transloco }}
-          </ltm-toggle-option>
-        </mat-card-content>
-      </mat-card>
+      <ltm-settings-card [title]="'photo.cover' | transloco">
+        <ltm-toggle-option
+          [checked]="plantCoverId === photo.id"
+          (checkedChange)="updateCoverPhoto($event)"
+        >
+          {{ "photo.cover" | transloco }}
+        </ltm-toggle-option>
+      </ltm-settings-card>
 
-      <mat-card class="settings-card">
-        <mat-card-header>
-          <mat-card-title>{{ 'general.date' | transloco }}</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <ltm-photo-form-date />
-        </mat-card-content>
-      </mat-card>
+      <ltm-settings-card [title]="'general.date' | transloco">
+        <ltm-photo-form-date />
+      </ltm-settings-card>
 
-      <mat-card class="settings-card">
-        <mat-card-header>
-          <mat-card-title>{{ 'general.privacy' | transloco }}</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <ltm-form-privacy>
-            <p [innerHtml]="'photo-add.visibility' | transloco"></p>
-            <p [innerHtml]="'photo-add.visibilityNote' | transloco"></p>
-          </ltm-form-privacy>
-        </mat-card-content>
-      </mat-card>
+      <ltm-settings-card [title]="'general.privacy' | transloco">
+        <ltm-form-privacy>
+          <p [innerHtml]="'photo-add.visibility' | transloco"></p>
+          <p [innerHtml]="'photo-add.visibilityNote' | transloco"></p>
+        </ltm-form-privacy>
+      </ltm-settings-card>
     </ltm-edit-page>
   </form>
 }

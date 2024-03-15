@@ -11,10 +11,7 @@
       </ltm-property>
     }
     @if ($conditionColor(); as conditionColor) {
-      <ltm-property
-        icon="circle"
-        [iconColor]="conditionColor"
-      >
+      <ltm-property icon="cardiology" [iconColor]="conditionColor">
         {{ $conditionDesc() | transloco }}
       </ltm-property>
     }

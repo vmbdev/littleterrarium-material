@@ -22,6 +22,7 @@ import { FormPrivacyComponent } from '@components/form-privacy/form-privacy.comp
 import { Location } from '@models/location.model';
 import { ErrorHandlerService } from '@services/error-handler.service';
 import { LocationService } from '@services/location.service';
+import { LimitLargeScreenDirective } from '@directives/limit-large-screen/limit-large-screen.directive';
 
 @Component({
   selector: 'ltm-location-add',
@@ -44,6 +45,7 @@ import { LocationService } from '@services/location.service';
     LocationFormNameComponent,
     LocationFormLightComponent,
     FormPrivacyComponent,
+    LimitLargeScreenDirective,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

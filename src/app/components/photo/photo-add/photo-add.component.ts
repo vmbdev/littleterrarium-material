@@ -29,6 +29,7 @@ import { PhotoService } from '@services/photo.service';
 import { ErrorHandlerService } from '@services/error-handler.service';
 import { Photo } from '@models/photo.model';
 import { Plant } from '@models/plant.model';
+import { LimitLargeScreenDirective } from '@directives/limit-large-screen/limit-large-screen.directive';
 
 @Component({
   selector: 'ltm-photo-add',
@@ -43,12 +44,12 @@ import { Plant } from '@models/plant.model';
     CommonModule,
     ReactiveFormsModule,
     MatStepperModule,
-    MatCheckboxModule,
     MatDialogModule,
     TranslocoModule,
     StepperNavigationComponent,
     FileUploaderComponent,
     FormPrivacyComponent,
+    LimitLargeScreenDirective,
   ],
   templateUrl: './photo-add.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

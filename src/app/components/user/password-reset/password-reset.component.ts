@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { BehaviorSubject, catchError, EMPTY, map, Observable, of } from 'rxjs';
 import { TranslocoModule } from '@ngneat/transloco';
@@ -7,7 +7,8 @@ import { TranslocoModule } from '@ngneat/transloco';
 import { UserFormPasswordComponent } from '@components/user/forms/user-form-password/user-form-password.component';
 import { PasswordService } from '@services/password.service';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormControl } from '@angular/forms';
+import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
+import { LimitLargeScreenDirective } from '@directives/limit-large-screen/limit-large-screen.directive';
 
 @Component({
   selector: 'ltm-password-reset',
@@ -15,8 +16,11 @@ import { FormBuilder, FormControl } from '@angular/forms';
   imports: [
     CommonModule,
     TranslocoModule,
+    ReactiveFormsModule,
+    RouterModule,
     MatButtonModule,
     UserFormPasswordComponent,
+    LimitLargeScreenDirective,
   ],
   templateUrl: './password-reset.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

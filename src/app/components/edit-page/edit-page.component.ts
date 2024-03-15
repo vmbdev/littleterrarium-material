@@ -2,14 +2,17 @@ import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
-  Input,
   Output,
+  contentChildren,
+  input,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslocoModule } from '@ngneat/transloco';
+import { SettingsCardComponent } from '@components/settings-card/settings-card.component';
+import { MatDividerModule } from '@angular/material/divider';
 
 @Component({
   selector: 'ltm-edit-page',
@@ -19,6 +22,7 @@ import { TranslocoModule } from '@ngneat/transloco';
     MatToolbarModule,
     MatButtonModule,
     MatIconModule,
+    MatDividerModule,
     TranslocoModule,
   ],
   templateUrl: './edit-page.component.html',
@@ -26,8 +30,9 @@ import { TranslocoModule } from '@ngneat/transloco';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EditPageComponent {
-  @Input({ required: true }) title?: string;
-  @Output() accept: EventEmitter<void> = new EventEmitter<void>();
+  @Output() accept = new EventEmitter<void>();
+  title = input.required<string>();
+  cards = contentChildren<SettingsCardComponent>(SettingsCardComponent);
 
   acceptChanges(): void {
     this.accept.emit();

@@ -5,15 +5,13 @@ import {
   MatBottomSheetModule,
   MatBottomSheetRef,
 } from '@angular/material/bottom-sheet';
-import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatDividerModule } from '@angular/material/divider';
-import { MatCardModule } from '@angular/material/card';
 import { TranslocoModule } from '@ngneat/transloco';
 
 import { EditPageComponent } from '@components/edit-page/edit-page.component';
+import { SettingsCardComponent } from '@components/settings-card/settings-card.component';
 import { PlantService } from '@services/plant.service';
 import { Plant } from '@models/plant.model';
 import { FullWidthDirective } from '@directives/full-width/full-width.directive';
@@ -28,11 +26,9 @@ import { FullWidthDirective } from '@directives/full-width/full-width.directive'
     MatDatepickerModule,
     MatFormFieldModule,
     MatInputModule,
-    MatButtonModule,
-    MatDividerModule,
-    MatCardModule,
     TranslocoModule,
     EditPageComponent,
+    SettingsCardComponent,
     FullWidthDirective,
   ],
   templateUrl: './plant-edit-fertilizer.component.html',

@@ -4,6 +4,7 @@ import { MatListModule } from '@angular/material/list';
 import { RouterModule } from '@angular/router';
 import { MatRippleModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
+import { MatDividerModule } from '@angular/material/divider';
 import {
   MatBottomSheet,
   MatBottomSheetModule
@@ -12,11 +13,11 @@ import { TranslocoModule } from '@ngneat/transloco';
 
 import { UserEditComponent } from '@components/user/user-edit/user-edit.component';
 import { ProfileComponent } from '@components/user/profile/profile.component';
+import { LangSwitcherComponent } from '@components/lang-switcher/lang-switcher.component';
+import { ThemeSwitcherComponent } from '@components/theme-switcher/theme-switcher.component';
 import { MainToolbarService } from '@services/main-toolbar.service';
 import { AuthService } from '@services/auth.service';
 import { LimitLargeScreenDirective } from '@directives/limit-large-screen/limit-large-screen.directive';
-import { LangSwitcherComponent } from '@components/lang-switcher/lang-switcher.component';
-import { ThemeSwitcherComponent } from '@components/theme-switcher/theme-switcher.component';
 
 @Component({
   selector: 'ltm-user-main',
@@ -28,6 +29,7 @@ import { ThemeSwitcherComponent } from '@components/theme-switcher/theme-switche
     MatRippleModule,
     MatBottomSheetModule,
     MatIconModule,
+    MatDividerModule,
     TranslocoModule,
     ProfileComponent,
     LangSwitcherComponent,

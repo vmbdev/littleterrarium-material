@@ -5,54 +5,34 @@
         'location-add-edit.header' | transloco: { location: location.name }
       "
     >
-      <mat-card class="settings-card">
-        <mat-card-header>
-          <mat-card-title>{{ 'general.name' | transloco }}</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <ltm-location-form-name />
-        </mat-card-content>
-      </mat-card>
+      <ltm-settings-card [title]="'general.name' | transloco">
+        <ltm-location-form-name />
+      </ltm-settings-card>
 
-      <mat-card class="settings-card">
-        <mat-card-header>
-          <mat-card-title>{{ 'general.picture' | transloco }}</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <p [innerHTML]="'location-add-edit.choose' | transloco"></p>
-          <p [innerHTML]="'location-add-edit.ornot' | transloco"></p>
+      <ltm-settings-card [title]="'general.picture' | transloco">
+        <p [innerHTML]="'location-add-edit.choose' | transloco"></p>
+        <p [innerHTML]="'location-add-edit.ornot' | transloco"></p>
 
-          @if (removePicture || !location.pictures) {
-            <ltm-file-uploader maxAmount="1" formControlName="pictureFile" />
-          } @else {
-            <ltm-current-pic
-              [pic]="location.pictures | imagePath:'thumb'"
-              (click)="setRemovePicture()"
-            />
-          }
-        </mat-card-content>
-      </mat-card>
+        @if (removePicture || !location.pictures) {
+          <ltm-file-uploader maxAmount="1" formControlName="pictureFile" />
+        } @else {
+          <ltm-current-pic
+            [pic]="location.pictures | imagePath:'thumb'"
+            (click)="setRemovePicture()"
+          />
+        }
+      </ltm-settings-card>
 
-      <mat-card class="settings-card">
-        <mat-card-header>
-          <mat-card-title>{{ 'general.light' | transloco }}</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <ltm-location-form-light />
-        </mat-card-content>
-      </mat-card>
+      <ltm-settings-card [title]="'general.light' | transloco">
+        <ltm-location-form-light />
+      </ltm-settings-card>
 
-      <mat-card class="settings-card">
-        <mat-card-header>
-          <mat-card-title>{{ 'general.privacy' | transloco }}</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <ltm-form-privacy>
-            <p [innerHtml]="'location-add-edit.visibility' | transloco"></p>
-            <p [innerHtml]="'location-add-edit.visibilityNote' | transloco"></p>
-          </ltm-form-privacy>
-        </mat-card-content>
-      </mat-card>
+      <ltm-settings-card [title]="'general.privacy' | transloco">
+        <ltm-form-privacy>
+          <p [innerHtml]="'location-add-edit.visibility' | transloco"></p>
+          <p [innerHtml]="'location-add-edit.visibilityNote' | transloco"></p>
+        </ltm-form-privacy>
+      </ltm-settings-card>
     </ltm-edit-page>
   </form>
 }
