@@ -34,11 +34,12 @@ import { WaterInfo } from '@models/plant.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlantWaterWidgetComponent {
-  public readonly id = input.required<number>();
-  public readonly owned = input<boolean>(true);
-  public readonly data = input.required<WaterInfo>();
   private readonly bottomSheet = inject(MatBottomSheet);
   protected readonly plantService = inject(PlantService);
+
+  id = input.required<number>();
+  owned = input<boolean>(true);
+  data = input.required<WaterInfo>();
 
   openEdit(): void {
     this.bottomSheet.open(PlantEditWaterComponent);

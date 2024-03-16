@@ -1,9 +1,11 @@
 @if (plantService.plant$ | async; as plant) {
-  <ltm-edit-page [title]="'general.fertilizer' | transloco">
-    <form [formGroup]="fertForm" method="post" (submit)="submit()">
+  <form [formGroup]="fertForm" method="post" (submit)="submit()">
+    <ltm-edit-page [title]="'general.fertilizer' | transloco">
       <p [innerHTML]="'plant-edit-fertilizer.header' | transloco"></p>
 
       <ltm-settings-card [title]="'plant-edit-fertilizer.lastTime' | transloco">
+        <p [innerHTML]="'plant-edit-fertilizer.lastTimeDesc' | transloco"></p>
+
         <mat-form-field appearance="fill" fullWidth>
           <mat-label>{{ 'general.date' | transloco }}</mat-label>
           <input
@@ -18,16 +20,20 @@
       </ltm-settings-card>
 
       <ltm-settings-card [title]="'plant-edit-fertilizer.nextTime' | transloco">
+        <p [innerHTML]="'plant-edit-fertilizer.nextTimeDesc' | transloco"></p>
+
         <mat-form-field fullWidth>
           <input matInput min="0" type="number" formControlName="fertFreq">
         </mat-form-field>
       </ltm-settings-card>
 
       <ltm-settings-card [title]="'plant-edit-fertilizer.type' | transloco">
+        <p [innerHTML]="'plant-edit-fertilizer.typeDesc' | transloco"></p>
+
         <mat-form-field fullWidth>
           <input matInput type="text" formControlName="fertType">
         </mat-form-field>
       </ltm-settings-card>
-    </form>
-  </ltm-edit-page>
+    </ltm-edit-page>
+  </form>
 }

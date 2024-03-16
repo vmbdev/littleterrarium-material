@@ -22,6 +22,8 @@ import { TaskService } from '@services/task.service';
 import { ThemeService } from '@services/theme.service';
 import { BottomScrollDirective } from '@directives/bottom-scroll/bottom-scroll.directive';
 
+// TODO: hide toolbars on scroll
+
 @Component({
   selector: 'ltm-navigation',
   standalone: true,

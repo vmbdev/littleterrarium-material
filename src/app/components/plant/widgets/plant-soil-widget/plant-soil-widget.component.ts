@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Signal, computed, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Signal, computed, inject, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
@@ -30,19 +30,18 @@ import { UnitPipe } from '@pipes/unit/unit.pipe';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlantSoilWidgetComponent {
-  public readonly owned = input<boolean>(true);
-  public readonly data = input.required<PotInfo>();
+  protected readonly plantService = inject(PlantService);
+  private readonly bottomSheet = inject(MatBottomSheet);
+
+  owned = input<boolean>(true);
+  data = input.required<PotInfo>();
+
   protected readonly $potName: Signal<string> = computed(() => {
     const potType = this.data().potType;
 
     if (potType) return this.plantService.getPotInfo(potType).name;
     else return 'general.unknown';
   });
-
-  constructor(
-    public readonly plantService: PlantService,
-    private readonly bottomSheet: MatBottomSheet,
-  ) {}
 
   openEdit(): void {
     this.bottomSheet.open(PlantEditSoilComponent);

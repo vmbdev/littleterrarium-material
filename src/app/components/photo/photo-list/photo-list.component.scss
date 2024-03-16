@@ -1,20 +1,17 @@
 .photo-list {
   position: absolute;
   left: 0;
+  margin-bottom: 72px;
   width: 100%;
-
   display: grid;
 
   &::after {
-    margin-bottom: 60px;
+    margin-bottom: 72px;
     content: '';
   }
 
-  &__box {
-
-    img {
-      width: 100%;
-      height: auto;
-    }
+  &__img {
+    width: 100%;
+    height: auto;
   }
 }

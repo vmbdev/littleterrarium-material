@@ -15,6 +15,7 @@ import { UserEditComponent } from '@components/user/user-edit/user-edit.componen
 import { ProfileComponent } from '@components/user/profile/profile.component';
 import { LangSwitcherComponent } from '@components/lang-switcher/lang-switcher.component';
 import { ThemeSwitcherComponent } from '@components/theme-switcher/theme-switcher.component';
+import { InlineControlComponent } from '@components/inline-control/inline-control.component';
 import { MainToolbarService } from '@services/main-toolbar.service';
 import { AuthService } from '@services/auth.service';
 import { LimitLargeScreenDirective } from '@directives/limit-large-screen/limit-large-screen.directive';
@@ -34,6 +35,7 @@ import { LimitLargeScreenDirective } from '@directives/limit-large-screen/limit-
     ProfileComponent,
     LangSwitcherComponent,
     ThemeSwitcherComponent,
+    InlineControlComponent,
     LimitLargeScreenDirective,
   ],
   templateUrl: './user-main.component.html',

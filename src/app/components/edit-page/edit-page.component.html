@@ -9,7 +9,10 @@
     </mat-toolbar>
   </header>
 
+  
   <article class="edit-page__content">
+    <ng-content />
+
     @for (card of cards(); track card) {
       <ng-template [ngTemplateOutlet]="card.template()" />
 

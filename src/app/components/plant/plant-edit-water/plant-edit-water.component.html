@@ -1,11 +1,13 @@
 @if (plantService.plant$ | async; as plant) {
-  <ltm-edit-page [title]="'general.water' | transloco">
-    <form [formGroup]="waterForm" method="post" (submit)="submit()">
+  <form [formGroup]="waterForm" method="post" (submit)="submit()">
+    <ltm-edit-page [title]="'general.water' | transloco">
         <p [innerHTML]="'plant-edit-watering.warning' | transloco"></p>
         <p [innerHTML]="'plant-edit-watering.sensitive' | transloco"></p>
         <p [innerHTML]="'plant-edit-watering.reminder' | transloco"></p>
       
       <ltm-settings-card [title]="'plant-edit-watering.lastTime' | transloco">
+        <p [innerHTML]="'plant-edit-watering.lastTimeDesc' | transloco"></p>
+        
         <mat-form-field appearance="fill" fullWidth>
           <mat-label>{{ 'general.date' | transloco }}</mat-label>
           <input
@@ -20,10 +22,12 @@
       </ltm-settings-card>
 
       <ltm-settings-card [title]="'plant-edit-watering.nextTime' | transloco">
+        <p [innerHTML]="'plant-edit-watering.nextTimeDesc' | transloco"></p>
+
         <mat-form-field fullWidth>
           <input matInput min="0" type="number" formControlName="waterFreq">
         </mat-form-field>
       </ltm-settings-card>
-    </form>
-  </ltm-edit-page>
+    </ltm-edit-page>
+  </form>
 }

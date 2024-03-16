@@ -1,27 +1,39 @@
 @use '@angular/material' as mat;
+@use 'bottom-toolbar-theme.scss' as bottom-toolbar;
 @use 'file-uploader-theme.scss' as file-uploader;
 @use 'edit-page-theme.scss' as edit-page;
 
 @include mat.core();
 
-$color-primary: mat.define-palette(mat.$blue-palette, 500);
-$color-accent: mat.define-palette(mat.$green-palette, 400);
+$color-primary-light: mat.define-palette(mat.$blue-palette, 500);
+$color-accent-light: mat.define-palette(mat.$green-palette, 400);
 
 $light-theme: mat.define-light-theme((
   color: (
-    primary: $color-primary,
-    accent: $color-accent,
+    primary: $color-primary-light,
+    accent: $color-accent-light,
   ),
   typography: mat.define-typography-config(),
   density: 0,
 ));
 
 @include mat.all-component-themes($light-theme);
-@include file-uploader.theme-light($light-theme);
-@include edit-page.theme-light($light-theme);
+
+.light-theme {
+  @include bottom-toolbar.theme-light($light-theme);
+  @include file-uploader.theme-light($light-theme);
+  @include edit-page.theme-light($light-theme);
+
+  .mat-expansion-panel:not([class*='mat-elevation-z']) {
+    @include mat.elevation(0);
+  }
+
+  .mat-mdc-card {
+    box-shadow: none !important;
+  }
+}
 
 // dark theme
-
 $color-primary-dark: mat.define-palette(mat.$indigo-palette, 600);
 $color-accent-dark: mat.define-palette(mat.$light-green-palette, 400);
 

@@ -7,6 +7,7 @@ import {
 } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
+import { InlineControlComponent } from '@components/inline-control/inline-control.component';
 import {
   LangDefinition,
   TranslocoModule,
@@ -17,7 +18,12 @@ import { take } from 'rxjs';
 @Component({
   selector: 'ltm-lang-switcher',
   standalone: true,
-  imports: [MatFormFieldModule, MatSelectModule, TranslocoModule],
+  imports: [
+    MatFormFieldModule,
+    MatSelectModule,
+    TranslocoModule,
+    InlineControlComponent,
+  ],
   templateUrl: './lang-switcher.component.html',
   styleUrls: ['./lang-switcher.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
