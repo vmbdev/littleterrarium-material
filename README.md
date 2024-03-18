@@ -54,11 +54,14 @@ npm install
 In the **src** directory, edit **config.ts** if necessary. Available ptions
 are:
 
-- **baseUrlDevelopment**: The URL when running in a development environment. In
-this case, the URL where the backend is running.
-- **baseUrlProduction**: The URL where the build will be, when running in
+- **bakckendUrlDevelopment**: The URL of the backend when running in a
+development environment.
+- **bakckendUrlProduction**: The URL of the backend when running in production.
+- **frontendUrlDevelopment**: The URL of the frontend when running in
+development.
+- **frontendUrlDevelopment**: The URL of the frontend when running in
 production.
-- **endpoint**: In the base URL, where to make the API calls.
+- **endpoint**: In the backend URL, where to make the API calls.
 - **theme**: Default theme when first accesed.
 - **availableThemes**: List of available themes.
 - **defaultLang**: Default language defined by id ('en', 'es', 'fr'...).

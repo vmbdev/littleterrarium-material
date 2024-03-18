@@ -23,20 +23,26 @@ import { ErrorHandlerInterceptor } from '@interceptors/error-handler.interceptor
 import { TranslocoHttpLoader, preloadLanguage } from './transloco-loader';
 import { AppComponent } from './app/app.component';
 import { routes } from './app/routes';
-import { BACKEND_URL } from './tokens';
+import { BACKEND_URL, FRONTEND_URL } from './tokens';
 import { LTHammerConfig } from './config.hammerjs';
 import {
-  baseUrlDevelopment,
-  baseUrlProduction,
+  backendUrlDevelopment,
+  backendUrlProduction,
   availableLangs,
   defaultLang,
+  frontendUrlDevelopment,
+  frontendUrlProduction,
 } from '@config';
 
 bootstrapApplication(AppComponent, {
   providers: [
     {
       provide: BACKEND_URL,
-      useValue: isDevMode() ? baseUrlDevelopment : baseUrlProduction,
+      useValue: isDevMode() ? backendUrlDevelopment : backendUrlProduction,
+    },
+    {
+      provide: FRONTEND_URL,
+      useValue: isDevMode() ? frontendUrlDevelopment : frontendUrlProduction,
     },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     {

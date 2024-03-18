@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Observable } from 'rxjs';
 import { TranslocoService } from '@ngneat/transloco';
 
@@ -11,12 +11,14 @@ import { ApiService } from '@services/api.service';
 import { MainToolbarService } from '@services/main-toolbar.service';
 import { ShareService } from '@services/share.service';
 import { User } from '@models/user.model';
+import { FRONTEND_URL } from 'src/tokens';
 
 @Component({
   selector: 'ltm-terrarium',
   standalone: true,
   imports: [
     CommonModule,
+    RouterModule,
     ProfileComponent,
     LocationListComponent,
     PlantListComponent,
@@ -26,10 +28,12 @@ import { User } from '@models/user.model';
 })
 export class TerrariumComponent {
   private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
   private readonly translate = inject(TranslocoService);
   private readonly api = inject(ApiService);
   private readonly mt = inject(MainToolbarService);
   private readonly share = inject(ShareService);
+  private readonly frontendUrl = inject(FRONTEND_URL);
 
   protected user$?: Observable<User>;
 
@@ -50,7 +54,7 @@ export class TerrariumComponent {
                   user: username,
                 }),
                 text: this.translate.translate('terrarium.share'),
-                url: window.location.href,
+                url: `${this.frontendUrl}${this.router.url}`,
               });
             },
           },

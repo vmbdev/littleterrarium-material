@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.1] - 2024-03-18
+
+### Fixes
+
+- Separated backend and frontend base addresses in the config file to fix the
+terrarium URL incorrectly generated.
+
 ## [1.1.0] - 2024-03-18
 
 ### Added
