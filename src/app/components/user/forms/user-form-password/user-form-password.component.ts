@@ -64,7 +64,7 @@ export class UserFormPasswordComponent implements ControlValueAccessor {
   requirements = input<PasswordRequirements | null>();
   private readonly pwdEl = viewChild<ElementRef>('password');
 
-  public readonly form = this.fb.group(
+  protected readonly form = this.fb.group(
     {
       password: ['', Validators.required],
       password2: ['', Validators.required],

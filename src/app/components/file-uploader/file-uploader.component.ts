@@ -1,17 +1,13 @@
 import { CommonModule } from '@angular/common';
 import {
-  booleanAttribute,
   ChangeDetectionStrategy,
   Component,
-  EventEmitter,
   forwardRef,
   inject,
   input,
   numberAttribute,
-  Output,
-  Renderer2,
 } from '@angular/core';
-import { FormBuilder, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import { NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -46,7 +42,6 @@ import { ShortFilenamePipe } from '@pipes/short-filename/short-filename.pipe';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FileUploaderComponent {
-  private readonly fb = inject(FormBuilder);
   private readonly camera = inject(CameraService);
 
   /**

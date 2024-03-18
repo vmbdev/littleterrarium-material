@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Optional } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormControl,
@@ -44,6 +44,10 @@ type PotListItem = {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlantEditSoilComponent {
+  private readonly fb = inject(FormBuilder);
+  protected readonly plantService = inject(PlantService);
+  private readonly bottomSheetRef = inject(MatBottomSheetRef, { optional: true });
+
   protected potForm = this.fb.group({
     potSize: new FormControl<number | null>(null),
     potSizeUnits: new FormControl<'cm' | 'in'>('cm', Validators.required),
@@ -54,12 +58,6 @@ export class PlantEditSoilComponent {
   protected today = new Date();
   protected selectedPot: string | null = null;
   protected pots = this.getPots();
-
-  constructor(
-    public readonly plantService: PlantService,
-    private readonly fb: FormBuilder,
-    @Optional() private readonly bottomSheetRef: MatBottomSheetRef
-  ) {}
 
   ngOnInit(): void {
     const plant = this.plantService.current();

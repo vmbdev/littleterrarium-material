@@ -54,7 +54,13 @@
     </mat-sidenav>
   }
 
-  <mat-sidenav-content bottomScroll class="sidenav-content">
+  <mat-sidenav-content
+    #content
+    class="sidenav-content"
+    bottomScroll
+    scrollDetector
+    (scrollDirection)="scrolled($event)"
+  >
     @if (isLargeScreen$ | async) {
       <header role="heading" class="main-toolbar">
         <ltm-main-toolbar (toggleSidenav)="toggleNav()" />
@@ -63,13 +69,21 @@
         <router-outlet />
       </main>
     } @else {
-      <header role="heading" class="main-toolbar">
+      <header
+        role="heading"
+        class="main-toolbar"
+        [ngClass]="{ 'main-toolbar--hidden': $hideToolbars() }"
+      >
         <ltm-main-toolbar />
       </header>
       <main class="main-content" role="main">
         <router-outlet />
       </main>
-      <footer class="bottom-toolbar" role="toolbar">
+      <footer
+        role="toolbar"
+        class="bottom-toolbar"
+        [ngClass]="{ 'bottom-toolbar--hidden': $hideToolbars() }"
+      >
         <ltm-bottom-toolbar />
       </footer>
     }

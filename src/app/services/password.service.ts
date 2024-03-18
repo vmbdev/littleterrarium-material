@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { ApiService } from '@services/api.service';
@@ -9,7 +9,7 @@ import { PasswordRequirements, User } from '@models/user.model';
   providedIn: 'root'
 })
 export class PasswordService {
-  constructor(private readonly api: ApiService) {}
+  private readonly api = inject(ApiService);
 
   forgotPassword(userRef: string): Observable<any> {
     return this.api.forgotPassword(userRef);

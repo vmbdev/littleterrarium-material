@@ -1,9 +1,9 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  Input,
   TemplateRef,
-  ViewChild,
+  input,
+  viewChild,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
@@ -17,7 +17,7 @@ import { MatIconModule } from '@angular/material/icon';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PropertyComponent {
-  @Input() icon: string = 'info';
-  @Input() iconColor?: string | null;
-  @ViewChild('propertyTemplate') propertyTemplate!: TemplateRef<any>;
+  icon = input<string>('info');
+  iconColor = input<string | null>();
+  propertyTemplate = viewChild.required<TemplateRef<any>>('propertyTemplate');
 }

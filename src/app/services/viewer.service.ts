@@ -1,6 +1,6 @@
 import { Overlay } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
-import { Injectable, Injector } from '@angular/core';
+import { Injectable, Injector, inject } from '@angular/core';
 
 import { ViewerComponent } from '@components/viewer/viewer.component';
 import { VIEWER_DATA } from 'src/tokens';
@@ -9,7 +9,7 @@ import { VIEWER_DATA } from 'src/tokens';
   providedIn: 'root',
 })
 export class ViewerService {
-  constructor(private readonly overlay: Overlay) {}
+  private readonly overlay = inject(Overlay);
 
   create(image: string) {
     const overlayRef = this.overlay.create({

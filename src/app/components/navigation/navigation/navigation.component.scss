@@ -1,9 +1,9 @@
 .sidenav {
   width: 13rem;
-}
 
-.sidenav .mat-toolbar {
-  background: inherit;
+  .mat-toolbar {
+    background: inherit;
+  }
 }
 
 .sidenav-content {
@@ -16,6 +16,11 @@
   position: sticky;
   top: 0;
   z-index: 1;
+  transition: top 0.3s ease-in-out;
+
+  &--hidden {
+    top: -100px;
+  }
 }
 
 .main-content {
@@ -37,4 +42,9 @@
   z-index: 1;
   width: 90%;
   margin: 0 5%;
+  transition: bottom 0.3s ease-in-out;
+
+  &--hidden {
+    bottom: -100px;
+  }
 }

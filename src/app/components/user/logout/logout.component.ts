@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { TranslocoService, TranslocoModule } from '@ngneat/transloco';
@@ -25,16 +25,14 @@ import { TaskService } from '@services/task.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LogoutComponent {
-  constructor(
-    private readonly taskService: TaskService,
-    private readonly plantService: PlantService,
-    private readonly photoService: PhotoService,
-    private readonly locationService: LocationService,
-    private readonly auth: AuthService,
-    private readonly router: Router,
-    private readonly dialog: MatDialog,
-    private readonly translate: TranslocoService,
-  ) {}
+  private readonly taskService = inject(TaskService);
+  private readonly plantService = inject(PlantService);
+  private readonly photoService = inject(PhotoService);
+  private readonly locationService = inject(LocationService);
+  private readonly auth = inject(AuthService);
+  private readonly router = inject(Router);
+  private readonly dialog = inject(MatDialog);
+  private readonly translate = inject(TranslocoService);
 
   ngOnInit(): void {
     const wd = this.openWaitDialog();

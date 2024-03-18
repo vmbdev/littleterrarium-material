@@ -47,24 +47,22 @@ import { DaysAgoPipe } from '@pipes/days-ago/days-ago.pipe';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PhotoComponent {
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  protected readonly photoService = inject(PhotoService);
+  protected readonly imagePath = inject(ImagePathService);
+  private readonly translate = inject(TranslocoService);
+  private readonly mt = inject(MainToolbarService);
+  private readonly dialog = inject(MatDialog);
+  private readonly bottomSheet = inject(MatBottomSheet);
+  private readonly viewer = inject(ViewerService);
+  private readonly share = inject(ShareService);
+  private readonly destroyRef = inject(DestroyRef);
+
   private id?: number;
   private navigation?: NavigationData;
   protected $currentImageFull: WritableSignal<string | null> = signal(null);
   protected photo$?: Observable<Photo | null>;
-  private readonly destroyRef = inject(DestroyRef);
-
-  constructor(
-    private readonly route: ActivatedRoute,
-    private readonly router: Router,
-    public readonly photoService: PhotoService,
-    public readonly imagePath: ImagePathService,
-    private readonly translate: TranslocoService,
-    private readonly mt: MainToolbarService,
-    private readonly dialog: MatDialog,
-    private readonly bottomSheet: MatBottomSheet,
-    private readonly viewer: ViewerService,
-    private readonly share: ShareService,
-  ) {}
 
   ngOnInit(): void {
     this.setMtMenus();

@@ -1,5 +1,5 @@
 <div class="stepper-navigation">
-  @if (backButton) {
+  @if (backButton()) {
     <button
       data-testid="prevbutton"
       type="button"
@@ -11,7 +11,7 @@
     </button>
   }
 
-  @if (finishButton) {
+  @if (finishButton()) {
     <button
       data-testid="finishbutton"
       color="primary"

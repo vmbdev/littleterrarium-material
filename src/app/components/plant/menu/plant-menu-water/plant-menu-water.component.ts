@@ -3,6 +3,7 @@ import {
   Component,
   inject,
   input,
+  numberAttribute,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
@@ -26,6 +27,7 @@ import { PlantService } from '@services/plant.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlantMenuWaterComponent {
-  public readonly id = input.required<number>();
   protected readonly plantService = inject(PlantService);
+
+  id = input.required({ transform: numberAttribute });
 }

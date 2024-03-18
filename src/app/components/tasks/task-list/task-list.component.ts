@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MatRippleModule } from '@angular/material/core';
@@ -30,12 +30,10 @@ import { LimitLargeScreenDirective } from '@directives/limit-large-screen/limit-
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TaskListComponent {
-  constructor(
-    public readonly plantService: PlantService,
-    public readonly taskService: TaskService,
-    private readonly mt: MainToolbarService,
-    private readonly translate: TranslocoService,
-  ) {}
+  protected readonly plantService = inject(PlantService);
+  protected readonly taskService = inject(TaskService);
+  private readonly mt = inject(MainToolbarService);
+  private readonly translate = inject(TranslocoService);
 
   ngOnInit(): void {
     this.mt.setName(this.translate.translate('general.tasks'));

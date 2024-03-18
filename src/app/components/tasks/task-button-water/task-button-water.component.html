@@ -1,9 +1,9 @@
 <button
   mat-icon-button
   class="button__water"
-  [ngClass]="{ 'button__water-disabled': disabled }"
+  [ngClass]="{ 'button__water-disabled': disabled() }"
   (click)="tasks.openWaterDialog(id())"
-  [disabled]="disabled"
+  [disabled]="disabled()"
 >
   <mat-icon>water_drop</mat-icon>
 </button>

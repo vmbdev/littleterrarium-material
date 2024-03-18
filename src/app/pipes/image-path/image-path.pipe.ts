@@ -1,4 +1,5 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import { Pipe, PipeTransform, inject } from '@angular/core';
+
 import { ImagePath } from '@models/image-path.model';
 import { ImagePathService } from '@services/image-path.service';
 
@@ -7,10 +8,9 @@ import { ImagePathService } from '@services/image-path.service';
   standalone: true
 })
 export class ImagePathPipe implements PipeTransform {
-  constructor(private readonly imagePathService: ImagePathService) {}
+  private readonly imagePathService = inject(ImagePathService);
 
   transform(value: ImagePath, size: 'thumb' | 'mid' | 'full'): string | null {
     return this.imagePathService.get(value, size);
   }
-
 }

@@ -34,12 +34,13 @@ import { LimitLargeScreenDirective } from '@directives/limit-large-screen/limit-
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InfoBoxComponent {
-  public readonly description = input<string | null>(null);
+  private readonly cdr = inject(ChangeDetectorRef);
+
+  description = input<string | null>(null);
   protected readonly props = contentChildren<PropertyComponent>(PropertyComponent);
 
-  private readonly updateProps = effect(() => {
+  readonly updateProps = effect(() => {
     this.cdr.markForCheck();
   })
 
-  private readonly cdr = inject(ChangeDetectorRef);
 }

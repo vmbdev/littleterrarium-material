@@ -1,4 +1,5 @@
-import { Injectable, signal, WritableSignal } from '@angular/core';
+import { inject, Injectable, signal, WritableSignal } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { BehaviorSubject, EMPTY, map, Observable } from 'rxjs';
 import { TranslocoService } from '@ngneat/transloco';
 
@@ -11,25 +12,22 @@ import { AuthService } from '@services/auth.service';
 import { ImagePathService } from '@services/image-path.service';
 import { Photo } from '@models/photo.model';
 import { Condition, Plant, Pot } from '@models/plant.model';
-import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '@components/dialogs/confirm-dialog/confirm-dialog.component';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PlantService {
+  private readonly api = inject(ApiService);
+  private readonly auth = inject(AuthService);
+  private readonly imagePath = inject(ImagePathService);
+  private readonly translate = inject(TranslocoService);
+  private readonly dialog = inject(MatDialog);
+
   private plant = new BehaviorSubject<Plant | null>(null);
   public readonly plant$ = this.plant.asObservable();
   readonly #$owned: WritableSignal<boolean> = signal(false);
   public readonly $owned = this.#$owned.asReadonly();
-
-  constructor(
-    private readonly api: ApiService,
-    private readonly auth: AuthService,
-    private readonly imagePath: ImagePathService,
-    private readonly translate: TranslocoService,
-    private readonly dialog: MatDialog,
-  ) {}
 
   create(plant: Plant): Observable<Plant> {
     return this.api.createPlant(plant);

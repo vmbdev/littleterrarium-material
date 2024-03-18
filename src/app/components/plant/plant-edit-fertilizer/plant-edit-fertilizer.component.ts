@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Optional } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
 import {
@@ -35,6 +35,10 @@ import { FullWidthDirective } from '@directives/full-width/full-width.directive'
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlantEditFertilizerComponent {
+  private readonly fb = inject(FormBuilder);
+  protected readonly plantService = inject(PlantService);
+  private readonly bottomSheetRef = inject(MatBottomSheetRef, { optional: true });
+
   protected readonly fertForm = this.fb.group({
     fertFreq: new FormControl<number | null>(null),
     fertLast: new FormControl<Date | null>(null),
@@ -42,12 +46,6 @@ export class PlantEditFertilizerComponent {
   });
   private id?: number;
   protected today = new Date();
-
-  constructor(
-    public readonly plantService: PlantService,
-    private readonly fb: FormBuilder,
-    @Optional() private readonly bottomSheetRef: MatBottomSheetRef,
-  ) {}
 
   ngOnInit(): void {
     const plant = this.plantService.current();

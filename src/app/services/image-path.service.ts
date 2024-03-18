@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
 import { ImagePath } from '@models/image-path.model';
 import { BACKEND_URL } from 'src/tokens';
@@ -7,9 +7,11 @@ import { BACKEND_URL } from 'src/tokens';
   providedIn: 'root',
 })
 export class ImagePathService {
+  private readonly backendUrl = inject<string>(BACKEND_URL);
+
   private webpEnabled: boolean = true;
 
-  constructor(@Inject(BACKEND_URL) public readonly backendUrl: string) {
+  constructor() {
     this.detectWebPSupport();
   }
 

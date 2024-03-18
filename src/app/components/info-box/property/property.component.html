@@ -1,6 +1,6 @@
 <ng-template #propertyTemplate>
   <div class="property">
-    <mat-icon [ngStyle]="{ color: iconColor }">{{ icon }}</mat-icon>
+    <mat-icon [ngStyle]="{ color: iconColor() }">{{ icon() }}</mat-icon>
     <span class="property__text">
       <ng-content />
     </span>

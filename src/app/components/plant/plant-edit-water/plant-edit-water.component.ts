@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Optional } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   MatBottomSheetModule,
@@ -35,18 +35,16 @@ import { FullWidthDirective } from '@directives/full-width/full-width.directive'
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlantEditWaterComponent {
+  private readonly fb = inject(FormBuilder);
+  protected readonly plantService = inject(PlantService);
+  private readonly bottomSheetRef = inject(MatBottomSheetRef, { optional: true });
+
   protected readonly waterForm = this.fb.group({
     waterFreq: new FormControl<number | null>(null),
     waterLast: new FormControl<Date | null>(null),
   });
   private id?: number;
   protected readonly today = new Date();
-
-  constructor(
-    public plantService: PlantService,
-    private fb: FormBuilder,
-    @Optional() private bottomSheetRef: MatBottomSheetRef
-  ) {}
 
   ngOnInit(): void {
     const plant = this.plantService.current();

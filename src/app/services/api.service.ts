@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpEvent } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 
@@ -63,10 +63,8 @@ export interface AdminUserList {
   providedIn: 'root',
 })
 export class ApiService {
-  constructor(
-    private readonly http: HttpClient,
-    @Inject(BACKEND_URL) public readonly backendUrl: string,
-  ) {}
+  private readonly http = inject(HttpClient);
+  private readonly backendUrl = inject<string>(BACKEND_URL);
 
   endpoint(path: string): string {
     return `${this.backendUrl}${endpoint}/${path}`;

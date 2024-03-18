@@ -1,4 +1,4 @@
-import { Injectable, WritableSignal, signal } from '@angular/core';
+import { Injectable, WritableSignal, inject, signal } from '@angular/core';
 import { OverlayContainer } from '@angular/cdk/overlay';
 
 import {
@@ -10,6 +10,8 @@ import {
   providedIn: 'root',
 })
 export class ThemeService {
+  private readonly overlayContainer = inject(OverlayContainer);
+
   readonly #$theme: WritableSignal<string>;
   public readonly $theme;
   readonly availableThemes: string[] = configAvailableThemes;
@@ -20,7 +22,7 @@ export class ThemeService {
    * fails then it tries to get the first one in availableThemes.
    * If everything fails, it sets an empty theme.
    */
-  constructor(private readonly overlayContainer: OverlayContainer) {
+  constructor() {
     let newTheme: string;
     const storedTheme = localStorage.getItem('LT_theme');
 

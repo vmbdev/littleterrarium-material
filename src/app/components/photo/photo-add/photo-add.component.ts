@@ -17,7 +17,6 @@ import {
   MatDialogModule,
   MatDialogRef,
 } from '@angular/material/dialog';
-import { MatCheckboxModule } from '@angular/material/checkbox';
 import { TranslocoService, TranslocoModule } from '@ngneat/transloco';
 
 import { StepperNavigationComponent } from '@components/stepper-navigation/stepper-navigation.component';

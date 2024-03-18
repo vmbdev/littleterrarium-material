@@ -1,18 +1,18 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  EventEmitter,
-  Output,
   contentChildren,
   input,
+  output,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslocoModule } from '@ngneat/transloco';
-import { SettingsCardComponent } from '@components/settings-card/settings-card.component';
 import { MatDividerModule } from '@angular/material/divider';
+
+import { SettingsCardComponent } from '@components/settings-card/settings-card.component';
 
 @Component({
   selector: 'ltm-edit-page',
@@ -30,8 +30,8 @@ import { MatDividerModule } from '@angular/material/divider';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EditPageComponent {
-  @Output() accept = new EventEmitter<void>();
   title = input.required<string>();
+  accept = output();
   cards = contentChildren<SettingsCardComponent>(SettingsCardComponent);
 
   acceptChanges(): void {

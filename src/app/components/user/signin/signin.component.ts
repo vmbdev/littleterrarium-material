@@ -1,4 +1,10 @@
-import { ChangeDetectionStrategy, Component, WritableSignal, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  WritableSignal,
+  inject,
+  signal,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import {
@@ -40,20 +46,18 @@ import { LimitLargeScreenDirective } from '@directives/limit-large-screen/limit-
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SigninComponent {
+  private readonly fb = inject(FormBuilder);
+  private readonly auth = inject(AuthService);
+  private readonly router = inject(Router);
+  private readonly dialog = inject(MatDialog);
+  private readonly translate = inject(TranslocoService);
+
   protected readonly signinForm: FormGroup = this.fb.group({
     username: ['', Validators.required],
     password: ['', Validators.required],
   });
   protected hidePassword: boolean = true;
   protected $authInvalid: WritableSignal<boolean> = signal(false);
-
-  constructor(
-    private readonly fb: FormBuilder,
-    private readonly auth: AuthService,
-    private readonly router: Router,
-    private readonly dialog: MatDialog,
-    private readonly translate: TranslocoService,
-  ) {}
 
   openWaitDialog() {
     return this.dialog.open(WaitDialogComponent, {
@@ -84,12 +88,11 @@ export class SigninComponent {
           }
 
           return EMPTY;
-        })
+        }),
       )
       .subscribe(() => {
-          this.router.navigateByUrl('/');
-        }
-      );
+        this.router.navigateByUrl('/');
+      });
   }
 
   toggleHidePassword(): void {

@@ -1,16 +1,17 @@
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   ElementRef,
-  ViewChild,
+  effect,
+  inject,
+  viewChild,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatIconModule } from '@angular/material/icon';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatInput, MatInputModule } from '@angular/material/input';
+import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { TranslocoModule } from '@ngneat/transloco';
 
@@ -34,17 +35,13 @@ import { SearchService } from '@services/search.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchComponent {
-  @ViewChild('searchInput') searchElement!: ElementRef<MatInput>;
+  private readonly search = inject(SearchService);
 
-  constructor(
-    private readonly search: SearchService,
-    private readonly cdr: ChangeDetectorRef,
-  ) {}
+  searchElement = viewChild.required<ElementRef>('searchInput');
 
-  ngAfterViewInit() {
-    this.searchElement.nativeElement.focus();
-    this.cdr.detectChanges();
-  }
+  readonly focusSearchbar = effect(() => {
+    this.searchElement().nativeElement.focus();
+  })
 
   keyPress(value: string): void {
     if (value.length > 0) this.search.setText(value);

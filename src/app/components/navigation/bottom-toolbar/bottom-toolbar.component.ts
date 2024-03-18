@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatBadgeModule } from '@angular/material/badge';
@@ -24,5 +24,5 @@ import { TaskService } from '@services/task.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BottomToolbarComponent {
-  constructor(public readonly taskService: TaskService) {}
+  protected readonly taskService = inject(TaskService);
 }

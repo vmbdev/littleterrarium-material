@@ -1,4 +1,10 @@
-import { ChangeDetectionStrategy, Component, inject, viewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  signal,
+  viewChild,
+} from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -21,8 +27,10 @@ import { AuthService } from '@services/auth.service';
 import { TaskService } from '@services/task.service';
 import { ThemeService } from '@services/theme.service';
 import { BottomScrollDirective } from '@directives/bottom-scroll/bottom-scroll.directive';
-
-// TODO: hide toolbars on scroll
+import {
+  ScrollDetectorDirective,
+  ScrollDirection,
+} from '@directives/scroll-detector/scroll-detector.directive';
 
 @Component({
   selector: 'ltm-navigation',
@@ -44,6 +52,7 @@ import { BottomScrollDirective } from '@directives/bottom-scroll/bottom-scroll.d
     SearchComponent,
     UserBoxComponent,
     BottomScrollDirective,
+    ScrollDetectorDirective,
   ],
   templateUrl: './navigation.component.html',
   styleUrls: ['./navigation.component.scss'],
@@ -69,8 +78,14 @@ export class NavigationComponent {
       map((result) => result.matches),
       shareReplay(),
     );
+  protected $hideToolbars = signal(false);
 
   toggleNav() {
     this.sidenav()?.toggle();
+  }
+
+  scrolled(direction: ScrollDirection) {
+    if (direction === 'Up') this.$hideToolbars.set(false);
+    else this.$hideToolbars.set(true);
   }
 }

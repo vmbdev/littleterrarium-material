@@ -10,6 +10,4 @@ import { NavigationComponent } from '@components/navigation/navigation/navigatio
   styleUrl: './default-layout.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DefaultLayoutComponent {
-
-}
+export class DefaultLayoutComponent {}

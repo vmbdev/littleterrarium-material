@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -55,21 +55,19 @@ import { CapitalizePipe } from '@pipes/capitalize/capitalize.pipe';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlantComponent {
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
+  private readonly errorHandler = inject(ErrorHandlerService);
+  private readonly mt = inject(MainToolbarService);
+  protected readonly plantService = inject(PlantService);
+  private readonly translate = inject(TranslocoService);
+  private readonly dialog = inject(MatDialog);
+  private readonly bottomSheet = inject(MatBottomSheet);
+
   protected id?: number;
   protected readonly $conditionColor = signal<string | null>(null);
   protected readonly $conditionDesc = signal<string | null>(null);
   protected plant$?: Observable<Plant | null>;
-
-  constructor(
-    private readonly router: Router,
-    private readonly route: ActivatedRoute,
-    private readonly errorHandler: ErrorHandlerService,
-    private readonly mt: MainToolbarService,
-    public readonly plantService: PlantService,
-    private readonly translate: TranslocoService,
-    private readonly dialog: MatDialog,
-    private readonly bottomSheet: MatBottomSheet,
-  ) {}
 
   ngOnInit(): void {
     const paramId = this.route.snapshot.paramMap.get('plantId');

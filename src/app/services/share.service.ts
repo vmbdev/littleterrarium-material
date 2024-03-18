@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Share, ShareOptions, ShareResult } from '@capacitor/share';
 import { Directory } from '@capacitor/filesystem';
 import { Observable, from, switchMap } from 'rxjs';
@@ -9,7 +9,7 @@ import { FilesystemService } from '@services/filesystem.service';
   providedIn: 'root',
 })
 export class ShareService {
-  constructor(private readonly filesystem: FilesystemService) {}
+  private readonly filesystem = inject(FilesystemService);
 
   shareImageFromURL(image: string, text?: string): Observable<void> {
     const ext = image.substring(image.lastIndexOf('.'));

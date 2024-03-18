@@ -4,7 +4,6 @@ import {
   Component,
   inject,
   input,
-  Input,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
@@ -22,8 +21,8 @@ import { TaskService } from '@services/task.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TaskButtonWaterComponent {
-  @Input({ transform: booleanAttribute }) disabled: boolean = false;
-  public readonly id = input.required<number>();
-
   protected readonly tasks = inject(TaskService);
+
+  disabled = input(false, { transform: booleanAttribute });
+  id = input.required<number>();
 }

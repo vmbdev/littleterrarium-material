@@ -7,12 +7,10 @@ import {
 } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
-import { Observable } from 'rxjs';
 import { TranslocoModule } from '@ngneat/transloco';
 
 import { FormBaseActionComponent } from '@components/form-base-action/form-base-action.component';
 import { LocationService } from '@services/location.service';
-import { Location } from '@models/location.model';
 
 @Component({
   selector: 'ltm-plant-form-location',
@@ -32,10 +30,7 @@ import { Location } from '@models/location.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlantFormLocationComponent {
-  protected locations$?: Observable<Location[]>;
   protected readonly locationService = inject(LocationService);
 
-  ngOnInit(): void {
-    this.locations$ = this.locationService.getMany();
-  }
+  protected readonly locations$ = this.locationService.getMany();
 }

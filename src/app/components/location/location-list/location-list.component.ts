@@ -1,9 +1,9 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  Input,
   WritableSignal,
   inject,
+  input,
   signal,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -61,13 +61,17 @@ export class LocationListComponent {
   private readonly dialog = inject(MatDialog);
   private readonly bottomSheet = inject(MatBottomSheet);
 
-  @Input() userId?: number;
+  // @Input() userId?: number;
+  userId = input<number>();
+
   protected owned: boolean = true;
   protected readonly $locations: WritableSignal<Location[]> = signal([]);
 
   ngOnInit(): void {
-    if (this.userId) {
-      this.owned = this.auth.isSameUser('id', this.userId);
+    const userId = this.userId();
+
+    if (userId) {
+      this.owned = this.auth.isSameUser('id', userId);
     }
 
     this.getLocationList();
@@ -77,7 +81,7 @@ export class LocationListComponent {
     const wd = this.openWaitDialog();
     const options: LocationGetConfig = {
       plantCount: true,
-      userId: this.userId,
+      userId: this.userId(),
     };
 
     this.locationService

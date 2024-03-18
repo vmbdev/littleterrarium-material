@@ -4,6 +4,7 @@ import {
   Signal,
   computed,
   effect,
+  inject,
   untracked,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -44,6 +45,15 @@ import { LocationService } from '@services/location.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LocationComponent {
+  protected readonly locationService = inject(LocationService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly mt = inject(MainToolbarService);
+  private readonly errorHandler = inject(ErrorHandlerService);
+  private readonly translate = inject(TranslocoService);
+  private readonly bottomSheet = inject(MatBottomSheet);
+  private readonly dialog = inject(MatDialog);
+
   private id?: number;
   protected plantCount$?: Observable<number>;
   protected readonly $lightAsset: Signal<string | null> = computed(() => {
@@ -57,24 +67,13 @@ export class LocationComponent {
     return light ? this.locationService.getLightName(light) : null;
   });
 
-  updateMtTitle = effect(() => {
+  readonly updateMtTitle = effect(() => {
     const loc = this.locationService.$location();
 
     untracked(() => {
       if (loc) this.mt.setName(loc.name);
     });
   });
-
-  constructor(
-    public readonly locationService: LocationService,
-    private readonly route: ActivatedRoute,
-    private readonly router: Router,
-    private readonly mt: MainToolbarService,
-    private readonly errorHandler: ErrorHandlerService,
-    private readonly translate: TranslocoService,
-    private readonly bottomSheet: MatBottomSheet,
-    private readonly dialog: MatDialog,
-  ) {}
 
   ngOnInit(): void {
     const paramId = this.route.snapshot.paramMap.get('locationId');

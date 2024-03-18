@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { TranslocoModule } from '@ngneat/transloco';
@@ -30,7 +30,7 @@ import { CapitalizePipe } from '@pipes/capitalize/capitalize.pipe';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ThemeSwitcherComponent {
-  constructor(public readonly themeService: ThemeService) {}
+  protected readonly themeService = inject(ThemeService);
 
   setTheme(theme: string) {
     this.themeService.switchTheme(theme);

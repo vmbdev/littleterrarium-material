@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslocoService, TranslocoModule } from '@ngneat/transloco';
 
@@ -6,7 +6,6 @@ import {
   LocationListComponent
 } from '@components/location/location-list/location-list.component';
 import { SigninComponent } from '@components/user/signin/signin.component';
-import { AuthService } from '@services/auth.service';
 import { MainToolbarService } from '@services/main-toolbar.service';
 
 @Component({
@@ -22,11 +21,8 @@ import { MainToolbarService } from '@services/main-toolbar.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomeComponent {
-  constructor(
-    public readonly auth: AuthService,
-    private readonly mt: MainToolbarService,
-    private readonly translate: TranslocoService
-  ) {}
+  private readonly mt = inject(MainToolbarService);
+  private readonly translate = inject(TranslocoService);
 
   ngOnInit(): void {
     this.mt.setName(this.translate.translate('general.locations'));

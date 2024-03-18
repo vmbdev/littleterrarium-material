@@ -4,6 +4,7 @@ import {
   Signal,
   computed,
   input,
+  inject,
 } from '@angular/core';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
@@ -33,8 +34,10 @@ import { LimitLargeScreenDirective } from '@directives/limit-large-screen/limit-
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlantExpansionInfoComponent {
-  public readonly $owned = input<boolean>(true);
-  public readonly $plant = input.required<Plant>();
+  protected readonly plantService = inject(PlantService);
+
+  $owned = input<boolean>(true);
+  $plant = input.required<Plant>();
 
   protected $waterData: Signal<WaterInfo> = computed(() => {
     const plant = this.$plant();
@@ -63,6 +66,4 @@ export class PlantExpansionInfoComponent {
       potSize: plant.potSize,
     };
   });
-
-  constructor(private readonly plantService: PlantService) {}
 }

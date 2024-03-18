@@ -1,5 +1,5 @@
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
 import {
   WriteFileResult,
   Filesystem,
@@ -12,7 +12,7 @@ import { Observable, from, ReplaySubject } from 'rxjs';
   providedIn: 'root',
 })
 export class FilesystemService {
-  constructor(private readonly http: HttpClient) {}
+  private readonly http = inject(HttpClient);
 
   fetchFile(path: string): Observable<Blob> {
     return this.http.get(path, { responseType: 'blob' });

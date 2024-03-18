@@ -1,28 +1,30 @@
 # Changelog
 
-## [1.0.4] - next
+## [1.1.0] - 2024-03-18
 
 ### Added
 
 - New Camera Service to capture photos and pick them from the gallery.
 - New Filesystem Service to manage the files created by the Camera and Share
 services.
-- New PasswordService to manage API calls related to the user password.
+- New Password Service to manage API calls related to the user password.
 - New component to easily change own's password.
 - WebP support detector: if the browser doesn't support WebP and the backend
 is set up to also send traditional image formats, images will use the later.
+- Ability to share your own terrarium.
 
 ### Changes
 
 - Visual update, including a new logo.
-- As per Material 3 design, sidebar will only show in bigger screens and bottom
-toolbar will only show in smaller screens.
+- As per Material design guidelines, sidebar will only show in bigger screens
+and bottom toolbar will only show in smaller screens.
+- Toolbars will hide when scrolling down, and pop back up when scrolling up.
 - Image viewer rewritten to use canvas.
 - Updated tests.
-- Updated Angular and Angular Material to 17.2.0.
+- Updated Angular and Angular Material to 17.3.0.
 - Updated ngx-toastr to 18.0.0.
 - Remaining components migrated to OnPush.
-- Improved visuals in bigger screens.
+- Greatly Improved visuals in bigger screens.
 - Improved markup semantics.
 - Improved methods and properties protection.
 - Updated translations.

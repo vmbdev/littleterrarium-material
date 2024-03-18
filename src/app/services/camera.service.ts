@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {
   Camera,
   CameraResultType,
@@ -24,7 +24,7 @@ import { FilesystemService } from '@services/filesystem.service';
   providedIn: 'root',
 })
 export class CameraService {
-  constructor(private readonly filesystem: FilesystemService) {}
+  private readonly filesystem = inject(FilesystemService);
 
   capture(options?: ImageOptions): Observable<File> {
     // we capture the photo from the camera

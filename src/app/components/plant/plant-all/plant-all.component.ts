@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { TranslocoService, TranslocoModule } from '@ngneat/transloco';
 
 import { PlantListComponent } from '@components/plant/plant-list/plant-list.component';
@@ -12,10 +12,8 @@ import { MainToolbarService } from '@services/main-toolbar.service';
   changeDetection: ChangeDetectionStrategy.OnPush,  
 })
 export class PlantAllComponent {
-  constructor(
-    private readonly mt: MainToolbarService,
-    private readonly translate: TranslocoService,
-  ) {}
+  private readonly mt = inject(MainToolbarService);
+  private readonly translate = inject(TranslocoService);
 
   ngOnInit(): void {
     this.mt.setName(this.translate.translate('general.plants'));

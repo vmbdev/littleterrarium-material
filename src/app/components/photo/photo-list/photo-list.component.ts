@@ -42,7 +42,6 @@ export class PhotoListComponent {
   grid = viewChild<ElementRef>('grid');
 
   protected list$?: Observable<Photo[]>;
-
   protected breakpoint: number = 0;
 
   ngOnInit(): void {

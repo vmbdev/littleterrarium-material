@@ -1,5 +1,5 @@
+import { Injectable, WritableSignal, inject, signal } from '@angular/core';
 import { HttpErrorResponse, HttpEvent } from '@angular/common/http';
-import { Injectable, WritableSignal, signal } from '@angular/core';
 import {
   BehaviorSubject,
   catchError,
@@ -20,17 +20,15 @@ import { TranslocoService } from '@ngneat/transloco';
   providedIn: 'root',
 })
 export class PhotoService {
+  private readonly api = inject(ApiService);
+  private readonly auth = inject(AuthService);
+  private readonly errorHandler = inject(ErrorHandlerService);
+  private readonly translate = inject(TranslocoService);
+
   private photo = new BehaviorSubject<Photo | null>(null);
   public readonly photo$ = this.photo.asObservable();
   readonly #$owned: WritableSignal<boolean> = signal(false);
   public readonly $owned = this.#$owned.asReadonly();
-
-  constructor(
-    private readonly api: ApiService,
-    private readonly auth: AuthService,
-    private readonly errorHandler: ErrorHandlerService,
-    private readonly translate: TranslocoService,
-  ) {}
 
   get(id: number): Observable<Photo> {
     return this.api.getPhoto(id).pipe(

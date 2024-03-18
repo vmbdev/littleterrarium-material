@@ -45,6 +45,7 @@ type LightOptionType = {
 export class LocationFormLightComponent {
   private readonly locationService = inject(LocationService);
   private readonly cdr = inject(ChangeDetectorRef);
+
   protected readonly $lightOptions = signal<LightOptionType[]>(
     this.createLightOptions(),
   );

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {
   HttpRequest,
   HttpHandler,
@@ -13,10 +13,8 @@ import { ErrorHandlerService } from '@services/error-handler.service';
 
 @Injectable()
 export class ErrorHandlerInterceptor implements HttpInterceptor {
-  constructor(
-    private readonly errorHandler: ErrorHandlerService,
-    private readonly translate: TranslocoService
-  ) {}
+  private readonly errorHandler = inject(ErrorHandlerService);
+  private readonly translate = inject(TranslocoService);
 
   intercept(
     request: HttpRequest<any>,

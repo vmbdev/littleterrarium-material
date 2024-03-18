@@ -1,12 +1,9 @@
-import { MatIconModule } from '@angular/material/icon';
-import { MatCardModule } from '@angular/material/card';
 import {
   ChangeDetectionStrategy,
   Component,
   inject,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatButtonModule } from '@angular/material/button';
 import {
   MatBottomSheetRef,
   MAT_BOTTOM_SHEET_DATA,

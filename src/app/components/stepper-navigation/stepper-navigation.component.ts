@@ -2,9 +2,8 @@ import {
   booleanAttribute,
   ChangeDetectionStrategy,
   Component,
-  EventEmitter,
-  Input,
-  Output
+  input,
+  output,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
@@ -20,9 +19,9 @@ import { TranslocoModule } from '@ngneat/transloco';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StepperNavigationComponent {
-  @Input({ transform: booleanAttribute }) backButton: boolean = true;
-  @Input({ transform: booleanAttribute }) finishButton: boolean = false;
-  @Output() finish = new EventEmitter();
+  backButton = input(true, { transform: booleanAttribute });
+  finishButton = input(false, { transform: booleanAttribute });
+  finish = output();
 
   emitFinish() {
     this.finish.emit();

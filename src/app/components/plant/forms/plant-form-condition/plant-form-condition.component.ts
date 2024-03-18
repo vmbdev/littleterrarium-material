@@ -40,6 +40,7 @@ type ConditionListItem = {
 export class PlantFormConditionComponent {
   private readonly plantService = inject(PlantService);
   private readonly cdr = inject(ChangeDetectorRef);
+
   protected conditions = this.getConditions();
 
   ngAfterViewInit() {
