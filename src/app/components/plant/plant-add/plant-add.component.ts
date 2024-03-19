@@ -24,10 +24,10 @@ import { PlantFormNameComponent } from '@components/plant/forms/plant-form-name/
 import { PlantFormSpecieComponent } from '@components/plant/forms/plant-form-specie/plant-form-specie.component';
 import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog.component';
 import { FormPrivacyComponent } from '@components/form-privacy/form-privacy.component';
-import { LocationService } from '@services/location.service';
-import { PlantService } from '@services/plant.service';
-import { ErrorHandlerService } from '@services/error-handler.service';
-import { PhotoService } from '@services/photo.service';
+import { LocationService } from '@services/location/location.service';
+import { PlantService } from '@services/plant/plant.service';
+import { ErrorHandlerService } from '@services/error-handler/error-handler.service';
+import { PhotoService } from '@services/photo/photo.service';
 import { Plant } from '@models/plant.model';
 import { Photo } from '@models/photo.model';
 import { Location } from '@models/location.model';

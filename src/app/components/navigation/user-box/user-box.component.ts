@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 
 import { ImagePathPipe } from '@pipes/image-path/image-path.pipe';
-import { AuthService } from '@services/auth.service';
+import { AuthService } from '@services/auth/auth.service';
 
 @Component({
   selector: 'ltm-user-box',

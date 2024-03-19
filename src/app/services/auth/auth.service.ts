@@ -11,7 +11,7 @@ import {
   EMPTY,
 } from 'rxjs';
 
-import { ApiService } from '@services/api.service';
+import { ApiService } from '@services/api/api.service';
 import { User } from '@models/user.model';
 
 @Injectable({

@@ -14,7 +14,7 @@ import { TranslocoModule } from '@ngneat/transloco';
 
 import { EditPageComponent } from '@components/edit-page/edit-page.component';
 import { SettingsCardComponent } from '@components/settings-card/settings-card.component';
-import { PlantService } from '@services/plant.service';
+import { PlantService } from '@services/plant/plant.service';
 import { Plant, PotNames } from '@models/plant.model';
 import { FullWidthDirective } from '@directives/full-width/full-width.directive';
 

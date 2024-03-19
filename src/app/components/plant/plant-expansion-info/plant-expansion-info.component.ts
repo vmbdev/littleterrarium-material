@@ -14,7 +14,7 @@ import { PlantWaterWidgetComponent } from '@components/plant/widgets/plant-water
 import { PlantFertiliseWidgetComponent } from '@components/plant/widgets/plant-fertilise-widget/plant-fertilise-widget.component';
 import { PlantSoilWidgetComponent } from '@components/plant/widgets/plant-soil-widget/plant-soil-widget.component';
 import { FertInfo, Plant, PotInfo, WaterInfo } from '@models/plant.model';
-import { PlantService } from '@services/plant.service';
+import { PlantService } from '@services/plant/plant.service';
 import { LimitLargeScreenDirective } from '@directives/limit-large-screen/limit-large-screen.directive';
 
 @Component({

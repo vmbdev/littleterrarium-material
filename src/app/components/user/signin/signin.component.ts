@@ -22,7 +22,7 @@ import { TranslocoService, TranslocoModule } from '@ngneat/transloco';
 import { EMPTY, catchError, finalize } from 'rxjs';
 
 import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog.component';
-import { AuthService } from '@services/auth.service';
+import { AuthService } from '@services/auth/auth.service';
 import { LimitLargeScreenDirective } from '@directives/limit-large-screen/limit-large-screen.directive';
 
 @Component({

@@ -7,9 +7,9 @@ import {
   ApiService,
   PlantGetConfig,
   PlantUpdateConfig,
-} from '@services/api.service';
-import { AuthService } from '@services/auth.service';
-import { ImagePathService } from '@services/image-path.service';
+} from '@services/api/api.service';
+import { AuthService } from '@services/auth/auth.service';
+import { ImagePathService } from '@services/image-path/image-path.service';
 import { Photo } from '@models/photo.model';
 import { Condition, Plant, Pot } from '@models/plant.model';
 import { ConfirmDialogComponent } from '@components/dialogs/confirm-dialog/confirm-dialog.component';

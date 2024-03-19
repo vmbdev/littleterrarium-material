@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.1.3] - next
+
+### Changes
+
+- Better support for file selection on non-mobile devices.
+
+### Fixes
+
+- Fixed the Picture Viewer not closing when not in Android.
+
 ## [1.1.2] - 2024-03-19
 
 ### Changes

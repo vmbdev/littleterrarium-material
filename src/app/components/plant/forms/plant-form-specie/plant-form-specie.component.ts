@@ -17,7 +17,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { TranslocoModule } from '@ngneat/transloco';
 import { Observable, map, of } from 'rxjs';
 
-import { ApiService } from '@services/api.service';
+import { ApiService } from '@services/api/api.service';
 import { Specie } from '@models/specie.model';
 import { FullWidthDirective } from '@directives/full-width/full-width.directive';
 

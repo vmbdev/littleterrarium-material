@@ -18,11 +18,11 @@ import { PropertyComponent } from '@components/info-box/property/property.compon
 import { ToggleOptionComponent } from '@components/toggle-option/toggle-option.component';
 import { PhotoEditComponent } from '@components/photo/photo-edit/photo-edit.component';
 import { ConfirmDialogComponent } from '@components/dialogs/confirm-dialog/confirm-dialog.component';
-import { PhotoService } from '@services/photo.service';
-import { MainToolbarService } from '@services/main-toolbar.service';
-import { ImagePathService } from '@services/image-path.service';
-import { ViewerService } from '@services/viewer.service';
-import { ShareService } from '@services/share.service';
+import { PhotoService } from '@services/photo/photo.service';
+import { MainToolbarService } from '@services/main-toolbar/main-toolbar.service';
+import { ImagePathService } from '@services/image-path/image-path.service';
+import { ViewerService } from '@services/viewer/viewer.service';
+import { ShareService } from '@services/share/share.service';
 import { NavigationData, Photo } from '@models/photo.model';
 import { DaysAgoPipe } from '@pipes/days-ago/days-ago.pipe';
 

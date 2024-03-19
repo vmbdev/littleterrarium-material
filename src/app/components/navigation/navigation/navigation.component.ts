@@ -23,9 +23,9 @@ import { BottomToolbarComponent } from '@components/navigation/bottom-toolbar/bo
 import { MainToolbarComponent } from '@components/navigation/main-toolbar/main-toolbar.component';
 import { SearchComponent } from '@components/navigation/search/search.component';
 import { UserBoxComponent } from '@components/navigation/user-box/user-box.component';
-import { AuthService } from '@services/auth.service';
-import { TaskService } from '@services/task.service';
-import { ThemeService } from '@services/theme.service';
+import { AuthService } from '@services/auth/auth.service';
+import { TaskService } from '@services/task/task.service';
+import { ThemeService } from '@services/theme/theme.service';
 import { BottomScrollDirective } from '@directives/bottom-scroll/bottom-scroll.directive';
 import {
   ScrollDetectorDirective,

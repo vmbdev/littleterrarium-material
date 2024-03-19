@@ -28,9 +28,9 @@ import { EditPageComponent } from '@components/edit-page/edit-page.component';
 import { FormPrivacyComponent } from '@components/form-privacy/form-privacy.component';
 import { ToggleOptionComponent } from '@components/toggle-option/toggle-option.component';
 import { SettingsCardComponent } from '@components/settings-card/settings-card.component';
-import { ErrorHandlerService } from '@services/error-handler.service';
-import { PlantService } from '@services/plant.service';
-import { PhotoService } from '@services/photo.service';
+import { ErrorHandlerService } from '@services/error-handler/error-handler.service';
+import { PlantService } from '@services/plant/plant.service';
+import { PhotoService } from '@services/photo/photo.service';
 import { Photo } from '@models/photo.model';
 import { Plant } from '@models/plant.model';
 

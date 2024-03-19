@@ -17,7 +17,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { TranslocoModule } from '@ngneat/transloco';
 
 import { FormBaseActionComponent } from '@components/form-base-action/form-base-action.component';
-import { LocationService } from '@services/location.service';
+import { LocationService } from '@services/location/location.service';
 import { Light } from '@models/location.model';
 
 type LightOptionType = {

@@ -5,7 +5,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { TranslocoModule } from '@ngneat/transloco';
 
 import { ToggleOptionComponent } from '@components/toggle-option/toggle-option.component';
-import { ThemeService } from '@services/theme.service';
+import { ThemeService } from '@services/theme/theme.service';
 import { CapitalizePipe } from '@pipes/capitalize/capitalize.pipe';
 
 /**

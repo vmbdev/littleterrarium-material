@@ -10,7 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { TranslocoModule } from '@ngneat/transloco';
 
 import { PlantEditSoilComponent } from '@components/plant/plant-edit-soil/plant-edit-soil.component';
-import { PlantService } from '@services/plant.service';
+import { PlantService } from '@services/plant/plant.service';
 import { PotInfo } from '@models/plant.model';
 import { UnitPipe } from '@pipes/unit/unit.pipe';
 

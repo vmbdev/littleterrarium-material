@@ -25,10 +25,10 @@ import { FileUploaderComponent } from '@components/file-uploader/file-uploader.c
 import { EditPageComponent } from '@components/edit-page/edit-page.component';
 import { CurrentPicComponent } from '@components/current-pic/current-pic.component';
 import { SettingsCardComponent } from '@components/settings-card/settings-card.component';
-import { MainToolbarService } from '@services/main-toolbar.service';
-import { ApiService } from '@services/api.service';
-import { AuthService } from '@services/auth.service';
-import { ErrorHandlerService } from '@services/error-handler.service';
+import { MainToolbarService } from '@services/main-toolbar/main-toolbar.service';
+import { ApiService } from '@services/api/api.service';
+import { AuthService } from '@services/auth/auth.service';
+import { ErrorHandlerService } from '@services/error-handler/error-handler.service';
 import { User } from '@models/user.model';
 import { ImagePathPipe } from '@pipes/image-path/image-path.pipe';
 

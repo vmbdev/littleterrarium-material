@@ -5,7 +5,7 @@ import { BehaviorSubject, catchError, EMPTY, map, Observable, of } from 'rxjs';
 import { TranslocoModule } from '@ngneat/transloco';
 
 import { UserFormPasswordComponent } from '@components/user/forms/user-form-password/user-form-password.component';
-import { PasswordService } from '@services/password.service';
+import { PasswordService } from '@services/password/password.service';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { LimitLargeScreenDirective } from '@directives/limit-large-screen/limit-large-screen.directive';

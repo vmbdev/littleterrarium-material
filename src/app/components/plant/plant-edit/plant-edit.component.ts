@@ -24,9 +24,9 @@ import { PlantFormLocationComponent } from '@components/plant/forms/plant-form-l
 import { EditPageComponent } from '@components/edit-page/edit-page.component';
 import { FormPrivacyComponent } from '@components/form-privacy/form-privacy.component';
 import { SettingsCardComponent } from '@components/settings-card/settings-card.component';
-import { PlantGetConfig } from '@services/api.service';
-import { ErrorHandlerService } from '@services/error-handler.service';
-import { PlantService } from '@services/plant.service';
+import { PlantGetConfig } from '@services/api/api.service';
+import { ErrorHandlerService } from '@services/error-handler/error-handler.service';
+import { PlantService } from '@services/plant/plant.service';
 import { Plant } from '@models/plant.model';
 
 interface PlantEditConfig {

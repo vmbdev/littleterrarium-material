@@ -27,9 +27,9 @@ import { FabComponent } from '@components/fab/fab.component';
 import { PlantEditComponent } from '@components/plant/plant-edit/plant-edit.component';
 import { PlantExpansionInfoComponent } from '@components/plant/plant-expansion-info/plant-expansion-info.component';
 import { ConfirmDialogComponent } from '@components/dialogs/confirm-dialog/confirm-dialog.component';
-import { MainToolbarService } from '@services/main-toolbar.service';
-import { PlantService } from '@services/plant.service';
-import { ErrorHandlerService } from '@services/error-handler.service';
+import { MainToolbarService } from '@services/main-toolbar/main-toolbar.service';
+import { PlantService } from '@services/plant/plant.service';
+import { ErrorHandlerService } from '@services/error-handler/error-handler.service';
 import { Plant } from '@models/plant.model';
 import { CapitalizePipe } from '@pipes/capitalize/capitalize.pipe';
 

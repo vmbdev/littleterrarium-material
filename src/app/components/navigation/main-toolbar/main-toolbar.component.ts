@@ -15,8 +15,8 @@ import { RouterModule } from '@angular/router';
 import { TranslocoModule } from '@ngneat/transloco';
 
 import { SearchComponent } from '@components/navigation/search/search.component';
-import { MainToolbarService } from '@services/main-toolbar.service';
-import { SearchService } from '@services/search.service';
+import { MainToolbarService } from '@services/main-toolbar/main-toolbar.service';
+import { SearchService } from '@services/search/search.service';
 import { FullWidthDirective } from '@directives/full-width/full-width.directive';
 
 @Component({

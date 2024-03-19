@@ -10,7 +10,7 @@ import { ControlContainer, FormGroupDirective, ReactiveFormsModule } from '@angu
 import { MatIconModule } from '@angular/material/icon';
 import { TranslocoModule } from '@ngneat/transloco';
 
-import { PlantService } from '@services/plant.service';
+import { PlantService } from '@services/plant/plant.service';
 import { Condition } from '@models/plant.model';
 import { FormBaseActionComponent } from '@components/form-base-action/form-base-action.component';
 

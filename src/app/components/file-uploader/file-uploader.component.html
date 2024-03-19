@@ -29,6 +29,7 @@
     </div>
   }
   <input
+    #fileInput
     type="file"
     (change)="fileInputChange($event)"
     [disabled]="$availableSlots() === 0 || disabled"
@@ -38,24 +39,27 @@
   />
 
   <div class="file-uploader__buttons">
-    <button
-      type="button"
-      mat-mini-fab
-      color="primary"
-      (click)="captureFromCamera()"
-      [disabled]="$availableSlots() === 0 || disabled"
-    >
-      <mat-icon>photo_camera</mat-icon>
-    </button>
+    @if ($mobileOS()) {
+      <button
+        type="button"
+        mat-mini-fab
+        color="primary"
+        (click)="captureFromCamera()"
+        [disabled]="$availableSlots() === 0 || disabled"
+      >
+        <mat-icon>photo_camera</mat-icon>
+      </button>
+    }
 
     <button
       type="button"
       mat-mini-fab
       color="primary"
-      (click)="pickFromGallery()"
+      (click)="$mobileOS() ? pickFromGallery() : fileInput.click()"
       [disabled]="$availableSlots() === 0 || disabled"
     >
       <mat-icon>photo_library</mat-icon>
     </button>
+
   </div>
 </div>

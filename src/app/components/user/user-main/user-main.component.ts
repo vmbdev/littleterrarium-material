@@ -16,8 +16,8 @@ import { ProfileComponent } from '@components/user/profile/profile.component';
 import { LangSwitcherComponent } from '@components/lang-switcher/lang-switcher.component';
 import { ThemeSwitcherComponent } from '@components/theme-switcher/theme-switcher.component';
 import { InlineControlComponent } from '@components/inline-control/inline-control.component';
-import { MainToolbarService } from '@services/main-toolbar.service';
-import { AuthService } from '@services/auth.service';
+import { MainToolbarService } from '@services/main-toolbar/main-toolbar.service';
+import { AuthService } from '@services/auth/auth.service';
 import { LimitLargeScreenDirective } from '@directives/limit-large-screen/limit-large-screen.directive';
 
 @Component({

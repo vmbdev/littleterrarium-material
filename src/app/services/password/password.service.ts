@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { ApiService } from '@services/api.service';
+import { ApiService } from '@services/api/api.service';
 import { BackendResponse } from '@models/backend-response.model';
 import { PasswordRequirements, User } from '@models/user.model';
 

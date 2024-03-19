@@ -23,9 +23,9 @@ import { StepperNavigationComponent } from '@components/stepper-navigation/stepp
 import { FileUploaderComponent } from '@components/file-uploader/file-uploader.component';
 import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog.component';
 import { FormPrivacyComponent } from '@components/form-privacy/form-privacy.component';
-import { PlantService } from '@services/plant.service';
-import { PhotoService } from '@services/photo.service';
-import { ErrorHandlerService } from '@services/error-handler.service';
+import { PlantService } from '@services/plant/plant.service';
+import { PhotoService } from '@services/photo/photo.service';
+import { ErrorHandlerService } from '@services/error-handler/error-handler.service';
 import { Photo } from '@models/photo.model';
 import { Plant } from '@models/plant.model';
 import { LimitLargeScreenDirective } from '@directives/limit-large-screen/limit-large-screen.directive';

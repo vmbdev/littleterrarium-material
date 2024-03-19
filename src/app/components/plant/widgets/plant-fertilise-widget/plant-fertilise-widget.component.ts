@@ -13,7 +13,7 @@ import { TranslocoModule } from '@ngneat/transloco';
 import { PlantEditFertilizerComponent } from '@components/plant/plant-edit-fertilizer/plant-edit-fertilizer.component';
 import { DaysAgoPipe } from '@pipes/days-ago/days-ago.pipe';
 import { FertInfo } from '@models/plant.model';
-import { PlantService } from '@services/plant.service';
+import { PlantService } from '@services/plant/plant.service';
 
 @Component({
   selector: 'ltm-plant-fertilise-widget',

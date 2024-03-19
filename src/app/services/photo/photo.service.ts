@@ -9,9 +9,9 @@ import {
   throwError,
 } from 'rxjs';
 
-import { AuthService } from '@services/auth.service';
-import { ErrorHandlerService } from '@services/error-handler.service';
-import { ApiService } from '@services/api.service';
+import { AuthService } from '@services/auth/auth.service';
+import { ErrorHandlerService } from '@services/error-handler/error-handler.service';
+import { ApiService } from '@services/api/api.service';
 import { Photo } from '@models/photo.model';
 import { BackendResponse } from '@models/backend-response.model';
 import { TranslocoService } from '@ngneat/transloco';

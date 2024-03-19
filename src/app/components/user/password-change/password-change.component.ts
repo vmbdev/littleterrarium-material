@@ -13,8 +13,8 @@ import {
 } from 'rxjs';
 
 import { UserFormPasswordComponent } from '@components/user/forms/user-form-password/user-form-password.component';
-import { PasswordService } from '@services/password.service';
-import { AuthService } from '@services/auth.service';
+import { PasswordService } from '@services/password/password.service';
+import { AuthService } from '@services/auth/auth.service';
 import { User } from '@models/user.model';
 import { LimitLargeScreenDirective } from '@directives/limit-large-screen/limit-large-screen.directive';
 

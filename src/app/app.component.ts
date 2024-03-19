@@ -4,7 +4,7 @@ import { RouterModule } from '@angular/router';
 import { MatNativeDateModule } from '@angular/material/core';
 import { App } from '@capacitor/app';
 
-import { AuthService } from '@services/auth.service';
+import { AuthService } from '@services/auth/auth.service';
 
 @Component({
   selector: 'ltm-app-root',

@@ -5,7 +5,7 @@ import {
   ngMocks,
 } from 'ng-mocks';
 import { BottomToolbarComponent } from './bottom-toolbar.component';
-import { TaskService } from '@services/task.service';
+import { TaskService } from '@services/task/task.service';
 
 describe('BottomToolbarComponent', () => {
   let component: BottomToolbarComponent;

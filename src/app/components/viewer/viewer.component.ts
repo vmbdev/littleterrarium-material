@@ -15,10 +15,10 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { Observable, finalize, tap } from 'rxjs';
 
 import { ViewerData } from '@models/viewer.model';
-import { FullscreenService } from '@services/fullscreen.service';
-import { Observable, tap } from 'rxjs';
+import { FullscreenService } from '@services/fullscreen/fullscreen.service';
 import { VIEWER_DATA } from 'src/tokens';
 
 type Coords = {
@@ -86,7 +86,7 @@ export class ViewerComponent {
 
   close() {
     this.closeViewer$ = this.fullscreen.stop().pipe(
-      tap(() => {
+      finalize(() => {
         this.data.close();
       }),
     );

@@ -1,7 +1,7 @@
 import { Pipe, PipeTransform, inject } from '@angular/core';
 
 import { ImagePath } from '@models/image-path.model';
-import { ImagePathService } from '@services/image-path.service';
+import { ImagePathService } from '@services/image-path/image-path.service';
 
 @Pipe({
   name: 'imagePath',

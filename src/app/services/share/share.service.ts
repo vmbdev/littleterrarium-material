@@ -3,7 +3,7 @@ import { Share, ShareOptions, ShareResult } from '@capacitor/share';
 import { Directory } from '@capacitor/filesystem';
 import { Observable, from, switchMap } from 'rxjs';
 
-import { FilesystemService } from '@services/filesystem.service';
+import { FilesystemService } from '@services/filesystem/filesystem.service';
 
 @Injectable({
   providedIn: 'root',

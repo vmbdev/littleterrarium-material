@@ -7,7 +7,7 @@ import {
 } from 'ng-mocks';
 
 import { TerrariumComponent } from './terrarium.component';
-import { ApiService } from '@services/api.service';
+import { ApiService } from '@services/api/api.service';
 import { User } from '@models/user.model';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';

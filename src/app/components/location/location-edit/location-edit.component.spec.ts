@@ -4,7 +4,7 @@ import { TranslocoModule } from '@ngneat/transloco';
 import { LocationEditComponent } from '@components/location/location-edit/location-edit.component';
 import { Location } from '@models/location.model';
 import { getTranslocoModule } from 'src/app/tests/transloco.module';
-import { ErrorHandlerService } from '@services/error-handler.service';
+import { ErrorHandlerService } from '@services/error-handler/error-handler.service';
 
 describe('LocationEditComponent', () => {
   let component: LocationEditComponent;

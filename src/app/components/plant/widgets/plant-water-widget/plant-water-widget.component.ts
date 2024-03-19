@@ -13,7 +13,7 @@ import { TranslocoModule } from '@ngneat/transloco';
 import {
   PlantEditWaterComponent
 } from '@components/plant/plant-edit-water/plant-edit-water.component';
-import { PlantService } from '@services/plant.service';
+import { PlantService } from '@services/plant/plant.service';
 import { DaysAgoPipe } from '@pipes/days-ago/days-ago.pipe';
 import { WaterInfo } from '@models/plant.model';
 

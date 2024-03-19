@@ -24,9 +24,9 @@ import { InfoBoxComponent } from '@components/info-box/info-box/info-box.compone
 import { FabComponent } from '@components/fab/fab.component';
 import { LocationEditComponent } from '@components/location/location-edit/location-edit.component';
 import { ConfirmDialogComponent } from '@components/dialogs/confirm-dialog/confirm-dialog.component';
-import { MainToolbarService } from '@services/main-toolbar.service';
-import { ErrorHandlerService } from '@services/error-handler.service';
-import { LocationService } from '@services/location.service';
+import { MainToolbarService } from '@services/main-toolbar/main-toolbar.service';
+import { ErrorHandlerService } from '@services/error-handler/error-handler.service';
+import { LocationService } from '@services/location/location.service';
 
 @Component({
   selector: 'ltm-location',

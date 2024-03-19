@@ -6,7 +6,7 @@ import {
   LocationListComponent
 } from '@components/location/location-list/location-list.component';
 import { SigninComponent } from '@components/user/signin/signin.component';
-import { MainToolbarService } from '@services/main-toolbar.service';
+import { MainToolbarService } from '@services/main-toolbar/main-toolbar.service';
 
 @Component({
   selector: 'ltm-home',

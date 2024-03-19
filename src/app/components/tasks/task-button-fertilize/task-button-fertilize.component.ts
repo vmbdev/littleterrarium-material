@@ -10,7 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
 
-import { TaskService } from '@services/task.service';
+import { TaskService } from '@services/task/task.service';
 
 @Component({
   selector: 'ltm-task-button-fertilize',

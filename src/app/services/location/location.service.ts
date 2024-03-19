@@ -6,9 +6,9 @@ import {
   LocationGetConfig,
   LocationUpsertConfig,
   PlantGetConfig,
-} from '@services/api.service';
-import { AuthService } from '@services/auth.service';
-import { PlantService } from '@services/plant.service';
+} from '@services/api/api.service';
+import { AuthService } from '@services/auth/auth.service';
+import { PlantService } from '@services/plant/plant.service';
 import { Light, Location } from '@models/location.model';
 import { Plant } from '@models/plant.model';
 import { HttpErrorResponse } from '@angular/common/http';

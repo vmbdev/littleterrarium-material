@@ -8,7 +8,7 @@ import {
 } from '@angular/common/http';
 import { catchError, EMPTY, Observable, throwError } from 'rxjs';
 
-import { ErrorHandlerService } from '@services/error-handler.service';
+import { ErrorHandlerService } from '@services/error-handler/error-handler.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {

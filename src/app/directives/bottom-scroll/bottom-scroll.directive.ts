@@ -1,6 +1,6 @@
 import { Directive, HostListener, inject } from '@angular/core';
 
-import { BottomScrollDetectorService } from '@services/bottom-scroll-detector.service';
+import { BottomScrollDetectorService } from '@services/bottom-scroll/bottom-scroll-detector.service';
 
 @Directive({
   selector: '[bottomScroll]',

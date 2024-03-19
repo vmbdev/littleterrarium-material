@@ -6,11 +6,11 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { finalize } from 'rxjs';
 
 import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog.component';
-import { AuthService } from '@services/auth.service';
-import { LocationService } from '@services/location.service';
-import { PhotoService } from '@services/photo.service';
-import { PlantService } from '@services/plant.service';
-import { TaskService } from '@services/task.service';
+import { AuthService } from '@services/auth/auth.service';
+import { LocationService } from '@services/location/location.service';
+import { PhotoService } from '@services/photo/photo.service';
+import { PlantService } from '@services/plant/plant.service';
+import { TaskService } from '@services/task/task.service';
 
 @Component({
   selector: 'ltm-logout',

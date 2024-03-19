@@ -9,7 +9,7 @@ import {
 import { catchError, EMPTY, Observable, throwError } from 'rxjs';
 import { TranslocoService } from '@ngneat/transloco';
 
-import { ErrorHandlerService } from '@services/error-handler.service';
+import { ErrorHandlerService } from '@services/error-handler/error-handler.service';
 
 @Injectable()
 export class ErrorHandlerInterceptor implements HttpInterceptor {

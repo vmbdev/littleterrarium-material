@@ -15,11 +15,11 @@ import { TranslocoModule } from '@ngneat/transloco';
 import { BehaviorSubject, of } from 'rxjs';
 
 import { getTranslocoModule } from 'src/app/tests/transloco.module';
-import { PlantService } from '@services/plant.service';
+import { PlantService } from '@services/plant/plant.service';
 import { Plant } from '@models/plant.model';
-import { MainToolbarService } from '@services/main-toolbar.service';
-import { AuthService } from '@services/auth.service';
-import { TaskService } from '@services/task.service';
+import { MainToolbarService } from '@services/main-toolbar/main-toolbar.service';
+import { AuthService } from '@services/auth/auth.service';
+import { TaskService } from '@services/task/task.service';
 
 class MockedComponent {}
 

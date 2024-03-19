@@ -13,7 +13,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { TranslocoModule } from '@ngneat/transloco';
 import { Observable } from 'rxjs';
 
-import { PlantService } from '@services/plant.service';
+import { PlantService } from '@services/plant/plant.service';
 import { Photo } from '@models/photo.model';
 import { SortPipe } from '@pipes/sort/sort.pipe';
 import { ImagePathPipe } from '@pipes/image-path/image-path.pipe';

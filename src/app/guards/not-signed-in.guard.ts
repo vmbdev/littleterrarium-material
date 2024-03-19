@@ -1,7 +1,7 @@
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { map, skipWhile, switchMap } from 'rxjs';
-import { AuthService } from '@services/auth.service';
+import { AuthService } from '@services/auth/auth.service';
 
 export const NotSignedInGuard = () => {
   const auth = inject(AuthService);

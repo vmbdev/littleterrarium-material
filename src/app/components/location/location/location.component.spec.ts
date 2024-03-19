@@ -5,7 +5,7 @@ import { of } from 'rxjs';
 
 import { LocationComponent } from './location.component';
 import { getTranslocoModule } from 'src/app/tests/transloco.module';
-import { LocationService } from '@services/location.service';
+import { LocationService } from '@services/location/location.service';
 import { Location } from '@models/location.model';
 
 describe('LocationComponent', () => {

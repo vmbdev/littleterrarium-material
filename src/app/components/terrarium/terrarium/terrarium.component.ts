@@ -7,9 +7,9 @@ import { TranslocoService } from '@ngneat/transloco';
 import { ProfileComponent } from '@components/user/profile/profile.component';
 import { LocationListComponent } from '@components/location/location-list/location-list.component';
 import { PlantListComponent } from '@components/plant/plant-list/plant-list.component';
-import { ApiService } from '@services/api.service';
-import { MainToolbarService } from '@services/main-toolbar.service';
-import { ShareService } from '@services/share.service';
+import { ApiService } from '@services/api/api.service';
+import { MainToolbarService } from '@services/main-toolbar/main-toolbar.service';
+import { ShareService } from '@services/share/share.service';
 import { User } from '@models/user.model';
 import { FRONTEND_URL } from 'src/tokens';
 

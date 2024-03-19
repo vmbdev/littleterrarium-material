@@ -33,12 +33,12 @@ import { ConfirmDialogComponent } from '@components/dialogs/confirm-dialog/confi
 import { PlantEditComponent } from '@components/plant/plant-edit/plant-edit.component';
 import { PlantMenuWaterComponent } from '@components/plant/menu/plant-menu-water/plant-menu-water.component';
 import { PlantMenuFertComponent } from '@components/plant/menu/plant-menu-fert/plant-menu-fert.component';
-import { PlantGetConfig } from '@services/api.service';
-import { LocationService } from '@services/location.service';
-import { PlantService } from '@services/plant.service';
-import { SearchService } from '@services/search.service';
-import { MainToolbarService } from '@services/main-toolbar.service';
-import { BottomScrollDetectorService } from '@services/bottom-scroll-detector.service';
+import { PlantGetConfig } from '@services/api/api.service';
+import { LocationService } from '@services/location/location.service';
+import { PlantService } from '@services/plant/plant.service';
+import { SearchService } from '@services/search/search.service';
+import { MainToolbarService } from '@services/main-toolbar/main-toolbar.service';
+import { BottomScrollDetectorService } from '@services/bottom-scroll/bottom-scroll-detector.service';
 import { Plant } from '@models/plant.model';
 import { SortColumn, SortOrder } from '@models/sort-options.model';
 import { CapitalizePipe } from '@pipes/capitalize/capitalize.pipe';

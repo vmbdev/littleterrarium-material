@@ -15,7 +15,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { TranslocoModule } from '@ngneat/transloco';
 
-import { SearchService } from '@services/search.service';
+import { SearchService } from '@services/search/search.service';
 
 @Component({
   selector: 'ltm-search',

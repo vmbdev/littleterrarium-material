@@ -12,7 +12,7 @@ import { MatInputModule } from '@angular/material/input';
 import { catchError, EMPTY, Observable, tap } from 'rxjs';
 import { TranslocoModule } from '@ngneat/transloco';
 
-import { PasswordService } from '@services/password.service';
+import { PasswordService } from '@services/password/password.service';
 import { CommonModule } from '@angular/common';
 import { LimitLargeScreenDirective } from '@directives/limit-large-screen/limit-large-screen.directive';
 

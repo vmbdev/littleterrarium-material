@@ -3,8 +3,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { TranslocoService } from '@ngneat/transloco';
 
 import { ConfirmDialogComponent } from '@components/dialogs/confirm-dialog/confirm-dialog.component';
-import { ApiService } from '@services/api.service';
-import { PlantService } from '@services/plant.service';
+import { ApiService } from '@services/api/api.service';
+import { PlantService } from '@services/plant/plant.service';
 import { Plant } from '@models/plant.model';
 import { Task } from '@models/task.model';
 

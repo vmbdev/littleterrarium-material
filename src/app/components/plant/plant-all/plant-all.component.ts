@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { TranslocoService, TranslocoModule } from '@ngneat/transloco';
 
 import { PlantListComponent } from '@components/plant/plant-list/plant-list.component';
-import { MainToolbarService } from '@services/main-toolbar.service';
+import { MainToolbarService } from '@services/main-toolbar/main-toolbar.service';
 
 @Component({
   selector: 'ltm-plant-all',

@@ -2,8 +2,8 @@ import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { map, skipWhile, switchMap } from 'rxjs';
 
-import { AuthService } from '@services/auth.service';
-import { ErrorHandlerService } from '@services/error-handler.service';
+import { AuthService } from '@services/auth/auth.service';
+import { ErrorHandlerService } from '@services/error-handler/error-handler.service';
 import { User } from '@models/user.model';
 
 export const AdminGuard: CanActivateFn = () => {

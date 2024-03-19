@@ -20,8 +20,8 @@ import { LocationFormNameComponent } from '@components/location/forms/location-f
 import { LocationFormLightComponent } from '@components/location/forms/location-form-light/location-form-light.component';
 import { FormPrivacyComponent } from '@components/form-privacy/form-privacy.component';
 import { Location } from '@models/location.model';
-import { ErrorHandlerService } from '@services/error-handler.service';
-import { LocationService } from '@services/location.service';
+import { ErrorHandlerService } from '@services/error-handler/error-handler.service';
+import { LocationService } from '@services/location/location.service';
 import { LimitLargeScreenDirective } from '@directives/limit-large-screen/limit-large-screen.directive';
 
 @Component({

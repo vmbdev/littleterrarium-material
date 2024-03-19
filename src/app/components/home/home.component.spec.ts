@@ -8,9 +8,9 @@ import {
 import { HomeComponent } from './home.component';
 import { TranslocoModule } from '@ngneat/transloco';
 import { getTranslocoModule } from 'src/app/tests/transloco.module';
-import { AuthService } from '@services/auth.service';
-import { ApiService } from '@services/api.service';
-import { MainToolbarService } from '@services/main-toolbar.service';
+import { AuthService } from '@services/auth/auth.service';
+import { ApiService } from '@services/api/api.service';
+import { MainToolbarService } from '@services/main-toolbar/main-toolbar.service';
 import { of } from 'rxjs';
 
 describe('HomeComponent', () => {

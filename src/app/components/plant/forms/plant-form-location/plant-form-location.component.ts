@@ -10,7 +10,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { TranslocoModule } from '@ngneat/transloco';
 
 import { FormBaseActionComponent } from '@components/form-base-action/form-base-action.component';
-import { LocationService } from '@services/location.service';
+import { LocationService } from '@services/location/location.service';
 
 @Component({
   selector: 'ltm-plant-form-location',

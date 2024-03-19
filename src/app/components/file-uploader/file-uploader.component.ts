@@ -15,8 +15,11 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslocoModule } from '@ngneat/transloco';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { map } from 'rxjs';
 
-import { CameraService } from '@services/camera.service';
+import { CameraService } from '@services/camera/camera.service';
+import { DeviceService } from '@services/device/device.service';
 import { ShortFilenamePipe } from '@pipes/short-filename/short-filename.pipe';
 
 @Component({
@@ -44,6 +47,7 @@ import { ShortFilenamePipe } from '@pipes/short-filename/short-filename.pipe';
 })
 export class FileUploaderComponent {
   private readonly camera = inject(CameraService);
+  private readonly device = inject(DeviceService);
 
   /**
    * Max amount of files the user can select. By default, 1.
@@ -74,6 +78,12 @@ export class FileUploaderComponent {
    * Mouse is over the component containing a file.
    */
   protected dragOver: boolean = false;
+
+  protected $mobileOS = toSignal(
+    this.device.getOS().pipe(
+      map((os) => os === 'android' || os === 'ios')
+    )
+  );
 
   private onChange = (val: File[] | File | null) => {};
   private onTouched = () => {};

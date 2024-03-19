@@ -5,8 +5,8 @@ import { EMPTY, of } from 'rxjs';
 import { LocationListComponent } from '@components/location/location-list/location-list.component';
 import { Location } from '@models/location.model';
 import { getTranslocoModule } from 'src/app/tests/transloco.module';
-import { ErrorHandlerService } from '@services/error-handler.service';
-import { LocationService } from '@services/location.service';
+import { ErrorHandlerService } from '@services/error-handler/error-handler.service';
+import { LocationService } from '@services/location/location.service';
 
 fdescribe('LocationListComponent', () => {
   let component: LocationListComponent;

@@ -18,7 +18,7 @@ import {
   forkJoin,
 } from 'rxjs';
 
-import { FilesystemService } from '@services/filesystem.service';
+import { FilesystemService } from '@services/filesystem/filesystem.service';
 
 @Injectable({
   providedIn: 'root',

@@ -24,10 +24,10 @@ import { FabComponent } from '@components/fab/fab.component';
 import { ConfirmDialogComponent } from '@components/dialogs/confirm-dialog/confirm-dialog.component';
 import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog.component';
 import { LocationEditComponent } from '@components/location/location-edit/location-edit.component';
-import { LocationService } from '@services/location.service';
-import { ErrorHandlerService } from '@services/error-handler.service';
-import { AuthService } from '@services/auth.service';
-import { LocationGetConfig } from '@services/api.service';
+import { LocationService } from '@services/location/location.service';
+import { ErrorHandlerService } from '@services/error-handler/error-handler.service';
+import { AuthService } from '@services/auth/auth.service';
+import { LocationGetConfig } from '@services/api/api.service';
 import { Location } from '@models/location.model';
 import { ImagePathPipe } from '@pipes/image-path/image-path.pipe';
 

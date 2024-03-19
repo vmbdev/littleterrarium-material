@@ -11,7 +11,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { TranslocoModule } from '@ngneat/transloco';
 
-import { PlantService } from '@services/plant.service';
+import { PlantService } from '@services/plant/plant.service';
 
 @Component({
   selector: 'ltm-plant-menu-water',

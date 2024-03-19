@@ -14,7 +14,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatStepperModule } from '@angular/material/stepper';
-import { AuthService } from '@services/auth.service';
+import { AuthService } from '@services/auth/auth.service';
 import { TranslocoModule } from '@ngneat/transloco';
 import { HttpErrorResponse } from '@angular/common/http';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
@@ -24,7 +24,7 @@ import { StepperNavigationComponent } from '@components/stepper-navigation/stepp
 import { UserFormPasswordComponent } from '@components/user/forms/user-form-password/user-form-password.component';
 import { UserFormUsernameComponent } from '@components/user/forms/user-form-username/user-form-username.component';
 import { UserFormEmailComponent } from '@components/user/forms/user-form-email/user-form-email.component';
-import { PasswordService } from '@services/password.service';
+import { PasswordService } from '@services/password/password.service';
 import { User } from '@models/user.model';
 import { LimitLargeScreenDirective } from '@directives/limit-large-screen/limit-large-screen.directive';
 

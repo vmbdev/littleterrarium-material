@@ -26,8 +26,8 @@ import { EditPageComponent } from '@components/edit-page/edit-page.component';
 import { FormPrivacyComponent } from '@components/form-privacy/form-privacy.component';
 import { SettingsCardComponent } from '@components/settings-card/settings-card.component';
 import { CurrentPicComponent } from '@components/current-pic/current-pic.component';
-import { ErrorHandlerService } from '@services/error-handler.service';
-import { LocationService } from '@services/location.service';
+import { ErrorHandlerService } from '@services/error-handler/error-handler.service';
+import { LocationService } from '@services/location/location.service';
 import { Location } from '@models/location.model';
 import { ImagePathPipe } from '@pipes/image-path/image-path.pipe';
 
