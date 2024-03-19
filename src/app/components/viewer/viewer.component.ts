@@ -1,6 +1,8 @@
+import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
+  DestroyRef,
   ElementRef,
   HostListener,
   Signal,
@@ -9,11 +11,14 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
 import { ViewerData } from '@models/viewer.model';
+import { FullscreenService } from '@services/fullscreen.service';
+import { Observable, tap } from 'rxjs';
 import { VIEWER_DATA } from 'src/tokens';
 
 type Coords = {
@@ -29,13 +34,15 @@ type ElementDimensions = {
 @Component({
   selector: 'ltm-viewer',
   standalone: true,
-  imports: [MatToolbarModule, MatIconModule, MatButtonModule],
+  imports: [CommonModule, MatToolbarModule, MatIconModule, MatButtonModule],
   templateUrl: './viewer.component.html',
   styleUrl: './viewer.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ViewerComponent {
   protected readonly data: ViewerData = inject(VIEWER_DATA);
+  private readonly fullscreen = inject(FullscreenService);
+  private readonly destroyRef = inject(DestroyRef);
 
   viewer = viewChild.required<ElementRef>('viewer');
   canvas = viewChild.required<ElementRef>('canvas');
@@ -58,12 +65,31 @@ export class ViewerComponent {
   private $vWidth = computed(() => this.viewer().nativeElement.clientWidth);
   private $vHeight = computed(() => this.viewer().nativeElement.clientHeight);
 
+  protected closeViewer$?: Observable<any>;
+
   ngOnInit() {
+    this.fullscreen
+      .start()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe();
+
     this.image.src = this.data.src;
     this.image.onload = () => {
       this.resize();
       this.baseScale = this.$scale();
     };
+  }
+
+  ngOnDestroy() {
+    this.close();
+  }
+
+  close() {
+    this.closeViewer$ = this.fullscreen.stop().pipe(
+      tap(() => {
+        this.data.close();
+      }),
+    );
   }
 
   /**
@@ -187,7 +213,7 @@ export class ViewerComponent {
       delta = (event.scale - 1) * 0.5;
 
       this.$scale.update((val) => {
-        const res = val + (delta * 0.5);
+        const res = val + delta * 0.5;
         let ret;
 
         if (res < this.baseScale) {

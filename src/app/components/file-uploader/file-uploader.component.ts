@@ -1,11 +1,13 @@
-import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
+  WritableSignal,
+  computed,
   forwardRef,
   inject,
   input,
   numberAttribute,
+  signal,
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -21,7 +23,6 @@ import { ShortFilenamePipe } from '@pipes/short-filename/short-filename.pipe';
   standalone: true,
   selector: 'ltm-file-uploader',
   imports: [
-    CommonModule,
     TranslocoModule,
     ReactiveFormsModule,
     MatButtonModule,
@@ -47,7 +48,6 @@ export class FileUploaderComponent {
   /**
    * Max amount of files the user can select. By default, 1.
    */
-  // @Input({ transform: numberAttribute }) maxAmount: number = 1;
   maxAmount = input(1, { transform: numberAttribute });
 
   protected disabled: boolean = false;
@@ -55,12 +55,20 @@ export class FileUploaderComponent {
   /**
    * Files currently selected in the component.
    */
-  protected files: File[] = [];
+  protected $files: WritableSignal<File[]> = signal([]);
 
   /**
    * Thumbnails for the current file selection, in the same order.
    */
-  protected previews: string[] = new Array<string>(this.maxAmount());
+  protected $previews: WritableSignal<string[]> = signal([]);
+
+  /**
+   * The number of files that can still be added, depending on the max amount
+   * of files allowed.
+   */
+  protected $availableSlots = computed(
+    () => this.maxAmount() - this.$files().length,
+  );
 
   /**
    * Mouse is over the component containing a file.
@@ -77,6 +85,7 @@ export class FileUploaderComponent {
   registerOnChange(fn: any): void {
     this.onChange = fn;
   }
+
   registerOnTouched(fn: any): void {
     this.onTouched = fn;
   }
@@ -94,7 +103,7 @@ export class FileUploaderComponent {
     event.stopPropagation();
     event.preventDefault();
 
-    if (!this.dragOver && this.availableSlots() > 0) this.dragOver = true;
+    if (!this.dragOver && this.$availableSlots() > 0) this.dragOver = true;
   }
 
   /**
@@ -110,7 +119,7 @@ export class FileUploaderComponent {
   }
 
   /**
-   * A file was dropped over the component, containing one or more files.
+   * One or more files were dropped over the component.
    *
    * @param {DragEvent} event  The drag and drop event.
    */
@@ -136,18 +145,6 @@ export class FileUploaderComponent {
     if (target.files) this.addFiles(target.files);
   }
 
-
-  /**
-   * The number of files that can still be added, depending on the max amount
-   * of files allowed.
-   *
-   * @returns {number} The difference between maxAmount and the number of files
-   * already selected.
-   */
-  availableSlots(): number {
-    return this.maxAmount() - this.files.length;
-  }
-
   /**
    * Add files to the current selection. Called when the user drags and drop
    * or selects more files.
@@ -155,35 +152,42 @@ export class FileUploaderComponent {
    * @param {FileList | File[]} list  The list of files to be added.
    */
   addFiles(list: FileList | File[]): void {
-    const slots = this.availableSlots();
+    if (this.$availableSlots() > 0) {
+      const limit =
+        list.length > this.$availableSlots()
+          ? this.$availableSlots()
+          : list.length;
+      const base = this.$files().length;
+      const previews: string[] = [];
 
-    if (slots > 0) {
-      const limit = list.length > slots ? slots : list.length;
-      const base = this.files.length;
-
-      this.files.push(...Array.from(list).splice(0, slots));
+      this.$files.update((val) => [
+        ...val,
+        ...Array.from(list).splice(0, this.$availableSlots()),
+      ]);
 
       // previews array must follow the same order as files array
       for (let i = base; i < base + limit; i++) {
-        this.previews[i] = URL.createObjectURL(this.files[i]);
+        previews.push(URL.createObjectURL(this.$files()[i]));
       }
 
+      this.$previews.update((val) => [...val, ...previews]);
+
       if (this.maxAmount() === 1) {
-        this.onChange(this.files[0]);
-      } else this.onChange(this.files);
+        this.onChange(this.$files()[0]);
+      } else this.onChange(this.$files());
     }
   }
 
   captureFromCamera() {
     this.camera.capture().subscribe((file: File) => {
       this.addFiles([file]);
-    })
+    });
   }
 
   pickFromGallery() {
     this.camera.pickFromGallery().subscribe((files: File[]) => {
       this.addFiles(files);
-    })
+    });
   }
 
   /**
@@ -192,12 +196,22 @@ export class FileUploaderComponent {
    * @param {number} index  The index of the file to be removed.
    */
   removeFile(index: number): void {
-    this.files.splice(index, 1);
-    this.previews.splice(index, 1);
+    this.$files.update((val) => {
+      const newVal = val;
+
+      newVal.splice(index, 1);
+      return newVal;
+    });
+    this.$previews.update((val) => {
+      const newVal = val;
+
+      newVal.splice(index, 1);
+      return newVal;
+    });
 
     if (this.maxAmount() === 1) {
       this.onChange(null);
-    } else this.onChange(this.files);
+    } else this.onChange(this.$files());
   }
 
   /**

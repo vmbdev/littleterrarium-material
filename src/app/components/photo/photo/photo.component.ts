@@ -64,9 +64,14 @@ export class PhotoComponent {
   protected $currentImageFull: WritableSignal<string | null> = signal(null);
   protected photo$?: Observable<Photo | null>;
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.setMtMenus();
     this.photo$ = this.getCurrentPhoto();
+  }
+
+  ngOnDestroy() {
+    // in case a viewer is opened and we navigate out
+    this.viewer.destroy();
   }
 
   getCurrentPhoto(): Observable<Photo | null> {
@@ -75,6 +80,9 @@ export class PhotoComponent {
     return this.route.params.pipe(
       switchMap((param: Params) => {
         this.id = +param['photoId'];
+
+        // in case a viewer is opened when we navigate
+        this.viewer.destroy();
 
         return forkJoin([
           this.photoService.getNavigation(this.id),

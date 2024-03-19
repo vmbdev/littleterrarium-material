@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.2] - 2024-03-19
+
+### Changes
+
+- Picture Viewer will now work in full screen on Android (Immersive mode).
+
+### Fixes
+
+- Fixed selected files not showing when uploading.
+- Fixed a bug in which the Picture Viewer will be opened after changing route.
+- Fixed some checkmarks appearing where they shouldn't.
+
 ## [1.1.1] - 2024-03-18
 
 ### Fixes

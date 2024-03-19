@@ -2,8 +2,9 @@
   <p>{{ 'plant-edit.health' | transloco }}</p>
 
   <mat-button-toggle-group
-    formControlName="condition"
     class="icon-button-toggle"
+    formControlName="condition"
+    hideSingleSelectionIndicator="true"
     #group="matButtonToggleGroup"
   >
     @for (condition of conditions; track condition.id) {

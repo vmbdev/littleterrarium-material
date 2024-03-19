@@ -1,4 +1,4 @@
-import { Overlay } from '@angular/cdk/overlay';
+import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { Injectable, Injector, inject } from '@angular/core';
 
@@ -10,9 +10,10 @@ import { VIEWER_DATA } from 'src/tokens';
 })
 export class ViewerService {
   private readonly overlay = inject(Overlay);
+  private overlayRef?: OverlayRef;
 
   create(image: string) {
-    const overlayRef = this.overlay.create({
+    this.overlayRef = this.overlay.create({
       hasBackdrop: true,
       backdropClass: 'overlay-backdrop'
     });
@@ -26,7 +27,7 @@ export class ViewerService {
             useValue: {
               src: image,
               close: () => {
-                overlayRef.dispose();
+                this.overlayRef?.dispose();
               },
             },
           },
@@ -34,6 +35,10 @@ export class ViewerService {
       })
     );
 
-    overlayRef.attach(portal);
+    this.overlayRef.attach(portal);
+  }
+
+  destroy() {
+    if (this.overlayRef) this.overlayRef.dispose();
   }
 }

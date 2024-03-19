@@ -38,7 +38,7 @@ Thumbs.db
 
 .angular
 
-# Boring way to keep AndroidManifest.xml
+# Boring way to keep AndroidManifest.xml and build.gradle
 /android/*
 !/android/app
 /android/app/*
@@ -47,3 +47,4 @@ Thumbs.db
 !/android/app/src/main
 /android/app/src/main/*
 !/android/app/src/main/AndroidManifest.xml
+!/android/app/build.gradle

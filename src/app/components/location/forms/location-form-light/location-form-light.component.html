@@ -3,8 +3,9 @@
   <p>{{ 'location-add-edit.lightAmount' | transloco }}</p>
 
   <mat-button-toggle-group
-    formControlName="light"
     class="icon-button-toggle"
+    formControlName="light"
+    hideSingleSelectionIndicator="true"
     #group="matButtonToggleGroup"
   >
     @for (option of $lightOptions(); track option.value) {

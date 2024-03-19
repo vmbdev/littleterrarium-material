@@ -6,17 +6,14 @@
   (dragend)="dragLeave($event)"
   (drop)="dropFile($event)"
   (dragstart)="$event.preventDefault()"
-  [ngClass]="{ 'file-uploader__over': dragOver }"
 >
-  @if (files.length === 0) {
+  @if ($files().length === 0) {
     <div>
       <b>{{ 'fileUploader.select' | transloco }}</b>
     </div>
-  }
-
-  @if (files.length > 0) {
+  } @else {
     <div class="file-uploader__picturegrid">
-      @for (preview of previews; let i = $index; track preview) {
+      @for (preview of $previews(); let i = $index; track preview) {
         <div class="file-uploader__picture">
           <span class="file-uploader__removelink" (click)="removeFile(i)">
             &#10006;
@@ -34,7 +31,7 @@
   <input
     type="file"
     (change)="fileInputChange($event)"
-    [disabled]="availableSlots() === 0 || disabled"
+    [disabled]="$availableSlots() === 0 || disabled"
     [multiple]="maxAmount() > 1"
     accept="image/*"
     hidden
@@ -46,7 +43,7 @@
       mat-mini-fab
       color="primary"
       (click)="captureFromCamera()"
-      [disabled]="availableSlots() === 0 || disabled"
+      [disabled]="$availableSlots() === 0 || disabled"
     >
       <mat-icon>photo_camera</mat-icon>
     </button>
@@ -56,7 +53,7 @@
       mat-mini-fab
       color="primary"
       (click)="pickFromGallery()"
-      [disabled]="availableSlots() === 0 || disabled"
+      [disabled]="$availableSlots() === 0 || disabled"
     >
       <mat-icon>photo_library</mat-icon>
     </button>

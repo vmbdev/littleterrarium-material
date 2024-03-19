@@ -1,9 +1,11 @@
 <article #viewer class="viewer">
-  <mat-toolbar class="viewer__toolbar">
-    <button mat-icon-button (click)="data.close()">
-      <mat-icon class="viewer__closeicon">close</mat-icon>
-    </button>
-  </mat-toolbar>
+  @if (!(closeViewer$ | async)) {
+    <mat-toolbar class="viewer__toolbar">
+      <button mat-icon-button (click)="close()">
+        <mat-icon class="viewer__closeicon">close</mat-icon>
+      </button>
+    </mat-toolbar>
+  }
   <canvas
     #canvas
     class="viewer__canvas"

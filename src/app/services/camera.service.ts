@@ -48,9 +48,9 @@ export class CameraService {
       // then we delete the photo from the filesystem
       switchMap(([camera]) => this.filesystem.deleteFile(camera.path!)),
       withLatestFrom(blob$),
-      // and finally we made the photo available as a File
+      // and finally we make the photo available as a File
       map(
-        ([, blob]) =>
+        ([_, blob]) =>
           new File([blob], Date.now().toString(), { type: blob.type }),
       ),
     );
@@ -66,7 +66,7 @@ export class CameraService {
     );
 
     // then we fetch them from the filesystem
-    const gallery$ = camera$.pipe(
+    const blobs$ = camera$.pipe(
       switchMap((gallery: GalleryPhotos) => {
         const paths: Observable<Blob>[] = [];
 
@@ -79,7 +79,7 @@ export class CameraService {
     );
 
     // then we delete them from the filesystem
-    return forkJoin([camera$, gallery$]).pipe(
+    return forkJoin([camera$, blobs$]).pipe(
       switchMap(([gallery]) => {
         const paths: Observable<void>[] = [];
 
@@ -89,9 +89,9 @@ export class CameraService {
 
         return forkJoin(paths);
       }),
-      withLatestFrom(gallery$),
+      withLatestFrom(blobs$),
       // and then we create the files to be made available
-      map(([, blobs]) => {
+      map(([_, blobs]) => {
         const files: File[] = [];
 
         for (const blob of blobs) {
