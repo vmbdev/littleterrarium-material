@@ -9,7 +9,7 @@ import {
   numberAttribute,
   signal,
 } from '@angular/core';
-import { NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -45,7 +45,7 @@ import { ShortFilenamePipe } from '@pipes/short-filename/short-filename.pipe';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FileUploaderComponent {
+export class FileUploaderComponent implements ControlValueAccessor {
   private readonly camera = inject(CameraService);
   private readonly device = inject(DeviceService);
 
@@ -86,7 +86,6 @@ export class FileUploaderComponent {
   );
 
   private onChange = (val: File[] | File | null) => {};
-  private onTouched = () => {};
 
   writeValue(val: File[]): void {
     if (val) this.onChange(val);
@@ -96,9 +95,7 @@ export class FileUploaderComponent {
     this.onChange = fn;
   }
 
-  registerOnTouched(fn: any): void {
-    this.onTouched = fn;
-  }
+  registerOnTouched(fn: any): void {}
 
   setDisabledState(isDisabled: boolean): void {
     this.disabled = isDisabled;

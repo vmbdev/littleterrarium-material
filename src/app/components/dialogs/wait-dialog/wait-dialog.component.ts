@@ -30,5 +30,5 @@ interface WaitDialogConfig {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WaitDialogComponent {
-  public readonly data: WaitDialogConfig = inject(MAT_DIALOG_DATA);
+  protected readonly data: WaitDialogConfig = inject(MAT_DIALOG_DATA);
 }

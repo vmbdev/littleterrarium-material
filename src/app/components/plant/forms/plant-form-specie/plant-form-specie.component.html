@@ -10,6 +10,7 @@
     [placeholder]="'specieFinder.inputPlaceholder' | transloco"
     (input)="change(specieInput.value)"
     [value]="specieName$ | async"
+    [disabled]="disabled"
   />
 
   <mat-autocomplete

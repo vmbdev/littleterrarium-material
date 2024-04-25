@@ -15,7 +15,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { Observable, finalize, tap } from 'rxjs';
+import { Observable, finalize } from 'rxjs';
 
 import { ViewerData } from '@models/viewer.model';
 import { FullscreenService } from '@services/fullscreen/fullscreen.service';
@@ -150,7 +150,7 @@ export class ViewerComponent {
   /**
    * Move the image on the canvas
    * @param x In pixels, the horizontal distance
-   * @param y In pixels, the vertial distance
+   * @param y In pixels, the vertical distance
    */
   move(x: number = 0, y: number = 0) {
     this.position.x += x;
@@ -180,7 +180,7 @@ export class ViewerComponent {
     const deltayDiff = this.previousDelta.y - event.deltaY;
     const imgdms = this.$imageDimensions();
 
-    if (deltaxDiff !== 0 && this.$imageDimensions().width > this.$vWidth()) {
+    if (deltaxDiff !== 0 && imgdms.width > this.$vWidth()) {
       const destX = this.position.x - deltaxDiff;
       this.previousDelta.x = event.deltaX;
 
@@ -191,7 +191,7 @@ export class ViewerComponent {
     }
 
     // test the vertical limits to not move the photo out of screen
-    if (deltayDiff !== 0 && this.$imageDimensions().height > this.$vHeight()) {
+    if (deltayDiff !== 0 && imgdms.height > this.$vHeight()) {
       const destY = this.position.y - deltayDiff;
       this.previousDelta.y = event.deltaY;
 

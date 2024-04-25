@@ -41,7 +41,6 @@ export class UserFormUsernameComponent {
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly destroyRef = inject(DestroyRef);
 
-  protected formStatusDetector$?: Observable<FormControlStatus>;
   protected $form?: WritableSignal<FormGroup>;
   protected readonly $errorTaken = signal<boolean>(false);
   protected readonly $errorInvalid = signal<boolean>(false);

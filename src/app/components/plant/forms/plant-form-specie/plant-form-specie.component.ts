@@ -1,14 +1,11 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  ElementRef,
-  Renderer2,
   forwardRef,
   inject,
-  viewChild,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -44,17 +41,14 @@ import { FullWidthDirective } from '@directives/full-width/full-width.directive'
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PlantFormSpecieComponent {
+export class PlantFormSpecieComponent implements ControlValueAccessor {
   private readonly api = inject(ApiService);
-  private readonly renderer = inject(Renderer2);
-
-  private readonly specieEl = viewChild<ElementRef>('specieId');
 
   protected specieName$?: Observable<string>;
   protected results$?: Observable<Specie[]>;
+  protected disabled: boolean = false;
 
   private onChange = (val: number | null) => {};
-  private onTouched = () => {};
 
   writeValue(val: number): void {
     if (val) {
@@ -81,16 +75,10 @@ export class PlantFormSpecieComponent {
     }
   }
 
-  registerOnTouched(fn: any): void {
-    this.onTouched = fn;
-  }
+  registerOnTouched(fn: any): void {}
 
   setDisabledState(isDisabled: boolean): void {
-    this.renderer.setProperty(
-      this.specieEl()?.nativeElement,
-      'disabled',
-      isDisabled,
-    );
+    this.disabled = isDisabled;
   }
 
   selectSpecie(id: number, name: string): void {

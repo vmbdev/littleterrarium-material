@@ -18,7 +18,7 @@ interface ConfirmDataConfig {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ConfirmDialogComponent {
-  public readonly data: ConfirmDataConfig = inject(MAT_DIALOG_DATA);
+  protected readonly data: ConfirmDataConfig = inject(MAT_DIALOG_DATA);
 
   accept(): void {
     if (this.data.accept) {

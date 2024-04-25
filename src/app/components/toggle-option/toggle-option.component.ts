@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, forwardRef, model } from '@angular/
 import { MatRippleModule } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 /**
  * Toggle custom component. Can work either as a FormControl or just through
@@ -27,7 +27,7 @@ import { NG_VALUE_ACCESSOR } from '@angular/forms';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ToggleOptionComponent {
+export class ToggleOptionComponent implements ControlValueAccessor {
   checked = model<boolean>(false);
   disabled: boolean = false;
 

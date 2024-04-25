@@ -1,6 +1,7 @@
 @if ($form) {
   <ng-container [formGroup]="$form()">
     <p [innerHTML]="'user-edit.usernameDesc' | transloco"></p>
+    <!-- FIXME: show requirements -->
     <mat-form-field fullWidth>
       <mat-label>{{ 'general.username' | transloco }}</mat-label>
       <input matInput type="text" formControlName="username">

@@ -118,7 +118,7 @@ export class RegisterComponent {
               this.setStep(1);
             }
           }
-
+// FIXME: control password response?
           return EMPTY;
         }),
       )

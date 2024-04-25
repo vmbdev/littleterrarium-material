@@ -39,8 +39,8 @@ import { FullWidthDirective } from '@directives/full-width/full-width.directive'
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MainToolbarComponent {
-  public readonly mt = inject(MainToolbarService);
-  public readonly search = inject(SearchService);
+  protected readonly mt = inject(MainToolbarService);
+  protected readonly search = inject(SearchService);
   private readonly location = inject(Location);
 
   @Output() toggleSidenav = new EventEmitter();

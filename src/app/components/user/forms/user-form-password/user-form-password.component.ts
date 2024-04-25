@@ -80,9 +80,9 @@ export class UserFormPasswordComponent implements ControlValueAccessor {
   protected hidePassword: boolean = true;
   protected hidePassword2: boolean = true;
   protected nonAlphaNumChars: string = '!@#$%^&*()_+-=[]{};\':"|,.<>/?';
+  protected disabled: boolean = false;
 
   private onChange = (val: string) => {};
-  private onTouched = () => {};
 
   writeValue(val: string): void {
     this.renderer.setProperty(this.pwdEl()?.nativeElement, 'value', val);
@@ -101,16 +101,10 @@ export class UserFormPasswordComponent implements ControlValueAccessor {
     this.onChange(pwdInput.value);
   }
 
-  registerOnTouched(fn: any): void {
-    this.onTouched = fn;
-  }
+  registerOnTouched(fn: any): void {}
 
   setDisabledState(isDisabled: boolean): void {
-    this.renderer.setProperty(
-      this.pwdEl()?.nativeElement,
-      'disabled',
-      isDisabled,
-    );
+    this.disabled = isDisabled;
   }
 
   validate() {
