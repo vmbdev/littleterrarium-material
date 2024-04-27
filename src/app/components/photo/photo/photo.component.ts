@@ -85,15 +85,12 @@ export class PhotoComponent {
         .draggable({
           onend: (event) => {
             if (event.swipe?.left) {
-              this.loadPrevPhoto();
-            } else if (event.swipe?.right) {
               this.loadNextPhoto();
+            } else if (event.swipe?.right) {
+              this.loadPrevPhoto();
             }
           },
         })
-        .on('tap', () => {
-          this.toggleViewer();
-        });
     }
   });
 

@@ -13,6 +13,7 @@
       <img
         [src]="fullImage"
         [alt]="('general.picture' | transloco) + ' - ' + photo.description"
+        (click)="this.toggleViewer()"
       >
     </div>
   }
