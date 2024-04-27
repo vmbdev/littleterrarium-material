@@ -43,7 +43,4 @@
     "strictInputAccessModifiers": true,
     "strictTemplates": true,
   },
-  "types": [
-    "hammerjs"
-  ]
 }

@@ -56,4 +56,11 @@
     object-fit: cover;
     object-position: 50% 50%;
   }
+
+  &--embedded {
+    margin: 0 !important;
+    padding: 0 !important;
+    max-height: none !important;
+    border-radius: 100%;
+  }
 }

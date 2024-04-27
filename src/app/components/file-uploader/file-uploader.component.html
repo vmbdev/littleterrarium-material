@@ -6,6 +6,11 @@
   (dragend)="dragLeave($event)"
   (drop)="dropFile($event)"
   (dragstart)="$event.preventDefault()"
+  [ngClass]="{
+    'file-uploader--embedded': embedded(),
+  }"
+  [style.width.px]="embedded() ? embeddedSize() : undefined"
+  [style.height.px]="embedded() ? embeddedSize() : undefined"
 >
   @if ($files().length === 0) {
     <div>

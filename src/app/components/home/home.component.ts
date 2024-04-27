@@ -21,8 +21,8 @@ import { MainToolbarService } from '@services/main-toolbar/main-toolbar.service'
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomeComponent {
-  private readonly mt = inject(MainToolbarService);
   private readonly translate = inject(TranslocoService);
+  private readonly mt = inject(MainToolbarService);
 
   ngOnInit(): void {
     this.mt.setName(this.translate.translate('general.locations'));

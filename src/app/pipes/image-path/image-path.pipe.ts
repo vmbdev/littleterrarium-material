@@ -5,12 +5,16 @@ import { ImagePathService } from '@services/image-path/image-path.service';
 
 @Pipe({
   name: 'imagePath',
-  standalone: true
+  standalone: true,
 })
 export class ImagePathPipe implements PipeTransform {
   private readonly imagePathService = inject(ImagePathService);
 
-  transform(value: ImagePath, size: 'thumb' | 'mid' | 'full'): string | null {
-    return this.imagePathService.get(value, size);
+  transform(
+    value: ImagePath | null | undefined,
+    size: 'thumb' | 'mid' | 'full',
+  ): string | null {
+    if (!value) return null;
+    else return this.imagePathService.get(value, size);
   }
 }

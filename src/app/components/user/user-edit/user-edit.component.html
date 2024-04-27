@@ -12,14 +12,11 @@
       <ltm-settings-card [title]="'general.avatar' | transloco">
         <p [innerHTML]="'user-edit.avatarDesc' | transloco"></p>
 
-        @if (removeAvatar || !user.avatar) {
-          <ltm-file-uploader maxAmount="1" formControlName="avatarFile" />
-        } @else {
-          <ltm-current-pic
-            [pic]="user.avatar | imagePath:'thumb'"
-            (click)="setRemoveAvatar()"
-          />
-        }
+        <ltm-image-selector
+          [source]="(newAvatar ?? (user.avatar | imagePath:'thumb')) ?? null"
+          (selected)="selectImage($event)"
+          center="true"
+        />
       </ltm-settings-card>
 
       <ltm-settings-card [title]="'general.email' | transloco">

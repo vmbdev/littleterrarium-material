@@ -6,13 +6,5 @@
       </button>
     </mat-toolbar>
   }
-  <canvas
-    #canvas
-    class="viewer__canvas"
-    (doubletap)="doubleTap()"
-    (panmove)="panMove($event)"
-    (panend)="panEnd()"
-    (pinchmove)="pinchMove($event)"
-  >
-  </canvas>
+  <canvas #canvas class="viewer__canvas"></canvas>
 </article>

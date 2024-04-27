@@ -20,9 +20,11 @@
       <p [innerHTML]="'location-add-edit.choose' | transloco"></p>
       <p [innerHTML]="'location-add-edit.ornot' | transloco"></p>
 
-      <ng-container [formGroup]="photoForm">
-        <ltm-file-uploader maxAmount="1" formControlName="pictureFile" />
-      </ng-container>
+      <ltm-image-selector
+        [source]="newPicture"
+        (selected)="selectImage($event)"
+        center="true"
+      />
 
       <ltm-stepper-navigation />
     </mat-step>

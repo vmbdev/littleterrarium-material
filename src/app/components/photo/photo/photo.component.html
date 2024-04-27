@@ -9,14 +9,10 @@
   </ltm-info-box>
   
   @if ($currentImageFull(); as fullImage) {
-    <div class="photo">
+    <div class="photo" #photoContainer>
       <img
         [src]="fullImage"
         [alt]="('general.picture' | transloco) + ' - ' + photo.description"
-        draggable="false"
-        (swiperight)="loadPrevPhoto()"
-        (swipeleft)="loadNextPhoto()"
-        (click)="toggleViewer()"
       >
     </div>
   }

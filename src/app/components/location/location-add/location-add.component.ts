@@ -15,7 +15,6 @@ import { catchError, EMPTY, finalize, Observable, tap } from 'rxjs';
 import { TranslocoModule, TranslocoService } from '@ngneat/transloco';
 
 import { StepperNavigationComponent } from '@components/stepper-navigation/stepper-navigation.component';
-import { FileUploaderComponent } from '@components/file-uploader/file-uploader.component';
 import { LocationFormNameComponent } from '@components/location/forms/location-form-name/location-form-name.component';
 import { LocationFormLightComponent } from '@components/location/forms/location-form-light/location-form-light.component';
 import { FormPrivacyComponent } from '@components/form-privacy/form-privacy.component';
@@ -23,6 +22,7 @@ import { Location } from '@models/location.model';
 import { ErrorHandlerService } from '@services/error-handler/error-handler.service';
 import { LocationService } from '@services/location/location.service';
 import { LimitLargeScreenDirective } from '@directives/limit-large-screen/limit-large-screen.directive';
+import { ImageSelectorComponent } from '@components/image-selector/image-selector.component';
 
 @Component({
   selector: 'ltm-location-add',
@@ -41,10 +41,10 @@ import { LimitLargeScreenDirective } from '@directives/limit-large-screen/limit-
     MatDialogModule,
     TranslocoModule,
     StepperNavigationComponent,
-    FileUploaderComponent,
     LocationFormNameComponent,
     LocationFormLightComponent,
     FormPrivacyComponent,
+    ImageSelectorComponent,
     LimitLargeScreenDirective,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -77,6 +77,26 @@ export class LocationAddComponent {
   });
 
   protected createLocation$?: Observable<Location>;
+  protected newPicture: string | null = null;
+
+  selectImage(file: File | null) {
+    if (file) {
+      this.photoForm.patchValue({
+        pictureFile: file,
+      });
+
+      this.newPicture = URL.createObjectURL(file);
+    } else {
+      this.photoForm.patchValue({
+        pictureFile: null,
+      });
+
+      if (this.newPicture) {
+        URL.revokeObjectURL(this.newPicture);
+        this.newPicture = null;
+      }
+    }
+  }
 
   submit(): void {
     if (!this.form.valid) {

@@ -19,13 +19,12 @@ import {
 import { catchError, EMPTY, finalize } from 'rxjs';
 import { TranslocoModule, TranslocoService } from '@ngneat/transloco';
 
-import { FileUploaderComponent } from '@components/file-uploader/file-uploader.component';
 import { LocationFormLightComponent } from '@components/location/forms/location-form-light/location-form-light.component';
 import { LocationFormNameComponent } from '@components/location/forms/location-form-name/location-form-name.component';
 import { EditPageComponent } from '@components/edit-page/edit-page.component';
 import { FormPrivacyComponent } from '@components/form-privacy/form-privacy.component';
 import { SettingsCardComponent } from '@components/settings-card/settings-card.component';
-import { CurrentPicComponent } from '@components/current-pic/current-pic.component';
+import { ImageSelectorComponent } from '@components/image-selector/image-selector.component';
 import { ErrorHandlerService } from '@services/error-handler/error-handler.service';
 import { LocationService } from '@services/location/location.service';
 import { Location } from '@models/location.model';
@@ -37,13 +36,12 @@ import { ImagePathPipe } from '@pipes/image-path/image-path.pipe';
   imports: [
     ReactiveFormsModule,
     TranslocoModule,
-    FileUploaderComponent,
     LocationFormNameComponent,
     LocationFormLightComponent,
     FormPrivacyComponent,
     EditPageComponent,
-    CurrentPicComponent,
     SettingsCardComponent,
+    ImageSelectorComponent,
     ImagePathPipe,
   ],
   templateUrl: './location-edit.component.html',
@@ -69,6 +67,7 @@ export class LocationEditComponent {
   });
 
   protected $location: WritableSignal<Location | null> = signal(null);
+  protected newPicture?: string;
   protected removePicture: boolean = false;
 
   ngOnInit(): void {
@@ -83,8 +82,27 @@ export class LocationEditComponent {
     }
   }
 
-  setRemovePicture() {
-    this.removePicture = true;
+  
+  selectImage(file: File | null) {
+    if (file) {
+      this.form.patchValue({
+        pictureFile: file,
+      });
+
+      this.newPicture = URL.createObjectURL(file);
+      this.removePicture = false;
+    } else {
+      this.form.patchValue({
+        pictureFile: null,
+      });
+
+      if (this.newPicture) {
+        URL.revokeObjectURL(this.newPicture);
+        this.newPicture = undefined;
+      }
+
+      this.removePicture = true;
+    }
   }
 
   submit(): void {

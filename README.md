@@ -139,7 +139,7 @@ for Angular
 types
 - [Capacitor](https://capacitorjs.com/) - Runtime for building Web Native apps
 - [Luxon](https://moment.github.io/luxon/) - Date management library
-- [Hammer.js](https://hammerjs.github.io/) - Touch gestures
+- [interact.js](https://interactjs.io/) - Gestures
 - [ngx-toastr](https://github.com/scttcper/ngx-toastr) - Toast for Angular
 - [ng-mocks](https://ng-mocks.sudo.eu/) - Testing library for Angular
 - [Compodoc](https://compodoc.app/) - Documentation tool for Angular

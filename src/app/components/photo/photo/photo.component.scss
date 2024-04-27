@@ -1,4 +1,7 @@
 .photo {
+  touch-action: none;
+  user-select: none;
+
   img {
     width: 100%;
     height: auto;

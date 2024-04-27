@@ -21,9 +21,7 @@ import { UserFormUsernameComponent } from '@components/user/forms/user-form-user
 import { UserFormNameComponent } from '@components/user/forms/user-form-name/user-form-name.component';
 import { FormPrivacyComponent } from '@components/form-privacy/form-privacy.component';
 import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog.component';
-import { FileUploaderComponent } from '@components/file-uploader/file-uploader.component';
 import { EditPageComponent } from '@components/edit-page/edit-page.component';
-import { CurrentPicComponent } from '@components/current-pic/current-pic.component';
 import { SettingsCardComponent } from '@components/settings-card/settings-card.component';
 import { MainToolbarService } from '@services/main-toolbar/main-toolbar.service';
 import { ApiService } from '@services/api/api.service';
@@ -31,6 +29,7 @@ import { AuthService } from '@services/auth/auth.service';
 import { ErrorHandlerService } from '@services/error-handler/error-handler.service';
 import { User } from '@models/user.model';
 import { ImagePathPipe } from '@pipes/image-path/image-path.pipe';
+import { ImageSelectorComponent } from '@components/image-selector/image-selector.component';
 
 @Component({
   selector: 'ltm-user-edit',
@@ -42,7 +41,6 @@ import { ImagePathPipe } from '@pipes/image-path/image-path.pipe';
     MatDialogModule,
     MatCardModule,
     TranslocoModule,
-    FileUploaderComponent,
     UserFormBioComponent,
     UserFormEmailComponent,
     UserFormUsernameComponent,
@@ -50,7 +48,7 @@ import { ImagePathPipe } from '@pipes/image-path/image-path.pipe';
     FormPrivacyComponent,
     EditPageComponent,
     SettingsCardComponent,
-    CurrentPicComponent,
+    ImageSelectorComponent,
     ImagePathPipe,
   ],
   templateUrl: './user-edit.component.html',
@@ -85,6 +83,7 @@ export class UserEditComponent {
     public: new FormControl<boolean>(true),
   });
   protected user$?: Observable<User | null>;
+  protected newAvatar?: string;
   protected removeAvatar: boolean = false;
 
   ngOnInit(): void {
@@ -104,6 +103,28 @@ export class UserEditComponent {
         }
       }),
     );
+  }
+
+  selectImage(file: File | null) {
+    if (file) {
+      this.form.patchValue({
+        avatarFile: file,
+      });
+
+      this.newAvatar = URL.createObjectURL(file);
+      this.removeAvatar = false;
+    } else {
+      this.form.patchValue({
+        avatarFile: null,
+      });
+
+      if (this.newAvatar) {
+        URL.revokeObjectURL(this.newAvatar);
+        this.newAvatar = undefined;
+      }
+
+      this.removeAvatar = true;
+    }
   }
 
   openWaitDialog() {

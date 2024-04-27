@@ -13,14 +13,11 @@
         <p [innerHTML]="'location-add-edit.choose' | transloco"></p>
         <p [innerHTML]="'location-add-edit.ornot' | transloco"></p>
 
-        @if (removePicture || !location.pictures) {
-          <ltm-file-uploader maxAmount="1" formControlName="pictureFile" />
-        } @else {
-          <ltm-current-pic
-            [pic]="location.pictures | imagePath:'thumb'"
-            (click)="setRemovePicture()"
-          />
-        }
+        <ltm-image-selector
+          [source]="(newPicture ?? (location.pictures | imagePath:'thumb')) ?? null"
+          (selected)="selectImage($event)"
+          center="true"
+        />
       </ltm-settings-card>
 
       <ltm-settings-card [title]="'general.light' | transloco">

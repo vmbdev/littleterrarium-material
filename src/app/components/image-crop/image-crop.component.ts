@@ -1,26 +1,16 @@
-import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
-  DestroyRef,
-  ElementRef,
-  HostListener,
-  Signal,
   computed,
-  inject,
+  ElementRef,
+  input,
+  numberAttribute,
+  output,
   signal,
+  Signal,
   viewChild,
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { Observable, finalize } from 'rxjs';
 import interact from 'interactjs';
-
-import { ViewerData } from '@models/viewer.model';
-import { FullscreenService } from '@services/fullscreen/fullscreen.service';
-import { VIEWER_DATA } from 'src/tokens';
 
 type Coords = {
   x: number;
@@ -28,87 +18,84 @@ type Coords = {
 };
 
 @Component({
-  selector: 'ltm-viewer',
+  selector: 'ltm-image-crop',
   standalone: true,
-  imports: [CommonModule, MatToolbarModule, MatIconModule, MatButtonModule],
-  templateUrl: './viewer.component.html',
-  styleUrl: './viewer.component.scss',
+  imports: [],
+  templateUrl: './image-crop.component.html',
+  styleUrl: './image-crop.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ViewerComponent {
-  protected readonly data: ViewerData = inject(VIEWER_DATA);
-  private readonly fullscreen = inject(FullscreenService);
-  private readonly destroyRef = inject(DestroyRef);
-
-  viewer = viewChild.required<ElementRef>('viewer');
+export class ImageCropComponent {
   canvas = viewChild.required<ElementRef>('canvas');
+  size = input(300, { transform: numberAttribute });
+  minZoom = input(0.125, { transform: numberAttribute });
+  maxZoom = input(2.5, { transform: numberAttribute });
+  imageSource = input.required<File>();
+  imageFile = output<File>();
 
+  private $ctx: Signal<CanvasRenderingContext2D> = computed(() =>
+    this.canvas().nativeElement.getContext('2d'),
+  );
   private image = new Image();
-  private position: Coords = { x: 0, y: 0 };
-  private minZoom = 0.125;
-  private maxZoom = 2.5;
-
   private $scale = signal(1);
+  private position: Coords = { x: 0, y: 0 };
   private $imageDim: Signal<Coords> = computed(() => {
     return {
       x: this.image.naturalWidth * this.$scale(),
       y: this.image.naturalHeight * this.$scale(),
     };
   });
-  private $vWidth = computed(() => this.viewer().nativeElement.clientWidth);
-  private $vHeight = computed(() => this.viewer().nativeElement.clientHeight);
-
-  private $ctx: Signal<CanvasRenderingContext2D> = computed(() =>
-    this.canvas().nativeElement.getContext('2d'),
-  );
-
-  protected closeViewer$?: Observable<any>;
-
-  ngOnDestroy() {
-    this.close();
-  }
 
   ngAfterViewInit(): void {
-    this.fullscreen
-      .start()
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe();
-
-    this.image.src = this.data.src;
+    this.image.src = URL.createObjectURL(this.imageSource());
+    // this.image.src = 'http://localhost:5015/public/fb/7d/82/1df6fc837408ef96ca822ec8839149d23a.webp';
+    // this.image.src = 'https://littleterrarium.one/public/b9/12/53/ee637c8d07c8317c2373411ea767cb9498.webp';
+    // this.image.src = 'http://localhost:5015/public/ava.jpg';
     this.image.crossOrigin = 'anonymous';
+    this.$ctx().canvas.width = this.size();
+    this.$ctx().canvas.height = this.size();
 
     this.image.onload = () => {
-      this.position.x = (this.$vWidth() - this.$imageDim().x) / 2;
-      this.position.y = (this.$vHeight() - this.$imageDim().y) / 2;
-      this.resize();
+      if (
+        this.image.naturalWidth >= this.size() &&
+        this.image.naturalHeight >= this.size()
+      ) {
+        this.$scale.set(1);
+      } else {
+        const mindim = Math.min(
+          this.image.naturalHeight,
+          this.image.naturalWidth,
+        );
+        const ratio = this.size() / mindim;
+
+        this.$scale.set(ratio);
+      }
+
+      this.position.x = (this.size() - this.$imageDim().x) / 2;
+      this.position.y = (this.size() - this.$imageDim().y) / 2;
+      this.draw();
       this.setupCanvasInteraction();
+      this.snapshot();
+      URL.revokeObjectURL(this.image.src);
     };
   }
 
-  @HostListener('window:resize')
-  resize() {
-    this.$vWidth = computed(() => this.viewer().nativeElement.clientWidth);
-    this.$vHeight = computed(() => this.viewer().nativeElement.clientHeight);
-
-    this.canvas().nativeElement.width = this.$vWidth();
-    this.canvas().nativeElement.height = this.$vHeight();
-
-    this.resetScale();
-    this.init();
-    this.draw();
-  }
-
-  // TODO: reset to min scale
   setupCanvasInteraction() {
     interact(this.$ctx().canvas)
       .draggable({
         onmove: (event) => {
           this.dragImage(event.dx, event.dy);
         },
+        onend: () => {
+          this.snapshot();
+        },
       })
       .gesturable({
         onmove: (event) => {
           this.zoom(event.ds, event.clientX, event.clientY, true);
+        },
+        onend: () => {
+          this.snapshot();
         },
       })
       .on('mousewheel', (event) => {
@@ -119,6 +106,7 @@ export class ViewerComponent {
       })
       .on('doubletap', (event) => {
         this.zoom(-400, event.clientX, event.clientY);
+        this.snapshot();
 
         event.preventDefault();
       });
@@ -132,13 +120,14 @@ export class ViewerComponent {
   ) {
     const factor = scale ? 1 : -0.001;
     const newScale = Math.min(
-      Math.max(this.minZoom, this.$scale() + delta * factor),
-      this.maxZoom,
+      Math.max(this.minZoom(), this.$scale() + delta * factor),
+      this.maxZoom(),
     );
+
     const newImageDimX = newScale * this.image.naturalWidth;
     const newImageDimY = newScale * this.image.naturalHeight;
 
-    if (newImageDimX >= this.$vWidth() && newImageDimY >= this.$vHeight()) {
+    if (newImageDimX >= this.size() && newImageDimY >= this.size()) {
       const newX =
         pointerX - (pointerX - this.position.x) * (newScale / this.$scale());
       const newY =
@@ -152,7 +141,7 @@ export class ViewerComponent {
   /**
    * Draw the image on canvas
    */
-  draw() {
+  draw(grid: boolean = true) {
     this.clear();
     this.$ctx().drawImage(
       this.image,
@@ -161,13 +150,32 @@ export class ViewerComponent {
       this.$imageDim().x,
       this.$imageDim().y,
     );
+
+    if (grid) this.drawGrid();
+  }
+
+  drawGrid() {
+    const gap = this.size() / 4;
+    this.$ctx().beginPath();
+    this.$ctx().lineWidth = 0.5;
+    this.$ctx().strokeStyle = 'grey';
+
+    for (let i = 1; i <= 3; i++) {
+      this.$ctx().moveTo(i * gap, 0);
+      this.$ctx().lineTo(i * gap, this.size());
+      this.$ctx().stroke();
+
+      this.$ctx().moveTo(0, i * gap);
+      this.$ctx().lineTo(this.size(), i * gap);
+      this.$ctx().stroke();
+    }
   }
 
   /**
    * Clear the canvas to redraw on it
    */
   clear() {
-    this.$ctx().clearRect(0, 0, this.$vWidth(), this.$vHeight());
+    this.$ctx().clearRect(0, 0, this.size(), this.size());
   }
 
   /**
@@ -184,13 +192,13 @@ export class ViewerComponent {
     // test the horizontal limits to not move the photo out of screen
     if (newX <= 0 && newX >= borderX) this.position.x = newX;
     else if (newX < borderX) {
-      this.position.x = Math.min(0, this.$vWidth() - this.$imageDim().x);
+      this.position.x = Math.min(0, this.size() - this.$imageDim().x);
     }
 
     // test the vertical limits to not move the photo out of screen
     if (newY <= 0 && newY >= borderY) this.position.y = newY;
     else if (newY < borderY) {
-      this.position.y = Math.min(0, this.$vHeight() - this.$imageDim().y);
+      this.position.y = Math.min(0, this.size() - this.$imageDim().y);
     }
 
     this.draw();
@@ -207,30 +215,23 @@ export class ViewerComponent {
     if (dy !== 0 && this.$imageDim().y > canvasH) this.move(0, dy);
   }
 
-  close() {
-    this.closeViewer$ = this.fullscreen.stop().pipe(
-      finalize(() => {
-        this.data.close();
-      }),
+  snapshot() {
+    this.draw(false);
+
+    this.$ctx().canvas.toBlob(
+      (blob: Blob | null) => {
+        if (blob) {
+          const file = new File([blob], `snap-${Date.now()}.jpeg`, {
+            type: 'image/jpeg',
+          });
+
+          this.imageFile.emit(file);
+        }
+      },
+      'image/jpeg',
+      80,
     );
-  }
 
-  /**
-   * Returns the scale so that the image fully fits the screen
-   */
-  resetScale() {
-    const scaleX = this.$vWidth() / this.image.naturalWidth;
-    const scaleY = this.$vHeight() / this.image.naturalHeight;
-    this.$scale.set(Math.min(scaleX, scaleY));
-  }
-
-  /**
-   * Calculate the positions for the initial drawing
-   */
-  init() {
-    const imgdms = this.$imageDim();
-
-    this.position.x = (this.$vWidth() - imgdms.x) / 2;
-    this.position.y = (this.$vHeight() - imgdms.y) / 2;
+    this.draw();
   }
 }

@@ -1,4 +1,14 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, WritableSignal, inject, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  ElementRef,
+  WritableSignal,
+  effect,
+  inject,
+  signal,
+  viewChild,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Params, Router, RouterModule } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
@@ -12,6 +22,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { forkJoin, Observable, switchMap, tap } from 'rxjs';
 import { TranslocoService, TranslocoModule } from '@ngneat/transloco';
 import { DateTime } from 'luxon';
+import interact from 'interactjs';
 
 import { InfoBoxComponent } from '@components/info-box/info-box/info-box.component';
 import { PropertyComponent } from '@components/info-box/property/property.component';
@@ -59,10 +70,32 @@ export class PhotoComponent {
   private readonly share = inject(ShareService);
   private readonly destroyRef = inject(DestroyRef);
 
+  photoEl = viewChild<ElementRef>('photoContainer');
+
   private id?: number;
   private navigation?: NavigationData;
   protected $currentImageFull: WritableSignal<string | null> = signal(null);
   protected photo$?: Observable<Photo | null>;
+
+  loadGestures = effect(() => {
+    const el = this.photoEl();
+
+    if (el) {
+      interact(el.nativeElement)
+        .draggable({
+          onend: (event) => {
+            if (event.swipe?.left) {
+              this.loadPrevPhoto();
+            } else if (event.swipe?.right) {
+              this.loadNextPhoto();
+            }
+          },
+        })
+        .on('tap', () => {
+          this.toggleViewer();
+        });
+    }
+  });
 
   ngOnInit() {
     this.setMtMenus();
@@ -151,11 +184,10 @@ export class PhotoComponent {
     const img = this.$currentImageFull();
 
     if (img) {
-      this.share.shareImageFromURL(img)
-      .pipe(
-        takeUntilDestroyed(this.destroyRef),
-      )
-      .subscribe();
+      this.share
+        .shareImageFromURL(img)
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe();
     }
   }
 

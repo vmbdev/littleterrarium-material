@@ -1,12 +1,14 @@
+import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
   WritableSignal,
-  computed,
+  booleanAttribute,
   forwardRef,
   inject,
   input,
   numberAttribute,
+  output,
   signal,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
@@ -26,6 +28,7 @@ import { ShortFilenamePipe } from '@pipes/short-filename/short-filename.pipe';
   standalone: true,
   selector: 'ltm-file-uploader',
   imports: [
+    CommonModule,
     TranslocoModule,
     ReactiveFormsModule,
     MatButtonModule,
@@ -54,6 +57,19 @@ export class FileUploaderComponent implements ControlValueAccessor {
    */
   maxAmount = input(1, { transform: numberAttribute });
 
+  /**
+   * Special mode in which the file uploader design changes to fill a circular
+   * container.
+   */
+  embedded = input(false, { transform: booleanAttribute });
+  embeddedSize = input(0, { transform: numberAttribute });
+
+  /**
+   * Emitted when the files selected in the component have changed.
+   * In case we don't want to use this component as a FormControl.
+   */
+  fileChange = output<File[] | File>();
+
   protected disabled: boolean = false;
 
   /**
@@ -68,10 +84,11 @@ export class FileUploaderComponent implements ControlValueAccessor {
 
   /**
    * The number of files that can still be added, depending on the max amount
-   * of files allowed.
+   * of files allowed. We can't detect changes on files length so it can't be
+   * computed.
    */
-  protected $availableSlots = computed(
-    () => this.maxAmount() - this.$files().length,
+  protected $availableSlots: WritableSignal<number> = signal(
+    this.maxAmount() - this.$files().length,
   );
 
   /**
@@ -80,15 +97,16 @@ export class FileUploaderComponent implements ControlValueAccessor {
   protected dragOver: boolean = false;
 
   protected $mobileOS = toSignal(
-    this.device.getOS().pipe(
-      map((os) => os === 'android' || os === 'ios')
-    )
+    this.device.getOS().pipe(map((os) => os === 'android' || os === 'ios')),
   );
 
   private onChange = (val: File[] | File | null) => {};
 
   writeValue(val: File[]): void {
-    if (val) this.onChange(val);
+    if (val) {
+      this.$files.set([]);
+      this.addFiles(val);
+    }
   }
 
   registerOnChange(fn: any): void {
@@ -178,10 +196,15 @@ export class FileUploaderComponent implements ControlValueAccessor {
       }
 
       this.$previews.update((val) => [...val, ...previews]);
+      this.$availableSlots.set(this.maxAmount() - this.$files().length);
 
       if (this.maxAmount() === 1) {
         this.onChange(this.$files()[0]);
-      } else this.onChange(this.$files());
+        this.fileChange.emit(this.$files()[0]);
+      } else {
+        this.onChange(this.$files());
+        this.fileChange.emit(this.$files());
+      }
     }
   }
 
@@ -215,6 +238,7 @@ export class FileUploaderComponent implements ControlValueAccessor {
       newVal.splice(index, 1);
       return newVal;
     });
+    this.$availableSlots.set(this.maxAmount() - this.$files().length);
 
     if (this.maxAmount() === 1) {
       this.onChange(null);

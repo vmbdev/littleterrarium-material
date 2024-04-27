@@ -2,13 +2,19 @@
 
 ## [1.1.3] - next
 
+### Added
+
+- New avatar/location picture selector.
+
 ### Changes
 
 - Better support for file selection on non-mobile devices.
+- Ditched Hammer.JS in favor of a newer, better supported, nicer API interact.js.
 
 ### Fixes
 
 - Fixed the Picture Viewer not closing when not in Android.
+- Fixed the File Uploader not resetting availability when files are deleted.
 
 ## [1.1.2] - 2024-03-19
 
