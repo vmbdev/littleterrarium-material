@@ -11,7 +11,7 @@ import {
   EMPTY,
 } from 'rxjs';
 
-import { ApiService } from '@services/api/api.service';
+import { ApiService, UserPreferences } from '@services/api/api.service';
 import { User } from '@models/user.model';
 
 @Injectable({
@@ -91,5 +91,38 @@ export class AuthService {
     const user = this.user.getValue();
 
     return !!(user && user[param] === val);
+  }
+
+  getPref(key: string): any {
+    const user = this.user.getValue();
+
+    if (user) {
+      if (user.preferences && user.preferences[key]) {
+        return user.preferences[key];
+      } else return null;
+    } else return localStorage.getItem(`LT_${key}`);
+  }
+
+  setPref(prefs: UserPreferences): Observable<User | null> {
+    const user = this.user.getValue();
+
+    if (user) {
+      const newPrefs = {
+        ...user.preferences,
+        ...prefs,
+      };
+
+      return this.api.updatePreferences(newPrefs).pipe(
+        tap((user: User) => {
+          this.user.next(user);
+        }),
+      );
+    } else {
+      for (const [key, value] of Object.entries(prefs)) {
+        localStorage.setItem(`LT_${key}`, value);
+      }
+
+      return of(null);
+    }
   }
 }

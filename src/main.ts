@@ -10,7 +10,6 @@ import { RouterModule } from '@angular/router';
 import { DateAdapter, NativeDateAdapter } from '@angular/material/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { TranslocoService, provideTransloco } from '@ngneat/transloco';
-import { provideTranslocoPersistLang } from '@ngneat/transloco-persist-lang';
 import { ToastrModule } from 'ngx-toastr';
 
 import { AuthInterceptor } from '@interceptors/auth.interceptor';
@@ -49,10 +48,6 @@ bootstrapApplication(AppComponent, {
     provideHttpClient(withInterceptorsFromDi()),
     importProvidersFrom(RouterModule.forRoot(routes)),
     importProvidersFrom(ToastrModule.forRoot()),
-    provideTranslocoPersistLang({
-      storage: { useValue: localStorage },
-      storageKey: 'LT_locale',
-    }),
     provideTransloco({
       config: {
         availableLangs,

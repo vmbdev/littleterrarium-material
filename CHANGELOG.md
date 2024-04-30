@@ -8,8 +8,14 @@
 
 ### Changes
 
+- Angular version 17.3.6 and Capacitor 6.
 - Better support for file selection on non-mobile devices.
 - Ditched Hammer.JS in favor of a newer, better supported, nicer API interact.js.
+- User preferences are now stored server-side. When not signed in, it will fall
+back to local storage.
+- New navigation toolbar when not signed in.
+- Routes for not signed users (sign in, register, recover password, etc) will
+all follow the same layout now.
 
 ### Fixes
 

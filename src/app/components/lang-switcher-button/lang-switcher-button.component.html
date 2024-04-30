@@ -1,0 +1,15 @@
+@if (language.$list().length > 1) {
+  <button mat-icon-button [matMenuTriggerFor]="menu">
+    <mat-icon>translate</mat-icon>
+  </button>
+  <mat-menu #menu="matMenu">
+    @for (lang of language.$list(); track lang.id) {
+      <button
+        mat-menu-item
+        (click)="language.setLang(lang.id)"
+      >
+        {{ lang.label }}
+      </button>
+    }
+  </mat-menu>
+}

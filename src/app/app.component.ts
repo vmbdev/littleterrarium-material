@@ -5,6 +5,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { App } from '@capacitor/app';
 
 import { AuthService } from '@services/auth/auth.service';
+import { LanguageService } from '@services/language/language.service';
 
 @Component({
   selector: 'ltm-app-root',
@@ -16,9 +17,14 @@ import { AuthService } from '@services/auth/auth.service';
 export class AppComponent {
   private readonly location = inject(Location);
   private readonly auth = inject(AuthService);
+  private readonly language = inject(LanguageService);
 
   ngOnInit() {
-    this.auth.check().subscribe();
+    this.auth.check().subscribe({
+      complete: () => {
+        this.language.init();
+      },
+    });
 
     App.addListener('backButton', ({ canGoBack }) => {
       if (canGoBack) this.location.back();

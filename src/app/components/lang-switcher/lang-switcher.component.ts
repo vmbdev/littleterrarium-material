@@ -1,19 +1,10 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  WritableSignal,
-  inject,
-  signal,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
+import { TranslocoModule } from '@ngneat/transloco';
+
 import { InlineControlComponent } from '@components/inline-control/inline-control.component';
-import {
-  LangDefinition,
-  TranslocoModule,
-  TranslocoService,
-} from '@ngneat/transloco';
-import { take } from 'rxjs';
+import { LanguageService } from '@services/language/language.service';
 
 @Component({
   selector: 'ltm-lang-switcher',
@@ -29,21 +20,5 @@ import { take } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LangSwitcherComponent {
-  private readonly translate = inject(TranslocoService);
-
-  protected readonly $current: WritableSignal<string> = signal(
-    this.translate.getActiveLang(),
-  );
-  protected readonly languages =
-    this.translate.getAvailableLangs() as LangDefinition[];
-
-  setLang(lang: string) {
-    this.translate
-      .load(lang)
-      .pipe(take(1))
-      .subscribe(() => {
-        this.$current.set(lang);
-        this.translate.setActiveLang(lang);
-      });
-  }
+  protected readonly language = inject(LanguageService);
 }

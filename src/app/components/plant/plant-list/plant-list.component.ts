@@ -33,6 +33,7 @@ import { ConfirmDialogComponent } from '@components/dialogs/confirm-dialog/confi
 import { PlantEditComponent } from '@components/plant/plant-edit/plant-edit.component';
 import { PlantMenuWaterComponent } from '@components/plant/menu/plant-menu-water/plant-menu-water.component';
 import { PlantMenuFertComponent } from '@components/plant/menu/plant-menu-fert/plant-menu-fert.component';
+import { AuthService } from '@services/auth/auth.service';
 import { PlantGetConfig } from '@services/api/api.service';
 import { LocationService } from '@services/location/location.service';
 import { PlantService } from '@services/plant/plant.service';
@@ -75,6 +76,7 @@ type PlantListItem = {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlantListComponent {
+  private readonly auth = inject(AuthService);
   private readonly plantService = inject(PlantService);
   private readonly locationService = inject(LocationService);
   private readonly dialog = inject(MatDialog);
@@ -94,24 +96,24 @@ export class PlantListComponent {
   protected breakpoint: number = 2;
 
   private filter: string | null = null;
-  private order: SortOrder;
+  private order: SortOrder = 'asc';
 
   /**
    * Defines the sorting column. We make it a signal so we can compute the
    * signals to be sent to MainToolbarService automatically.
    */
-  private sort: WritableSignal<SortColumn>;
+  private column = signal<SortColumn>('name');
 
   /**
    * The menus of MainToolbar
    */
   private readonly $nameSelected: Signal<boolean> = computed(
-    () => this.sort() === 'name',
+    () => this.column() === 'name',
   );
   private readonly $dateSelected: Signal<boolean> = computed(
-    () => this.sort() === 'date',
+    () => this.column() === 'date',
   );
-  protected $listView: WritableSignal<boolean>;
+  protected $listView = signal<boolean>(false);
 
   /**
    * Just for convenience to pass to MainToolbarService
@@ -135,17 +137,21 @@ export class PlantListComponent {
     }
   });
 
-  constructor() {
-    const view = localStorage.getItem('LT_plantListView') === 'true';
-    const order = localStorage.getItem('LT_plantListOrder');
-    const sort = localStorage.getItem('LT_plantListSort');
-    
-    this.$listView = signal(view);
-    this.order = order === 'asc' ? 'asc' : 'desc';
-    this.sort = (sort === 'name') ? signal('name') : signal('date');
-  }
-
   ngOnInit(): void {
+    const storedOrder = this.auth.getPref('plantListOrder');
+    const storedSort = this.auth.getPref('plantListSort');
+    const storedView = this.auth.getPref('plantListView');
+
+    if (storedOrder && (storedOrder === 'asc' || storedOrder === 'desc')) {
+      this.order = storedOrder;
+    }
+
+    if (storedSort && (storedSort === 'name' || storedSort === 'date')) {
+      this.column.set(storedSort);
+    }
+
+    this.$listView.set(!!storedView);
+
     this.computeBreakpoint(window.innerWidth);
     this.fetchPlants();
     this.createMainToolbarContext();
@@ -175,7 +181,7 @@ export class PlantListComponent {
     let options: PlantGetConfig = {
       cursor: scroll && this.cursor ? this.cursor : undefined,
       filter: this.filter ?? '',
-      sort: this.sort(),
+      sort: this.column(),
       order: this.order,
     };
 
@@ -272,8 +278,8 @@ export class PlantListComponent {
   }
 
   toggleSortColumn(column: SortColumn) {
-    if (this.sort() !== column) {
-      this.sort.set(column);
+    if (this.column() !== column) {
+      this.column.set(column);
       // when a new sortable column is chosen, we order 'asc' by default
       this.order = 'asc';
     } else this.toggleSortOrder();
@@ -287,13 +293,16 @@ export class PlantListComponent {
   }
 
   storeSortOptions() {
-    localStorage.setItem('LT_plantListOrder', this.order.toString());
-    localStorage.setItem('LT_plantListSort', this.sort().toString());
+    this.auth
+      .setPref({
+        plantListSort: this.column(),
+        plantListOrder: this.order,
+      })
+      .subscribe();
   }
 
   setSmallView(val: boolean) {
-    localStorage.setItem('LT_plantListView', val.toString());
-
+    this.auth.setPref({ plantListView: val }).subscribe();
     this.$listView.set(val);
   }
 
@@ -324,7 +333,10 @@ export class PlantListComponent {
         );
 
         // we moved the plant, hence we remove it from the list
-        if (this.locationId() && updatedPlant.locationId !== this.locationId()) {
+        if (
+          this.locationId() &&
+          updatedPlant.locationId !== this.locationId()
+        ) {
           this.$list.update((value) => {
             const list = [...value];
             list.splice(index, 1);

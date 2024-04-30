@@ -53,6 +53,7 @@ export interface UserPreferences {
   [index: string]: any;
   theme?: string;
   locale?: string;
+  plantListView?: boolean;
   plantListSort?: SortColumn;
   plantListOrder?: SortOrder;
 }

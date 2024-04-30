@@ -7,29 +7,32 @@ export const USER_ROUTES: Route[] = [
     path: '',
     loadComponent: () =>
       import('./user-main/user-main.component').then(
-        (m) => m.UserMainComponent
+        (m) => m.UserMainComponent,
       ),
     canActivate: [SignedInGuard],
-  },
-  {
-    path: 'recover',
-    loadComponent: () =>
-      import('./password-recovery/password-recovery.component').then(
-        (m) => m.PasswordRecoveryComponent
-      ),
   },
   {
     path: 'change',
     loadComponent: () =>
       import('./password-change/password-change.component').then(
-        (m) => m.PasswordChangeComponent
+        (m) => m.PasswordChangeComponent,
+      ),
+  },
+];
+
+export const USER_ROUTES_UNSIGNED: Route[] = [
+  {
+    path: 'recover',
+    loadComponent: () =>
+      import('./password-recovery/password-recovery.component').then(
+        (m) => m.PasswordRecoveryComponent,
       ),
   },
   {
     path: 'reset/:userId/:token',
     loadComponent: () =>
       import('./password-reset/password-reset.component').then(
-        (m) => m.PasswordResetComponent
+        (m) => m.PasswordResetComponent,
       ),
   },
 ];

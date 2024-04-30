@@ -30,15 +30,14 @@ import { CapitalizePipe } from '@pipes/capitalize/capitalize.pipe';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ThemeSwitcherComponent {
-  protected readonly themeService = inject(ThemeService);
+  protected readonly theme = inject(ThemeService);
 
-  setTheme(theme: string) {
-    this.themeService.switchTheme(theme);
-  }
+  switchTheme(): void {
+    let newTheme;
 
-  toggleDarkTheme() {
-    if (this.themeService.$theme() === 'light') {
-      this.themeService.switchTheme('dark');
-    } else this.themeService.switchTheme('light');
+    if (this.theme.$theme() === 'light') newTheme = 'dark';
+    else newTheme = 'light';
+
+    this.theme.switchTheme(newTheme).subscribe();
   }
 }

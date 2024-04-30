@@ -1,12 +1,12 @@
-@if (languages.length > 1) {
+@if (language.$list().length > 1) {
   <ltm-inline-control [name]="'general.language' | transloco">
     <mat-form-field appearance="outline" class="lang-switcher">
       <mat-select
         #select
-        (selectionChange)="setLang(select.value)"
-        [value]="$current()"
+        (selectionChange)="language.setLang(select.value)"
+        [value]="language.$current()"
       >
-        @for (lang of languages; track lang.id) {
+        @for (lang of language.$list(); track lang.id) {
           <mat-option [value]="lang.id">
             {{ lang.label }}
           </mat-option>

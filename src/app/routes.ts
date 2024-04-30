@@ -24,15 +24,7 @@ export const routes: Routes = [
           import('./components/user/logout/logout.component').then(
             (m) => m.LogoutComponent,
           ),
-        canActivate: [SignedInGuard]
-      },
-      {
-        path: 'register',
-        loadComponent: () =>
-          import('./components/user/register/register.component').then(
-            (m) => m.RegisterComponent,
-          ),
-        canActivate: [NotSignedInGuard],
+        canActivate: [SignedInGuard],
       },
       {
         path: 'user',
@@ -72,11 +64,34 @@ export const routes: Routes = [
     ],
   },
   {
-    path: 'signin',
+    path: '',
     loadComponent: () =>
       import('./components/layouts/signin-layout/signin-layout.component').then(
         (m) => m.SigninLayoutComponent,
       ),
     canActivate: [NotSignedInGuard],
+    loadChildren: () => [
+      {
+        path: 'signin',
+        loadComponent: () =>
+          import('./components/user/signin/signin.component').then(
+            (m) => m.SigninComponent,
+          ),
+      },
+      {
+        path: 'register',
+        loadComponent: () =>
+          import('./components/user/register/register.component').then(
+            (m) => m.RegisterComponent,
+          ),
+      },
+      {
+        path: 'user',
+        loadChildren: () =>
+          import('./components/user/routes').then(
+            (m) => m.USER_ROUTES_UNSIGNED,
+          ),
+      },
+    ],
   },
 ];

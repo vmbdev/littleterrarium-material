@@ -1,25 +1,10 @@
-@if (themeService.availableThemes && themeService.availableThemes.length > 1) {
-  @if (themeService.$theme(); as currentTheme) {
+@if (theme.availableThemes && theme.availableThemes.length > 1) {
+  @if (theme.$theme(); as currentTheme) {
     <ltm-toggle-option
       [checked]="currentTheme === 'dark'"
-      (checkedChange)="toggleDarkTheme()"
+      (checkedChange)="switchTheme()"
     >
       {{ "themes.darkThemeOption" | transloco }}
     </ltm-toggle-option>
-
-    <!-- <mat-form-field appearance="fill" class="theme-switcher">
-      <mat-label>{{ 'themes.title' | transloco }}</mat-label>
-      <mat-select
-        #select
-        (selectionChange)="setTheme(select.value)"
-        [value]="currentTheme"
-      >
-        @for (theme of themeService.availableThemes; track theme) {
-          <mat-option [value]="theme" *transloco="let t">
-            {{ t('themes.' + theme) }}
-          </mat-option>
-        }
-      </mat-select>
-    </mat-form-field> -->
   }
 }
