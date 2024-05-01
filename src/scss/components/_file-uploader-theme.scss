@@ -1,0 +1,18 @@
+@use '@angular/material' as mat;
+@use '@angular/material-experimental' as matx;
+
+@mixin theme($theme) {
+  .file-uploader {
+    background: mat.get-theme-color($theme, primary, 95);
+
+    @if mat.get-theme-type($theme) == dark {
+      color: mat.get-theme-color($theme, primary, 20);
+    } @else {
+      color: mat.get-theme-color($theme, primary, 10);
+    }
+
+    &__over {
+      background-color: mat.get-theme-color($theme, tertiary);
+    }
+  }
+}

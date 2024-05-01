@@ -16,6 +16,12 @@
     }
   }
 
+  &__msg {
+    font-weight: 600;
+    text-align: center;
+    width: 80%;
+  }
+
   &__buttons {
     display: flex;
     flex-direction: row;

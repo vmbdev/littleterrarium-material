@@ -35,24 +35,22 @@
       </div>
     }
 
-    <button type="submit" mat-raised-button color="primary">
+    <button type="submit" mat-flat-button>
       {{ 'general.signin' | transloco }}
     </button>
-    
-    <button
-      type="button"
-      mat-button
-      color="link"
-      routerLink="/user/recover"
-      [innerHTML]="'signin.forgottenPassword' | transloco"
-    ></button>
 
     <button
       type="button"
       mat-button
-      color="link"
       routerLink="/register"
       [innerHTML]="'signin.createAccount' | transloco"
+    ></button>
+      
+    <button
+      mat-button
+      type="button"
+      routerLink="/user/recover"
+      [innerHTML]="'signin.forgottenPassword' | transloco"
     ></button>
   </section>
 </form>

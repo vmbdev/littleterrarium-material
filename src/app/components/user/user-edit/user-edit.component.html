@@ -9,16 +9,6 @@
         <ltm-user-form-name />
       </ltm-settings-card>
 
-      <ltm-settings-card [title]="'general.avatar' | transloco">
-        <p [innerHTML]="'user-edit.avatarDesc' | transloco"></p>
-
-        <ltm-image-selector
-          [source]="(newAvatar ?? (user.avatar | imagePath:'thumb')) ?? null"
-          (selected)="selectImage($event)"
-          center="true"
-        />
-      </ltm-settings-card>
-
       <ltm-settings-card [title]="'general.email' | transloco">
         <ltm-user-form-email />
       </ltm-settings-card>

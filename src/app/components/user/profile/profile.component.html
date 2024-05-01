@@ -1,35 +1,27 @@
 @if (user(); as user) {
   <article class="profile">
-    <div
-      class="profile__userbox"
-      [ngClass]="{ 'profile__userbox--small': small() }"
-    >
-
-      @if (user.avatar) {
-        <img
-          class="profile__avatar"
-          [ngClass]="{ 'profile__avatar--small': small() }"
-          [src]="user.avatar | imagePath:'thumb'"
-          [alt]="('general.avatar' | transloco) + ' - ' + user.username"
-        >
+    <div class="profile__userbox">
+      @if (sameUser() || user.avatar) {
+        <ltm-image-selector
+          [source]="(newAvatar ?? (user.avatar | imagePath:'thumb')) ?? null"
+          [disabled]="!sameUser()"
+          (selected)="selectImage($event)"
+        />
       }
 
       <section class="profile__userinfo">
         <h1 class="profile__username">{{ user.username }}</h1>
-    
-        @if (!small()) {
-          @if (user.firstname || user.lastname) {
-            <h2 class="profile__realnames">{{ fullname() }}</h2>
-          }
 
-          @if (user.bio) {
-            <blockquote class="profile__bio">
-              {{ user.bio }}
-            </blockquote>
-          }
+        @if (user.firstname || user.lastname) {
+          <h2 class="profile__realnames">{{ fullname() }}</h2>
+        }
+
+        @if (user.bio) {
+          <blockquote class="profile__bio">
+            {{ user.bio }}
+          </blockquote>
         }
       </section>
-
     </div>
   </article>
 }

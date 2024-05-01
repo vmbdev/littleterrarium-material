@@ -37,6 +37,7 @@ export class ImageSelectorComponent {
   smallSize = input(200, { transform: numberAttribute });
   center = input(false, { transform: booleanAttribute });
   expandedSize = input(300, { transform: numberAttribute });
+  disabled = input(false, { transform: booleanAttribute });
   selected = output<File | null>();
 
   private firstChange = true;

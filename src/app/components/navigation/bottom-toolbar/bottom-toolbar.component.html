@@ -6,11 +6,7 @@
     <mat-icon>forest</mat-icon>
   </button>
   <button type="button" routerLink="/tasks" mat-icon-button>
-    <mat-icon
-      [matBadge]="taskService.$count()"
-      matBadgeColor="warn"
-      aria-hidden="false"
-    >
+    <mat-icon [matBadge]="taskService.$count()" aria-hidden="false">
       task
     </mat-icon>
   </button>

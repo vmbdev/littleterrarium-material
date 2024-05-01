@@ -1,5 +1,6 @@
 .plant-card {
   border: 0 !important;
+  border-radius: 0 !important;
   box-shadow: none !important;
   background-color: transparent !important;
 
@@ -7,7 +8,15 @@
     justify-content: center;
   }
 
-  &__title {
+  &__bottom {
+    margin-top: 0.2rem;
+    display: flex;
+    flex-direction: row;
+  }
+
+  &__name {
+    flex: 1;
+    font-size: 0.8em;
     text-align: center;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -24,12 +33,7 @@
   }
 
   &__menu {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    z-index: 1000;
-    background: lightgrey;
-    border-radius: 8px;
+
 
     & > button {
       padding: 0;

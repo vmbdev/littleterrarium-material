@@ -1,12 +1,6 @@
 @use '@angular/material' as mat;
 @use 'ngx-toastr/toastr';
-@use 'scss/themes.scss';
-
-@mixin border-style {
-  border-width: 1px !important;
-  border-color: rgba(0, 0, 0, 0.2) !important;
-  border-style: solid;
-}
+@use 'scss/themes-material3.scss';
 
 html,
 body {
@@ -15,16 +9,6 @@ body {
 body {
   margin: 0;
   font-family: Roboto, 'Helvetica Neue', sans-serif;
-}
-
-.mat-expansion-panel {
-  @include border-style();
-}
-
-mat-card {
-  @include border-style();
-
-  margin: 6px 0;
 }
 
 .user-form {

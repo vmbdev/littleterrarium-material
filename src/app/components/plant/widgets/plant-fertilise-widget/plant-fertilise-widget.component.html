@@ -50,10 +50,10 @@
 
     @if (owned()) {
       <mat-action-row>
-        <button mat-button color="accent" (click)="plantService.openFertDialog(id())">
+        <button mat-button (click)="plantService.openFertDialog(id())">
           {{ 'plant-widget-fert.now' | transloco }}
         </button>
-        <button mat-button color="accent" (click)="openEdit()">
+        <button mat-button (click)="openEdit()">
           {{ 'general.edit' | transloco }}
         </button>
       </mat-action-row>

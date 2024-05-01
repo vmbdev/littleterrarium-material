@@ -79,12 +79,9 @@ export class UserEditComponent {
       ],
     ],
     bio: new FormControl<string | null>(''),
-    avatarFile: new FormControl<File | null>(null),
     public: new FormControl<boolean>(true),
   });
   protected user$?: Observable<User | null>;
-  protected newAvatar?: string;
-  protected removeAvatar: boolean = false;
 
   ngOnInit(): void {
     this.mt.hide();
@@ -105,28 +102,6 @@ export class UserEditComponent {
     );
   }
 
-  selectImage(file: File | null) {
-    if (file) {
-      this.form.patchValue({
-        avatarFile: file,
-      });
-
-      this.newAvatar = URL.createObjectURL(file);
-      this.removeAvatar = false;
-    } else {
-      this.form.patchValue({
-        avatarFile: null,
-      });
-
-      if (this.newAvatar) {
-        URL.revokeObjectURL(this.newAvatar);
-        this.newAvatar = undefined;
-      }
-
-      this.removeAvatar = true;
-    }
-  }
-
   openWaitDialog() {
     return this.dialog.open(WaitDialogComponent, {
       disableClose: true,
@@ -135,10 +110,6 @@ export class UserEditComponent {
         progressBar: false,
       },
     });
-  }
-
-  setRemoveAvatar() {
-    this.removeAvatar = true;
   }
 
   submit(): void {
@@ -151,7 +122,7 @@ export class UserEditComponent {
 
     if (user) {
       this.api
-        .updateUser(user, { removeAvatar: this.removeAvatar })
+        .updateUser(user)
         .pipe(
           finalize(() => {
             wd.close();

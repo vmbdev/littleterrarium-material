@@ -13,9 +13,9 @@
   [style.height.px]="embedded() ? embeddedSize() : undefined"
 >
   @if ($files().length === 0) {
-    <div>
-      <b>{{ 'fileUploader.select' | transloco }}</b>
-    </div>
+    <p class="file-uploader__msg">
+      {{ 'fileUploader.select' | transloco }}
+    </p>
   } @else {
     <div class="file-uploader__picturegrid">
       @for (preview of $previews(); let i = $index; track preview) {
@@ -48,7 +48,6 @@
       <button
         type="button"
         mat-mini-fab
-        color="primary"
         (click)="captureFromCamera()"
         [disabled]="$availableSlots() === 0 || disabled"
       >
@@ -59,7 +58,6 @@
     <button
       type="button"
       mat-mini-fab
-      color="primary"
       (click)="$mobileOS() ? pickFromGallery() : fileInput.click()"
       [disabled]="$availableSlots() === 0 || disabled"
     >

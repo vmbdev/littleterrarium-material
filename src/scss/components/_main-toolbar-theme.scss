@@ -1,0 +1,15 @@
+@use '@angular/material' as mat;
+@use '@angular/material-experimental' as matx;
+
+@mixin theme($theme) {
+  .main-toolbar {
+    
+    @if mat.get-theme-type($theme) == dark {
+      background: mat.get-theme-color($theme, primary, 40);
+      @include mat.icon-color($theme, $color-variant: primary);
+    } @else {
+      background: mat.get-theme-color($theme, primary, 70);
+      @include mat.icon-color($theme, $color-variant: tertiary);
+    }
+  }
+}

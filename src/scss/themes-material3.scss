@@ -1,0 +1,97 @@
+@use '@angular/material' as mat;
+@use '@angular/material-experimental' as matx;
+
+@use './components/bottom-toolbar-theme.scss' as bottom-toolbar;
+@use './components/main-toolbar-theme.scss' as main-toolbar;
+@use './components/file-uploader-theme.scss' as file-uploader;
+
+@include mat.core();
+
+$light-theme: matx.define-theme(
+  (
+    color: (
+      primary: matx.$m3-azure-palette,
+      tertiary: matx.$m3-blue-palette,
+    ),
+    density: (
+      scale: 0,
+    )
+  )
+);
+
+$dark-theme: matx.define-theme(
+  (
+    color: (
+      theme-type: dark,
+      primary: matx.$m3-blue-palette,
+      tertiary: matx.$m3-green-palette,
+    ),
+    density: (
+      scale: 0,
+    )
+  )
+);
+
+@mixin border-style($theme) {
+  @if mat.get-theme-type($theme) == dark {
+    border-color: #140e0e !important;
+
+  } @else {
+    border-color: rgba(0, 0, 0, 0.2) !important;
+  }
+
+  border-width: 1px !important;
+  border-style: solid;
+  box-shadow: none !important;
+}
+
+@mixin theme-components($theme) {
+  .secondary-button {
+    @include mat.button-color($theme, $color-variant: secondary);
+  }
+
+  .tertiary-button {
+    @include mat.button-color($theme, $color-variant: tertiary);
+  }
+
+  .warning-button {
+    @include mat.button-color($theme, $color-variant: error);
+  }
+
+  .warning-icon {
+    @include mat.icon-color($theme, $color-variant: error);
+  }
+
+  .mini-button {
+    background-color: mat.get-theme-color($theme, primary, 40);
+    color: mat.get-theme-color($theme, primary, 90);
+    border: 1px solid mat.get-theme-color($theme, primary, 40);
+  }
+
+  .mat-expansion-panel {
+    @include border-style($theme);
+  }
+  
+  mat-card {
+    @include border-style($theme);
+  }
+}
+
+html {
+  @include mat.all-component-themes($light-theme);
+}
+
+.light-theme {
+  @include theme-components($light-theme);
+  @include bottom-toolbar.theme($light-theme);
+  @include main-toolbar.theme($light-theme);
+  @include file-uploader.theme($light-theme);
+}
+
+.dark-theme {
+  @include mat.all-component-colors($dark-theme);
+  @include theme-components($dark-theme);
+  @include bottom-toolbar.theme($dark-theme);
+  @include main-toolbar.theme($dark-theme);
+  @include file-uploader.theme($dark-theme);
+}

@@ -3,7 +3,6 @@
     <button
       data-testid="prevbutton"
       type="button"
-      color="primary"
       mat-raised-button
       matStepperPrevious
     >
@@ -14,8 +13,7 @@
   @if (finishButton()) {
     <button
       data-testid="finishbutton"
-      color="primary"
-      mat-raised-button
+      mat-flat-button
       (click)="emitFinish()"
     >
       {{ 'general.finish' | transloco }}
@@ -24,8 +22,7 @@
     <button
       data-testid="nextbutton"
       type="button"
-      color="primary"
-      mat-raised-button
+      mat-flat-button
       matStepperNext
     >
       {{ 'general.next' | transloco }}

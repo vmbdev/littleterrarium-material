@@ -29,15 +29,11 @@
           </mat-card-title-group>
         </mat-card-header>
         <mat-card-actions class="location-list__buttonrow">
-          <button mat-icon-button color="basic" (click)="openEdit(item)">
+          <button mat-icon-button (click)="openEdit(item)">
             <mat-icon>edit</mat-icon>
           </button>
-          <button
-            mat-icon-button
-            color="warn"
-            (click)="openRemoveDialog(item.name, item.id)"
-          >
-            <mat-icon>delete</mat-icon>
+          <button mat-icon-button (click)="openRemoveDialog(item.name, item.id)">
+            <mat-icon class="warning-icon">delete</mat-icon>
           </button>
         </mat-card-actions>
       </mat-card>

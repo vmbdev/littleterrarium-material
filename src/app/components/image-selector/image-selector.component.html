@@ -1,22 +1,24 @@
 <div
-  class="image-selector-container"
-  [ngClass]="{ 'image-selector-container--center': center() }"
+  class="image-selector"
+  [style.width.px]="$editMode() ? expandedSize() : smallSize()"
+  [style.height.px]="$editMode() ? expandedSize() : smallSize()"
 >
-  <div
-    class="image-selector"
-    [style.width.px]="$editMode() ? expandedSize() : smallSize()"
-    [style.height.px]="$editMode() ? expandedSize() : smallSize()"
-  >
-  <nav class="image-selector__buttons">
-    @if (!$editMode()) {
-        <button type="button" mat-mini-fab color="primary" (click)="edit()">
+  @if (!disabled()) {
+    <nav class="image-selector__buttons">
+      @if (!$editMode()) {
+        <button
+          type="button"
+          mat-icon-button
+          class="mini-button"
+          (click)="edit()"
+        >
           <mat-icon>close</mat-icon>
         </button>
       } @else if ($editMode() && $newSource()) {
         <button
           type="button"
-          mat-mini-fab
-          color="primary"
+          mat-icon-button
+          class="mini-button"
           (click)="removeNewSource()"
         >
           <mat-icon>close</mat-icon>
@@ -24,40 +26,40 @@
 
         <button
           type="button"
-          mat-mini-fab
-          color="primary"
+          mat-icon-button
+          class="mini-button"
           (click)="acceptNewSource()"
         >
           <mat-icon>check</mat-icon>
         </button>
       }
     </nav>
+  }
 
-    @if (source() && !$editMode()) {
-      <img
-        class="image-selector__source"
-        [src]="source()"
-        [style.width.px]="smallSize()"
-        [style.height.px]="smallSize()"
-        [alt]="'image-selector.title' | transloco"
-      />
-    } @else {
-      @if ($newSource(); as newSource) {
-        <div class="image-selector--expanded">
-          <ltm-image-crop
-            [size]="expandedSize()"
-            [imageSource]="newSource"
-            (imageFile)="fetchNewSource($event)"
-          />
-        </div>
-      } @else {
-        <ltm-file-uploader
-          maxAmount="1"
-          embedded="true"
-          [embeddedSize]="expandedSize()"
-          (fileChange)="getNewFile($event)"
+  @if (source() && !$editMode()) {
+    <img
+      class="image-selector__source"
+      [src]="source()"
+      [style.width.px]="smallSize()"
+      [style.height.px]="smallSize()"
+      [alt]="'image-selector.title' | transloco"
+    />
+  } @else {
+    @if ($newSource(); as newSource) {
+      <div class="image-selector--expanded">
+        <ltm-image-crop
+          [size]="expandedSize()"
+          [imageSource]="newSource"
+          (imageFile)="fetchNewSource($event)"
         />
-      }
+      </div>
+    } @else {
+      <ltm-file-uploader
+        maxAmount="1"
+        embedded="true"
+        [embeddedSize]="expandedSize()"
+        (fileChange)="getNewFile($event)"
+      />
     }
-  </div>
+  }
 </div>

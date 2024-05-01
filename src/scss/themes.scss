@@ -1,7 +1,7 @@
 @use '@angular/material' as mat;
-@use 'bottom-toolbar-theme.scss' as bottom-toolbar;
-@use 'file-uploader-theme.scss' as file-uploader;
-@use 'edit-page-theme.scss' as edit-page;
+@use './components/bottom-toolbar-theme.scss' as bottom-toolbar;
+@use './components/file-uploader-theme.scss' as file-uploader;
+@use './components/edit-page-theme.scss' as edit-page;
 
 @include mat.core();
 

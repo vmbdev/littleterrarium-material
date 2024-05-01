@@ -1,5 +1,5 @@
 @if (!mt.$hidden()) {
-  <mat-toolbar color="primary" class="toolbar">
+  <mat-toolbar class="main-toolbar">
     <mat-toolbar-row>
       @if (toggleSidenav.observers.length > 0) {
         <button
@@ -15,7 +15,7 @@
       <button mat-icon-button (click)="goBack()">
         <mat-icon>arrow_back_ios_new</mat-icon>
       </button>
-      <span class="toolbar__title">{{ mt.$name() }}</span>
+      <span class="main-toolbar__title">{{ mt.$name() }}</span>
       <span class="toolbar-spacer"></span>
 
       @for (b of mt.$buttons(); track b) {
@@ -50,18 +50,18 @@
                 </button>
               } @else {
                 <mat-divider />
-                <div class="toolbar__menurow">
+                <div class="main-toolbar__menurow">
                   @for (i of item; track i) {
                     <button
                       mat-mini-fab
-                      class="toolbar__menurowitem"
+                      class="main-toolbar__menurowitem"
                       (click)="i.click ? i.click() : null"
                       [routerLink]="i.route ?? null"
                       [color]="
                         (i.$selected && i.$selected())  ? 'primary' : 'basic'
                       "
                     >
-                      <mat-icon class="toolbar__menurowicon">
+                      <mat-icon class="main-toolbar__menurowicon">
                         {{ i.icon }}
                       </mat-icon>
                     </button>
@@ -76,7 +76,7 @@
     </mat-toolbar-row>
 
     @if (search.$enabled()) {
-      <mat-toolbar-row color="primary">
+      <mat-toolbar-row>
         <ltm-search fullWidth />
       </mat-toolbar-row>
     }

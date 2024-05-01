@@ -1,0 +1,12 @@
+@use '@angular/material' as mat;
+@use '@angular/material-experimental' as matx;
+
+@mixin theme($theme) {
+  .bottom-toolbar {
+    @if mat.get-theme-type($theme) == dark {
+      background-color: #151516 !important;
+    } @else {
+      background-color: #efefef !important;
+    }
+  }
+}

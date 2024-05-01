@@ -1,5 +1,5 @@
 @if (auth.user$ | async; as user) {
-  <ltm-profile [user]="user"/>
+  <ltm-profile [user]="user" />
 
   <mat-nav-list class="user-main" limitLargeScreen [width]="400">
     <mat-list-item matRipple (click)="openEdit()">
