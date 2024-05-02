@@ -18,8 +18,6 @@ import { Photo } from '@models/photo.model';
 import { SortPipe } from '@pipes/sort/sort.pipe';
 import { ImagePathPipe } from '@pipes/image-path/image-path.pipe';
 
-// FIXME: bottom row sometimes displayed behind bottom toolbar
-
 @Component({
   selector: 'ltm-photo-list',
   standalone: true,

@@ -1,21 +1,24 @@
 # Changelog
 
-## [1.1.3] - next
+## [1.1.3] - 2024-05-03
 
 ### Added
 
-- New avatar/location picture selector.
+- New avatar and location picture selector.
+- New photo viewer, much better and accurate than the previous one.
+- Visual update to support Material 3.
 
 ### Changes
 
 - Angular version 17.3.6 and Capacitor 6.
+- Requires Little Terrarium backend 1.0.6.
 - Better support for file selection on non-mobile devices.
-- Ditched Hammer.JS in favor of a newer, better supported, nicer API interact.js.
+- Replaced Hammer.JS in favor of a newer, better supported, nicer API
+interact.js.
 - User preferences are now stored server-side. When not signed in, it will fall
 back to local storage.
-- New navigation toolbar when not signed in.
-- Routes for not signed users (sign in, register, recover password, etc) will
-all follow the same layout now.
+- New navigation toolbar when not signed in. Routes for not signed users (sign
+in, register, recover password, etc) will all follow the same layout now.
 
 ### Fixes
 

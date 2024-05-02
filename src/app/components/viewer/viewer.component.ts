@@ -98,7 +98,6 @@ export class ViewerComponent {
     this.draw();
   }
 
-  // TODO: reset to min scale
   setupCanvasInteraction() {
     interact(this.$ctx().canvas)
       .draggable({
@@ -114,7 +113,6 @@ export class ViewerComponent {
       .on('mousewheel', (event) => {
         this.zoom(event.deltaY, event.clientX, event.clientY);
 
-        event.stopPropagation();
         event.preventDefault();
       })
       .on('doubletap', (event) => {
@@ -130,15 +128,22 @@ export class ViewerComponent {
     pointerY: number,
     scale: boolean = false,
   ) {
+    let newScale: number;
     const factor = scale ? 1 : -0.001;
-    const newScale = Math.min(
-      Math.max(this.minZoom, this.$scale() + delta * factor),
-      this.maxZoom,
-    );
+    const ratio = this.$scale() + delta * factor;
+
+    if (ratio < this.$scale() && ratio < this.minZoom * 1.1) {
+      newScale = this.minZoom;
+    } else {
+      newScale = Math.min(
+        Math.max(this.minZoom, this.$scale() + delta * factor),
+        this.maxZoom,
+      );
+    }
     const newImageDimX = newScale * this.image.naturalWidth;
     const newImageDimY = newScale * this.image.naturalHeight;
 
-    if (newImageDimX >= this.$vWidth() && newImageDimY >= this.$vHeight()) {
+    if (newImageDimX >= this.$vWidth() || newImageDimY >= this.$vHeight()) {
       const newX =
         pointerX - (pointerX - this.position.x) * (newScale / this.$scale());
       const newY =
@@ -221,7 +226,9 @@ export class ViewerComponent {
   resetScale() {
     const scaleX = this.$vWidth() / this.image.naturalWidth;
     const scaleY = this.$vHeight() / this.image.naturalHeight;
-    this.$scale.set(Math.min(scaleX, scaleY));
+    this.minZoom = Math.min(scaleX, scaleY)
+    this.$scale.set(this.minZoom);
+    console.log('ccc', Math.min(scaleX, scaleY));
   }
 
   /**

@@ -1,10 +1,12 @@
-<article #viewer class="viewer">
-  @if (!(closeViewer$ | async)) {
-    <mat-toolbar class="viewer__toolbar">
-      <button mat-icon-button (click)="close()">
-        <mat-icon class="viewer__closeicon">close</mat-icon>
-      </button>
-    </mat-toolbar>
-  }
-  <canvas #canvas class="viewer__canvas"></canvas>
-</article>
+@if (!(closeViewer$ | async)) {
+  <article #viewer class="viewer">
+    <header>
+      <mat-toolbar class="viewer__toolbar">
+        <button mat-icon-button (click)="close()">
+          <mat-icon class="viewer__closeicon">close</mat-icon>
+        </button>
+      </mat-toolbar>
+    </header>
+    <canvas #canvas class="viewer__canvas"></canvas>
+  </article>
+}
