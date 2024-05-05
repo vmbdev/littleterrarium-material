@@ -3,7 +3,6 @@ import {
   Component,
   HostListener,
   Signal,
-  WritableSignal,
   computed,
   effect,
   inject,
@@ -88,11 +87,9 @@ export class PlantListComponent {
 
   locationId = input<number>();
   userId = input<number>();
-  protected $list: WritableSignal<PlantListItem[]> = signal([]);
+  protected $list = signal<PlantListItem[]>([]);
 
-  private cursor?: number;
-  private lastCursor?: number;
-
+  private loadedPlants: number = 0;
   protected breakpoint: number = 2;
 
   private filter: string | null = null;
@@ -133,7 +130,8 @@ export class PlantListComponent {
 
   readonly bottomDetected = effect(() => {
     if (this.bottomScrollDetector.$detected()) {
-      if (this.cursor !== this.lastCursor) this.fetchPlants(true);
+      // TODO: get the total count and avoid reloading if fullfilled
+      this.fetchPlants(true);
     }
   });
 
@@ -179,14 +177,13 @@ export class PlantListComponent {
     const userId = this.userId();
     let obs: Observable<Plant[]>;
     let options: PlantGetConfig = {
-      cursor: scroll && this.cursor ? this.cursor : undefined,
+      offset: scroll && this.loadedPlants ? this.loadedPlants : undefined,
       filter: this.filter ?? '',
       sort: this.column(),
       order: this.order,
     };
 
-    // in case of multiple bottom reached signals, we avoid asking twice
-    if (this.cursor) this.lastCursor = this.cursor;
+    if (!scroll) this.loadedPlants = 0;
 
     if (locationId) {
       obs = this.locationService.getPlants(locationId, options);
@@ -202,9 +199,9 @@ export class PlantListComponent {
 
     obs.subscribe((plants: Plant[]) => {
       if (plants.length > 0) {
-        const newList: PlantListItem[] = this.createPlantList(plants);
+        const newList = this.createPlantList(plants);
 
-        this.cursor = plants[plants.length - 1].id;
+        this.loadedPlants += plants.length;
 
         if (scroll) {
           this.$list.update((value) => [...value, ...newList]);

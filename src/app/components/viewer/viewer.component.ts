@@ -93,9 +93,7 @@ export class ViewerComponent {
     this.canvas().nativeElement.width = this.$vWidth();
     this.canvas().nativeElement.height = this.$vHeight();
 
-    this.resetScale();
     this.init();
-    this.draw();
   }
 
   setupCanvasInteraction() {
@@ -133,24 +131,24 @@ export class ViewerComponent {
     const ratio = this.$scale() + delta * factor;
 
     if (ratio < this.$scale() && ratio < this.minZoom * 1.1) {
-      newScale = this.minZoom;
+      this.init();
     } else {
       newScale = Math.min(
         Math.max(this.minZoom, this.$scale() + delta * factor),
         this.maxZoom,
       );
-    }
-    const newImageDimX = newScale * this.image.naturalWidth;
-    const newImageDimY = newScale * this.image.naturalHeight;
+      const newImageDimX = newScale * this.image.naturalWidth;
+      const newImageDimY = newScale * this.image.naturalHeight;
 
-    if (newImageDimX >= this.$vWidth() || newImageDimY >= this.$vHeight()) {
-      const newX =
-        pointerX - (pointerX - this.position.x) * (newScale / this.$scale());
-      const newY =
-        pointerY - (pointerY - this.position.y) * (newScale / this.$scale());
+      if (newImageDimX >= this.$vWidth() || newImageDimY >= this.$vHeight()) {
+        const newX =
+          pointerX - (pointerX - this.position.x) * (newScale / this.$scale());
+        const newY =
+          pointerY - (pointerY - this.position.y) * (newScale / this.$scale());
 
-      this.$scale.set(newScale);
-      this.move(newX, newY, true);
+        this.$scale.set(newScale);
+        this.move(newX, newY, true);
+      }
     }
   }
 
@@ -226,18 +224,21 @@ export class ViewerComponent {
   resetScale() {
     const scaleX = this.$vWidth() / this.image.naturalWidth;
     const scaleY = this.$vHeight() / this.image.naturalHeight;
-    this.minZoom = Math.min(scaleX, scaleY)
+    this.minZoom = Math.min(scaleX, scaleY);
     this.$scale.set(this.minZoom);
-    console.log('ccc', Math.min(scaleX, scaleY));
   }
 
   /**
    * Calculate the positions for the initial drawing
    */
   init() {
+    this.resetScale();
+
     const imgdms = this.$imageDim();
 
     this.position.x = (this.$vWidth() - imgdms.x) / 2;
     this.position.y = (this.$vHeight() - imgdms.y) / 2;
+
+    this.draw();
   }
 }

@@ -35,7 +35,7 @@ export interface PlantGetConfig {
   cover?: boolean;
   limit?: number;
   filter?: string;
-  cursor?: number;
+  offset?: number;
   sort?: SortColumn;
   order?: SortOrder;
 }
@@ -299,7 +299,7 @@ export class ApiService {
       else if (options.userId) url += `user/${options.userId}`;
 
       if (options.cover) urlParams.append('cover', options.cover.toString());
-      if (options.cursor) urlParams.append('cursor', options.cursor.toString());
+      if (options.offset) urlParams.append('offset', options.offset.toString());
       if (options.filter) urlParams.append('filter', options.filter.toString());
       if (options.sort) urlParams.append('sort', options.sort);
       if (options.order) urlParams.append('order', options.order);

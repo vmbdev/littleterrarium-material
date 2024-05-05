@@ -8,7 +8,6 @@ import {
   throwError,
   BehaviorSubject,
   tap,
-  EMPTY,
 } from 'rxjs';
 
 import { ApiService, UserPreferences } from '@services/api/api.service';
@@ -31,17 +30,19 @@ export class AuthService {
   private user = new BehaviorSubject<User | null>(null);
   public readonly user$ = this.user.asObservable();
 
-  check(): Observable<User> {
+  check(): Observable<boolean> {
     return this.api.getCurrentUser().pipe(
-      tap((user: User) => {
+      map((user: User) => {
         this.signedIn.next(true);
         this.user.next(user);
         this.checked.next(true);
+
+        return true;
       }),
       catchError(() => {
         this.checked.next(true);
 
-        return EMPTY;
+        return of(false);
       }),
     )
   }

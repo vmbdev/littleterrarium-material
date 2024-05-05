@@ -48,9 +48,6 @@ export class ImageCropComponent {
 
   ngAfterViewInit(): void {
     this.image.src = URL.createObjectURL(this.imageSource());
-    // this.image.src = 'http://localhost:5015/public/fb/7d/82/1df6fc837408ef96ca822ec8839149d23a.webp';
-    // this.image.src = 'https://littleterrarium.one/public/b9/12/53/ee637c8d07c8317c2373411ea767cb9498.webp';
-    // this.image.src = 'http://localhost:5015/public/ava.jpg';
     this.image.crossOrigin = 'anonymous';
     this.$ctx().canvas.width = this.size();
     this.$ctx().canvas.height = this.size();
