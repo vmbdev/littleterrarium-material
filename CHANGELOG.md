@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.1.5] - next
+
+### Added
+
+- New 404 page.
+
+### Changes
+
+- Updated to Angular 18 and removed zone.js.
+- New location list / homepage design.
+
+### Fixes
+
+- Titles on editing pages will cut to the viewport height.
+- Image Selector will now automatically center itself.
+
 ## [1.1.4] - 2024-05-05
 
 ### Fixes

@@ -3,7 +3,12 @@ import {
   provideHttpClient,
   withInterceptorsFromDi,
 } from '@angular/common/http';
-import { APP_INITIALIZER, importProvidersFrom, isDevMode } from '@angular/core';
+import { 
+  APP_INITIALIZER,
+  importProvidersFrom,
+  isDevMode,
+  provideExperimentalZonelessChangeDetection
+} from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
@@ -44,6 +49,7 @@ bootstrapApplication(AppComponent, {
       multi: true,
     },
     { provide: DateAdapter, useClass: NativeDateAdapter },
+    provideExperimentalZonelessChangeDetection(),
     provideAnimations(),
     provideHttpClient(withInterceptorsFromDi()),
     importProvidersFrom(RouterModule.forRoot(routes)),

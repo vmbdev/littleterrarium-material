@@ -18,7 +18,7 @@
       <span class="main-toolbar__title">{{ mt.$name() }}</span>
       <span class="toolbar-spacer"></span>
 
-      @for (b of mt.$buttons(); track b) {
+      @for (b of mt.$buttons(); track b.icon) {
         <button
           mat-icon-button
           (click)="b.click ? b.click() : null"
@@ -35,7 +35,7 @@
           </button>
 
           <mat-menu #menu="matMenu">
-            @for (item of menuList; track item) {
+            @for (item of menuList; track item[0].route + item[0].icon) {
               @if (item.length === 1) {
                 <button
                   mat-menu-item
@@ -51,7 +51,7 @@
               } @else {
                 <mat-divider />
                 <div class="main-toolbar__menurow">
-                  @for (i of item; track i) {
+                  @for (i of item; track i.route + i.icon) {
                     <button
                       mat-mini-fab
                       class="main-toolbar__menurowitem"

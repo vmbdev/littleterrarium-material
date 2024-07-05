@@ -24,7 +24,7 @@ import {
   MatBottomSheet,
   MatBottomSheetModule,
 } from '@angular/material/bottom-sheet';
-import { Observable } from 'rxjs';
+import { finalize, Observable } from 'rxjs';
 import { TranslocoService, TranslocoModule } from '@ngneat/transloco';
 
 import { FabComponent } from '@components/fab/fab.component';
@@ -95,6 +95,8 @@ export class PlantListComponent {
   private filter: string | null = null;
   private order: SortOrder = 'asc';
 
+  private loadingPlants: boolean = false;
+
   /**
    * Defines the sorting column. We make it a signal so we can compute the
    * signals to be sent to MainToolbarService automatically.
@@ -122,6 +124,7 @@ export class PlantListComponent {
 
     if (res.mode !== 'Begin') {
       this.filter = res.value;
+
       untracked(() => {
         this.fetchPlants();
       });
@@ -131,7 +134,7 @@ export class PlantListComponent {
   readonly bottomDetected = effect(() => {
     if (this.bottomScrollDetector.$detected()) {
       // TODO: get the total count and avoid reloading if fullfilled
-      this.fetchPlants(true);
+      if (!this.loadingPlants) this.fetchPlants(true);
     }
   });
 
@@ -157,6 +160,7 @@ export class PlantListComponent {
 
   ngOnDestroy() {
     this.search.reset();
+    this.$list.set([]);
   }
 
   @HostListener('window:resize', ['$event'])
@@ -197,7 +201,13 @@ export class PlantListComponent {
       obs = this.plantService.getMany(options);
     }
 
-    obs.subscribe((plants: Plant[]) => {
+    this.loadingPlants = true;
+
+    obs
+    .pipe(
+      finalize(() => { this.loadingPlants = false; })
+    )
+    .subscribe((plants: Plant[]) => {
       if (plants.length > 0) {
         const newList = this.createPlantList(plants);
 

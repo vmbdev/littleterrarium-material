@@ -1,0 +1,10 @@
+<section class="error404">
+  <header class="error404__title">404</header>
+  <article class="error404__msg">
+    <p>{{ 'errors.404' | transloco }}</p>
+    <p>
+      {{ 'errors.404.timeout' | transloco:{ seconds: countdown$ | async } }}
+    </p>
+    <p [innerHTML]="'errors.404.back' | transloco"></p>
+  </article>
+</section>

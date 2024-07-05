@@ -2,41 +2,69 @@
   <ltm-fab link="/location/create" />
 }
 
-@if ($locations(); as locations) {
-  <article class="location-list">
-    @for (item of locations; track item.id) {
-      <mat-card class="location-list__item" matRipple>
-        <mat-card-header (click)="selectLocation(item.id)">
-          <mat-card-title-group>
-            @if (item.pictures) {
-              <img
-                mat-card-sm-image
-                [src]="item.pictures | imagePath:'thumb'"
-                [alt]="('general.picture' | transloco) + ' - ' + item.name"
-              />
-            }
-            <mat-card-title>{{ item.name }}</mat-card-title>
-            <mat-card-subtitle>
-              @if (item._count && item._count.plants > 0) {
-                {{
-                  'location-list.amount'
-                    | transloco: { plantCount: item._count.plants }
-                }}
-              } @else {
-                {{ 'location.noPlants' | transloco }}
-              }
-            </mat-card-subtitle>
-          </mat-card-title-group>
-        </mat-card-header>
-        <mat-card-actions class="location-list__buttonrow">
-          <button mat-icon-button (click)="openEdit(item)">
-            <mat-icon>edit</mat-icon>
-          </button>
-          <button mat-icon-button (click)="openRemoveDialog(item.name, item.id)">
-            <mat-icon class="warning-icon">delete</mat-icon>
-          </button>
-        </mat-card-actions>
-      </mat-card>
-    }
-  </article>
-}
+<mat-list limitLargeScreen>
+  @for (item of $locations(); track item.id) {
+    <mat-list-item matRipple [routerLink]="['/location', item.id]">
+      @if (item.pictures) {
+        <img
+          matListItemAvatar
+          [src]="item.pictures | imagePath:'thumb'"
+          [alt]="('general.picture' | transloco) + ' - ' + item.name"
+        />
+      } @else {
+        <svg matListItemAvatar>
+          <circle r="50" fill="lightgrey" />
+        </svg>
+      }
+
+      <span matListItemTitle>
+        {{ item.name }}
+      </span>
+
+      <div
+        matListItemMeta
+        class="location-list__rightbar"
+        (click)="stopPropagation($event)"
+      >
+        @if (item._count && item._count.plants > 0) {
+          <mat-icon
+            mat-icon-button
+            [matBadge]="item._count.plants"
+            class="location-list__icon"
+            aria-hidden="false"
+          >
+            forest
+          </mat-icon>
+        } @else {
+          <mat-icon mat-icon-button class="location-list__icon">
+            forest
+          </mat-icon>
+        }
+
+        <mat-icon
+          mat-icon-button
+          [title]="item.lightName | transloco"
+          class="location-list__icon"
+        >
+          {{ item.lightAsset }}
+        </mat-icon>
+
+        <mat-icon
+          mat-icon-button
+          [title]="('general.' + (item.public ? 'public' : 'private')) | transloco"
+          class="location-list__icon"
+        >
+          {{ item.public ? 'visibility' : 'visibility_off' }}
+        </mat-icon>
+
+        <button mat-icon-button (click)="openEdit(item)">
+          <mat-icon>edit</mat-icon>
+        </button>
+
+        <button mat-icon-button (click)="openRemoveDialog(item.name, item.id)">
+          <mat-icon class="warning-icon">delete</mat-icon>
+        </button>
+      </div>
+    </mat-list-item>
+  }
+</mat-list>

@@ -17,7 +17,9 @@ import {
   MatBottomSheetModule,
 } from '@angular/material/bottom-sheet';
 import { MatIconModule } from '@angular/material/icon';
-import { finalize } from 'rxjs';
+import { MatListModule } from '@angular/material/list';
+import { MatBadgeModule } from '@angular/material/badge';
+import { finalize, map, take } from 'rxjs';
 import { TranslocoService, TranslocoModule } from '@ngneat/transloco';
 
 import { FabComponent } from '@components/fab/fab.component';
@@ -31,6 +33,11 @@ import { LocationGetConfig } from '@services/api/api.service';
 import { Location } from '@models/location.model';
 import { ImagePathPipe } from '@pipes/image-path/image-path.pipe';
 
+interface LocationWithLightAsset extends Location {
+  lightAsset: string,
+  lightName: string,
+}
+
 @Component({
   selector: 'ltm-location-list',
   standalone: true,
@@ -43,6 +50,8 @@ import { ImagePathPipe } from '@pipes/image-path/image-path.pipe';
     MatDialogModule,
     MatBottomSheetModule,
     MatIconModule,
+    MatListModule,
+    MatBadgeModule,
     TranslocoModule,
     FabComponent,
     WaitDialogComponent,
@@ -61,11 +70,10 @@ export class LocationListComponent {
   private readonly dialog = inject(MatDialog);
   private readonly bottomSheet = inject(MatBottomSheet);
 
-  // @Input() userId?: number;
   userId = input<number>();
 
   protected owned: boolean = true;
-  protected readonly $locations: WritableSignal<Location[]> = signal([]);
+  protected readonly $locations = signal<LocationWithLightAsset[]>([]);
 
   ngOnInit(): void {
     const userId = this.userId();
@@ -87,6 +95,14 @@ export class LocationListComponent {
     this.locationService
       .getMany(options)
       .pipe(
+        take(1),
+        map((list) => {
+          return list.map((location) => ({
+            ...location,
+            lightAsset: this.locationService.getLightAsset(location.light),
+            lightName: this.locationService.getLightName(location.light),
+          }))
+        }),
         finalize(() => {
           wd.close();
         }),
@@ -103,6 +119,12 @@ export class LocationListComponent {
 
     bsRef.afterDismissed().subscribe((updatedLocation: Location) => {
       if (updatedLocation) {
+        const finalLocation: LocationWithLightAsset = { 
+          ...updatedLocation,
+          lightAsset: this.locationService.getLightAsset(updatedLocation.light),
+          lightName: this.locationService.getLightName(updatedLocation.light),
+        };
+
         this.$locations.update((val) => {
           const newList = [...val];
           const index = newList.findIndex(
@@ -110,9 +132,9 @@ export class LocationListComponent {
           );
           const plantCount = newList[index]._count?.plants;
 
-          if (plantCount) updatedLocation._count = { plants: plantCount };
+          if (plantCount) finalLocation._count = { plants: plantCount };
 
-          newList[index] = updatedLocation;
+          newList[index] = finalLocation;
 
           return newList;
         });
@@ -164,5 +186,10 @@ export class LocationListComponent {
         }
       },
     });
+  }
+
+  stopPropagation(event: Event) {
+    event.preventDefault();
+    event.stopPropagation();
   }
 }

@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 import { ApiService } from './api.service';
 import { BACKEND_URL } from 'src/tokens';
@@ -9,13 +10,13 @@ describe('ApiService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule,
-      ],
-      providers: [
-        { provide: BACKEND_URL, useValue: {} }
-      ]
-    });
+    imports: [],
+    providers: [
+        { provide: BACKEND_URL, useValue: {} },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting()
+    ]
+});
     service = TestBed.inject(ApiService);
   });
 

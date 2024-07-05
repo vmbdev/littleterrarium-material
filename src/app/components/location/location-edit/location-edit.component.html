@@ -12,7 +12,6 @@
         <ltm-image-selector
           [source]="(newPicture ?? (location.pictures | imagePath:'thumb')) ?? null"
           (selected)="selectImage($event)"
-          center="true"
         />
       </ltm-settings-card>
 

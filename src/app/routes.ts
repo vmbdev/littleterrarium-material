@@ -94,4 +94,12 @@ export const routes: Routes = [
       },
     ],
   },
+  {
+    path: '**',
+    pathMatch: 'full',
+    loadComponent: () =>
+      import('./components/errors/not-found/not-found.component').then(
+        (m) => m.NotFoundComponent,
+      ),
+  },
 ];

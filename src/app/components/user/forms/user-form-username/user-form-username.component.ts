@@ -11,14 +11,13 @@ import { CommonModule } from '@angular/common';
 import {
   ReactiveFormsModule,
   FormGroupDirective,
-  FormControlStatus,
   FormGroup,
 } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { TranslocoModule } from '@ngneat/transloco';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { Observable, distinctUntilChanged, skipWhile, tap } from 'rxjs';
+import { distinctUntilChanged, skipWhile, tap } from 'rxjs';
 
 import { FullWidthDirective } from '@directives/full-width/full-width.directive';
 

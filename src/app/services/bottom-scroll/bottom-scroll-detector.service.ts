@@ -9,8 +9,10 @@ export class BottomScrollDetectorService {
 
   set(): void {
     const tstamp = Date.now();
+    const lastTstamp = this.#$detected();
+    const diff = !lastTstamp || tstamp - lastTstamp > 200;
 
-    if (this.#$detected() !== tstamp) {
+    if (lastTstamp !== tstamp && diff) {
       this.#$detected.set(tstamp);
     }
   }
