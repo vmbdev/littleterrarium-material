@@ -1,6 +1,6 @@
 # Little Terrarium Material UI
 
-![Little Terrarium](https://littleterrarium.one/assets/oglt.png)
+![Little Terrarium](https://littleterrarium.xyz/assets/oglt.png)
 
 **Little Terrarium** allows you to manage your whole plant collection.
 
@@ -8,7 +8,7 @@ Little Terrarium Material UI is made with Angular and Capacitor, and is part of
 the Little Terrarium project.
 
 You can access the live app on
-[https://littleterrarium.one](https://littleterrarium.one).
+[https://littleterrarium.xyz](https://littleterrarium.xyz).
 
 - [Little Terrarium Material UI](#little-terrarium-material-ui)
   - [Getting Started](#getting-started)
