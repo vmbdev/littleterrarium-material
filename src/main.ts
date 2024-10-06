@@ -3,16 +3,21 @@ import {
   provideHttpClient,
   withInterceptorsFromDi,
 } from '@angular/common/http';
-import { 
+import {
   APP_INITIALIZER,
   importProvidersFrom,
   isDevMode,
-  provideExperimentalZonelessChangeDetection
+  provideExperimentalZonelessChangeDetection,
 } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
-import { DateAdapter, NativeDateAdapter } from '@angular/material/core';
+import {
+  DateAdapter,
+  MAT_DATE_FORMATS,
+  MAT_NATIVE_DATE_FORMATS,
+  NativeDateAdapter,
+} from '@angular/material/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { TranslocoService, provideTransloco } from '@ngneat/transloco';
 import { ToastrModule } from 'ngx-toastr';
@@ -49,6 +54,7 @@ bootstrapApplication(AppComponent, {
       multi: true,
     },
     { provide: DateAdapter, useClass: NativeDateAdapter },
+    { provide: MAT_DATE_FORMATS, useValue: MAT_NATIVE_DATE_FORMATS },
     provideExperimentalZonelessChangeDetection(),
     provideAnimations(),
     provideHttpClient(withInterceptorsFromDi()),
@@ -75,7 +81,7 @@ bootstrapApplication(AppComponent, {
       useFactory: (iconRegistry: MatIconRegistry) => () => {
         iconRegistry.setDefaultFontSetClass('material-symbols-outlined');
       },
-      deps: [MatIconRegistry]
-    }
+      deps: [MatIconRegistry],
+    },
   ],
 }).catch((err) => console.error(err));

@@ -35,7 +35,7 @@ export class TaskService {
       for (const plant of plants) {
         newTasks.push({
           plantId: plant.id,
-          picture: this.plantService.coverPhoto(plant) ?? undefined,
+          picture: this.plantService.coverPhoto(plant),
           plantName: this.plantService.getVisibleName(plant),
           waterNext: plant.waterNext,
           fertNext: plant.fertNext,

@@ -2,12 +2,24 @@
 <mat-list limitLargeScreen>
   @for (task of taskService.$tasks(); track task.plantId) {
     <mat-list-item matRipple>
-      <img
-        matListItemAvatar
-        [src]="task.picture"
-        [alt]="('general.picture' | transloco) + ' - ' + task.plantName"
-        [routerLink]="['/plant', task.plantId]"
-      />
+      @if (task.picture) {
+        <img
+          matListItemAvatar
+          [src]="task.picture"
+          [alt]="('general.picture' | transloco) + ' - ' + task.plantName"
+          [routerLink]="['/plant', task.plantId]"
+        />
+      } @else {
+        <div matListItemAvatar [routerLink]="['/plant', task.plantId]">
+          <ltm-image-generator
+            [name]="task.plantName"
+            width="40"
+            height="40"
+            responsive="true"
+            rounded="true"
+          />
+        </div>
+      }
 
       <span matListItemTitle [routerLink]="['/plant', task.plantId]">
         {{ task.plantName }}

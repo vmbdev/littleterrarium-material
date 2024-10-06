@@ -1,7 +1,6 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  WritableSignal,
   inject,
   input,
   signal,
@@ -26,17 +25,13 @@ import { FabComponent } from '@components/fab/fab.component';
 import { ConfirmDialogComponent } from '@components/dialogs/confirm-dialog/confirm-dialog.component';
 import { WaitDialogComponent } from '@components/dialogs/wait-dialog/wait-dialog.component';
 import { LocationEditComponent } from '@components/location/location-edit/location-edit.component';
+import { ImageGeneratorComponent } from '@components/image-generator/image-generator.component';
 import { LocationService } from '@services/location/location.service';
 import { ErrorHandlerService } from '@services/error-handler/error-handler.service';
 import { AuthService } from '@services/auth/auth.service';
 import { LocationGetConfig } from '@services/api/api.service';
 import { Location } from '@models/location.model';
 import { ImagePathPipe } from '@pipes/image-path/image-path.pipe';
-
-interface LocationWithLightAsset extends Location {
-  lightAsset: string,
-  lightName: string,
-}
 
 @Component({
   selector: 'ltm-location-list',
@@ -55,6 +50,7 @@ interface LocationWithLightAsset extends Location {
     TranslocoModule,
     FabComponent,
     WaitDialogComponent,
+    ImageGeneratorComponent,
     ImagePathPipe,
   ],
   templateUrl: './location-list.component.html',
@@ -73,7 +69,7 @@ export class LocationListComponent {
   userId = input<number>();
 
   protected owned: boolean = true;
-  protected readonly $locations = signal<LocationWithLightAsset[]>([]);
+  protected readonly $locations = signal<Location[]>([]);
 
   ngOnInit(): void {
     const userId = this.userId();
@@ -119,10 +115,8 @@ export class LocationListComponent {
 
     bsRef.afterDismissed().subscribe((updatedLocation: Location) => {
       if (updatedLocation) {
-        const finalLocation: LocationWithLightAsset = { 
+        const finalLocation = { 
           ...updatedLocation,
-          lightAsset: this.locationService.getLightAsset(updatedLocation.light),
-          lightName: this.locationService.getLightName(updatedLocation.light),
         };
 
         this.$locations.update((val) => {

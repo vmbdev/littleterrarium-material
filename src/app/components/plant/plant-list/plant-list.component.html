@@ -2,13 +2,24 @@
   <mat-list>
     @for (item of $list(); track item.id) {
       <mat-list-item>
-        <img
-          matListItemAvatar
-          class="plant-list__avatar"
-          [src]="item.cover"
-          [alt]="('general.picture' | transloco) + ' - ' + item.name"
-          [routerLink]="['/plant', item.id]"
-        >
+        @if (item.cover) {
+          <img
+            matListItemAvatar
+            class="plant-list__avatar"
+            [src]="item.cover"
+            [alt]="('general.picture' | transloco) + ' - ' + item.name"
+            [routerLink]="['/plant', item.id]"
+          >
+        } @else {
+          <div matListItemAvatar>
+            <ltm-image-generator
+              [name]="item.name"
+              width="40"
+              height="40"
+              rounded="true"
+            />
+          </div>
+        }
         <span matListItemTitle [routerLink]="['/plant', item.id]">
           {{ item.name }}
         </span>
@@ -28,13 +39,25 @@
     @for (item of $list(); track item.id) {
       <mat-grid-tile>
         <mat-card matRipple class="plant-card">
-          <img
-            mat-card-image
-            class="plant-card__image"
-            [src]="item.cover"
-            [alt]="('general.picture' | transloco) + ' - ' + item.name"
-            [routerLink]="['/plant', item.id]"
-          >
+          @if (item.cover) {
+            <img
+              mat-card-image
+              class="plant-card__image"
+              [src]="item.cover"
+              [alt]="('general.picture' | transloco) + ' - ' + item.name"
+              [routerLink]="['/plant', item.id]"
+            >
+          } @else {
+            <div mat-card-image [routerLink]="['/plant', item.id]">
+              <ltm-image-generator
+                [name]="item.name"
+                width="300"
+                height="300"
+                responsive="true"
+              />
+            </div>
+          }
+
           <mat-card-title class="plant-card__bottom">
             <span class="plant-card__name">{{ item.name }}</span>
             <div class="plant-card__menu">

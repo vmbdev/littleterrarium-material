@@ -12,9 +12,14 @@
           [alt]="('general.picture' | transloco) + ' - ' + item.name"
         />
       } @else {
-        <svg matListItemAvatar>
-          <circle r="50" fill="lightgrey" />
-        </svg>
+        <div matListItemAvatar>
+          <ltm-image-generator
+            [name]="item.name"
+            width="40"
+            height="40"
+            rounded="true"
+          />
+        </div>
       }
 
       <span matListItemTitle>
@@ -40,22 +45,6 @@
             forest
           </mat-icon>
         }
-
-        <mat-icon
-          mat-icon-button
-          [title]="item.lightName | transloco"
-          class="location-list__icon"
-        >
-          {{ item.lightAsset }}
-        </mat-icon>
-
-        <mat-icon
-          mat-icon-button
-          [title]="('general.' + (item.public ? 'public' : 'private')) | transloco"
-          class="location-list__icon"
-        >
-          {{ item.public ? 'visibility' : 'visibility_off' }}
-        </mat-icon>
 
         <button mat-icon-button (click)="openEdit(item)">
           <mat-icon>edit</mat-icon>

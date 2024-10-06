@@ -7,6 +7,7 @@ import { TranslocoService, TranslocoModule } from '@ngneat/transloco';
 
 import { TaskButtonWaterComponent } from '@components/tasks/task-button-water/task-button-water.component';
 import { TaskButtonFertilizeComponent } from '@components/tasks/task-button-fertilize/task-button-fertilize.component';
+import { ImageGeneratorComponent } from '@components/image-generator/image-generator.component';
 import { PlantService } from '@services/plant/plant.service';
 import { MainToolbarService } from '@services/main-toolbar/main-toolbar.service';
 import { TaskService } from '@services/task/task.service';
@@ -23,6 +24,7 @@ import { LimitLargeScreenDirective } from '@directives/limit-large-screen/limit-
     TranslocoModule,
     TaskButtonWaterComponent,
     TaskButtonFertilizeComponent,
+    ImageGeneratorComponent,
     LimitLargeScreenDirective,
   ],
   templateUrl: './task-list.component.html',

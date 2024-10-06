@@ -32,6 +32,7 @@ import { ConfirmDialogComponent } from '@components/dialogs/confirm-dialog/confi
 import { PlantEditComponent } from '@components/plant/plant-edit/plant-edit.component';
 import { PlantMenuWaterComponent } from '@components/plant/menu/plant-menu-water/plant-menu-water.component';
 import { PlantMenuFertComponent } from '@components/plant/menu/plant-menu-fert/plant-menu-fert.component';
+import { ImageGeneratorComponent } from '@components/image-generator/image-generator.component';
 import { AuthService } from '@services/auth/auth.service';
 import { PlantGetConfig } from '@services/api/api.service';
 import { LocationService } from '@services/location/location.service';
@@ -46,7 +47,7 @@ import { CapitalizePipe } from '@pipes/capitalize/capitalize.pipe';
 type PlantListItem = {
   id: number;
   name: string;
-  cover?: string;
+  cover?: string | null;
 };
 
 @Component({
@@ -70,6 +71,7 @@ type PlantListItem = {
     FabComponent,
     PlantMenuWaterComponent,
     PlantMenuFertComponent,
+    ImageGeneratorComponent,
     CapitalizePipe,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,

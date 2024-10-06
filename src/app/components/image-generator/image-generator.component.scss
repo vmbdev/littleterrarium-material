@@ -1,0 +1,10 @@
+.image-gen {
+  &--rounded {
+    border-radius: 100%;
+  }
+
+  &--responsive {
+    width: 100%;
+    object-fit: contain;
+  }
+}

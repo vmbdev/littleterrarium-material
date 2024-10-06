@@ -169,7 +169,7 @@ export class PlantService {
     this.#$owned.set(false);
   }
 
-  coverPhoto(plant?: Plant): string {
+  coverPhoto(plant?: Plant): string | null {
     let workingPlant;
 
     if (!plant) workingPlant = this.plant.getValue();
@@ -186,10 +186,10 @@ export class PlantService {
         workingPlant.photos[0].images
       ) {
         image = this.imagePath.get(workingPlant.photos[0].images, 'thumb');
-      } else image = 'assets/nopic.png';
+      } else image = null;
 
       return image;
-    } else return 'assets/nopic.png';
+    } else return null;
   }
 
   getPotInfo(key: string): Pot {

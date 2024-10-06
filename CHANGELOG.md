@@ -1,15 +1,17 @@
 # Changelog
 
-## [1.1.5] - next
+## [1.1.5] - 2024-10-06
 
 ### Added
 
 - New 404 page.
+- Locations and plants without images will now show a nicer placeholder.
 
 ### Changes
 
-- Updated to Angular 18 and removed zone.js.
+- Updated to Angular 18.1 and removed zone.js.
 - New location list / homepage design.
+- Updated translations.
 
 ### Fixes
 
